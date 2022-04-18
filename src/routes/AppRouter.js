@@ -1,11 +1,11 @@
 import React from "react";
-import { DashboardRoutes } from "./DashboardRoutes";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
 import { useSelector } from "react-redux";
+import DefaultLayout from "../layout/DefaultLayout";
 export const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
@@ -31,14 +31,12 @@ export const AppRouter = () => {
             component={AuthRouter}
             isAuthenticated={isLoggedIn}
           />
-
           <PrivateRoute
             exact
             isAuthenticated={isLoggedIn}
             path="/"
-            component={DashboardRoutes}
+            component={DefaultLayout}
           />
-
           <Redirect to="/auth/login" />
         </Switch>
       </div>

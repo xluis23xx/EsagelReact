@@ -3,11 +3,12 @@
 import React from "react";
 
 export const Input = (props) => {
-  const { onChange, error } = props;
+  const { onChange, error, value } = props;
   return (
     <>
       <input
         className={`form-control ${error ? "border border-danger" : ""}`}
+        value={value}
         onBlur={onChange}
         {...props}
       />

@@ -6,4 +6,7 @@ export const types = {
     success: "[auth] success",
     fail: "[auth] failed"
   },
+  nav: {
+    set: "[nav] set"
+  }
 };

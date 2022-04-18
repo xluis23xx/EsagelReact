@@ -11,13 +11,14 @@ const INITIAL_STATE = {
   user: null,
   error: false,
   loading: false,
-  accessToken: null,
+  accessToken: false,
 };
 
 export const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.auth.success:
       return {
+        ...state,
         loading: false,
         user: action.payload.user,
         accessToken: action.payload.token,
@@ -29,6 +30,7 @@ export const authReducer = (state = INITIAL_STATE, action) => {
       };
     case types.auth.fail:
       return {
+        ...state,
         name: null,
         error: action.payload,
         loading: false,

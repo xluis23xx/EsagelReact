@@ -17,17 +17,19 @@ const Login = () => {
     (state) => state.auth
   );
 
+  const ingresarLogin = (datos) => dispatch(LoginAction(datos));
+
   const stateSchema = {
-    email: { value: "", error: "" },
-    password: { value: "", error: "" },
+    lemail: { value: "", error: "" },
+    lpassword: { value: "", error: "" },
   };
 
   const stateValidatorSchema = {
-    email: {
+    lemail: {
       required: true,
       validator: formatEmail(),
     },
-    password: {
+    lpassword: {
       required: true,
       validator: formatPass(),
       nospaces: true,
@@ -42,13 +44,16 @@ const Login = () => {
     }
   };
 
-  const onSubmitForm = ({ email, password }) => {
-    dispatch(LoginAction({ email, password }));
+  // const ingresarLogin = (datos) => dispatch(LoginAction(datos));
+
+  const onSubmitForm = (data) => {
+    // dispatch(LoginAction({ email: data.email, password: data.password }));
+    ingresarLogin(data);
   };
 
   const {
-    values: { email, password },
-    errors: { email: emailError, password: passwordError },
+    values: { lemail, lpassword },
+    errors: { lemail: lemailError, lpassword: lpasswordError },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -64,7 +69,7 @@ const Login = () => {
                 <div className="card-body">
                   <h1>Iniciar Sesión</h1>
                   <p className="text-medium-emphasis">Accede a tu cuenta</p>
-                  <form onSubmit={handleOnSubmit} noValidate>
+                  <form onSubmit={handleOnSubmit}>
                     {showError ? (
                       <div
                         className="alert alert-danger text-center p-1"
@@ -82,17 +87,16 @@ const Login = () => {
                       </CInputGroupText>
                       <Input
                         type="email"
-                        className="form-control"
                         placeholder="Correo electrónico"
                         autoComplete="username"
                         disabled={showLoading}
-                        error={emailError}
-                        name="email"
+                        name="lemail"
                         required
-                        value={email}
+                        value={lemail}
                         onChange={(e) => {
                           handleOnChange(e);
                         }}
+                        error={lemailError}
                       />
                     </div>
                     <div className="input-group mb-3">
@@ -105,13 +109,13 @@ const Login = () => {
                         autoComplete="current-password"
                         disabled={showLoading}
                         required
-                        error={passwordError || showFormatInvalid}
-                        name="password"
-                        value={password}
+                        name="lpassword"
+                        value={lpassword}
                         onChange={(e) => {
                           handleOnChange(e);
                           checkFormat(e);
                         }}
+                        error={lpasswordError || showFormatInvalid}
                       />
                     </div>
                     <Link
@@ -125,7 +129,8 @@ const Login = () => {
                         <button
                           className="btn btn-info text-white w-100"
                           type="submit"
-                          disabled={disable || showFormatInvalid}
+                          onClick={() => console.log("perrooo")}
+                          disabled={disable || showLoading || showFormatInvalid}
                         >
                           {showLoading ? "Cargando..." : "Ingresar"}
                         </button>
