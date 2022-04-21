@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es2019",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "noEmit": true,
+    "types": ["./types"],
+    "lib": ["es2019", "dom"],
+    "baseUrl": "."
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js", "src"],
+}

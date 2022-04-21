@@ -1,6 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+
 import {
   CContainer,
   CHeader,
@@ -8,7 +7,7 @@ import {
   CHeaderDivider,
   CHeaderNav,
   CHeaderToggler,
-  CNavLink,
+  CImage,
   CNavItem,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
@@ -16,12 +15,12 @@ import { cilMenu } from "@coreui/icons";
 
 import { AppBreadcrumb } from "./index";
 import { AppHeaderDropdown } from "./header/index";
-import { logo } from "src/assets/brand/logo";
-import { types } from "../types/types";
+import esagelImage from "src/assets/images/esagel.png";
+
+import { NavContext } from "../context/navContext";
 
 const AppHeader = () => {
-  const dispatch = useDispatch();
-  const { sidebarShow } = useSelector((state) => state.nav);
+  const { navProperties, setNavProperties } = React.useContext(NavContext);
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -29,13 +28,16 @@ const AppHeader = () => {
         <CHeaderToggler
           className="ps-1"
           onClick={() =>
-            dispatch({ type: types.nav.set, payload: !sidebarShow })
+            setNavProperties({
+              ...navProperties,
+              sidebarShow: !navProperties.sidebarShow,
+            })
           }
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CIcon icon={logo} height={48} alt="Logo" />
+          <CImage src={esagelImage} height={48} alt="Logo" />
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem className="d-block fw-bold">Pablo Urbano</CNavItem>

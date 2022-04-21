@@ -4,42 +4,36 @@ import { PrivateRoute } from "./PrivateRoute";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
-import { useSelector } from "react-redux";
 import DefaultLayout from "../layout/DefaultLayout";
+import { AuthContext } from "../context/AuthContext";
+import { NavContext } from "../context/navContext";
 export const AppRouter = () => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
-  const { accessToken } = useSelector((state) => state.auth);
-
-  React.useEffect(() => {
-    if (accessToken) {
-      setIsLoggedIn(true);
-    } else {
-      const userToken = localStorage.getItem("saegel_token") || null;
-      if (userToken) {
-        setIsLoggedIn(true);
-      }
-    }
-  }, [accessToken]);
+  // const [isLogged, setIsLogged] = React.useState(false);
+  const [user, setUser] = React.useState(null);
+  const [navProperties, setNavProperties] = React.useState({
+    sidebarshow: false,
+    unfoldable: false,
+  });
 
   return (
-    <Router>
-      <div>
-        <Switch>
-          <PublicRoute
-            path="/auth"
-            component={AuthRouter}
-            isAuthenticated={isLoggedIn}
-          />
-          <PrivateRoute
-            exact
-            isAuthenticated={isLoggedIn}
-            path="/"
-            component={DefaultLayout}
-          />
-          <Redirect to="/auth/login" />
-        </Switch>
-      </div>
-    </Router>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <NavContext.Provider value={{ navProperties, setNavProperties }}>
+        <Router>
+          <Switch>
+            <PublicRoute
+              path="/auth"
+              component={AuthRouter}
+              isAuthenticated={!user ? false : true}
+            />
+            <PrivateRoute
+              isAuthenticated={!user ? false : true}
+              path="/"
+              component={DefaultLayout}
+            />
+            <Redirect to="/auth/login" />
+          </Switch>
+        </Router>
+      </NavContext.Provider>
+    </AuthContext.Provider>
   );
 };

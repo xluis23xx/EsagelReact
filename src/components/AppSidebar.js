@@ -1,18 +1,8 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import {
-  CImage,
-  CSidebar,
-  CSidebarBrand,
-  CSidebarNav,
-  CSidebarToggler,
-} from "@coreui/react";
+import React, { useContext } from "react";
+import { CImage, CSidebar, CSidebarBrand, CSidebarNav } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
 import { AppSidebarNav } from "./AppSidebarNav";
-
-import { logoNegative } from "src/assets/brand/logo-negative";
 import { sygnet } from "src/assets/brand/sygnet";
 
 import SimpleBar from "simplebar-react";
@@ -21,24 +11,28 @@ import esagelImage from "src/assets/images/esagel.png";
 
 // sidebar nav config
 import navigation from "../_nav";
-import { types } from "../types/types";
+import { NavContext } from "../context/navContext";
 
 const AppSidebar = () => {
-  const dispatch = useDispatch();
-  const { unfoldable } = useSelector((state) => state.nav);
-  const { sidebarShow } = useSelector((state) => state.nav);
+  //sidebarShow, unfoldable;
+
+  const { navProperties, setNavProperties } = useContext(NavContext);
 
   return (
     <CSidebar
       position="fixed"
       className="bg-dark"
-      unfoldable={unfoldable}
-      visible={sidebarShow}
+      unfoldable={navProperties.unfoldable}
+      visible={navProperties.sidebarShow}
       onVisibleChange={(visible) =>
-        dispatch({ type: types.nav.set, payload: visible })
+        setNavProperties({ ...navProperties, sidebarShow: visible })
       }
     >
-      <CSidebarBrand className="d-none d-md-flex bg-white" to="/">
+      <CSidebarBrand
+        className="d-none d-md-flex"
+        to="/"
+        style={{ backgroundColor: "#627386" }}
+      >
         <CImage
           fluid
           src={esagelImage}
@@ -53,12 +47,12 @@ const AppSidebar = () => {
           <AppSidebarNav items={navigation} />
         </SimpleBar>
       </CSidebarNav>
-      <CSidebarToggler
+      {/* <CSidebarToggler
         className="d-none d-lg-flex"
         onClick={() => {
           dispatch({ type: types.nav.set, payload: !sidebarShow });
         }}
-      />
+      /> */}
     </CSidebar>
   );
 };

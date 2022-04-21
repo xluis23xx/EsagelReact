@@ -1,8 +1,6 @@
 import React from "react";
 import { AppRouter } from "./routes/AppRouter";
-import { Provider } from "react-redux";
 import "./scss/style.scss";
-import { store } from "./store/store";
 
 // const loading = (
 //   <div className="pt-3 text-center">
@@ -11,11 +9,7 @@ import { store } from "./store/store";
 // );
 
 const SaegelApp = () => {
-  return (
-    <Provider store={store}>
-      <AppRouter />
-    </Provider>
-  );
+  return <AppRouter />;
 };
 
 export default SaegelApp;

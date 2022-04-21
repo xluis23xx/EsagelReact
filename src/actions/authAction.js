@@ -5,14 +5,13 @@ const { GENERAL_API } = ENVIROMENTS;
 
 // metodos que se deben ejecutar de manera asincrona
 export const LoginAction = (data) => {
-  return async (dispatch) => {
-    dispatch(verifyingUser());
+  return async () => {
     try {
       const LOGIN_USER_API = `${GENERAL_API}/auth/signin`;
       const response = await fetch(LOGIN_USER_API, {
         method: "POST",
         body: JSON.stringify({
-          email: data.lemail,
+          username: data.lemail,
           password: data.lpassword,
         }),
         headers: {
@@ -22,14 +21,11 @@ export const LoginAction = (data) => {
       const responseJSON = await response.json();
       if (responseJSON.token) {
         console.log("token obtenido:", responseJSON);
-        dispatch(loginSuccess(responseJSON.token, {}));
       } else {
-        dispatch(loginFailed(responseJSON.message));
-        setTimeout(() => dispatch(loginFailed(null)), 4000);
+        console.log(responseJSON);
       }
     } catch {
-      dispatch(loginFailed("Ocurrió un error inesperado"));
-      setTimeout(() => dispatch(loginFailed(null)), 4000);
+      console.log("Se cayó todo");
     }
   };
 };

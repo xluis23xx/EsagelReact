@@ -3,33 +3,28 @@ import { Link } from "react-router-dom";
 import { CInputGroupText } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
-import { useDispatch, useSelector } from "react-redux";
 import { formatEmail, formatPass } from "../../../utils/errors";
 import useForm from "../../../hooks/useForm";
-import { LoginAction } from "../../../actions/authAction";
-import { Input } from "../../../components/global-components/input";
+import { InputForm as Input } from "../../../components/global-components/inputForm";
+import { useAuth, Status } from "src/hooks/useAuth";
+import { AuthContext } from "../../../context/AuthContext";
 
 const Login = () => {
-  const dispatch = useDispatch();
-
+  const { setUser } = React.useContext(AuthContext);
   const [showFormatInvalid, setShowFormatInvalid] = React.useState("");
-  const { loading: showLoading = false, error: showError = "" } = useSelector(
-    (state) => state.auth
-  );
-
-  const ingresarLogin = (datos) => dispatch(LoginAction(datos));
+  const { verifyAuthentication, message, status } = useAuth();
 
   const stateSchema = {
-    lemail: { value: "", error: "" },
-    lpassword: { value: "", error: "" },
+    username: { value: "", error: "" },
+    password: { value: "", error: "" },
   };
 
   const stateValidatorSchema = {
-    lemail: {
+    username: {
       required: true,
       validator: formatEmail(),
     },
-    lpassword: {
+    password: {
       required: true,
       validator: formatPass(),
       nospaces: true,
@@ -46,14 +41,17 @@ const Login = () => {
 
   // const ingresarLogin = (datos) => dispatch(LoginAction(datos));
 
-  const onSubmitForm = (data) => {
+  const onSubmitForm = async (data) => {
     // dispatch(LoginAction({ email: data.email, password: data.password }));
-    ingresarLogin(data);
+    const resp = await verifyAuthentication(data);
+    if (resp?.token) {
+      setUser({});
+    }
   };
 
   const {
-    values: { lemail, lpassword },
-    errors: { lemail: lemailError, lpassword: lpasswordError },
+    values: { username, password },
+    errors: { username: usernameError, password: passwordError },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -70,13 +68,13 @@ const Login = () => {
                   <h1>Iniciar Sesión</h1>
                   <p className="text-medium-emphasis">Accede a tu cuenta</p>
                   <form onSubmit={handleOnSubmit}>
-                    {showError ? (
+                    {status === Status.Error ? (
                       <div
                         className="alert alert-danger text-center p-1"
                         role="alert"
                         style={{ fontSize: 14 }}
                       >
-                        {showError}
+                        {message}
                       </div>
                     ) : (
                       ""
@@ -89,14 +87,14 @@ const Login = () => {
                         type="email"
                         placeholder="Correo electrónico"
                         autoComplete="username"
-                        disabled={showLoading}
-                        name="lemail"
+                        disabled={status === Status.Loading}
+                        name="username"
                         required
-                        value={lemail}
+                        value={username}
                         onChange={(e) => {
                           handleOnChange(e);
                         }}
-                        error={lemailError}
+                        error={usernameError}
                       />
                     </div>
                     <div className="input-group mb-3">
@@ -107,15 +105,15 @@ const Login = () => {
                         type="password"
                         placeholder="Contraseña"
                         autoComplete="current-password"
-                        disabled={showLoading}
+                        disabled={status === Status.Loading}
                         required
-                        name="lpassword"
-                        value={lpassword}
+                        name="password"
+                        value={password}
                         onChange={(e) => {
                           handleOnChange(e);
                           checkFormat(e);
                         }}
-                        error={lpasswordError || showFormatInvalid}
+                        error={passwordError || showFormatInvalid}
                       />
                     </div>
                     <Link
@@ -130,9 +128,17 @@ const Login = () => {
                           className="btn btn-info text-white w-100"
                           type="submit"
                           onClick={() => console.log("perrooo")}
-                          disabled={disable || showLoading || showFormatInvalid}
+                          disabled={
+                            disable ||
+                            status === Status.Loading ||
+                            showFormatInvalid
+                              ? true
+                              : false
+                          }
                         >
-                          {showLoading ? "Cargando..." : "Ingresar"}
+                          {status === Status.Loading
+                            ? "Cargando..."
+                            : "Ingresar"}
                         </button>
                       </div>
                     </div>

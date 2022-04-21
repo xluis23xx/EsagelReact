@@ -4,7 +4,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import LoginScreen from "../views/pages/login/Login";
 import RegisterScreen from "../views/pages/register/Register";
 
-
 // Containers
 // const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 
@@ -17,7 +16,6 @@ export const AuthRouter = () => {
     <Switch>
       <Route exact path="/auth/login" component={LoginScreen} />
       <Route exact path="/auth/register" component={RegisterScreen} />
-
       <Redirect to="/auth/login" />
     </Switch>
   );
