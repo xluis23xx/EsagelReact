@@ -8,7 +8,7 @@ import {
 } from "./regex";
 
 export const formatEmail = () => ({
-  func: (value) => emailRegex.test(value) && !value.match(/@facebook.com/),
+  func: (value:string) => emailRegex.test(value) && !value.match(/@facebook.com/),
   error: "Correo electrónico Inválido",
 });
 
@@ -38,19 +38,17 @@ export const formatDate = () => ({
   error: "El formato de la fecha es incorrecto.",
 });
 
-const calculateAge = (date) => {
+const calculateAge = (date: Date) => {
   const birthday = new Date(date);
   const currentDate = new Date();
 
-  const time = parseInt(
-    (currentDate.getTime() - birthday.getTime()) / (1000 * 3600 * 24) / 365,
-    10
-  );
+  const time = Math.floor(
+    (currentDate.getTime() - birthday.getTime()) / (1000 * 3600 * 24) / 365);
   return time;
 };
 
 export const minBirthDay = () => ({
-  func: (value) => value === null || calculateAge(value) > 4,
+  func: (value) => value === null || calculateAge(value) > 17,
   error: "No cumple con la edad mínima",
 });
 

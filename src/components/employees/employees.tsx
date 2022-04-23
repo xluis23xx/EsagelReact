@@ -1,19 +1,77 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { EmployeeItem } from "./_children/employee";
 import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
+import {
+  CButton,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+} from "@coreui/react";
+import { formatNames } from "../../utils/errors";
+import useForm from "src/hooks/useForm";
+import { InputForm } from "../global-components/inputForm";
 
 const EmployeesComponent = () => {
-  const { employees, status } = useEmployees();
+  const {
+    employees,
+    deleteEmployee,
+    getAllEmployees,
+    searchEmployeeSByName,
+    status,
+  } = useEmployees();
+  const [visible, setVisible] = React.useState(false);
+  const [employeeId, setEmployeeId] = React.useState("");
+
+  React.useEffect(() => {
+    getAllEmployees();
+  }, []);
+
+  const stateSchema = {
+    search: { value: "", error: "" },
+  };
+
+  const stateValidatorSchema = {
+    search: {
+      required: false,
+      validator: formatNames(),
+      invalidtext: true,
+    },
+  };
+
+  const removeEmployee = (id: string) => {
+    setVisible(!visible);
+    if (!visible) {
+      setEmployeeId(id);
+    } else if (visible && employeeId) {
+      deleteEmployee(id);
+      setEmployeeId("");
+    }
+  };
+
+  const handleSearch = (data) => {
+    searchEmployeeSByName(data.search);
+  };
+
+  const {
+    values: { search },
+    errors: { search: searchError },
+    handleOnChange,
+    handleOnSubmit,
+    disable,
+  } = useForm(stateSchema, stateValidatorSchema, handleSearch);
 
   return (
     <>
       <div className="row mb-3">
-        <div className="col-6">
+        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
           <Link
-            className="btn btn-block btn-success w-auto h-auto"
+            className="btn btn-block btn-success w-100 h-auto text-white"
             to="/empleados/nuevo"
           >
             Nuevo
@@ -28,59 +86,68 @@ const EmployeesComponent = () => {
               &nbsp;EMPLEADOS
             </div>
             <div className="card-body">
-              <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2">
-                <ul className="navbar-nav mr-auto">
-                  <div className="d-flex">
-                    <button
-                      type="button"
-                      className="btn btn-default btn-secondary"
-                    >
-                      COPIA
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn btn-default btn-secondary"
-                    >
-                      EXCEL
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn btn-default btn-secondary"
-                    >
-                      CSV
-                    </button>
-
-                    <button
-                      type="button"
-                      className="btn btn-default btn-secondary"
-                    >
-                      PDF
-                    </button>
-                  </div>
-                </ul>
-
-                <form className="d-flex ms-md-auto">
-                  <input
-                    className="form-control  my-2 my-sm-0"
-                    type="search"
-                    placeholder="Buscar"
-                    aria-label="Search"
-                  />
+              <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
+                <div className="mx-auto mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start">
                   <button
-                    className="btn btn-outline-success my-2 my-sm-0"
+                    type="button"
+                    className="btn btn-default btn-secondary"
+                  >
+                    COPIA
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-default btn-secondary"
+                  >
+                    EXCEL
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-default btn-secondary"
+                  >
+                    CSV
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn btn-default btn-secondary"
+                  >
+                    PDF
+                  </button>
+                </div>
+
+                <form
+                  className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
+                  onSubmit={handleOnSubmit}
+                >
+                  <div className="col-12 col-sm-8">
+                    <InputForm
+                      type="search"
+                      name="search"
+                      className="form-control"
+                      placeholder="Buscar"
+                      aria-label="Search"
+                      value={search}
+                      error={searchError}
+                      showError={false}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+
+                  <button
+                    className="btn btn-success text-white col-12 col-sm-4 my-1 my-sm-0"
                     type="submit"
+                    disabled={disable}
                   >
                     Buscar
                   </button>
                 </form>
               </nav>
               <br />
-
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
                 {status === Status.Loading ? (
-                  <h1>Espere un momento...</h1>
+                  <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 employees.length > 0 ? (
@@ -118,7 +185,9 @@ const EmployeesComponent = () => {
                           <EmployeeItem
                             key={index}
                             code={_id}
-                            fullName={`${name} ${lastname} ${secondLastname}`}
+                            fullName={`${name ? name : ""} ${
+                              lastname ? lastname : ""
+                            } ${secondLastname ? secondLastname : ""}`}
                             birthdate={birthdate}
                             corporateEmail={corporateEmail}
                             documentNumber={documentNumber}
@@ -127,26 +196,45 @@ const EmployeesComponent = () => {
                             phoneNumber={phoneNumber}
                             status={status}
                             orderNumber={index + 1}
+                            handleRemove={removeEmployee}
                           />
                         );
                       })}
                     </tbody>
                   </table>
-                ) : (
-                  <h1>No Hay empleados</h1>
-                )}
+                ) : null}
               </div>
-
-              {/* <ul className="pagination">
-     <li className="page-item"><a className="page-link" href="#">Anterior</a></li>
-     <li className="page-item active">
-       <a className="page-link" href="#">1</a>
-     </li>
-     <li className="page-item"><a className="page-link" href="#">2</a></li>
-     <li className="page-item"><a className="page-link" href="#">3</a></li>
-     <li className="page-item"><a className="page-link" href="#">4</a></li>
-     <li className="page-item"><a className="page-link" href="#">Siguiente</a></li>
-   </ul> */}
+              <CModal
+                visible={visible}
+                onClose={() => {
+                  setEmployeeId("");
+                  setVisible(false);
+                }}
+              >
+                <CModalHeader closeButton={true}>
+                  <CModalTitle>Eliminar Empleado</CModalTitle>
+                </CModalHeader>
+                <CModalBody>
+                  ¿Estás seguro que quieres eliminar este empleado?
+                </CModalBody>
+                <CModalFooter>
+                  <CButton
+                    color="secondary"
+                    onClick={() => {
+                      setEmployeeId("");
+                      setVisible(false);
+                    }}
+                  >
+                    Cerrar
+                  </CButton>
+                  <CButton
+                    color="danger"
+                    onClick={() => removeEmployee(employeeId)}
+                  >
+                    Eliminar
+                  </CButton>
+                </CModalFooter>
+              </CModal>
             </div>
           </div>
         </div>

@@ -41,8 +41,8 @@ export const postEmployee = (
     phoneNumber,
     status,
     position,
-  }: Employee
-): Promise<Employee> =>
+  }
+) =>
   fetch(`${GENERAL_API}/employees`, {
     method: "POST",
     cache: "no-cache",
@@ -51,16 +51,73 @@ export const postEmployee = (
       lastname: lastname || null,
       secondLastname: secondLastname || null,
       birthdate: birthdate || null,
-      documentType: documentType.name || null,
+      documentType: documentType || null,
       documentNumber: documentNumber || null,
       personalEmail: personalEmail || null,
       corporateEmail: corporateEmail || null,
       phoneNumber: phoneNumber || null,
       status: status || 1,
-      position: position.name || null,
+      position: position || null,
     }),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
   }).then((res) => res.json());
+
+
+  export const putEmployee = (
+    token: string, id:string,
+    {
+      name,
+      lastname,
+      secondLastname,
+      birthdate,
+      documentType,
+      documentNumber,
+      personalEmail,
+      corporateEmail,
+      phoneNumber,
+      status,
+      position,
+    }
+  ) =>
+    fetch(`${GENERAL_API}/employees/${id}`, {
+      method: "PUT",
+      cache: "no-cache",
+      body: JSON.stringify({
+        name: name || null,
+        lastname: lastname || null,
+        secondLastname: secondLastname || null,
+        birthdate: birthdate || null,
+        documentType: documentType || null,
+        documentNumber: documentNumber || null,
+        personalEmail: personalEmail || null,
+        corporateEmail: corporateEmail || null,
+        phoneNumber: phoneNumber || null,
+        status: status || 1,
+        position: position || null,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": `${token}`,
+      },
+    }).then((res) => res.json());
+
+    export const setStatusEmployee = (
+      token: string, id:string,
+      {
+        status
+      }: {status: number}
+    ) =>
+      fetch(`${GENERAL_API}/employees/${id}`, {
+        method: "PUT",
+        cache: "no-cache",
+        body: JSON.stringify({
+          status: status
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": `${token}`,
+        },
+      }).then((res) => res.json());

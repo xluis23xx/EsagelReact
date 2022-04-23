@@ -9,6 +9,7 @@ type EmployeeItemProps = Employee & {
   fullName: string;
   orderNumber: number;
   code: string;
+  handleRemove: (id: string) => void;
 };
 
 export const EmployeeItem: React.FC<EmployeeItemProps> = ({
@@ -22,18 +23,24 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
   phoneNumber,
   birthdate,
   status,
+  handleRemove,
 }) => {
+  const convertDate = birthdate ? new Date(birthdate) : "";
+  const year = convertDate ? convertDate.getFullYear() : "";
+  const month = convertDate ? convertDate.getMonth() + 1 : "";
+  const day = convertDate ? convertDate.getDate() : "";
+  const fullBirthdate = year && month && day ? `${day}/${month}/${year}` : "";
   return (
     <tr>
       <td>{orderNumber}</td>
-      <td>{fullName}</td>
-      <td>{documentType.name}</td>
-      <td>{documentNumber}</td>
-      <td>{corporateEmail}</td>
-      <td>{personalEmail}</td>
-      <td>{phoneNumber}</td>
-      <td>{birthdate}</td>
-      <td>{status}</td>
+      <td>{fullName || ""}</td>
+      <td>{documentType?.name || ""}</td>
+      <td>{documentNumber || ""}</td>
+      <td>{corporateEmail || ""}</td>
+      <td>{personalEmail || ""}</td>
+      <td>{phoneNumber || ""}</td>
+      <td>{fullBirthdate || ""}</td>
+      <td>{status ? "activo" : "inactivo"}</td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
@@ -50,7 +57,7 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
               type="button"
               className="btn btn-block btn-danger"
               style={{ height: 40, width: 40 }}
-              onClick={() => console.log("algo2")}
+              onClick={() => handleRemove(code)}
             >
               <CIcon icon={cilTrash} color="#fffff" />
             </button>

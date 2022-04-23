@@ -6,34 +6,55 @@ import { Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
 import DefaultLayout from "../layout/DefaultLayout";
 import { AuthContext } from "../context/AuthContext";
-import { NavContext } from "../context/navContext";
+import firebase, { FirebaseContext } from "../firebase";
+import { Provider } from "react-redux";
+import { store } from "../store/store";
+import { deleteCookie, getCookie } from "../utils/cookies";
 export const AppRouter = () => {
-  // const [isLogged, setIsLogged] = React.useState(false);
   const [user, setUser] = React.useState(null);
-  const [navProperties, setNavProperties] = React.useState({
-    sidebarshow: false,
-    unfoldable: false,
-  });
+
+  React.useEffect(() => {
+    const ESAGEL_TOKEN = getCookie("esagel_token");
+    const ESAGEL_PROFILE = JSON.parse(
+      localStorage.getItem("esagel_profile") || "{}"
+    );
+    if (ESAGEL_TOKEN && Object.keys(ESAGEL_PROFILE).length > 0) {
+      setUser(ESAGEL_PROFILE);
+    } else {
+      if (ESAGEL_PROFILE) {
+        deleteCookie("esagel_token");
+      }
+      if (ESAGEL_PROFILE) {
+        localStorage.removeItem("esagel_profile");
+      }
+    }
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <NavContext.Provider value={{ navProperties, setNavProperties }}>
-        <Router>
-          <Switch>
-            <PublicRoute
-              path="/auth"
-              component={AuthRouter}
-              isAuthenticated={!user ? false : true}
-            />
-            <PrivateRoute
-              isAuthenticated={!user ? false : true}
-              path="/"
-              component={DefaultLayout}
-            />
-            <Redirect to="/auth/login" />
-          </Switch>
-        </Router>
-      </NavContext.Provider>
-    </AuthContext.Provider>
+    <Provider store={store}>
+      <FirebaseContext.Provider
+        value={{
+          firebase,
+        }}
+      >
+        <AuthContext.Provider value={{ user, setUser }}>
+          <Router>
+            <Switch>
+              <PublicRoute
+                path="/auth"
+                component={AuthRouter}
+                isAuthenticated={!user ? false : true}
+              />
+              <PrivateRoute
+                isAuthenticated={!user ? false : true}
+                path="/"
+                component={DefaultLayout}
+              />
+              <Redirect to="/auth/login" />
+            </Switch>
+          </Router>
+        </AuthContext.Provider>
+      </FirebaseContext.Provider>
+    </Provider>
   );
 };

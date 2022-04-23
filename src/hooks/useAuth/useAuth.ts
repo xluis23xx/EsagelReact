@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react'
+import { deleteCookie, getCookie } from 'src/utils/cookies';
 import { authentication } from "./helpers";
-import { JWT, Auth } from "./types";
+import {  Auth } from "./types";
 
 export enum Status {
   Loading,
@@ -14,7 +15,6 @@ export const useAuth = () => {
 
   const [status, setStatus] = React.useState(Status.Ready)
   const [message, setMessage] = React.useState("")
-  const [user, setUser] = React.useState<boolean>(false)
 
   async function verifyAuthentication({
     username,
@@ -33,11 +33,7 @@ export const useAuth = () => {
             setStatus(Status.Ready)
           }, 2000)
         } else {
-          console.log(response.token)
           setStatus(Status.Ready);
-          setUser(true)
-          console.log('cambia de valor el sertUSER')
-          
         }
         return response
       }).catch(()=> {
@@ -49,10 +45,21 @@ export const useAuth = () => {
         }, 3000)
       });
     }
+
+  function logoutUser () {
+    const ESAGEL_TOKEN = getCookie('esagel_token') 
+    const USER_PROFILE = localStorage.getItem('esagel_profile')
+    if(ESAGEL_TOKEN) {
+      deleteCookie('esagel_token')
+    }
+    if(USER_PROFILE){
+      localStorage.removeItem('esagel_profile')
+    }
+  }
   return {
     verifyAuthentication,
+    logoutUser,
     status,
     message,
-    user
   }
 };

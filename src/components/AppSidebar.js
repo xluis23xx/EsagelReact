@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { CImage, CSidebar, CSidebarBrand, CSidebarNav } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
@@ -11,25 +11,28 @@ import esagelImage from "src/assets/images/esagel.png";
 
 // sidebar nav config
 import navigation from "../_nav";
-import { NavContext } from "../context/navContext";
+import { useDispatch, useSelector } from "react-redux";
+import { types } from "../types/types";
 
 const AppSidebar = () => {
-  //sidebarShow, unfoldable;
+  const distpatch = useDispatch();
+  const sidebarNav = "side-nav-bar";
 
-  const { navProperties, setNavProperties } = useContext(NavContext);
+  const { sidebarShow, unfoldable } = useSelector((state) => state.nav);
 
   return (
     <CSidebar
       position="fixed"
-      className="bg-dark"
-      unfoldable={navProperties.unfoldable}
-      visible={navProperties.sidebarShow}
-      onVisibleChange={(visible) =>
-        setNavProperties({ ...navProperties, sidebarShow: visible })
-      }
+      id={sidebarNav}
+      className={`bg-dark`}
+      unfoldable={unfoldable}
+      visible={sidebarShow}
+      onVisibleChange={(visible) => {
+        distpatch({ type: types.nav.set, payload: visible });
+      }}
     >
       <CSidebarBrand
-        className="d-none d-md-flex"
+        className="d-md-flex"
         to="/"
         style={{ backgroundColor: "#627386" }}
       >

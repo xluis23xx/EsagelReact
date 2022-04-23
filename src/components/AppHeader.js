@@ -16,11 +16,37 @@ import { cilMenu } from "@coreui/icons";
 import { AppBreadcrumb } from "./index";
 import { AppHeaderDropdown } from "./header/index";
 import esagelImage from "src/assets/images/esagel.png";
+import { useDispatch, useSelector } from "react-redux";
 
-import { NavContext } from "../context/navContext";
+import { types } from "../types/types";
+import { AuthContext } from "../context/AuthContext";
 
 const AppHeader = () => {
-  const { navProperties, setNavProperties } = React.useContext(NavContext);
+  const distpatch = useDispatch();
+
+  const { sidebarShow } = useSelector((state) => state.nav);
+  const { user } = React.useContext(AuthContext);
+  let nameProfile = "";
+  let roles = "";
+  if (Object.keys(user).length > 0) {
+    if (user?.employee?.name) {
+      nameProfile = user.employee.name;
+    } else if (user.username) {
+      nameProfile = user.username;
+    } else {
+      nameProfile = "Invitado";
+    }
+  }
+
+  if (user?.roles) {
+    if (user?.roles.length > 0) {
+      user?.roles.map((rol, index) =>
+        index === 0
+          ? (roles = roles.concat(rol.name))
+          : (roles = roles.concat(`- ${rol.name}`))
+      );
+    }
+  }
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -28,10 +54,7 @@ const AppHeader = () => {
         <CHeaderToggler
           className="ps-1"
           onClick={() =>
-            setNavProperties({
-              ...navProperties,
-              sidebarShow: !navProperties.sidebarShow,
-            })
+            distpatch({ type: types.nav.set, payload: !sidebarShow })
           }
         >
           <CIcon icon={cilMenu} size="lg" />
@@ -40,8 +63,10 @@ const AppHeader = () => {
           <CImage src={esagelImage} height={48} alt="Logo" />
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
-          <CNavItem className="d-block fw-bold">Pablo Urbano</CNavItem>
-          <CNavItem className="d-block ms-5 fw-bold">Rol(es): Admin</CNavItem>
+          <CNavItem className="d-block fw-bold">
+            Usuario: {nameProfile}
+          </CNavItem>
+          <CNavItem className="d-block ms-5 fw-bold">Rol(es): {roles}</CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />

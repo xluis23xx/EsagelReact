@@ -1,15 +1,4 @@
-
-export type DocumentType = {
-    _id: string
-    name: string
-    status: number
-    operation: string // "comprobante" o "persona"
-}
-type Position = {
-    _id: string
-    name: string
-    status: number
-}
+import { DocumentType, Position } from "../useCombos/types";
 
 export type Employee = {
     _id?: string;

@@ -6,8 +6,9 @@ import { cilLockLocked, cilUser } from "@coreui/icons";
 import { formatEmail, formatPass } from "../../../utils/errors";
 import useForm from "../../../hooks/useForm";
 import { InputForm as Input } from "../../../components/global-components/inputForm";
-import { useAuth, Status } from "src/hooks/useAuth";
+import { useAuth, Status, Auth } from "../../../hooks/useAuth";
 import { AuthContext } from "../../../context/AuthContext";
+import { setCookie } from "src/utils/cookies";
 
 const Login = () => {
   const { setUser } = React.useContext(AuthContext);
@@ -31,7 +32,7 @@ const Login = () => {
     },
   };
 
-  const checkFormat = (e) => {
+  const checkFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.indexOf(" ") >= 0) {
       setShowFormatInvalid("No se permite espacios");
     } else {
@@ -39,13 +40,14 @@ const Login = () => {
     }
   };
 
-  // const ingresarLogin = (datos) => dispatch(LoginAction(datos));
-
-  const onSubmitForm = async (data) => {
-    // dispatch(LoginAction({ email: data.email, password: data.password }));
+  const onSubmitForm = async (data: Auth) => {
     const resp = await verifyAuthentication(data);
     if (resp?.token) {
-      setUser({});
+      setCookie("esagel_token", resp?.token, 1);
+    }
+    if (resp?.user) {
+      localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
+      setUser(resp.user);
     }
   };
 
@@ -127,7 +129,6 @@ const Login = () => {
                         <button
                           className="btn btn-info text-white w-100"
                           type="submit"
-                          onClick={() => console.log("perrooo")}
                           disabled={
                             disable ||
                             status === Status.Loading ||

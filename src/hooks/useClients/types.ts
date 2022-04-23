@@ -1,4 +1,4 @@
-import { DocumentType } from "../useEmployees/types";
+import { DocumentType } from "../useCombos/types";
 import { ProspectusOrigin, ProspectusStatus } from "../useLeadSource/types";
 
 export type Department={
