@@ -1,6 +1,6 @@
 import ENVIROMENTS from "../../enviroments/env";
 
-import { Employee, GetEmployee, GetEmployees } from "./types";
+import { GetEmployee, GetEmployees } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 

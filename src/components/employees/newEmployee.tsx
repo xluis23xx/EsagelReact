@@ -116,7 +116,7 @@ const EmployeesComponent = () => {
       position: data.position || null,
       status: 1,
     };
-    console.log(employee)
+    console.log(employee);
     registerEmployee(employee).then((response) => {
       if (response._id) {
         history.push("/empleados");
@@ -212,6 +212,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="name">Nombres (*):</label>
                   <InputForm
                     type="text"
+                    required
                     placeholder="Nombres"
                     name="name"
                     value={name}
@@ -225,6 +226,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="lastname">Apellido Paterno (*):</label>
                   <InputForm
                     type="text"
+                    required
                     placeholder="Apellido Paterno"
                     name="lastname"
                     value={lastname}
@@ -238,6 +240,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="secondLastname">Apellido Materno (*):</label>
                   <InputForm
                     type="text"
+                    required
                     placeholder="Apellido Materno"
                     name="secondLastname"
                     value={secondLastname}
@@ -252,6 +255,7 @@ const EmployeesComponent = () => {
                   <select
                     id="documentType"
                     name="documentType"
+                    required
                     value={documentType}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -274,6 +278,7 @@ const EmployeesComponent = () => {
                   </label>
                   <InputForm
                     type="text"
+                    required
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={documentNumber}
@@ -289,6 +294,7 @@ const EmployeesComponent = () => {
                   </label>
                   <InputForm
                     type="email"
+                    required
                     placeholder="Correo Corporativo"
                     name="corporateEmail"
                     value={corporateEmail}
@@ -301,6 +307,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="address">Dirección (*):</label>
                   <InputForm
                     type="text"
+                    required
                     placeholder="Dirección"
                     name="address"
                     value={address}
@@ -314,6 +321,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="phoneNumber">Teléfono (*):</label>
                   <InputForm
                     type="tel"
+                    required
                     placeholder="Teléfono"
                     name="phoneNumber"
                     value={phoneNumber}
@@ -327,6 +335,7 @@ const EmployeesComponent = () => {
                   <label htmlFor="personalEmail">Correo personal (*):</label>
                   <InputForm
                     type="email"
+                    required
                     placeholder="Correo Personal"
                     name="personalEmail"
                     value={personalEmail}
@@ -385,6 +394,7 @@ const EmployeesComponent = () => {
                   <select
                     id="position"
                     name="position"
+                    required
                     value={position}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
