@@ -67,8 +67,10 @@ export const useEmployees = () => {
           lastname = "",
           secondLastname = "",
         } = employee || {};
-        const regex = new RegExp(filter);
-        return regex.test(`${name} ${lastname} ${secondLastname}`);
+        const regex = new RegExp(filter.toLowerCase());
+        return regex.test(
+          `${name} ${lastname} ${secondLastname}`.toLowerCase()
+        );
       });
       setEmployees(employeesFilter);
     }
