@@ -12,7 +12,9 @@ export const getEmployees = (token: string): Promise<GetEmployees> =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json()).catch(res=> res.json());
+  })
+    .then((res) => res.json())
+    .catch((res) => res.json());
 
 export const getEmployeeById = (
   token: string,
@@ -27,37 +29,12 @@ export const getEmployeeById = (
     },
   }).then((res) => res.json());
 
-export const postEmployee = (
-  token: string,
-  {
-    name,
-    lastname,
-    secondLastname,
-    birthdate,
-    documentType,
-    documentNumber,
-    personalEmail,
-    corporateEmail,
-    phoneNumber,
-    status,
-    position,
-  }
-) =>
+export const postEmployee = (token: string, employee: any) =>
   fetch(`${GENERAL_API}/employees`, {
     method: "POST",
     cache: "no-cache",
     body: JSON.stringify({
-      name: name || null,
-      lastname: lastname || null,
-      secondLastname: secondLastname || null,
-      birthdate: birthdate || null,
-      documentType: documentType || null,
-      documentNumber: documentNumber || null,
-      personalEmail: personalEmail || null,
-      corporateEmail: corporateEmail || null,
-      phoneNumber: phoneNumber || null,
-      status: status || 1,
-      position: position || null,
+      ...employee,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -65,59 +42,32 @@ export const postEmployee = (
     },
   }).then((res) => res.json());
 
+export const putEmployee = (token: string, id: string, employee: any) =>
+  fetch(`${GENERAL_API}/employees/${id}`, {
+    method: "PUT",
+    cache: "no-cache",
+    body: JSON.stringify({
+      ...employee,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": `${token}`,
+    },
+  }).then((res) => res.json());
 
-  export const putEmployee = (
-    token: string, id:string,
-    {
-      name,
-      lastname,
-      secondLastname,
-      birthdate,
-      documentType,
-      documentNumber,
-      personalEmail,
-      corporateEmail,
-      phoneNumber,
-      status,
-      position,
-    }
-  ) =>
-    fetch(`${GENERAL_API}/employees/${id}`, {
-      method: "PUT",
-      cache: "no-cache",
-      body: JSON.stringify({
-        name: name || null,
-        lastname: lastname || null,
-        secondLastname: secondLastname || null,
-        birthdate: birthdate || null,
-        documentType: documentType || null,
-        documentNumber: documentNumber || null,
-        personalEmail: personalEmail || null,
-        corporateEmail: corporateEmail || null,
-        phoneNumber: phoneNumber || null,
-        status: status || 1,
-        position: position || null,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": `${token}`,
-      },
-    }).then((res) => res.json());
-
-    export const setStatusEmployee = (
-      token: string, id:string,
-      {
-        status
-      }: {status: number}
-    ) =>
-      fetch(`${GENERAL_API}/employees/${id}`, {
-        method: "PUT",
-        cache: "no-cache",
-        body: JSON.stringify({
-          status: status
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": `${token}`,
-        },
-      }).then((res) => res.json());
+export const setStatusEmployee = (
+  token: string,
+  id: string,
+  { status }: { status: number }
+) =>
+  fetch(`${GENERAL_API}/employees/${id}`, {
+    method: "PUT",
+    cache: "no-cache",
+    body: JSON.stringify({
+      status: status,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": `${token}`,
+    },
+  }).then((res) => res.json());

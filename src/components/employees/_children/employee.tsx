@@ -1,5 +1,6 @@
 import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
+import { CImage } from "@coreui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -12,6 +13,23 @@ type EmployeeItemProps = Employee & {
   handleRemove: (id: string) => void;
 };
 
+const setBirtdate = (date: string) => {
+  if (date) {
+    const convertDate = date ? new Date(date) : "";
+    const year = convertDate ? convertDate.getFullYear() : "";
+    let month = convertDate ? convertDate.getMonth() + 1 : "";
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    let day = convertDate ? convertDate.getDate() : "";
+    if (day < 10) {
+      day = `0${day}`;
+    }
+    return year && month && day ? `${day}-${month}-${year}` : null;
+  }
+  return null;
+};
+
 export const EmployeeItem: React.FC<EmployeeItemProps> = ({
   orderNumber,
   code,
@@ -19,17 +37,11 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
   documentType,
   documentNumber,
   corporateEmail,
-  personalEmail,
   phoneNumber,
   birthdate,
-  status,
+  image,
   handleRemove,
 }) => {
-  const convertDate = birthdate ? new Date(birthdate) : "";
-  const year = convertDate ? convertDate.getFullYear() : "";
-  const month = convertDate ? convertDate.getMonth() + 1 : "";
-  const day = convertDate ? convertDate.getDate() : "";
-  const fullBirthdate = year && month && day ? `${day}/${month}/${year}` : "";
   return (
     <tr>
       <td>{orderNumber}</td>
@@ -37,10 +49,10 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
       <td>{documentType?.name || ""}</td>
       <td>{documentNumber || ""}</td>
       <td>{corporateEmail || ""}</td>
-      <td>{personalEmail || ""}</td>
       <td>{phoneNumber || ""}</td>
-      <td>{fullBirthdate || ""}</td>
-      <td>{status ? "activo" : "inactivo"}</td>
+      <td>{setBirtdate(birthdate) || ""}</td>
+      <td>{image ? <CImage src={image} alt={fullName} fluid width={60} /> : ""}</td>
+      {/* <td>{status ? "activo" : "inactivo"}</td> */}
       <td>
         <div className="selection-btn">
           <div className="btn-group">
@@ -48,7 +60,7 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
               type="button"
               className="btn btn-primary"
               style={{ height: 40, width: 40 }}
-              to={`/empleados/edit/${code}`}
+              to={`/empleados/editar/${code}`}
             >
               <CIcon icon={cilPencil} />
             </Link>

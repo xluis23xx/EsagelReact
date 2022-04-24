@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useEmployees } from "src/hooks/useEmployees";
 import useForm from "src/hooks/useForm";
 import {
@@ -17,33 +18,65 @@ import { Status } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 
-const NewEmployeeComponent = () => {
-  const { registerEmployee, status } = useEmployees();
-  const history = useHistory();
+const setBirtdate = (date: string) => {
+  if (date) {
+    const convertDate = date ? new Date(date) : "";
+    const year = convertDate ? convertDate.getFullYear() : "";
+    let month = convertDate ? convertDate.getMonth() + 1 : "";
+    if (month < 10) {
+      month = `0${month}`;
+    }
+    let day = convertDate ? convertDate.getDate() : "";
+    if (day < 10) {
+      day = `0${day}`;
+    }
+    return year && month && day ? `${year}-${month}-${day}` : null;
+  }
+  return null;
+};
 
+const EditEmployeeComponent = () => {
+  const { updateEmployee, setEmployeeById, employeeProfile, status } =
+    useEmployees();
   // state para las imagenes
   const [uploading, setUploading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState("");
+  const [urlImage, setUrlImage] = React.useState(null);
   const [showImage, setShowImage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
+  const history = useHistory();
+
+  const { id } = useParams<any>();
+
+  React.useEffect(() => {
+    if (!id) {
+      history.push("/empleados");
+    }
+    setEmployeeById(id);
+  }, []);
+
+  React.useEffect(() => {
+    if (employeeProfile?.image) {
+      setShowImage(employeeProfile?.image);
+    }
+  }, [employeeProfile]);
 
   const stateSchema = {
-    name: { value: "", error: "" },
-    lastname: { value: "", error: "" },
-    secondLastname: { value: "", error: "" },
-    documentType: { value: "", error: "" },
-    documentNumber: { value: "", error: "" },
-    corporateEmail: { value: "", error: "" },
-    personalEmail: { value: "", error: "" },
-    address: { value: "", error: "" },
-    phoneNumber: { value: "", error: "" },
-    birthdate: { value: "", error: "" },
-    image: { value: "", error: "" },
-    position: { value: "", error: "" },
+    name: { value: null, error: "" },
+    lastname: { value: null, error: "" },
+    secondLastname: { value: null, error: "" },
+    documentType: { value: null, error: "" },
+    documentNumber: { value: null, error: "" },
+    corporateEmail: { value: null, error: "" },
+    personalEmail: { value: null, error: "" },
+    address: { value: null, error: "" },
+    phoneNumber: { value: null, error: "" },
+    birthdate: { value: null, error: "" },
+    image: { value: null, error: "" },
+    position: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
@@ -90,34 +123,32 @@ const NewEmployeeComponent = () => {
     },
     phoneNumber: { required: true, validator: formatPhone() },
     birthdate: { required: true, validator: minBirthDay() },
-    image: {
-      required: false,
-      validator: {
-        func: (value: string) =>
-          /.jpg|.png|.jpeg/.test(value) || value.length === 0,
-        error: "Formato inválido.",
-      },
-    },
     position: { required: true },
   };
 
   const onSubmitForm = (data: any) => {
     const employee = {
-      name: data.name || null,
-      lastname: data.lastname || null,
-      secondLastname: data.secondLastname || null,
-      phoneNumber: data.phoneNumber || null,
-      documentType: data.documentType || null,
-      documentNumber: data.documentNumber || null,
-      address: data.address || null,
-      corporateEmail: data.corporateEmail || null,
-      personalEmail: data.personalEmail || null,
+      name: (data?.name ?? employeeProfile?.name) || null,
+      lastname: (data?.lastname ?? employeeProfile?.lastname) || null,
+      secondLastname:
+        (data?.secondLastname ?? employeeProfile?.secondLastname) || null,
+      phoneNumber: (data?.phoneNumber ?? employeeProfile?.phoneNumber) || null,
+      //   documentType:
+      //     (data?.documentType ?? employeeProfile?.documentType?.name) || null,
+      documentNumber:
+        (data?.documentNumber ?? employeeProfile?.documentNumber) || null,
+      address: (data?.address ?? employeeProfile?.address) || null,
+      //   corporateEmail:
+      //     (data?.corporateEmail ?? employeeProfile?.corporateEmail) || null,
+      personalEmail:
+        (data?.personalEmail ?? employeeProfile?.personalEmail) || null,
       image: showImage || null,
-      birthdate: data.birthdate || null,
-      position: data.position || null,
+      //   birthdate:
+      //     (data?.birthdate ?? setBirtdate(employeeProfile?.birthdate)) || null,
+      position: (data?.position ?? employeeProfile?.position?.name) || null,
       status: 1,
     };
-    registerEmployee(employee).then((response) => {
+    updateEmployee(id, employee).then((response) => {
       if (response._id) {
         history.push("/empleados");
       }
@@ -163,9 +194,6 @@ const NewEmployeeComponent = () => {
     if (urlImage) {
       setUrlImage("");
     }
-    if (showImage) {
-      setShowImage("");
-    }
   };
 
   const handleUploadError = (error: string) => {
@@ -204,7 +232,7 @@ const NewEmployeeComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO EMPLEADO
+                <i className="fa fa-align-justify"></i>EDITAR EMPLEADO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -241,9 +269,11 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Nombres"
                     name="name"
-                    value={name}
+                    value={(name ?? employeeProfile?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -255,9 +285,11 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Apellido Paterno"
                     name="lastname"
-                    value={lastname}
+                    value={(lastname ?? employeeProfile?.lastname) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={lastnameError}
                   />
                 </div>
@@ -269,9 +301,13 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Apellido Materno"
                     name="secondLastname"
-                    value={secondLastname}
+                    value={
+                      (secondLastname ?? employeeProfile?.secondLastname) || ""
+                    }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={secondLastnameError}
                   />
                 </div>
@@ -282,10 +318,13 @@ const NewEmployeeComponent = () => {
                     id="documentType"
                     name="documentType"
                     required
-                    value={documentType}
+                    value={
+                      (documentType ?? employeeProfile?.documentType?.name) ||
+                      ""
+                    }
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={true}
                     className={`btn border-secondary btn-default w-100 ${
                       documentTypeError ? "border border-danger" : ""
                     }`}
@@ -308,9 +347,13 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Nro de Documento"
                     name="documentNumber"
-                    value={documentNumber}
+                    value={
+                      (documentNumber ?? employeeProfile?.documentNumber) || ""
+                    }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={documentNumberError}
                   />
                 </div>
@@ -324,9 +367,11 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Correo Corporativo"
                     name="corporateEmail"
-                    value={corporateEmail}
+                    value={
+                      (corporateEmail ?? employeeProfile?.corporateEmail) || ""
+                    }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={true}
                     error={corporateEmailError}
                   />
                 </div>
@@ -337,9 +382,11 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Dirección"
                     name="address"
-                    value={address}
+                    value={(address ?? employeeProfile?.address) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={addressError}
                   />
                 </div>
@@ -351,9 +398,11 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Teléfono"
                     name="phoneNumber"
-                    value={phoneNumber}
+                    value={(phoneNumber ?? employeeProfile?.phoneNumber) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={phoneNumberError}
                   />
                 </div>
@@ -365,26 +414,31 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Correo Personal"
                     name="personalEmail"
-                    value={personalEmail}
+                    value={
+                      (personalEmail ?? employeeProfile?.personalEmail) || ""
+                    }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={personalEmailError}
                   />
                 </div>
-
                 <div className="form-group col-sm-6 col-md-4">
                   <label htmlFor="birthdate">Fecha de Nacimiento:</label>
                   <InputForm
                     type="date"
                     placeholder="Fecha de Nacimiento"
                     name="birthdate"
-                    value={birthdate}
+                    value={
+                      (birthdate ?? setBirtdate(employeeProfile?.birthdate)) ||
+                      ""
+                    }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={true}
                     error={birthdateError}
                   />
                 </div>
-
                 <div className="form-group col-sm-6 col-md-4">
                   <label htmlFor="image">Foto:</label>
                   <FileUploader
@@ -400,12 +454,12 @@ const NewEmployeeComponent = () => {
                     onProgress={handleProgress}
                   />
                   {uploading && (
-                    <div className="text-dark p-1 text-center my-1">
+                    <div className="text-black p-1 text-center my-1">
                       {progress} %
                     </div>
                   )}
                   {errorMessage && (
-                    <div className="text-danger p-1 text-center my-1">
+                    <div className="text-red p-1 text-center my-1">
                       {errorMessage}
                     </div>
                   )}
@@ -422,8 +476,10 @@ const NewEmployeeComponent = () => {
                     id="position"
                     name="position"
                     required
-                    disabled={status === Status.Updating}
-                    value={position}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
+                    value={(position ?? employeeProfile?.position?.name) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -435,7 +491,7 @@ const NewEmployeeComponent = () => {
                     <option value="Vendedor">Vendedor</option>
                   </select>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 col-xl mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3">
                   <button
                     type="submit"
                     disabled={
@@ -443,10 +499,10 @@ const NewEmployeeComponent = () => {
                     }
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Registrar"}
+                    {status === Status.Updating ? "Cargando" : "Actualizar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 col-xl mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3">
                   <Link
                     to="/empleados"
                     className="btn btn-block btn-secondary w-100"
@@ -464,4 +520,4 @@ const NewEmployeeComponent = () => {
   );
 };
 
-export default NewEmployeeComponent;
+export default EditEmployeeComponent;

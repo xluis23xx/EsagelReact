@@ -9,6 +9,7 @@ export type Employee = {
     documentType?: DocumentType;
     documentNumber?: string;
     address?: string;
+    image?:string  | null;
     corporateEmail?: string | null;
     personalEmail?: string | null;
     birthdate?: string;

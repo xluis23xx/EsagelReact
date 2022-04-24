@@ -47,9 +47,19 @@ const NewEmployeeComponent = React.lazy(() =>
   import("./components/employees/newEmployee")
 );
 
+const EditEmployeeComponent = React.lazy(() =>
+  import("./components/employees/editEmployee")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Home", element: Dashboard },
   { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
+  {
+    path: "/empleados",
+    name: "Empleado",
+    element: EmployeesComponent,
+    exact: true,
+  },
   {
     path: "/empleados/nuevo",
     name: "Nuevo",
@@ -57,12 +67,11 @@ const routes = [
     exact: true,
   },
   {
-    path: "/empleados",
-    name: "Empleado",
-    element: EmployeesComponent,
+    path: "/empleados/editar/:id",
+    name: "Editar",
+    element: EditEmployeeComponent,
     exact: true,
   },
-
   {
     path: "/usuarios",
     name: "Usuarios",
