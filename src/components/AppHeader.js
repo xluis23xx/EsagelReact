@@ -19,7 +19,7 @@ import esagelImage from "src/assets/images/esagel.png";
 import { useDispatch, useSelector } from "react-redux";
 
 import { types } from "../types/types";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContexts";
 
 const AppHeader = () => {
   const distpatch = useDispatch();

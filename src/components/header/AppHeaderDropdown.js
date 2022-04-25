@@ -11,7 +11,7 @@ import CIcon from "@coreui/icons-react";
 
 import avatar8 from "./../../assets/images/avatars/8.jpg";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContexts";
 import { useAuth } from "../../hooks/useAuth";
 
 const AppHeaderDropdown = () => {
