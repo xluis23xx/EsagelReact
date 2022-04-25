@@ -7,7 +7,7 @@ import { formatEmail, formatPass } from "../../../utils/errors";
 import useForm from "../../../hooks/useForm";
 import { InputForm as Input } from "../../../components/global-components/inputForm";
 import { useAuth, Status, Auth } from "../../../hooks/useAuth";
-import { AuthContext } from "../../../context/AuthContexts";
+import { AuthContext } from "../../../context/AuthContext";
 import { setCookie } from "../../../utils/cookies";
 
 const Login = () => {
