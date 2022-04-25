@@ -54,14 +54,14 @@ const _nav = [
       },
       {
         component: CNavItem,
-        name: "Tipo de Documento",
-        to: "/tipo-documentos",
+        name: "Tipos de Documento",
+        to: "/tipos-documento",
         icon: <CIcon icon={cilWallet} customClassName="nav-icon" />,
       },
       {
         component: CNavItem,
-        name: "Tipo de Cursos",
-        to: "/tipo-cursos",
+        name: "Tipos de Curso",
+        to: "/tipos-curso",
         icon: <CIcon icon={cilBadge} customClassName="nav-icon" />,
       },
     ],

@@ -4,32 +4,38 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { setFormatDate } from "../../../utils/formats";
 
-import { DocumentType } from "../../../hooks/useDocuments";
+import { CourseType } from "../../../hooks/useCourseTypes";
 
-type DocumentTypeItemProps = DocumentType & {
+type CourseTypeItemProps = CourseType & {
+  id: string;
   orderNumber: number;
-  code: string;
   handleRemove: (id: string) => void;
 };
 
-export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
+export const CourseTypeItem: React.FC<CourseTypeItemProps> = ({
+  id,
   orderNumber,
   code,
   name,
-  operation,
+  description,
   createdAt,
   updatedAt,
   handleRemove,
-  //   status
 }) => {
   return (
     <tr>
       <td>{orderNumber}</td>
+      <td>{code || ""}</td>
       <td>{name || ""}</td>
-      <td>{operation || ""}</td>
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
-      {/* <td>{status ? "activo" : "inactivo"}</td> */}
+      <td>
+        {(description
+          ? description.length > 50
+            ? `${description.substring(0, 47)}...`
+            : description
+          : "") || ""}
+      </td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
@@ -37,7 +43,7 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
               type="button"
               className="btn btn-primary"
               style={{ height: 40, width: 40 }}
-              to={`/tipos-documento/editar/${code}`}
+              to={`/tipos-curso/editar/${id}`}
             >
               <CIcon icon={cilPencil} />
             </Link>
@@ -46,7 +52,7 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
               type="button"
               className="btn btn-block btn-danger"
               style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
+              onClick={() => handleRemove(id)}
             >
               <CIcon icon={cilTrash} color="#fffff" />
             </button>

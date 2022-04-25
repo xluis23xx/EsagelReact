@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getCookie } from "src/utils/cookies";
+import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
 import {

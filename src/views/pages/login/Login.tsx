@@ -8,7 +8,7 @@ import useForm from "../../../hooks/useForm";
 import { InputForm as Input } from "../../../components/global-components/inputForm";
 import { useAuth, Status, Auth } from "../../../hooks/useAuth";
 import { AuthContext } from "../../../context/AuthContext";
-import { setCookie } from "src/utils/cookies";
+import { setCookie } from "../../../utils/cookies";
 
 const Login = () => {
   const { setUser } = React.useContext(AuthContext);

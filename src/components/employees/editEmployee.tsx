@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import useForm from "src/hooks/useForm";
+import useForm from "../../hooks/useForm";
 import {
   formatDescription,
   formatEmail,
@@ -16,7 +16,7 @@ import FileUploader from "react-firebase-file-uploader";
 import { Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
-import { setFormatDate } from "src/utils/formats";
+import { setFormatDate } from "../../utils/formats";
 
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeProfile, status } =

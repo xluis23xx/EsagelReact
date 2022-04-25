@@ -1,13 +1,13 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import useForm from "src/hooks/useForm";
+import useForm from "../../hooks/useForm";
 import {
   formatDescription,
   formatEmail,
   formatNames,
   formatPhone,
   minBirthDay,
-} from "src/utils/errors";
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import FileUploader from "react-firebase-file-uploader";
@@ -443,7 +443,7 @@ const NewEmployeeComponent = () => {
                     <option value="Vendedor">Vendedor</option>
                   </select>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3">
                   <button
                     type="submit"
                     disabled={
@@ -454,7 +454,7 @@ const NewEmployeeComponent = () => {
                     {status === Status.Updating ? "Cargando" : "Registrar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3">
                   <Link
                     to="/empleados"
                     className="btn btn-block btn-secondary w-100"

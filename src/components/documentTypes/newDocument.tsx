@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import useForm from "src/hooks/useForm";
-import { formatNames } from "src/utils/errors";
+import useForm from "../../hooks/useForm";
+import { formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import { Status, useDocumentTypes } from "../../hooks/useDocuments";
 
-const NewEmployeeComponent = () => {
+const NewDocumentTypeComponent = () => {
   const { registerDocumentType, status } = useDocumentTypes();
   const history = useHistory();
 
@@ -33,7 +33,7 @@ const NewEmployeeComponent = () => {
     };
     registerDocumentType(documentType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipo-documentos");
+        history.push("/tipos-documento");
       }
     });
   };
@@ -99,7 +99,7 @@ const NewEmployeeComponent = () => {
                     <option value="comprobante">Vendedor</option>
                   </select>
                 </div>
-                <div className="form-group col-sm-6 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 mt-3">
                   <button
                     type="submit"
                     disabled={disable}
@@ -108,9 +108,9 @@ const NewEmployeeComponent = () => {
                     {status === Status.Updating ? "Cargando" : "Registrar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/tipo-documentos"
+                    to="/tipos-documento"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -126,4 +126,4 @@ const NewEmployeeComponent = () => {
   );
 };
 
-export default NewEmployeeComponent;
+export default NewDocumentTypeComponent;

@@ -3,12 +3,8 @@ import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { DocumentTypeItem } from "./_children/document";
-import {
-  DocumentType,
-  Status,
-  useDocumentTypes,
-} from "../../hooks/useDocuments";
+import { CourseTypeItem } from "./_children/courseType";
+import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
 import {
   CButton,
   CModal,
@@ -18,23 +14,23 @@ import {
   CModalTitle,
 } from "@coreui/react";
 
-const DocumentTypesComponent = () => {
-  const { documents, deleteDocumentType, getAllDocumentTypes, status } =
-    useDocumentTypes();
+const CourseTypesComponent = () => {
+  const { courseTypes, deleteCourseType, getAllCourseTypes, status } =
+    useCourseTypes();
   const [visible, setVisible] = React.useState(false);
-  const [documentTypeId, setDocumentTypeId] = React.useState("");
+  const [courseTypeId, setCourseTypeId] = React.useState("");
 
   React.useEffect(() => {
-    getAllDocumentTypes();
+    getAllCourseTypes();
   }, []);
 
-  const removeDocumentType = (id: string) => {
+  const removeCourseType = (id: string) => {
     setVisible(!visible);
     if (!visible) {
-      setDocumentTypeId(id);
-    } else if (visible && documentTypeId) {
-      deleteDocumentType(id);
-      setDocumentTypeId("");
+      setCourseTypeId(id);
+    } else if (visible && courseTypeId) {
+      deleteCourseType(id);
+      setCourseTypeId("");
     }
   };
 
@@ -44,7 +40,7 @@ const DocumentTypesComponent = () => {
         <div className="col-12 col-sm-6 col-md-4 col-lg-3">
           <Link
             className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/tipos-documento/nuevo"
+            to="/tipos-curso/nuevo"
           >
             Nuevo
           </Link>
@@ -55,7 +51,7 @@ const DocumentTypesComponent = () => {
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;Tipos de Documento
+              &nbsp;Tipos de Curso
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
@@ -95,40 +91,43 @@ const DocumentTypesComponent = () => {
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                documents.length > 0 ? (
+                courseTypes.length > 0 ? (
                   <table className="table">
                     <thead>
                       <tr>
                         <th>N°</th>
+                        <th>Código</th>
                         <th>Nombre</th>
-                        <th>Operación</th>
                         <th>Fecha de creación</th>
                         <th>Última fecha de actualización</th>
+                        <th>Descripción</th>
                         <th>Opciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {documents.map(
-                        (document: DocumentType, index: number) => {
+                      {courseTypes.map(
+                        (courseType: CourseType, index: number) => {
                           const {
                             _id,
+                            code,
                             name,
-                            operation,
+                            description,
                             createdAt,
                             updatedAt,
                             status,
-                          } = document;
+                          } = courseType;
                           return (
-                            <DocumentTypeItem
+                            <CourseTypeItem
+                              id={_id}
                               key={index}
-                              code={_id}
+                              code={code}
                               name={name}
-                              operation={operation}
+                              description={description}
                               createdAt={createdAt}
                               updatedAt={updatedAt}
                               status={status}
                               orderNumber={index + 1}
-                              handleRemove={removeDocumentType}
+                              handleRemove={removeCourseType}
                             />
                           );
                         }
@@ -140,21 +139,21 @@ const DocumentTypesComponent = () => {
               <CModal
                 visible={visible}
                 onClose={() => {
-                  setDocumentTypeId("");
+                  setCourseTypeId("");
                   setVisible(false);
                 }}
               >
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Eliminar Tipo de Documento</CModalTitle>
+                  <CModalTitle>Eliminar Tipo de Curso</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  ¿Estás seguro que quieres eliminar este tipo de documento?
+                  ¿Estás seguro que quieres eliminar este tipo de curso?
                 </CModalBody>
                 <CModalFooter>
                   <CButton
                     color="secondary"
                     onClick={() => {
-                      setDocumentTypeId("");
+                      setCourseTypeId("");
                       setVisible(false);
                     }}
                   >
@@ -162,7 +161,7 @@ const DocumentTypesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
-                    onClick={() => removeDocumentType(documentTypeId)}
+                    onClick={() => removeCourseType(courseTypeId)}
                   >
                     Eliminar
                   </CButton>
@@ -176,4 +175,4 @@ const DocumentTypesComponent = () => {
   );
 };
 
-export default DocumentTypesComponent;
+export default CourseTypesComponent;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getCookie } from "src/utils/cookies";
+import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
 import {
@@ -17,7 +17,7 @@ export enum Status {
   Error,
 }
 
-export const useDocumentTypes = () => {
+export const useCourseTypes = () => {
   const [courseTypes, setCourseTypes] = React.useState<CourseType[]>([]);
   const [courseTypeInfo, setCourseTypeInfo] = React.useState<CourseType>(null);
   const [status, setStatus] = React.useState(Status.Loading);

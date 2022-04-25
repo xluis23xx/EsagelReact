@@ -14,7 +14,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { formatNames } from "../../utils/errors";
-import useForm from "src/hooks/useForm";
+import useForm from "../../hooks/useForm";
 import { InputForm } from "../global-components/inputForm";
 
 const EmployeesComponent = () => {

@@ -1,3 +1,3 @@
 export type { CourseType } from "./types";
 
-export { Status, useDocumentTypes } from "./useCourseTypes";
+export { Status, useCourseTypes } from "./useCourseTypes";

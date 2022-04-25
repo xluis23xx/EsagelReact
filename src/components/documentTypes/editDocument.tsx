@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import useForm from "src/hooks/useForm";
-import { formatNames } from "src/utils/errors";
+import useForm from "../../hooks/useForm";
+import { formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import { Status, useDocumentTypes } from "../../hooks/useDocuments";
-import { setFormatDate } from "src/utils/formats";
+import { setFormatDate } from "../../utils/formats";
 
-const EditEmployeeComponent = () => {
+const EditDocumentTypeComponent = () => {
   const { updateDocumentType, setDocumentTypeById, documentInfo, status } =
     useDocumentTypes();
   const history = useHistory();
@@ -41,7 +41,7 @@ const EditEmployeeComponent = () => {
     };
     updateDocumentType(id, documentType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipo-documentos");
+        history.push("/tipos-documento");
       }
     });
   };
@@ -145,7 +145,7 @@ const EditEmployeeComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 mt-3">
                   <button
                     type="submit"
                     disabled={disable}
@@ -154,9 +154,9 @@ const EditEmployeeComponent = () => {
                     {status === Status.Updating ? "Cargando" : "Registrar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/tipo-documentos"
+                    to="/tipos-documento"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -172,4 +172,4 @@ const EditEmployeeComponent = () => {
   );
 };
 
-export default EditEmployeeComponent;
+export default EditDocumentTypeComponent;

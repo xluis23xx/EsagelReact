@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
-import { deleteCookie, getCookie } from "src/utils/cookies";
+import { deleteCookie, getCookie } from "../../utils/cookies";
 import { authentication } from "./helpers";
 import { Auth } from "./types";
 

@@ -6,9 +6,6 @@ const Typography = React.lazy(() =>
 );
 
 // Base
-const Accordion = React.lazy(() => import("./views/base/accordion/Accordion"));
-
-const Cards = React.lazy(() => import("./views/base/cards/Cards"));
 const Collapses = React.lazy(() => import("./views/base/collapses/Collapses"));
 const ListGroups = React.lazy(() =>
   import("./views/base/list-groups/ListGroups")
@@ -63,6 +60,18 @@ const EditDocumentTypeComponent = React.lazy(() =>
   import("./components/documentTypes/editDocument")
 );
 
+const CourseTypesComponent = React.lazy(() =>
+  import("./components/courseTypes/courseTypes")
+);
+
+const NewCourseTypeComponent = React.lazy(() =>
+  import("./components/courseTypes/newCourseType")
+);
+
+const EditCourseTypeComponent = React.lazy(() =>
+  import("./components/courseTypes/editCourseType")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Home", element: Dashboard },
   { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
@@ -91,27 +100,39 @@ const routes = [
     exact: true,
   },
   {
-    path: "/tipo-documentos",
+    path: "/tipos-documento",
     name: "Tipos de Documento",
     element: DocumentTypesComponent,
     exact: true,
   },
   {
-    path: "/tipo-documentos/nuevo",
+    path: "/tipos-documento/nuevo",
     name: "Nuevo",
     element: NewDocumentTypeComponent,
     exact: true,
   },
   {
-    path: "/tipo-documentos/editar/:id",
+    path: "/tipos-documento/editar/:id",
     name: "Editar",
     element: EditDocumentTypeComponent,
     exact: true,
   },
   {
-    path: "/tipo-cursos",
-    name: "Tipo de Cursos",
-    element: Cards,
+    path: "/tipos-curso",
+    name: "Tipos de Curso",
+    element: CourseTypesComponent,
+    exact: true,
+  },
+  {
+    path: "/tipos-curso/nuevo",
+    name: "Nuevo",
+    element: NewCourseTypeComponent,
+    exact: true,
+  },
+  {
+    path: "/tipos-curso/editar/:id",
+    name: "Editar",
+    element: EditCourseTypeComponent,
     exact: true,
   },
   {
