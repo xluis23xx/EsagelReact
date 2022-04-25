@@ -51,6 +51,18 @@ const EditEmployeeComponent = React.lazy(() =>
   import("./components/employees/editEmployee")
 );
 
+const DocumentTypesComponent = React.lazy(() =>
+  import("./components/documentTypes/documents")
+);
+
+const NewDocumentTypeComponent = React.lazy(() =>
+  import("./components/documentTypes/newDocument")
+);
+
+const EditDocumentTypeComponent = React.lazy(() =>
+  import("./components/documentTypes/editDocument")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Home", element: Dashboard },
   { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
@@ -80,8 +92,20 @@ const routes = [
   },
   {
     path: "/tipo-documentos",
-    name: "Tipo de Documentos",
-    element: Accordion,
+    name: "Tipos de Documento",
+    element: DocumentTypesComponent,
+    exact: true,
+  },
+  {
+    path: "/tipo-documentos/nuevo",
+    name: "Nuevo",
+    element: NewDocumentTypeComponent,
+    exact: true,
+  },
+  {
+    path: "/tipo-documentos/editar/:id",
+    name: "Editar",
+    element: EditDocumentTypeComponent,
     exact: true,
   },
   {

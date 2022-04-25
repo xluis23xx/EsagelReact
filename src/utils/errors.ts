@@ -8,7 +8,8 @@ import {
 } from "./regex";
 
 export const formatEmail = () => ({
-  func: (value:string) => emailRegex.test(value) && !value.match(/@facebook.com/),
+  func: (value: string) =>
+    emailRegex.test(value) && !value.match(/@facebook.com/),
   error: "Correo electrónico Inválido",
 });
 
@@ -29,7 +30,7 @@ export const formatSecondLastName = () => ({
 
 export const formatPhone = () => ({
   func: (value) =>
-    value === "" || (value.length >= 2 && numberRegex.test(value)),
+    value === "" || (value.length >= 7 && numberRegex.test(value)),
   error: "Formato inválido. Solo números",
 });
 
@@ -43,7 +44,8 @@ const calculateAge = (date: Date) => {
   const currentDate = new Date();
 
   const time = Math.floor(
-    (currentDate.getTime() - birthday.getTime()) / (1000 * 3600 * 24) / 365);
+    (currentDate.getTime() - birthday.getTime()) / (1000 * 3600 * 24) / 365
+  );
   return time;
 };
 

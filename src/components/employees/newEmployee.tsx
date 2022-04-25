@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import { useEmployees } from "src/hooks/useEmployees";
 import useForm from "src/hooks/useForm";
 import {
   formatDescription,
@@ -13,7 +12,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import FileUploader from "react-firebase-file-uploader";
 
-import { Status } from "../../hooks/useEmployees";
+import { Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 
@@ -118,7 +117,7 @@ const NewEmployeeComponent = () => {
       status: 1,
     };
     registerEmployee(employee).then((response) => {
-      if (response._id) {
+      if (response?.status === 200 || response?.status === 201) {
         history.push("/empleados");
       }
     });
@@ -241,6 +240,7 @@ const NewEmployeeComponent = () => {
                     required
                     placeholder="Nombres"
                     name="name"
+                    maxLength={25}
                     value={name}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
@@ -254,6 +254,7 @@ const NewEmployeeComponent = () => {
                     type="text"
                     required
                     placeholder="Apellido Paterno"
+                    maxLength={25}
                     name="lastname"
                     value={lastname}
                     onChange={handleOnChange}
@@ -268,6 +269,7 @@ const NewEmployeeComponent = () => {
                     type="text"
                     required
                     placeholder="Apellido Materno"
+                    maxLength={25}
                     name="secondLastname"
                     value={secondLastname}
                     onChange={handleOnChange}
@@ -306,6 +308,7 @@ const NewEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={15}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={documentNumber}
@@ -322,6 +325,7 @@ const NewEmployeeComponent = () => {
                   <InputForm
                     type="email"
                     required
+                    maxLength={60}
                     placeholder="Correo Corporativo"
                     name="corporateEmail"
                     value={corporateEmail}
@@ -335,6 +339,7 @@ const NewEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={100}
                     placeholder="Dirección"
                     name="address"
                     value={address}
@@ -350,6 +355,7 @@ const NewEmployeeComponent = () => {
                     type="tel"
                     required
                     placeholder="Teléfono"
+                    maxLength={9}
                     name="phoneNumber"
                     value={phoneNumber}
                     onChange={handleOnChange}
@@ -363,6 +369,7 @@ const NewEmployeeComponent = () => {
                   <InputForm
                     type="email"
                     required
+                    maxLength={60}
                     placeholder="Correo Personal"
                     name="personalEmail"
                     value={personalEmail}
@@ -373,11 +380,12 @@ const NewEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group col-sm-6 col-md-4">
-                  <label htmlFor="birthdate">Fecha de Nacimiento:</label>
+                  <label htmlFor="birthdate">Fecha de Nacimiento (*):</label>
                   <InputForm
                     type="date"
                     placeholder="Fecha de Nacimiento"
                     name="birthdate"
+                    required
                     value={birthdate}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
@@ -435,7 +443,7 @@ const NewEmployeeComponent = () => {
                     <option value="Vendedor">Vendedor</option>
                   </select>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 col-xl mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3 mb-xl-0">
                   <button
                     type="submit"
                     disabled={
@@ -446,7 +454,7 @@ const NewEmployeeComponent = () => {
                     {status === Status.Updating ? "Cargando" : "Registrar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 col-xl mt-3 mb-xl-0">
+                <div className="form-group col-sm-6 col-md-4 mt-3 mb-xl-0">
                   <Link
                     to="/empleados"
                     className="btn btn-block btn-secondary w-100"

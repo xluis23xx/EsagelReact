@@ -42,12 +42,14 @@ const Login = () => {
 
   const onSubmitForm = async (data: Auth) => {
     const resp = await verifyAuthentication(data);
-    if (resp?.token) {
-      setCookie("esagel_token", resp?.token, 1);
-    }
-    if (resp?.user) {
-      localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
-      setUser(resp.user);
+    if (resp?.status === 200 || resp?.status === 201) {
+      if (resp?.token) {
+        setCookie("esagel_token", resp?.token, 1);
+      }
+      if (resp?.user) {
+        localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
+        setUser(resp.user);
+      }
     }
   };
 

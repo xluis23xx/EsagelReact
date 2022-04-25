@@ -134,7 +134,6 @@ const EmployeesComponent = () => {
                       onChange={handleOnChange}
                     />
                   </div>
-
                   <button
                     className="btn btn-success text-white col-12 col-sm-4 my-1 my-sm-0"
                     type="submit"

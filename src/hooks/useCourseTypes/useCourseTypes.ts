@@ -3,12 +3,12 @@ import { getCookie } from "src/utils/cookies";
 import Swal from "sweetalert2";
 
 import {
-  getEmployeeById,
-  getEmployees,
-  postEmployee,
-  putEmployee,
+  getCourseTypeById,
+  getCourseTypes,
+  postCourseType,
+  putCourseType,
 } from "./helpers";
-import { Employee } from "./index";
+import { CourseType } from "./index";
 
 export enum Status {
   Loading,
@@ -17,33 +17,31 @@ export enum Status {
   Error,
 }
 
-export const useEmployees = () => {
-  const [employees, setEmployees] = React.useState<Employee[]>([]);
-  const [employeesAll, setEmployeesAll] = React.useState<Employee[]>([]);
-  const [employeeProfile, setEmployeeProfile] = React.useState<Employee>(null);
+export const useDocumentTypes = () => {
+  const [courseTypes, setCourseTypes] = React.useState<CourseType[]>([]);
+  const [courseTypeInfo, setCourseTypeInfo] = React.useState<CourseType>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function setEmployeeById(id: string) {
+  function setCourseTypeById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
-    getEmployeeById(token, id).then((response) => {
+    getCourseTypeById(token, id).then((response) => {
       if (response?._id) {
-        setEmployeeProfile(response);
         setStatus(Status.Ready);
+        setCourseTypeInfo(response);
       }
     });
   }
 
-  function getAllEmployees() {
+  function getAllCourseTypes() {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token)
-      .then((allEmployees) => {
-        const enableEmployees =
-          allEmployees.filter((employee: Employee) => employee.status === 1) ||
-          [];
-        setEmployees(enableEmployees);
-        setEmployeesAll(enableEmployees);
+    getCourseTypes(token)
+      .then((response) => {
+        const enableCourseTypes =
+          response.filter(
+            (courseType: CourseType) => courseType.status === 1
+          ) || [];
+        setCourseTypes(enableCourseTypes);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -51,39 +49,15 @@ export const useEmployees = () => {
       });
   }
 
-  function getEmployee(id: string) {
+  async function updateCourseType(id: string, courseType: any) {
     const token = getCookie("esagel_token") || "";
-    return getEmployeeById(token, id);
-  }
-
-  function searchEmployeeSByName(filter: string) {
-    if (filter.length === 0) {
-      setEmployees(employeesAll);
-    } else {
-      const employeesFilter = employeesAll.filter((employee: Employee) => {
-        const {
-          name = "",
-          lastname = "",
-          secondLastname = "",
-        } = employee || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(
-          `${name} ${lastname} ${secondLastname}`.toLowerCase()
-        );
-      });
-      setEmployees(employeesFilter);
-    }
-  }
-
-  async function updateEmployee(id: string, employee: any) {
-    const token = getCookie("esagel_token") || "";
-    return putEmployee(token, id, employee)
+    return putCourseType(token, id, courseType)
       .then((response) => {
-        if (response?.status === 200 || response?.status === 201) {
+        if (response?.status === 201 || response?.status === 200) {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Empleado actualizado éxitosamente",
+            text: "Tipo de Curso actualizado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -108,27 +82,28 @@ export const useEmployees = () => {
       });
   }
 
-  async function deleteEmployee(id: string) {
+  function deleteCourseType(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putEmployee(token, id, { status: 0, isDelete: true })
+    putCourseType(token, id, { status: 0 })
       .then((response) => {
-        if (response?.status === 201 || response?.status === 200) {
-          setEmployees(
-            employees.filter((employee: Employee) => employee._id !== id)
+        if (response?.status === 200 || response?.status === 201) {
+          setCourseTypes(
+            courseTypes.filter(
+              (courseType: CourseType) => courseType._id !== id
+            )
           );
-          const nameEmployee = response?.updatedEmployee?.name || "";
-          const lastnameEmployee = response?.updatedEmployee?.lastname || "";
+          const nameCourseType = response?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Empleado ${nameEmployee} ${lastnameEmployee} eliminado con éxito`,
+            text: `Tipo de Curso ${nameCourseType} eliminado con éxito`,
             timer: 2000,
           });
         } else {
           Swal.fire({
-            icon: "error",
             title: "¡Algo ocurrió!",
+            icon: "error",
             text: response?.message || "",
             timer: 2000,
           });
@@ -145,16 +120,16 @@ export const useEmployees = () => {
       });
   }
 
-  async function registerEmployee(employee: any) {
+  async function registerCourseType(courseType: any) {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
-    return postEmployee(token, employee)
+    return postCourseType(token, courseType)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Empleado registrado éxitosamente",
+            text: "Tipo de Curso registrado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -180,15 +155,13 @@ export const useEmployees = () => {
   }
 
   return {
-    employees,
-    deleteEmployee,
-    getEmployee,
-    searchEmployeeSByName,
-    registerEmployee,
-    updateEmployee,
-    setEmployeeById,
-    employeeProfile,
-    getAllEmployees,
+    courseTypes,
+    getAllCourseTypes,
+    registerCourseType,
+    updateCourseType,
+    deleteCourseType,
+    setCourseTypeById,
+    courseTypeInfo,
     status,
   };
 };

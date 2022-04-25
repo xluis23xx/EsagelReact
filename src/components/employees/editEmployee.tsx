@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { useEmployees } from "src/hooks/useEmployees";
 import useForm from "src/hooks/useForm";
 import {
   formatDescription,
@@ -9,45 +8,30 @@ import {
   formatNames,
   formatPhone,
   minBirthDay,
-} from "src/utils/errors";
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import FileUploader from "react-firebase-file-uploader";
 
-import { Status } from "../../hooks/useEmployees";
+import { Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
-
-const setBirtdate = (date: string) => {
-  if (date) {
-    const convertDate = date ? new Date(date) : "";
-    const year = convertDate ? convertDate.getFullYear() : "";
-    let month = convertDate ? convertDate.getMonth() + 1 : "";
-    if (month < 10) {
-      month = `0${month}`;
-    }
-    let day = convertDate ? convertDate.getDate() : "";
-    if (day < 10) {
-      day = `0${day}`;
-    }
-    return year && month && day ? `${year}-${month}-${day}` : null;
-  }
-  return null;
-};
+import { setFormatDate } from "src/utils/formats";
 
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeProfile, status } =
     useEmployees();
+
+  // Context con las operaciones de firebase
+  const { firebase } = React.useContext(FirebaseContext);
+  const history = useHistory();
+
   // state para las imagenes
   const [uploading, setUploading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
   const [urlImage, setUrlImage] = React.useState(null);
   const [showImage, setShowImage] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
-
-  // Context con las operaciones de firebase
-  const { firebase } = React.useContext(FirebaseContext);
-  const history = useHistory();
 
   const { id } = useParams<any>();
 
@@ -135,8 +119,8 @@ const EditEmployeeComponent = () => {
       phoneNumber: (data?.phoneNumber ?? employeeProfile?.phoneNumber) || null,
       //   documentType:
       //     (data?.documentType ?? employeeProfile?.documentType?.name) || null,
-      documentNumber:
-        (data?.documentNumber ?? employeeProfile?.documentNumber) || null,
+      //   documentNumber:
+      //     (data?.documentNumber ?? employeeProfile?.documentNumber) || null,
       address: (data?.address ?? employeeProfile?.address) || null,
       //   corporateEmail:
       //     (data?.corporateEmail ?? employeeProfile?.corporateEmail) || null,
@@ -149,7 +133,7 @@ const EditEmployeeComponent = () => {
       status: 1,
     };
     updateEmployee(id, employee).then((response) => {
-      if (response._id) {
+      if (response?.status === 200 || response?.status === 201) {
         history.push("/empleados");
       }
     });
@@ -267,6 +251,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={25}
                     placeholder="Nombres"
                     name="name"
                     value={(name ?? employeeProfile?.name) || ""}
@@ -283,6 +268,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={25}
                     placeholder="Apellido Paterno"
                     name="lastname"
                     value={(lastname ?? employeeProfile?.lastname) || ""}
@@ -299,6 +285,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={25}
                     placeholder="Apellido Materno"
                     name="secondLastname"
                     value={
@@ -345,15 +332,14 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={15}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={
                       (documentNumber ?? employeeProfile?.documentNumber) || ""
                     }
                     onChange={handleOnChange}
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
-                    }
+                    disabled={true}
                     error={documentNumberError}
                   />
                 </div>
@@ -365,6 +351,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="email"
                     required
+                    maxLength={60}
                     placeholder="Correo Corporativo"
                     name="corporateEmail"
                     value={
@@ -380,6 +367,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
+                    maxLength={100}
                     placeholder="Dirección"
                     name="address"
                     value={(address ?? employeeProfile?.address) || ""}
@@ -396,6 +384,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="tel"
                     required
+                    maxLength={9}
                     placeholder="Teléfono"
                     name="phoneNumber"
                     value={(phoneNumber ?? employeeProfile?.phoneNumber) || ""}
@@ -412,6 +401,7 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="email"
                     required
+                    maxLength={60}
                     placeholder="Correo Personal"
                     name="personalEmail"
                     value={
@@ -425,13 +415,18 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group col-sm-6 col-md-4">
-                  <label htmlFor="birthdate">Fecha de Nacimiento:</label>
+                  <label htmlFor="birthdate">Fecha de Nacimiento (*):</label>
                   <InputForm
                     type="date"
+                    required
                     placeholder="Fecha de Nacimiento"
                     name="birthdate"
                     value={
-                      (birthdate ?? setBirtdate(employeeProfile?.birthdate)) ||
+                      (birthdate ??
+                        setFormatDate({
+                          date: employeeProfile?.birthdate,
+                          order: 1,
+                        })) ||
                       ""
                     }
                     onChange={handleOnChange}

@@ -3,7 +3,7 @@ import React from "react";
 type InputProps = {
   type?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  error: string | boolean;
+  error?: string | boolean;
   value: string;
   placeholder?: string;
   autoComplete?: string;
@@ -12,6 +12,7 @@ type InputProps = {
   required?: boolean;
   className?: string;
   showError?: boolean;
+  maxLength?: number;
 };
 
 export const InputForm: React.FC<InputProps> = ({
@@ -26,6 +27,7 @@ export const InputForm: React.FC<InputProps> = ({
   required = false,
   className = "form-control",
   showError = true,
+  maxLength = 50,
 }) => {
   return (
     <>
@@ -33,6 +35,7 @@ export const InputForm: React.FC<InputProps> = ({
         id={name}
         type={type}
         name={name}
+        maxLength={maxLength}
         placeholder={placeholder}
         autoComplete={autoComplete}
         className={`${className} ${error ? "border border-danger" : ""}`}
