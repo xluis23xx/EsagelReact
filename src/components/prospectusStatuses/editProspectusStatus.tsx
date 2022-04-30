@@ -87,17 +87,6 @@ const EditProspectStatusComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group col-sm-6">
-                  <label htmlFor="code">Código (*):</label>
-                  <InputForm
-                    required
-                    placeholder="Código"
-                    name="code"
-                    value={prospectInfo?.code || ""}
-                    onChange={handleOnChange}
-                    disabled={true}
-                  />
-                </div>
-                <div className="form-group col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"

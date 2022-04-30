@@ -6,7 +6,7 @@ const { GENERAL_API } = ENVIROMENTS;
 export const getProspectusStatuses = (
   token: string
 ): Promise<GetProspectusStatuses> =>
-  fetch(`${GENERAL_API}/prospectStatuses`, {
+  fetch(`${GENERAL_API}/statusProspects`, {
     method: "GET",
     cache: "no-cache",
     headers: {
@@ -19,7 +19,7 @@ export const getProspectusStatusById = (
   token: string,
   id: string
 ): Promise<GetProspectusStatus> =>
-  fetch(`${GENERAL_API}/prospectStatuses/${id}`, {
+  fetch(`${GENERAL_API}/statusProspects/${id}`, {
     method: "GET",
     cache: "no-cache",
     headers: {
@@ -29,7 +29,7 @@ export const getProspectusStatusById = (
   }).then((res) => res.json());
 
 export const postProspectStatus = (token: string, prospect: any) =>
-  fetch(`${GENERAL_API}/prospectStatuses`, {
+  fetch(`${GENERAL_API}/statusProspects`, {
     method: "POST",
     cache: "no-cache",
     body: JSON.stringify({
@@ -42,7 +42,7 @@ export const postProspectStatus = (token: string, prospect: any) =>
   }).then((res) => res.json());
 
 export const putProspectStatus = (token: string, id: string, prospect: any) =>
-  fetch(`${GENERAL_API}/prospectStatuses/${id}`, {
+  fetch(`${GENERAL_API}/statusProspects/${id}`, {
     method: "PUT",
     cache: "no-cache",
     body: JSON.stringify({
