@@ -97,7 +97,7 @@ export const useProspectOrigins = () => {
               (prospect: ProspectusOrigin) => prospect._id !== id
             )
           );
-          const prospectName = response?.name || "";
+          const prospectName = response?.updateStatusProspect?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",

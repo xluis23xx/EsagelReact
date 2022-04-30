@@ -95,7 +95,7 @@ export const useContactForms = () => {
               (contactForm: ContactForm) => contactForm._id !== id
             )
           );
-          const contactFormName = response?.name || "";
+          const contactFormName = response?.updateContact?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",

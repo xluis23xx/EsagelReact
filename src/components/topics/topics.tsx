@@ -3,7 +3,8 @@ import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { PropesctusOriginItem } from "./_children/prospectusOrigin";
+import { TopicItem } from "./_children/topic";
+import { Topic, Status, useTopics } from "../../hooks/useTopics";
 import {
   CButton,
   CModal,
@@ -12,35 +13,53 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import {
-  ProspectusOrigin,
-  useProspectOrigins,
-  Status,
-} from "../../hooks/useProspectusOrigin";
+import { formatDescription } from "../../utils/errors";
+import useForm from "../../hooks/useForm";
+import { InputForm } from "../global-components/inputForm";
 
-const ProspectOriginsComponent = () => {
-  const {
-    prospectOrigins,
-    deleteProspectOrigin,
-    getAllProspectOrigins,
-    status,
-  } = useProspectOrigins();
+const TopicsComponent = () => {
+  const { topics, deleteTopic, getAllTopics, searchTopicsByFilter, status } =
+    useTopics();
   const [visible, setVisible] = React.useState(false);
-  const [prospectusOriginId, setProspectusOriginId] = React.useState("");
+  const [topicId, setTopicId] = React.useState("");
 
   React.useEffect(() => {
-    getAllProspectOrigins();
+    getAllTopics();
   }, []);
 
-  const removeProspectOrigin = (id: string) => {
+  const stateSchema = {
+    search: { value: "", error: "" },
+  };
+
+  const stateValidatorSchema = {
+    search: {
+      required: false,
+      validator: formatDescription(),
+      invalidtext: true,
+    },
+  };
+
+  const removeTopic = (id: string) => {
     setVisible(!visible);
     if (!visible) {
-      setProspectusOriginId(id);
-    } else if (visible && prospectusOriginId) {
-      deleteProspectOrigin(id);
-      setProspectusOriginId("");
+      setTopicId(id);
+    } else if (visible && topicId) {
+      deleteTopic(id);
+      setTopicId("");
     }
   };
+
+  const handleSearch = (data) => {
+    searchTopicsByFilter(data.search);
+  };
+
+  const {
+    values: { search },
+    errors: { search: searchError },
+    handleOnChange,
+    handleOnSubmit,
+    disable,
+  } = useForm(stateSchema, stateValidatorSchema, handleSearch);
 
   return (
     <>
@@ -48,7 +67,7 @@ const ProspectOriginsComponent = () => {
         <div className="col-12 col-sm-6 col-md-4 col-lg-3">
           <Link
             className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/origenes-prospecto/nuevo"
+            to="/temas/nuevo"
           >
             Nuevo
           </Link>
@@ -59,11 +78,11 @@ const ProspectOriginsComponent = () => {
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;Orígenes de Prospecto
+              &nbsp;TEMAS
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <div className="mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start">
+                <div className="mx-auto mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start">
                   <button
                     type="button"
                     className="btn btn-default btn-secondary"
@@ -92,6 +111,32 @@ const ProspectOriginsComponent = () => {
                     PDF
                   </button>
                 </div>
+
+                <form
+                  className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
+                  onSubmit={handleOnSubmit}
+                >
+                  <div className="col-12 col-sm-8">
+                    <InputForm
+                      type="search"
+                      name="search"
+                      className="form-control"
+                      placeholder="Buscar"
+                      aria-label="Search"
+                      value={search}
+                      error={searchError}
+                      showError={false}
+                      onChange={handleOnChange}
+                    />
+                  </div>
+                  <button
+                    className="btn btn-success text-white col-12 col-sm-4 my-1 my-sm-0"
+                    type="submit"
+                    disabled={disable}
+                  >
+                    Buscar
+                  </button>
+                </form>
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
@@ -99,7 +144,7 @@ const ProspectOriginsComponent = () => {
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                prospectOrigins.length > 0 ? (
+                topics.length > 0 ? (
                   <table className="table">
                     <thead>
                       <tr>
@@ -111,22 +156,20 @@ const ProspectOriginsComponent = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {prospectOrigins.map(
-                        (prospect: ProspectusOrigin, index: number) => {
-                          const { _id, name, description, status } = prospect;
-                          return (
-                            <PropesctusOriginItem
-                              key={index}
-                              code={_id}
-                              name={name}
-                              description={description}
-                              status={status}
-                              orderNumber={index + 1}
-                              handleRemove={removeProspectOrigin}
-                            />
-                          );
-                        }
-                      )}
+                      {topics.map((topic: Topic, index: number) => {
+                        const { _id, name, description, status } = topic;
+                        return (
+                          <TopicItem
+                            key={index}
+                            code={_id}
+                            name={name}
+                            description={description}
+                            status={status}
+                            orderNumber={index + 1}
+                            handleRemove={removeTopic}
+                          />
+                        );
+                      })}
                     </tbody>
                   </table>
                 ) : null}
@@ -134,30 +177,27 @@ const ProspectOriginsComponent = () => {
               <CModal
                 visible={visible}
                 onClose={() => {
-                  setProspectusOriginId("");
+                  setTopicId("");
                   setVisible(false);
                 }}
               >
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Eliminar Origen de Prospecto</CModalTitle>
+                  <CModalTitle>Eliminar Tema</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  ¿Estás seguro que quieres eliminar este origen de prospecto?
+                  ¿Estás seguro que quieres eliminar este tema?
                 </CModalBody>
                 <CModalFooter>
                   <CButton
                     color="secondary"
                     onClick={() => {
-                      setProspectusOriginId("");
+                      setTopicId("");
                       setVisible(false);
                     }}
                   >
                     Cerrar
                   </CButton>
-                  <CButton
-                    color="danger"
-                    onClick={() => removeProspectOrigin(prospectusOriginId)}
-                  >
+                  <CButton color="danger" onClick={() => removeTopic(topicId)}>
                     Eliminar
                   </CButton>
                 </CModalFooter>
@@ -170,4 +210,4 @@ const ProspectOriginsComponent = () => {
   );
 };
 
-export default ProspectOriginsComponent;
+export default TopicsComponent;

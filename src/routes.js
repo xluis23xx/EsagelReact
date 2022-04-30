@@ -6,8 +6,6 @@ const Typography = React.lazy(() =>
 );
 
 // Base
-const Collapses = React.lazy(() => import("./views/base/collapses/Collapses"));
-
 const Popovers = React.lazy(() => import("./views/base/popovers/Popovers"));
 const Progress = React.lazy(() => import("./views/base/progress/Progress"));
 const Spinners = React.lazy(() => import("./views/base/spinners/Spinners"));
@@ -51,6 +49,16 @@ const NewDocumentTypeComponent = React.lazy(() =>
 
 const EditDocumentTypeComponent = React.lazy(() =>
   import("./components/documentTypes/editDocument")
+);
+
+const TopicsComponent = React.lazy(() => import("./components/topics/topics"));
+
+const NewTopicComponent = React.lazy(() =>
+  import("./components/topics/newTopic")
+);
+
+const EditTopicComponent = React.lazy(() =>
+  import("./components/topics/editTopic")
 );
 
 const ProspectusStatusesComponent = React.lazy(() =>
@@ -185,7 +193,19 @@ const routes = [
   {
     path: "/temas",
     name: "Temas",
-    element: Collapses,
+    element: TopicsComponent,
+    exact: true,
+  },
+  {
+    path: "/temas/nuevo",
+    name: "Nuevo",
+    element: NewTopicComponent,
+    exact: true,
+  },
+  {
+    path: "/temas/editar/:id",
+    name: "Editar",
+    element: EditTopicComponent,
     exact: true,
   },
   {
