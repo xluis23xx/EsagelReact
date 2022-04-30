@@ -8,8 +8,6 @@ const Typography = React.lazy(() =>
 // Base
 const Collapses = React.lazy(() => import("./views/base/collapses/Collapses"));
 
-const Navs = React.lazy(() => import("./views/base/navs/Navs"));
-
 const Popovers = React.lazy(() => import("./views/base/popovers/Popovers"));
 const Progress = React.lazy(() => import("./views/base/progress/Progress"));
 const Spinners = React.lazy(() => import("./views/base/spinners/Spinners"));
@@ -77,6 +75,18 @@ const NewProspectusOriginComponent = React.lazy(() =>
 
 const EditProspectusOriginComponent = React.lazy(() =>
   import("./components/prospectusOrigins/editProspectusOrigin")
+);
+
+const ContactFormsComponent = React.lazy(() =>
+  import("./components/contactForms/contactForms")
+);
+
+const NewContactFormComponent = React.lazy(() =>
+  import("./components/contactForms/newContactForm")
+);
+
+const EditContactFormComponent = React.lazy(() =>
+  import("./components/contactForms/editContactForm")
 );
 
 const CourseTypesComponent = React.lazy(() =>
@@ -199,7 +209,19 @@ const routes = [
   {
     path: "/medios-contacto",
     name: "Medio de Contacto",
-    element: Navs,
+    element: ContactFormsComponent,
+    exact: true,
+  },
+  {
+    path: "/medios-contacto/nuevo",
+    name: "Nuevo",
+    element: NewContactFormComponent,
+    exact: true,
+  },
+  {
+    path: "/medios-contacto/editar/:id",
+    name: "Editar",
+    element: EditContactFormComponent,
     exact: true,
   },
   {

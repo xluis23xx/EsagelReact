@@ -1,23 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
-  ProspectusStatus,
+  ContactForm,
   Status,
-  useProspectStatuses,
-} from "../../hooks/usePropectusStatus";
+  useContactForms,
+} from "../../hooks/useContactForms";
+import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
 
-const NewProspectStatusComponent = () => {
-  const { registerProspectStatus, status } = useProspectStatuses();
+const EditContactFormComponent = () => {
+  const { updateContactForm, setContactFormById, contactFormInfo, status } =
+    useContactForms();
   const history = useHistory();
+  const { id } = useParams<any>();
+
+  React.useEffect(() => {
+    setContactFormById(id);
+  }, []);
 
   const stateSchema = {
-    name: { value: "", error: "" },
-    description: { value: "", error: "" },
+    name: { value: null, error: "" },
+    description: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
@@ -35,15 +43,15 @@ const NewProspectStatusComponent = () => {
     },
   };
 
-  const onSubmitForm = (data: ProspectusStatus) => {
-    const prospectStatus = {
-      name: data?.name || null,
-      description: data?.description || null,
+  const onSubmitForm = (data: ContactForm) => {
+    const contactForm = {
+      name: (data?.name ?? contactFormInfo?.name) || null,
+      operation: (data?.description ?? contactFormInfo?.description) || null,
       status: 1,
     };
-    registerProspectStatus(prospectStatus).then((response) => {
+    updateContactForm(id, contactForm).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/estados-prospecto");
+        history.push("/medios-contacto");
       }
     });
   };
@@ -63,7 +71,7 @@ const NewProspectStatusComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO ESTADO DE PROSPECTO
+                <i className="fa fa-align-justify"></i>EDITAR MEDIO DE CONTACTO
               </div>
             </div>
           </div>
@@ -84,7 +92,7 @@ const NewProspectStatusComponent = () => {
                     required
                     placeholder="Nombre"
                     name="name"
-                    value={name}
+                    value={(name ?? contactFormInfo?.name) || ""}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
                     error={nameError}
@@ -97,7 +105,7 @@ const NewProspectStatusComponent = () => {
                     required
                     placeholder="Descripción"
                     name="description"
-                    value={description}
+                    value={(description ?? contactFormInfo?.description) || ""}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
@@ -105,18 +113,52 @@ const NewProspectStatusComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
+                <div className="form-group col-sm-6">
+                  <label htmlFor="createdAt">Fecha de creación:</label>
+                  <InputForm
+                    type="date"
+                    placeholder="Fecha de creación"
+                    name="createdAt"
+                    value={
+                      setFormatDate({
+                        date: contactFormInfo?.createdAt,
+                        order: 1,
+                      }) || ""
+                    }
+                    onChange={handleOnChange}
+                    disabled={true}
+                    showError={false}
+                  />
+                </div>
+                <div className="form-group col-sm-6">
+                  <label htmlFor="createdAt">Fecha de actualización:</label>
+                  <InputForm
+                    type="date"
+                    placeholder="Fecha de actualización"
+                    name="updatedAt"
+                    value={
+                      setFormatDate({
+                        date: contactFormInfo?.updatedAt,
+                        order: 1,
+                      }) || ""
+                    }
+                    onChange={handleOnChange}
+                    disabled={true}
+                    showError={false}
+                  />
+                </div>
                 <div className="form-group col-sm-6 mt-3">
                   <button
                     type="submit"
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Registrar"}
+                    {status === Status.Updating ? "Cargando" : "Actualizar"}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/estados-prospecto"
+                    to="/medios-contacto"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -132,4 +174,4 @@ const NewProspectStatusComponent = () => {
   );
 };
 
-export default NewProspectStatusComponent;
+export default EditContactFormComponent;

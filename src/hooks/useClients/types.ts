@@ -1,17 +1,11 @@
 import { DocumentType } from "../useDocuments";
 import { ProspectusOrigin } from "../useProspectusOrigin/types";
 import { ProspectusStatus } from "../usePropectusStatus";
+import { ContactForm } from "../useContactForms";
 
 export type Department = {
-  _id: string;
-  name: string;
-};
-
-export type ContactForm = {
-  _id: string;
-  code: string;
-  name: string;
-  description: string;
+  _id?: string;
+  name?: string;
 };
 
 export type Client = {

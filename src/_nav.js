@@ -92,7 +92,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Medio de Contacto",
-        to: "/medio-contacto",
+        to: "/medios-contacto",
         icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
       },
       {

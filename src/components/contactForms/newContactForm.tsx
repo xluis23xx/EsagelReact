@@ -5,14 +5,14 @@ import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
-  ProspectusStatus,
+  ContactForm,
   Status,
-  useProspectStatuses,
-} from "../../hooks/usePropectusStatus";
+  useContactForms,
+} from "../../hooks/useContactForms";
 import { TextAreaForm } from "../global-components/textareaForm";
 
-const NewProspectStatusComponent = () => {
-  const { registerProspectStatus, status } = useProspectStatuses();
+const NewContactFormComponent = () => {
+  const { registerContactForm, status } = useContactForms();
   const history = useHistory();
 
   const stateSchema = {
@@ -35,15 +35,15 @@ const NewProspectStatusComponent = () => {
     },
   };
 
-  const onSubmitForm = (data: ProspectusStatus) => {
-    const prospectStatus = {
+  const onSubmitForm = (data: ContactForm) => {
+    const contactForm = {
       name: data?.name || null,
       description: data?.description || null,
       status: 1,
     };
-    registerProspectStatus(prospectStatus).then((response) => {
+    registerContactForm(contactForm).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/estados-prospecto");
+        history.push("/medios-contacto");
       }
     });
   };
@@ -63,7 +63,7 @@ const NewProspectStatusComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO ESTADO DE PROSPECTO
+                <i className="fa fa-align-justify"></i>NUEVO MEDIO DE CONTACTO
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ const NewProspectStatusComponent = () => {
                 </div>
                 <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/estados-prospecto"
+                    to="/medios-contacto"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -132,4 +132,4 @@ const NewProspectStatusComponent = () => {
   );
 };
 
-export default NewProspectStatusComponent;
+export default NewContactFormComponent;
