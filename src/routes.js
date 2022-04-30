@@ -7,9 +7,7 @@ const Typography = React.lazy(() =>
 
 // Base
 const Collapses = React.lazy(() => import("./views/base/collapses/Collapses"));
-const ListGroups = React.lazy(() =>
-  import("./views/base/list-groups/ListGroups")
-);
+
 const Navs = React.lazy(() => import("./views/base/navs/Navs"));
 
 const Popovers = React.lazy(() => import("./views/base/popovers/Popovers"));
@@ -22,15 +20,12 @@ const FormControl = React.lazy(() =>
   import("./views/forms/form-control/FormControl")
 );
 
-const Select = React.lazy(() => import("./views/forms/select/Select"));
-
 // Icons
 const CoreUIIcons = React.lazy(() =>
   import("./views/icons/coreui-icons/CoreUIIcons")
 );
 
 // Notifications
-const Alerts = React.lazy(() => import("./views/notifications/alerts/Alerts"));
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
 const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
@@ -60,6 +55,30 @@ const EditDocumentTypeComponent = React.lazy(() =>
   import("./components/documentTypes/editDocument")
 );
 
+const ProspectusStatusesComponent = React.lazy(() =>
+  import("./components/prospectusStatuses/prospectusStatuses")
+);
+
+const NewProspectusStatusComponent = React.lazy(() =>
+  import("./components/prospectusStatuses/newProspectusStatus")
+);
+
+const EditProspectusStatusComponent = React.lazy(() =>
+  import("./components/prospectusStatuses/editProspectusStatus")
+);
+
+const ProspectusOriginsComponent = React.lazy(() =>
+  import("./components/prospectusOrigins/prospectusOrigins")
+);
+
+const NewProspectusOriginComponent = React.lazy(() =>
+  import("./components/prospectusOrigins/newProspectusOrigin")
+);
+
+const EditProspectusOriginComponent = React.lazy(() =>
+  import("./components/prospectusOrigins/editProspectusOrigin")
+);
+
 const CourseTypesComponent = React.lazy(() =>
   import("./components/courseTypes/courseTypes")
 );
@@ -70,6 +89,18 @@ const NewCourseTypeComponent = React.lazy(() =>
 
 const EditCourseTypeComponent = React.lazy(() =>
   import("./components/courseTypes/editCourseType")
+);
+
+const ProvidersComponent = React.lazy(() =>
+  import("./components/providers/providers")
+);
+
+const NewProviderComponent = React.lazy(() =>
+  import("./components/providers/newProvider")
+);
+
+const EditProviderComponent = React.lazy(() =>
+  import("./components/providers/editProvider")
 );
 
 const routes = [
@@ -148,21 +179,45 @@ const routes = [
     exact: true,
   },
   {
-    path: "/origen-prospecto",
+    path: "/origenes-prospecto",
     name: "Origen de Prospecto",
-    element: ListGroups,
+    element: ProspectusOriginsComponent,
     exact: true,
   },
   {
-    path: "/medio-contacto",
+    path: "/origenes-prospecto/nuevo",
+    name: "Nuevo",
+    element: NewProspectusOriginComponent,
+    exact: true,
+  },
+  {
+    path: "/origenes-prospecto/editar/:id",
+    name: "Editar",
+    element: EditProspectusOriginComponent,
+    exact: true,
+  },
+  {
+    path: "/medios-contacto",
     name: "Medio de Contacto",
     element: Navs,
     exact: true,
   },
   {
-    path: "/estado-prospecto",
-    name: "Estado de Prospecto",
-    element: Select,
+    path: "/estados-prospecto",
+    name: "Estados de Prospecto",
+    element: ProspectusStatusesComponent,
+    exact: true,
+  },
+  {
+    path: "/estados-prospecto/nuevo",
+    name: "Nuevo",
+    element: NewProspectusStatusComponent,
+    exact: true,
+  },
+  {
+    path: "/estados-prospecto/editar/:id",
+    name: "Editar",
+    element: EditProspectusStatusComponent,
     exact: true,
   },
   {
@@ -174,7 +229,19 @@ const routes = [
   {
     path: "/proveedores",
     name: "Proveedores",
-    element: Alerts,
+    element: ProvidersComponent,
+    exact: true,
+  },
+  {
+    path: "/proveedores/nuevo",
+    name: "Nuevo",
+    element: NewProviderComponent,
+    exact: true,
+  },
+  {
+    path: "/proveedores/editar/:id",
+    name: "Editar",
+    element: EditProviderComponent,
     exact: true,
   },
   {

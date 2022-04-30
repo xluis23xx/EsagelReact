@@ -1,5 +1,6 @@
 import { DocumentType } from "../useDocuments";
-import { ProspectusOrigin, ProspectusStatus } from "../useLeadSource/types";
+import { ProspectusOrigin } from "../useProspectusOrigin/types";
+import { ProspectusStatus } from "../usePropectusStatus";
 
 export type Department = {
   _id: string;

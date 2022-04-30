@@ -2,29 +2,30 @@
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames } from "../../utils/errors";
+import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
-  DocumentType,
+  ProspectusOrigin,
   Status,
-  useDocumentTypes,
-} from "../../hooks/useDocuments";
+  useProspectOrigins,
+} from "../../hooks/useProspectusOrigin";
 import { setFormatDate } from "../../utils/formats";
+import { TextAreaForm } from "../global-components/textareaForm";
 
-const EditDocumentTypeComponent = () => {
-  const { updateDocumentType, setDocumentTypeById, documentInfo, status } =
-    useDocumentTypes();
+const EditProspectOriginComponent = () => {
+  const { updateProspectOrigin, setProspectOriginById, prospectInfo, status } =
+    useProspectOrigins();
   const history = useHistory();
   const { id } = useParams<any>();
 
   React.useEffect(() => {
-    setDocumentTypeById(id);
+    setProspectOriginById(id);
   }, []);
 
   const stateSchema = {
     name: { value: null, error: "" },
-    operation: { value: null, error: "" },
+    description: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
@@ -34,25 +35,30 @@ const EditDocumentTypeComponent = () => {
       min2caracts: true,
       invalidtext: true,
     },
-    operation: { required: true },
+    description: {
+      required: true,
+      validator: formatDescription(),
+      min2caracts: true,
+      invalidtext: true,
+    },
   };
 
-  const onSubmitForm = (data: DocumentType) => {
-    const documentType = {
-      name: (data?.name ?? documentInfo?.name) || null,
-      operation: (data?.operation ?? documentInfo?.operation) || null,
+  const onSubmitForm = (data: ProspectusOrigin) => {
+    const prospectOrigin = {
+      name: (data?.name ?? prospectInfo?.name) || null,
+      operation: (data?.description ?? prospectInfo?.description) || null,
       status: 1,
     };
-    updateDocumentType(id, documentType).then((response) => {
+    updateProspectOrigin(id, prospectOrigin).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-documento");
+        history.push("/origenes-prospecto");
       }
     });
   };
 
   const {
-    values: { name, operation },
-    errors: { name: nameError, operation: operationError },
+    values: { name, description },
+    errors: { name: nameError, description: descriptionError },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -65,7 +71,8 @@ const EditDocumentTypeComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR TIPO DE DOCUMENTO
+                <i className="fa fa-align-justify"></i>EDITAR ORIGEN DE
+                PROSPECTO
               </div>
             </div>
           </div>
@@ -80,41 +87,44 @@ const EditDocumentTypeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group col-sm-6">
+                  <label htmlFor="code">Código (*):</label>
+                  <InputForm
+                    required
+                    placeholder="Código"
+                    name="code"
+                    value={prospectInfo?.code || ""}
+                    onChange={handleOnChange}
+                    disabled={true}
+                  />
+                </div>
+                <div className="form-group col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
                     required
                     placeholder="Nombre"
                     name="name"
-                    value={(name ?? documentInfo?.name) || ""}
+                    value={(name ?? prospectInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
-                    }
+                    disabled={status === Status.Updating}
                     error={nameError}
                   />
                 </div>
+
                 <div className="form-group col-sm-6">
-                  <label htmlFor="operation">Tipo de Operación (*):</label>
-                  <select
-                    id="operation"
-                    name="operation"
+                  <label htmlFor="description">Descripción (*):</label>
+                  <TextAreaForm
                     required
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
-                    }
-                    value={(operation ?? documentInfo?.operation) || ""}
+                    placeholder="Descripción"
+                    name="description"
+                    value={(description ?? prospectInfo?.description) || ""}
+                    rows={2}
                     onChange={handleOnChange}
-                    onBlur={handleOnChange}
-                    className={`btn border-secondary btn-default w-100 ${
-                      operationError ? "border border-danger" : ""
-                    }`}
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="persona">Persona</option>
-                    <option value="comprobante">Comprobante</option>
-                  </select>
+                    disabled={status === Status.Updating}
+                    error={descriptionError}
+                  />
                 </div>
+                <div className="col-12" />
                 <div className="form-group col-sm-6">
                   <label htmlFor="createdAt">Fecha de creación:</label>
                   <InputForm
@@ -123,7 +133,7 @@ const EditDocumentTypeComponent = () => {
                     name="createdAt"
                     value={
                       setFormatDate({
-                        date: documentInfo?.createdAt,
+                        date: prospectInfo?.createdAt,
                         order: 1,
                       }) || ""
                     }
@@ -140,7 +150,7 @@ const EditDocumentTypeComponent = () => {
                     name="updatedAt"
                     value={
                       setFormatDate({
-                        date: documentInfo?.updatedAt,
+                        date: prospectInfo?.updatedAt,
                         order: 1,
                       }) || ""
                     }
@@ -160,7 +170,7 @@ const EditDocumentTypeComponent = () => {
                 </div>
                 <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/tipos-documento"
+                    to="/origenes-prospecto"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -176,4 +186,4 @@ const EditDocumentTypeComponent = () => {
   );
 };
 
-export default EditDocumentTypeComponent;
+export default EditProspectOriginComponent;

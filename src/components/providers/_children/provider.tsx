@@ -1,44 +1,37 @@
 import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CImage } from "@coreui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { setFormatDate } from "src/utils/formats";
 
-import { Employee } from "../../../hooks/useEmployees";
-import { setFormatDate } from "../../../utils/formats";
+import { Provider } from "../../../hooks/useProviders";
 
-type EmployeeItemProps = Employee & {
-  fullName: string;
+type ProviderItemProps = Provider & {
   orderNumber: number;
   code: string;
   handleRemove: (id: string) => void;
 };
 
-export const EmployeeItem: React.FC<EmployeeItemProps> = ({
+export const ProviderItem: React.FC<ProviderItemProps> = ({
   orderNumber,
   code,
-  fullName,
-  documentType,
+  businessName,
+  createdAt,
+  contactName,
+  status,
   documentNumber,
-  corporateEmail,
   phoneNumber,
-  birthdate,
-  image,
   handleRemove,
 }) => {
   return (
     <tr>
       <td>{orderNumber}</td>
-      <td>{fullName || ""}</td>
-      <td>{documentType?.name || ""}</td>
+      <td>{setFormatDate({ date: createdAt })}</td>
+      <td>{businessName || ""}</td>
       <td>{documentNumber || ""}</td>
-      <td>{corporateEmail || ""}</td>
+      <td>{contactName || ""}</td>
       <td>{phoneNumber || ""}</td>
-      <td>{setFormatDate({ date: birthdate }) || ""}</td>
-      <td>
-        {image ? <CImage src={image} alt={fullName} fluid width={60} /> : ""}
-      </td>
-      {/* <td>{status ? "activo" : "inactivo"}</td> */}
+      <td>{status ? "activo" : "inactivo"}</td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
@@ -46,7 +39,7 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
               type="button"
               className="btn btn-primary"
               style={{ height: 40, width: 40 }}
-              to={`/empleados/editar/${code}`}
+              to={`/proveedores/editar/${code}`}
             >
               <CIcon icon={cilPencil} />
             </Link>

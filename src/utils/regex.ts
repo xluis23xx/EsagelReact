@@ -20,6 +20,7 @@ const numberRegex = new RegExp(/^([\d])+$/);
 const cellphoneRegex = new RegExp(/^9\d{8}$/);
 const docRegex = new RegExp(/^([a-zA-Z0-9-])+$/);
 const phoneRegex = new RegExp(/^[\d-]+$/);
+const rucRegex = new RegExp(/^(10|20)[0-9]{9}$/);
 
 const maskDocuments = {
   DNI: new Array(8).fill(/\d/),
@@ -56,5 +57,6 @@ export {
   patternCard,
   patternDate,
   phoneRegex,
+  rucRegex,
   strongRegularExp,
 };

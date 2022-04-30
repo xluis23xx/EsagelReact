@@ -56,7 +56,7 @@ export const useEmployees = () => {
     return getEmployeeById(token, id);
   }
 
-  function searchEmployeeSByName(filter: string) {
+  function searchEmployeesByName(filter: string) {
     if (filter.length === 0) {
       setEmployees(employeesAll);
     } else {
@@ -183,7 +183,7 @@ export const useEmployees = () => {
     employees,
     deleteEmployee,
     getEmployee,
-    searchEmployeeSByName,
+    searchEmployeesByName,
     registerEmployee,
     updateEmployee,
     setEmployeeById,

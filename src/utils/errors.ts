@@ -5,6 +5,7 @@ import {
   emailRegex,
   namesRegex,
   numberRegex,
+  rucRegex,
 } from "./regex";
 
 export const formatEmail = () => ({
@@ -20,6 +21,11 @@ export const formatPass = () => ({
 export const formatNames = () => ({
   func: (value) => value === "" || namesRegex.test(value),
   error: "Formato inválido, solo letras",
+});
+
+export const formatRuc = () => ({
+  func: (value) => value === "" || rucRegex.test(value),
+  error: "Formato inválido.",
 });
 
 export const formatSecondLastName = () => ({

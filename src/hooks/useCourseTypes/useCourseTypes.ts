@@ -85,7 +85,7 @@ export const useCourseTypes = () => {
   function deleteCourseType(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putCourseType(token, id, { status: 0 })
+    putCourseType(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setCourseTypes(

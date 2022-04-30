@@ -13,7 +13,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import FileUploader from "react-firebase-file-uploader";
 
-import { Status, useEmployees } from "../../hooks/useEmployees";
+import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { setFormatDate } from "../../utils/formats";
@@ -110,7 +110,7 @@ const EditEmployeeComponent = () => {
     position: { required: true },
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: Employee) => {
     const employee = {
       name: (data?.name ?? employeeProfile?.name) || null,
       lastname: (data?.lastname ?? employeeProfile?.lastname) || null,

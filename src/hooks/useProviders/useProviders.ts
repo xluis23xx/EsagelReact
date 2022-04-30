@@ -3,12 +3,12 @@ import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
 import {
-  getDocumentTypeById,
-  getDocumentTypes,
-  postDocumentType,
-  putDocumentType,
+  getProviderById,
+  getProviders,
+  postProvider,
+  putProvider,
 } from "./helpers";
-import { DocumentType } from "./index";
+import { Provider } from "./index";
 
 export enum Status {
   Loading,
@@ -17,31 +17,33 @@ export enum Status {
   Error,
 }
 
-export const useDocumentTypes = () => {
-  const [documents, setDocuments] = React.useState<DocumentType[]>([]);
-  const [documentInfo, setDocumentInfo] = React.useState<DocumentType>(null);
+export const useProviders = () => {
+  const [providers, setProviders] = React.useState<Provider[]>([]);
+  const [providersAll, setproviderssAll] = React.useState<Provider[]>([]);
+  const [providerInfo, setProviderInfo] = React.useState<Provider>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function setDocumentTypeById(id: string) {
+  function setProviderById(id: string) {
     setStatus(Status.Loading);
 
     const token = getCookie("esagel_token") || "";
-    getDocumentTypeById(token, id).then((response) => {
+    getProviderById(token, id).then((response) => {
       if (response?._id) {
+        setProviderInfo(response);
         setStatus(Status.Ready);
-        setDocumentInfo(response);
       }
     });
   }
 
-  function getAllDocumentTypes() {
+  function getAllProviders() {
     const token = getCookie("esagel_token") || "";
-    getDocumentTypes(token)
-      .then((response) => {
-        const enableDocuments =
-          response.filter((document: DocumentType) => document.status === 1) ||
+    getProviders(token)
+      .then((allProviders) => {
+        const enableProviders =
+          allProviders.filter((provider: Provider) => provider.status === 1) ||
           [];
-        setDocuments(enableDocuments);
+        setProviders(enableProviders);
+        setproviderssAll(enableProviders);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -49,15 +51,33 @@ export const useDocumentTypes = () => {
       });
   }
 
-  async function updateDocumentType(id: string, document: any) {
+  function getProvider(id: string) {
     const token = getCookie("esagel_token") || "";
-    return putDocumentType(token, id, document)
+    return getProviderById(token, id);
+  }
+
+  function searchProvidersByFilter(filter: string) {
+    if (filter.length === 0) {
+      setProviders(providersAll);
+    } else {
+      const providersFilter = providersAll.filter((provider: Provider) => {
+        const { businessName = "", documentNumber = "" } = provider || {};
+        const regex = new RegExp(filter.toLowerCase());
+        return regex.test(`${businessName} ${documentNumber}`.toLowerCase());
+      });
+      setProviders(providersFilter);
+    }
+  }
+
+  async function updateProvider(id: string, provider: any) {
+    const token = getCookie("esagel_token") || "";
+    return putProvider(token, id, provider)
       .then((response) => {
-        if (response?.status === 201 || response?.status === 200) {
+        if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Tipo de Documento actualizado éxitosamente",
+            text: "Proveedor actualizado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -82,26 +102,26 @@ export const useDocumentTypes = () => {
       });
   }
 
-  function deleteDocumentType(id: string) {
+  async function deleteProvider(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putDocumentType(token, id, { status: 0, isDelete: true })
+    putProvider(token, id, { status: 0, isDelete: true })
       .then((response) => {
-        if (response?.status === 200 || response?.status === 201) {
-          setDocuments(
-            documents.filter((document: DocumentType) => document._id !== id)
+        if (response?.status === 201 || response?.status === 200) {
+          setProviders(
+            providers.filter((provider: Provider) => provider._id !== id)
           );
-          const nameDocument = response?.name || "";
+          const businessName = response?.updatedProvider?.businessName || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Tipo de Documento ${nameDocument} eliminado con éxito`,
+            text: `Proveedor ${businessName} eliminado con éxito`,
             timer: 2000,
           });
         } else {
           Swal.fire({
-            title: "¡Algo ocurrió!",
             icon: "error",
+            title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
           });
@@ -118,16 +138,16 @@ export const useDocumentTypes = () => {
       });
   }
 
-  async function registerDocumentType(document: any) {
+  async function registerProvider(provider: any) {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
-    return postDocumentType(token, document)
+    return postProvider(token, provider)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Tipo de Documento registrado éxitosamente",
+            text: "Proveedor registrado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -153,13 +173,15 @@ export const useDocumentTypes = () => {
   }
 
   return {
-    documents,
-    getAllDocumentTypes,
-    registerDocumentType,
-    updateDocumentType,
-    deleteDocumentType,
-    setDocumentTypeById,
-    documentInfo,
+    providers,
+    deleteProvider,
+    getProvider,
+    searchProvidersByFilter,
+    registerProvider,
+    updateProvider,
+    setProviderById,
+    providerInfo,
+    getAllProviders,
     status,
   };
 };

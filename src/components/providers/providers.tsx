@@ -3,8 +3,8 @@ import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { EmployeeItem } from "./_children/employee";
-import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
+import { ProviderItem } from "./_children/provider";
+import { Provider, Status, useProviders } from "../../hooks/useProviders";
 import {
   CButton,
   CModal,
@@ -13,23 +13,23 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { formatNames } from "../../utils/errors";
+import { formatNames, formatRuc } from "../../utils/errors";
 import useForm from "../../hooks/useForm";
 import { InputForm } from "../global-components/inputForm";
 
-const EmployeesComponent = () => {
+const ProvidersComponent = () => {
   const {
-    employees,
-    deleteEmployee,
-    getAllEmployees,
-    searchEmployeesByName,
+    providers,
+    deleteProvider,
+    getAllProviders,
+    searchProvidersByFilter,
     status,
-  } = useEmployees();
+  } = useProviders();
   const [visible, setVisible] = React.useState(false);
-  const [employeeId, setEmployeeId] = React.useState("");
+  const [providerId, setProviderId] = React.useState("");
 
   React.useEffect(() => {
-    getAllEmployees();
+    getAllProviders();
   }, []);
 
   const stateSchema = {
@@ -39,23 +39,23 @@ const EmployeesComponent = () => {
   const stateValidatorSchema = {
     search: {
       required: false,
-      validator: formatNames(),
+      validator: formatNames() || formatRuc(),
       invalidtext: true,
     },
   };
 
-  const removeEmployee = (id: string) => {
+  const removeProvider = (id: string) => {
     setVisible(!visible);
     if (!visible) {
-      setEmployeeId(id);
-    } else if (visible && employeeId) {
-      deleteEmployee(id);
-      setEmployeeId("");
+      setProviderId(id);
+    } else if (visible && providerId) {
+      deleteProvider(id);
+      setProviderId("");
     }
   };
 
   const handleSearch = (data) => {
-    searchEmployeesByName(data.search);
+    searchProvidersByFilter(data.search);
   };
 
   const {
@@ -72,7 +72,7 @@ const EmployeesComponent = () => {
         <div className="col-12 col-sm-6 col-md-4 col-lg-3">
           <Link
             className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/empleados/nuevo"
+            to="/proveedores/nuevo"
           >
             Nuevo
           </Link>
@@ -83,7 +83,7 @@ const EmployeesComponent = () => {
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;EMPLEADOS
+              &nbsp;PROVEEDORES
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
@@ -149,55 +149,43 @@ const EmployeesComponent = () => {
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                employees.length > 0 ? (
+                providers.length > 0 ? (
                   <table className="table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre Completo</th>
-                        <th>Tipo de Documento</th>
-                        <th>N° Documento</th>
-                        <th>Correo Corporativo</th>
+                        <th>Fecha de Registro</th>
+                        <th>Nombre de la Empresa</th>
+                        <th>RUC</th>
+                        <th>Nombre del Contacto</th>
                         <th>Teléfono</th>
-                        <th>Fecha de Nacimiento</th>
-                        <th>Imagen</th>
-                        {/* <th>Estado</th> */}
+                        <th>Estado</th>
                         <th>Opciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {employees.map((employee: Employee, index: number) => {
+                      {providers.map((provider: Provider, index: number) => {
                         const {
                           _id,
-                          name,
-                          lastname,
-                          secondLastname,
-                          birthdate,
-                          corporateEmail,
+                          businessName,
+                          createdAt,
+                          contactName,
                           documentNumber,
-                          documentType,
-                          personalEmail,
                           phoneNumber,
-                          image,
                           status,
-                        } = employee;
+                        } = provider;
                         return (
-                          <EmployeeItem
+                          <ProviderItem
                             key={index}
                             code={_id}
-                            fullName={`${name ? name : ""} ${
-                              lastname ? lastname : ""
-                            } ${secondLastname ? secondLastname : ""}`}
-                            birthdate={birthdate}
-                            corporateEmail={corporateEmail}
+                            businessName={businessName}
+                            createdAt={createdAt}
+                            contactName={contactName}
                             documentNumber={documentNumber}
-                            documentType={documentType}
-                            personalEmail={personalEmail}
                             phoneNumber={phoneNumber}
                             status={status}
                             orderNumber={index + 1}
-                            image={image}
-                            handleRemove={removeEmployee}
+                            handleRemove={removeProvider}
                           />
                         );
                       })}
@@ -208,21 +196,21 @@ const EmployeesComponent = () => {
               <CModal
                 visible={visible}
                 onClose={() => {
-                  setEmployeeId("");
+                  setProviderId("");
                   setVisible(false);
                 }}
               >
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Eliminar Empleado</CModalTitle>
+                  <CModalTitle>Eliminar Proveedor</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  ¿Estás seguro que quieres eliminar este empleado?
+                  ¿Estás seguro que quieres eliminar este proveedor?
                 </CModalBody>
                 <CModalFooter>
                   <CButton
                     color="secondary"
                     onClick={() => {
-                      setEmployeeId("");
+                      setProviderId("");
                       setVisible(false);
                     }}
                   >
@@ -230,7 +218,7 @@ const EmployeesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
-                    onClick={() => removeEmployee(employeeId)}
+                    onClick={() => removeProvider(providerId)}
                   >
                     Eliminar
                   </CButton>
@@ -244,4 +232,4 @@ const EmployeesComponent = () => {
   );
 };
 
-export default EmployeesComponent;
+export default ProvidersComponent;

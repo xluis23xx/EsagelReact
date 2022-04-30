@@ -4,7 +4,11 @@ import useForm from "../../hooks/useForm";
 import { formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { Status, useDocumentTypes } from "../../hooks/useDocuments";
+import {
+  DocumentType,
+  Status,
+  useDocumentTypes,
+} from "../../hooks/useDocuments";
 
 const NewDocumentTypeComponent = () => {
   const { registerDocumentType, status } = useDocumentTypes();
@@ -25,7 +29,7 @@ const NewDocumentTypeComponent = () => {
     operation: { required: true },
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: DocumentType) => {
     const documentType = {
       name: data?.name || null,
       operation: data?.operation || null,

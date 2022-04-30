@@ -3,12 +3,12 @@ import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
 import {
-  getDocumentTypeById,
-  getDocumentTypes,
-  postDocumentType,
-  putDocumentType,
+  getProspectusStatusById,
+  getProspectusStatuses,
+  postProspectStatus,
+  putProspectStatus,
 } from "./helpers";
-import { DocumentType } from "./index";
+import { ProspectusStatus } from "./index";
 
 export enum Status {
   Loading,
@@ -17,31 +17,35 @@ export enum Status {
   Error,
 }
 
-export const useDocumentTypes = () => {
-  const [documents, setDocuments] = React.useState<DocumentType[]>([]);
-  const [documentInfo, setDocumentInfo] = React.useState<DocumentType>(null);
+export const useProspectStatuses = () => {
+  const [prospectStatuses, setProspectStatuses] = React.useState<
+    ProspectusStatus[]
+  >([]);
+  const [prospectInfo, setProspectInfo] =
+    React.useState<ProspectusStatus>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function setDocumentTypeById(id: string) {
+  function setProspectStatusById(id: string) {
     setStatus(Status.Loading);
 
     const token = getCookie("esagel_token") || "";
-    getDocumentTypeById(token, id).then((response) => {
+    getProspectusStatusById(token, id).then((response) => {
       if (response?._id) {
         setStatus(Status.Ready);
-        setDocumentInfo(response);
+        setProspectInfo(response);
       }
     });
   }
 
-  function getAllDocumentTypes() {
+  function getAllProspectStatuses() {
     const token = getCookie("esagel_token") || "";
-    getDocumentTypes(token)
+    getProspectusStatuses(token)
       .then((response) => {
-        const enableDocuments =
-          response.filter((document: DocumentType) => document.status === 1) ||
-          [];
-        setDocuments(enableDocuments);
+        const enableProspects =
+          response.filter(
+            (prospect: ProspectusStatus) => prospect.status === 1
+          ) || [];
+        setProspectStatuses(enableProspects);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -49,15 +53,15 @@ export const useDocumentTypes = () => {
       });
   }
 
-  async function updateDocumentType(id: string, document: any) {
+  async function updateProspectStatus(id: string, prospect: any) {
     const token = getCookie("esagel_token") || "";
-    return putDocumentType(token, id, document)
+    return putProspectStatus(token, id, prospect)
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Tipo de Documento actualizado éxitosamente",
+            text: "Estado de Prospecto actualizado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -82,20 +86,22 @@ export const useDocumentTypes = () => {
       });
   }
 
-  function deleteDocumentType(id: string) {
+  function deleteProspectStatus(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putDocumentType(token, id, { status: 0, isDelete: true })
+    putProspectStatus(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          setDocuments(
-            documents.filter((document: DocumentType) => document._id !== id)
+          setProspectStatuses(
+            prospectStatuses.filter(
+              (prospect: ProspectusStatus) => prospect._id !== id
+            )
           );
-          const nameDocument = response?.name || "";
+          const prospectName = response?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Tipo de Documento ${nameDocument} eliminado con éxito`,
+            text: `Estado de Prospecto ${prospectName} eliminado con éxito`,
             timer: 2000,
           });
         } else {
@@ -118,16 +124,16 @@ export const useDocumentTypes = () => {
       });
   }
 
-  async function registerDocumentType(document: any) {
+  async function registerProspectStatus(prospect: any) {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
-    return postDocumentType(token, document)
+    return postProspectStatus(token, prospect)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Tipo de Documento registrado éxitosamente",
+            text: "Estado de Prospecto registrado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -153,13 +159,13 @@ export const useDocumentTypes = () => {
   }
 
   return {
-    documents,
-    getAllDocumentTypes,
-    registerDocumentType,
-    updateDocumentType,
-    deleteDocumentType,
-    setDocumentTypeById,
-    documentInfo,
+    prospectStatuses,
+    getAllProspectStatuses,
+    registerProspectStatus,
+    updateProspectStatus,
+    deleteProspectStatus,
+    setProspectStatusById,
+    prospectInfo,
     status,
   };
 };

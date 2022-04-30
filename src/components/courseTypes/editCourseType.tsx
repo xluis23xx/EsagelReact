@@ -5,7 +5,7 @@ import useForm from "../../hooks/useForm";
 import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { Status, useCourseTypes } from "../../hooks/useCourseTypes";
+import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
 import { TextAreaForm } from "../global-components/textareaForm";
 
 const NewCourseTypeComponent = () => {
@@ -54,7 +54,7 @@ const NewCourseTypeComponent = () => {
     },
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: CourseType) => {
     const courseType = {
       // code: data?.code || null,
       name: (data?.name ?? courseTypeInfo?.name) || null,

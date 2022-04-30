@@ -86,7 +86,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Origen de Prospecto",
-        to: "/origen-prospecto",
+        to: "/origenes-prospecto",
         icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
       },
       {
@@ -98,7 +98,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Estado de Prospecto",
-        to: "/estado-prospecto",
+        to: "/estados-prospecto",
         icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
       },
     ],

@@ -4,26 +4,24 @@ import useForm from "../../hooks/useForm";
 import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
+import {
+  ProspectusOrigin,
+  Status,
+  useProspectOrigins,
+} from "../../hooks/useProspectusOrigin";
 import { TextAreaForm } from "../global-components/textareaForm";
 
-const NewCourseTypeComponent = () => {
-  const { registerCourseType, status: statusUse } = useCourseTypes();
+const NewProspectOriginComponent = () => {
+  const { registerProspectOrigin, status } = useProspectOrigins();
   const history = useHistory();
 
   const stateSchema = {
-    code: { value: "", error: "" },
     name: { value: "", error: "" },
     description: { value: "", error: "" },
+    code: { value: "", error: "" },
   };
 
   const stateValidatorSchema = {
-    code: {
-      required: true,
-      validator: formatNames(),
-      min2caracts: true,
-      invalidtext: true,
-    },
     name: {
       required: true,
       validator: formatNames(),
@@ -36,33 +34,31 @@ const NewCourseTypeComponent = () => {
       min2caracts: true,
       invalidtext: true,
     },
-    status: {
+    code: {
       required: true,
+      validator: formatNames(),
+      min2caracts: true,
+      invalidtext: true,
     },
   };
 
-  const onSubmitForm = (data: CourseType) => {
-    const courseType = {
-      code: data?.code || null,
+  const onSubmitForm = (data: ProspectusOrigin) => {
+    const prospectOrigin = {
       name: data?.name || null,
       description: data?.description || null,
+      code: data?.code || null,
       status: 1,
     };
-    registerCourseType(courseType).then((response) => {
+    registerProspectOrigin(prospectOrigin).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-curso");
+        history.push("/origenes-prospecto");
       }
     });
   };
 
   const {
-    values: { code, name, description, status },
-    errors: {
-      code: codeError,
-      name: nameError,
-      description: descriptionError,
-      status: statusError,
-    },
+    values: { name, description, code },
+    errors: { name: nameError, description: descriptionError, code: codeError },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -75,7 +71,7 @@ const NewCourseTypeComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO TIPO DE CURSO
+                <i className="fa fa-align-justify"></i>NUEVO ORIGEN DE PROSPECTO
               </div>
             </div>
           </div>
@@ -89,20 +85,19 @@ const NewCourseTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group col-sm-6">
                   <label htmlFor="code">Código (*):</label>
                   <InputForm
-                    type="text"
                     required
                     placeholder="Código"
                     name="code"
                     value={code}
                     onChange={handleOnChange}
-                    disabled={statusUse === Status.Updating}
+                    disabled={status === Status.Updating}
                     error={codeError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -111,55 +106,37 @@ const NewCourseTypeComponent = () => {
                     name="name"
                     value={name}
                     onChange={handleOnChange}
-                    disabled={statusUse === Status.Updating}
+                    disabled={status === Status.Updating}
                     error={nameError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
-                  <label htmlFor="status">Estado (*):</label>
-                  <select
-                    id="status"
-                    name="status"
-                    required
-                    disabled={statusUse === Status.Updating}
-                    value={status}
-                    onChange={handleOnChange}
-                    onBlur={handleOnChange}
-                    className={`btn border-secondary btn-default w-100 ${
-                      statusError ? "border border-danger" : ""
-                    }`}
-                  >
-                    <option value="">Seleccione</option>
-                    <option value="0">Inactivo</option>
-                    <option value="1">Activo</option>
-                  </select>
-                </div>
-                <div className="form-group col-12">
+
+                <div className="form-group col-sm-6">
                   <label htmlFor="description">Descripción (*):</label>
                   <TextAreaForm
                     required
                     placeholder="Descripción"
                     name="description"
-                    rows={3}
-                    maxLength={100}
                     value={description}
+                    rows={2}
                     onChange={handleOnChange}
-                    disabled={statusUse === Status.Updating}
+                    disabled={status === Status.Updating}
                     error={descriptionError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="col-12" />
+                <div className="form-group col-sm-6 mt-3">
                   <button
                     type="submit"
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {statusUse === Status.Updating ? "Cargando" : "Registrar"}
+                    {status === Status.Updating ? "Cargando" : "Registrar"}
                   </button>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 mt-3">
                   <Link
-                    to="/tipos-curso"
+                    to="/origenes-prospecto"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar
@@ -175,4 +152,4 @@ const NewCourseTypeComponent = () => {
   );
 };
 
-export default NewCourseTypeComponent;
+export default NewProspectOriginComponent;
