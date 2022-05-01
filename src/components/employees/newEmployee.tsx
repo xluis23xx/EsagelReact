@@ -233,7 +233,7 @@ const NewEmployeeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="name">Nombres (*):</label>
                   <InputForm
                     type="text"
@@ -248,7 +248,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="lastname">Apellido Paterno (*):</label>
                   <InputForm
                     type="text"
@@ -263,7 +263,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="secondLastname">Apellido Materno (*):</label>
                   <InputForm
                     type="text"
@@ -278,7 +278,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="documentType">Tipo de Documento (*):</label>
                   <select
                     id="documentType"
@@ -301,7 +301,7 @@ const NewEmployeeComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
@@ -318,7 +318,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="corporateEmail">
                     Correo Corporativo (*):
                   </label>
@@ -334,7 +334,7 @@ const NewEmployeeComponent = () => {
                     error={corporateEmailError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="address">Dirección (*):</label>
                   <InputForm
                     type="text"
@@ -349,7 +349,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="phoneNumber">Teléfono (*):</label>
                   <InputForm
                     type="tel"
@@ -364,7 +364,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="personalEmail">Correo personal (*):</label>
                   <InputForm
                     type="email"
@@ -379,7 +379,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="birthdate">Fecha de Nacimiento (*):</label>
                   <InputForm
                     type="date"
@@ -393,7 +393,7 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="image">Foto:</label>
                   <FileUploader
                     accept="image/*"
@@ -424,7 +424,7 @@ const NewEmployeeComponent = () => {
                   )}
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="position">Cargo (*):</label>
                   <select
                     id="position"
@@ -451,7 +451,18 @@ const NewEmployeeComponent = () => {
                     }
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Registrar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Registrar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 col-md-4 mt-3">

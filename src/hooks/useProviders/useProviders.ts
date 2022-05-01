@@ -19,7 +19,7 @@ export enum Status {
 
 export const useProviders = () => {
   const [providers, setProviders] = React.useState<Provider[]>([]);
-  const [providersAll, setproviderssAll] = React.useState<Provider[]>([]);
+  const [providersAll, setprovidersAll] = React.useState<Provider[]>([]);
   const [providerInfo, setProviderInfo] = React.useState<Provider>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
@@ -43,17 +43,12 @@ export const useProviders = () => {
           allProviders.filter((provider: Provider) => provider.status === 1) ||
           [];
         setProviders(enableProviders);
-        setproviderssAll(enableProviders);
+        setprovidersAll(enableProviders);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function getProvider(id: string) {
-    const token = getCookie("esagel_token") || "";
-    return getProviderById(token, id);
   }
 
   function searchProvidersByFilter(filter: string) {
@@ -70,6 +65,7 @@ export const useProviders = () => {
   }
 
   async function updateProvider(id: string, provider: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProvider(token, id, provider)
       .then((response) => {
@@ -109,6 +105,9 @@ export const useProviders = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setProviders(
+            providers.filter((provider: Provider) => provider._id !== id)
+          );
+          setprovidersAll(
             providers.filter((provider: Provider) => provider._id !== id)
           );
           const businessName = response?.updatedProvider?.businessName || "";
@@ -175,7 +174,6 @@ export const useProviders = () => {
   return {
     providers,
     deleteProvider,
-    getProvider,
     searchProvidersByFilter,
     registerProvider,
     updateProvider,

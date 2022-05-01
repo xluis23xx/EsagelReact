@@ -1,2 +1,2 @@
-import { createContext } from 'react'
-export const NavContext = createContext(null)
+import * as React from "react";
+export const NavContext = React.createContext(null);

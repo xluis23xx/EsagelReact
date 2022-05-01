@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname;
 
-  const cleanLocation = currentLocation.replace(/\/[a-z0-9A-Z]{10,}/, "");
+  const cleanLocation = currentLocation.replace(/\/[a-z0-9A-Z]{24}/, "");
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => {

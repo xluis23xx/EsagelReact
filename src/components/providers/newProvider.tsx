@@ -89,7 +89,7 @@ const NewProviderComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="businessName">
                     Nombre de la Empresa (*):
                   </label>
@@ -106,7 +106,7 @@ const NewProviderComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="documentNumber">Nro. RUC (*):</label>
                   <InputForm
                     type="text"
@@ -121,7 +121,7 @@ const NewProviderComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="contactName">Nombre del Contacto (*):</label>
                   <InputForm
                     type="text"
@@ -136,7 +136,7 @@ const NewProviderComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="phoneNumber">Télefono (*):</label>
                   <InputForm
                     type="text"

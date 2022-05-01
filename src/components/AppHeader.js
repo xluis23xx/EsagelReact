@@ -20,12 +20,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { types } from "../types/types";
 import { AuthContext } from "../context/AuthContext";
+import { SettingsContext } from "../context/SettingsContext";
+import { ToggleButtonThemeComponent } from "./global-components/toggleButtonTheme";
 
 const AppHeader = () => {
   const distpatch = useDispatch();
 
   const { sidebarShow } = useSelector((state) => state.nav);
   const { user } = React.useContext(AuthContext);
+  const { config } = React.useContext(SettingsContext);
+
   let nameProfile = "";
   let roles = "";
   if (Object.keys(user).length > 0) {
@@ -60,7 +64,17 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CImage src={esagelImage} height={48} alt="Logo" />
+          {config?.url ? (
+            <a href={config?.url} target={"_blank"} rel="noreferrer">
+              <CImage
+                src={config?.logo || esagelImage}
+                height={48}
+                alt="Logo"
+              />
+            </a>
+          ) : (
+            <CImage src={config?.logo || esagelImage} height={48} alt="Logo" />
+          )}
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem className="d-block fw-bold">
@@ -69,6 +83,7 @@ const AppHeader = () => {
           <CNavItem className="d-block ms-5 fw-bold">Rol(es): {roles}</CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
+          {/* <ToggleButtonThemeComponent /> */}
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>

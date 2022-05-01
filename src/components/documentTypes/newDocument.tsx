@@ -71,7 +71,7 @@ const NewDocumentTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -84,7 +84,7 @@ const NewDocumentTypeComponent = () => {
                     error={nameError}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="operation">Tipo de Operación (*):</label>
                   <select
                     id="operation"
@@ -109,7 +109,18 @@ const NewDocumentTypeComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Registrar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Registrar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 mt-3">

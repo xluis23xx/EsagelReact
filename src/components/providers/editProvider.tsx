@@ -101,7 +101,7 @@ const EditProviderComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="createdAt">Fecha de Registro:</label>
                   <InputForm
                     type="date"
@@ -117,7 +117,7 @@ const EditProviderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="updatedAt">Última modificación:</label>
                   <InputForm
                     type="date"
@@ -133,7 +133,7 @@ const EditProviderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="businessName">
                     Nombre de la Empresa (*):
                   </label>
@@ -149,7 +149,7 @@ const EditProviderComponent = () => {
                     error={businessNameError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="documentNumber">Nro. RUC (*):</label>
                   <InputForm
                     type="text"
@@ -165,7 +165,7 @@ const EditProviderComponent = () => {
                     error={documentNumberError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="contactName">Nombre del Contacto (*):</label>
                   <InputForm
                     type="text"
@@ -179,7 +179,7 @@ const EditProviderComponent = () => {
                     error={contactNameError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="phoneNumber">Télefono (*):</label>
                   <InputForm
                     type="text"
@@ -200,12 +200,23 @@ const EditProviderComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Actualizar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Actualizar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 col-md-4 mt-3">
                   <Link
-                    to="/empleados"
+                    to="/proveedores"
                     className="btn btn-block btn-secondary w-100"
                   >
                     Cancelar

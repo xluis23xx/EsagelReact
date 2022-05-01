@@ -1,6 +1,6 @@
 type FormatDate = {
-  order?: number; // 0 dia-mes-año | 1 año-mes-dia
   date: string;
+  order?: number; // 0 dia-mes-año | 1 año-mes-dia
   separator?: string;
 };
 
@@ -32,4 +32,30 @@ export const setFormatDate = ({
     }
   }
   return null;
+};
+
+type FormatCharacter = {
+  character: string;
+  slice?: number;
+  isSuspent?: boolean;
+};
+
+export const setFormatCharacters = ({
+  character = "",
+  slice = 50,
+  isSuspent = true,
+}: FormatCharacter): string => {
+  if (character) {
+    if (isSuspent) {
+      return character.length >= slice
+        ? `${character.substring(0, slice - 3)}...`
+        : character;
+    } else {
+      return character.length >= slice
+        ? `${character.substring(0, slice)}`
+        : character;
+    }
+  } else {
+    return "";
+  }
 };

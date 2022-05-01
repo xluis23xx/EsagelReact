@@ -54,6 +54,7 @@ export const useProspectStatuses = () => {
   }
 
   async function updateProspectStatus(id: string, prospect: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProspectStatus(token, id, prospect)
       .then((response) => {

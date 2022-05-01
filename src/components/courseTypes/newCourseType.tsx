@@ -89,7 +89,7 @@ const NewCourseTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="code">Código (*):</label>
                   <InputForm
                     type="text"
@@ -102,7 +102,7 @@ const NewCourseTypeComponent = () => {
                     error={codeError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -115,7 +115,7 @@ const NewCourseTypeComponent = () => {
                     error={nameError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label htmlFor="status">Estado (*):</label>
                   <select
                     id="status"
@@ -134,7 +134,7 @@ const NewCourseTypeComponent = () => {
                     <option value="1">Activo</option>
                   </select>
                 </div>
-                <div className="form-group col-12">
+                <div className="form-group mt-1 col-12">
                   <label htmlFor="description">Descripción (*):</label>
                   <TextAreaForm
                     required
@@ -154,7 +154,18 @@ const NewCourseTypeComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {statusUse === Status.Updating ? "Cargando" : "Registrar"}
+                    {statusUse === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Registrar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 col-md-4 mt-3">

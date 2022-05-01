@@ -44,11 +44,15 @@ export const useAuth = () => {
   function logoutUser() {
     const ESAGEL_TOKEN = getCookie("esagel_token");
     const USER_PROFILE = localStorage.getItem("esagel_profile");
+    const USER_CONFIG = localStorage.getItem("esagel_config");
     if (ESAGEL_TOKEN) {
       deleteCookie("esagel_token");
     }
     if (USER_PROFILE) {
       localStorage.removeItem("esagel_profile");
+    }
+    if (USER_CONFIG) {
+      localStorage.removeItem("esagel_config");
     }
   }
   return {

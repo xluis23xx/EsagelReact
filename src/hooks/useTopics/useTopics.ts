@@ -59,6 +59,7 @@ export const useTopics = () => {
   }
 
   async function updateTopic(id: string, topic: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putTopic(token, id, topic)
       .then((response) => {
@@ -87,6 +88,7 @@ export const useTopics = () => {
           text: "Ocurrió un error inesperado",
           timer: 2000,
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -98,6 +100,7 @@ export const useTopics = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setTopics(topics.filter((topic: Topic) => topic._id !== id));
+          setTopicsAll(topics.filter((topic: Topic) => topic._id !== id));
           const nameTopic = response?.updateTopic?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
@@ -122,6 +125,7 @@ export const useTopics = () => {
           text: "Ocurrió un error inesperado",
           timer: 2000,
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -155,6 +159,7 @@ export const useTopics = () => {
           text: "Ocurrió un error inesperado",
           timer: 2000,
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

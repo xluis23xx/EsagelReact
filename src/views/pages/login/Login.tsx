@@ -8,12 +8,16 @@ import useForm from "../../../hooks/useForm";
 import { InputForm as Input } from "../../../components/global-components/inputForm";
 import { useAuth, Status, Auth } from "../../../hooks/useAuth";
 import { AuthContext } from "../../../context/AuthContext";
+import { SettingsContext } from "../../../context/SettingsContext";
 import { setCookie } from "../../../utils/cookies";
+import { useSettings } from "../../../hooks/useSettings";
 
 const Login = () => {
   const { setUser } = React.useContext(AuthContext);
+  const { setConfig } = React.useContext(SettingsContext);
   const [showFormatInvalid, setShowFormatInvalid] = React.useState("");
   const { verifyAuthentication, message, status } = useAuth();
+  const { getSettingsConfig } = useSettings();
 
   const stateSchema = {
     username: { value: "", error: "" },
@@ -45,6 +49,8 @@ const Login = () => {
     if (resp?.status === 200 || resp?.status === 201) {
       if (resp?.token) {
         setCookie("esagel_token", resp?.token, 1);
+        const config = await getSettingsConfig();
+        setConfig(config);
       }
       if (resp?.user) {
         localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
@@ -139,9 +145,18 @@ const Login = () => {
                               : false
                           }
                         >
-                          {status === Status.Loading
-                            ? "Cargando..."
-                            : "Ingresar"}
+                          {status === Status.Loading ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                              &nbsp;Cargando...
+                            </>
+                          ) : (
+                            "Ingresar"
+                          )}
                         </button>
                       </div>
                     </div>

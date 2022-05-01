@@ -46,7 +46,7 @@ const EditProspectOriginComponent = () => {
   const onSubmitForm = (data: ProspectusOrigin) => {
     const prospectOrigin = {
       name: (data?.name ?? prospectInfo?.name) || null,
-      operation: (data?.description ?? prospectInfo?.description) || null,
+      description: (data?.description ?? prospectInfo?.description) || null,
       status: 1,
     };
     updateProspectOrigin(id, prospectOrigin).then((response) => {
@@ -86,7 +86,7 @@ const EditProspectOriginComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="code">Código (*):</label>
                   <InputForm
                     required
@@ -97,7 +97,7 @@ const EditProspectOriginComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -111,7 +111,7 @@ const EditProspectOriginComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="description">Descripción (*):</label>
                   <TextAreaForm
                     required
@@ -125,7 +125,7 @@ const EditProspectOriginComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de creación:</label>
                   <InputForm
                     type="date"
@@ -142,7 +142,7 @@ const EditProspectOriginComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de actualización:</label>
                   <InputForm
                     type="date"
@@ -165,7 +165,18 @@ const EditProspectOriginComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Actualizar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Actualizar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 mt-3">

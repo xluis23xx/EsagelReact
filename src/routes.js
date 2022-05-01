@@ -121,6 +121,9 @@ const EditProviderComponent = React.lazy(() =>
   import("./components/providers/editProvider")
 );
 
+const SettingsComponent = React.lazy(() =>
+  import("./components/settings/settings")
+);
 const routes = [
   { path: "/", exact: true, name: "Home", element: Dashboard },
   { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
@@ -314,7 +317,7 @@ const routes = [
   {
     path: "/configuracion",
     name: "Configuración",
-    element: Toasts,
+    element: SettingsComponent,
     exact: true,
   },
   {

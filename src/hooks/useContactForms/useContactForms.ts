@@ -52,6 +52,7 @@ export const useContactForms = () => {
   }
 
   async function updateContactForm(id: string, contactForm: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putContactForm(token, id, contactForm)
       .then((response) => {

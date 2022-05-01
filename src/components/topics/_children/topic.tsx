@@ -2,7 +2,7 @@ import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { Link } from "react-router-dom";
-
+import { setFormatCharacters } from "../../../utils/formats";
 import { Topic } from "../../../hooks/useTopics";
 
 type TopicItemProps = Topic & {
@@ -23,7 +23,9 @@ export const TopicItem: React.FC<TopicItemProps> = ({
     <tr>
       <td>{orderNumber}</td>
       <td>{name || ""}</td>
-      <td>{description || ""}</td>
+      <td>
+        {setFormatCharacters({ character: description, slice: 50 }) || ""}
+      </td>
       <td>{status ? "activo" : "inactivo"}</td>
       <td>
         <div className="selection-btn">
@@ -32,7 +34,7 @@ export const TopicItem: React.FC<TopicItemProps> = ({
               type="button"
               className="btn btn-primary"
               style={{ height: 40, width: 40 }}
-              to={`/topics/editar/${code}`}
+              to={`/temas/editar/${code}`}
             >
               <CIcon icon={cilPencil} />
             </Link>

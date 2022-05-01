@@ -41,7 +41,7 @@ const EditTopicComponent = () => {
   const onSubmitForm = (data: Topic) => {
     const topic = {
       name: (data?.name ?? topicInfo?.name) || null,
-      operation: (data?.description ?? topicInfo?.description) || null,
+      description: (data?.description ?? topicInfo?.description) || null,
       status: 1,
     };
     updateTopic(id, topic).then((response) => {

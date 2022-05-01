@@ -46,7 +46,7 @@ const EditContactFormComponent = () => {
   const onSubmitForm = (data: ContactForm) => {
     const contactForm = {
       name: (data?.name ?? contactFormInfo?.name) || null,
-      operation: (data?.description ?? contactFormInfo?.description) || null,
+      description: (data?.description ?? contactFormInfo?.description) || null,
       status: 1,
     };
     updateContactForm(id, contactForm).then((response) => {
@@ -85,7 +85,7 @@ const EditContactFormComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -99,7 +99,7 @@ const EditContactFormComponent = () => {
                   />
                 </div>
 
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="description">Descripción (*):</label>
                   <TextAreaForm
                     required
@@ -113,7 +113,7 @@ const EditContactFormComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de creación:</label>
                   <InputForm
                     type="date"
@@ -130,7 +130,7 @@ const EditContactFormComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de actualización:</label>
                   <InputForm
                     type="date"
@@ -153,7 +153,18 @@ const EditContactFormComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Actualizar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Actualizar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 mt-3">

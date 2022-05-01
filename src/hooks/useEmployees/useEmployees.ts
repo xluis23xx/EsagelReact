@@ -71,6 +71,7 @@ export const useEmployees = () => {
   }
 
   async function updateEmployee(id: string, employee: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putEmployee(token, id, employee)
       .then((response) => {
@@ -110,6 +111,9 @@ export const useEmployees = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setEmployees(
+            employees.filter((employee: Employee) => employee._id !== id)
+          );
+          setEmployeesAll(
             employees.filter((employee: Employee) => employee._id !== id)
           );
           const nameEmployee = response?.updatedEmployee?.name || "";

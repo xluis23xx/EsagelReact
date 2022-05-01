@@ -79,7 +79,7 @@ const EditDocumentTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="name">Nombre (*):</label>
                   <InputForm
                     type="text"
@@ -94,7 +94,7 @@ const EditDocumentTypeComponent = () => {
                     error={nameError}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="operation">Tipo de Operación (*):</label>
                   <select
                     id="operation"
@@ -115,7 +115,7 @@ const EditDocumentTypeComponent = () => {
                     <option value="comprobante">Comprobante</option>
                   </select>
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de creación:</label>
                   <InputForm
                     type="date"
@@ -132,7 +132,7 @@ const EditDocumentTypeComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6">
+                <div className="form-group mt-1 col-sm-6">
                   <label htmlFor="createdAt">Fecha de actualización:</label>
                   <InputForm
                     type="date"
@@ -155,7 +155,18 @@ const EditDocumentTypeComponent = () => {
                     disabled={disable}
                     className="btn btn-block btn-primary w-100"
                   >
-                    {status === Status.Updating ? "Cargando" : "Actualizar"}
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Actualizar"
+                    )}
                   </button>
                 </div>
                 <div className="form-group col-sm-6 mt-3">

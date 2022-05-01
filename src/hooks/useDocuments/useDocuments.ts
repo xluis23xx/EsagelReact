@@ -50,6 +50,7 @@ export const useDocumentTypes = () => {
   }
 
   async function updateDocumentType(id: string, document: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putDocumentType(token, id, document)
       .then((response) => {

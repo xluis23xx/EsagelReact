@@ -2,6 +2,7 @@ import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { setFormatCharacters } from "../../../utils/formats";
 
 import { ContactForm } from "../../../hooks/useContactForms";
 
@@ -23,7 +24,9 @@ export const ContactFormItem: React.FC<ContactFormItemProps> = ({
     <tr>
       <td>{orderNumber}</td>
       <td>{name || ""}</td>
-      <td>{description || ""}</td>
+      <td>
+        {setFormatCharacters({ character: description, slice: 50 }) || ""}
+      </td>
       <td>{status ? "activo" : "inactivo"}</td>
       <td>
         <div className="selection-btn">

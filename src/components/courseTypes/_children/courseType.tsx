@@ -2,7 +2,7 @@ import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { setFormatDate } from "../../../utils/formats";
+import { setFormatCharacters, setFormatDate } from "../../../utils/formats";
 
 import { CourseType } from "../../../hooks/useCourseTypes";
 
@@ -30,11 +30,7 @@ export const CourseTypeItem: React.FC<CourseTypeItemProps> = ({
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
       <td>
-        {(description
-          ? description.length > 50
-            ? `${description.substring(0, 47)}...`
-            : description
-          : "") || ""}
+        {setFormatCharacters({ character: description, slice: 50 }) || ""}
       </td>
       <td>
         <div className="selection-btn">

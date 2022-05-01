@@ -2,8 +2,7 @@ import { cilPencil, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { Link } from "react-router-dom";
-// import { setFormatDate } from "../../../utils/formats";
-
+import { setFormatCharacters } from "../../../utils/formats";
 import { ProspectusOrigin } from "../../../hooks/useProspectusOrigin";
 
 type ProspectOriginItemProps = ProspectusOrigin & {
@@ -24,7 +23,9 @@ export const PropesctusOriginItem: React.FC<ProspectOriginItemProps> = ({
     <tr>
       <td>{orderNumber}</td>
       <td>{name || ""}</td>
-      <td>{description || ""}</td>
+      <td>
+        {setFormatCharacters({ character: description, slice: 50 }) || ""}
+      </td>
       <td>{status ? "activo" : "inactivo"}</td>
       <td>
         <div className="selection-btn">

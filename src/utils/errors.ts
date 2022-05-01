@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import {
   birthDateRegex,
   cellphoneRegex,
@@ -25,6 +26,28 @@ export const formatNames = () => ({
 
 export const formatRuc = () => ({
   func: (value) => value === "" || rucRegex.test(value),
+  error: "Formato inválido.",
+});
+
+export const formatTax = () => ({
+  func: (value) => {
+    if (value) {
+      if (value >= 0 && value <= 1) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  },
+  error: "El igv debe estar entre 0 y 1.",
+});
+
+export const formatURL = () => ({
+  func: (value) =>
+    value === "" ||
+    /(\w+):\/\/(([\w]+)@|(\w+):(\w+)@|)((.*)\.|)([\w\-]+)\.((\w{3}\.\w{2})|(\w{3}))(:([0-9]+)|)\/(([\w\/\.]+|)(\?([\w\=\%\&]+)|)(\#(.*)|)|)/.test(
+      value
+    ),
   error: "Formato inválido.",
 });
 

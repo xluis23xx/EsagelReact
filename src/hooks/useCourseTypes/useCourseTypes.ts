@@ -50,6 +50,7 @@ export const useCourseTypes = () => {
   }
 
   async function updateCourseType(id: string, courseType: any) {
+    setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putCourseType(token, id, courseType)
       .then((response) => {
