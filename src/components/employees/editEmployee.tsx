@@ -17,11 +17,14 @@ import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { setFormatDate } from "../../utils/formats";
+import { usePositions, Position } from "../../hooks/usePositions";
+import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeProfile, status } =
     useEmployees();
-
+  const { getAllDocumentTypes, documents } = useDocumentTypes();
+  const { getAllPositions, positions } = usePositions();
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
   const history = useHistory();
@@ -39,6 +42,8 @@ const EditEmployeeComponent = () => {
     if (!id) {
       history.push("/empleados");
     }
+    getAllDocumentTypes();
+    getAllPositions();
     setEmployeeById(id);
   }, []);
 
@@ -317,11 +322,18 @@ const EditEmployeeComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    <option value="DNI">DNI</option>
-                    <option value="Carnet Extranjeria">
-                      CARNET DE EXTRANJERIA
-                    </option>
-                    <option value="CIP">CIP</option>
+                    {documents.length > 0
+                      ? documents.map((pos: DocumentType) => {
+                          if (pos?.operation === "persona") {
+                            return (
+                              <option key={pos.name} value={`${pos.name}`}>
+                                {pos.name.toUpperCase()}
+                              </option>
+                            );
+                          }
+                          return null;
+                        })
+                      : null}
                   </select>
                 </div>
 
@@ -482,8 +494,13 @@ const EditEmployeeComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    <option value="Asistente">Asistente</option>
-                    <option value="Vendedor">Vendedor</option>
+                    {positions.length > 0
+                      ? positions.map((pos: Position) => (
+                          <option key={pos.name} value={`${pos.name}`}>
+                            {pos.name}
+                          </option>
+                        ))
+                      : null}
                   </select>
                 </div>
                 <div className="form-group col-sm-6 col-md-4 mt-3">

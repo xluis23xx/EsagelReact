@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
@@ -15,9 +16,13 @@ import FileUploader from "react-firebase-file-uploader";
 import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
+import { usePositions, Position } from "../../hooks/usePositions";
+import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 
 const NewEmployeeComponent = () => {
   const { registerEmployee, status } = useEmployees();
+  const { getAllDocumentTypes, documents } = useDocumentTypes();
+  const { getAllPositions, positions } = usePositions();
   const history = useHistory();
 
   // state para las imagenes
@@ -29,6 +34,11 @@ const NewEmployeeComponent = () => {
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
+
+  React.useEffect(() => {
+    getAllDocumentTypes();
+    getAllPositions();
+  }, []);
 
   const stateSchema = {
     name: { value: "", error: "" },
@@ -293,11 +303,18 @@ const NewEmployeeComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    <option value="DNI">DNI</option>
-                    <option value="Carnet Extranjeria">
-                      CARNET DE EXTRANJERIA
-                    </option>
-                    <option value="CIP">CIP</option>
+                    {documents.length > 0
+                      ? documents.map((pos: DocumentType) => {
+                          if (pos?.operation === "persona") {
+                            return (
+                              <option key={pos.name} value={`${pos.name}`}>
+                                {pos.name.toUpperCase()}
+                              </option>
+                            );
+                          }
+                          return null;
+                        })
+                      : null}
                   </select>
                 </div>
 
@@ -439,8 +456,13 @@ const NewEmployeeComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    <option value="Asistente">Asistente</option>
-                    <option value="Vendedor">Vendedor</option>
+                    {positions.length > 0
+                      ? positions.map((pos: Position) => (
+                          <option key={pos.name} value={`${pos.name}`}>
+                            {pos.name}
+                          </option>
+                        ))
+                      : null}
                   </select>
                 </div>
                 <div className="form-group col-sm-6 col-md-4 mt-3">

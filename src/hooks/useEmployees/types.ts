@@ -1,4 +1,4 @@
-import { Position } from "../useCombos/types";
+import { Position } from "../usePositions";
 import { DocumentType } from "../useDocuments";
 
 export type Employee = {

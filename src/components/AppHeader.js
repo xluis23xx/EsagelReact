@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { types } from "../types/types";
 import { AuthContext } from "../context/AuthContext";
 import { SettingsContext } from "../context/SettingsContext";
-import { ToggleButtonThemeComponent } from "./global-components/toggleButtonTheme";
+// import { ToggleButtonThemeComponent } from "./global-components/toggleButtonTheme";
 
 const AppHeader = () => {
   const distpatch = useDispatch();

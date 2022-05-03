@@ -24,7 +24,6 @@ const CoreUIIcons = React.lazy(() =>
 // Notifications
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
-const Toasts = React.lazy(() => import("./views/notifications/toasts/Toasts"));
 
 // Componentes propios del proyecto ESAGEL
 const EmployeesComponent = React.lazy(() =>
