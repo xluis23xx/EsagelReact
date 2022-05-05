@@ -6,7 +6,6 @@ const Typography = React.lazy(() =>
 );
 
 // Base
-const Popovers = React.lazy(() => import("./views/base/popovers/Popovers"));
 const Progress = React.lazy(() => import("./views/base/progress/Progress"));
 const Spinners = React.lazy(() => import("./views/base/spinners/Spinners"));
 const Tables = React.lazy(() => import("./views/base/tables/Tables"));
@@ -118,6 +117,18 @@ const NewProviderComponent = React.lazy(() =>
 
 const EditProviderComponent = React.lazy(() =>
   import("./components/providers/editProvider")
+);
+
+const ClientsComponent = React.lazy(() =>
+  import("./components/clients/clients")
+);
+
+const NewClientComponent = React.lazy(() =>
+  import("./components/clients/newClient")
+);
+
+const EditClientComponent = React.lazy(() =>
+  import("./components/clients/editClient")
 );
 
 const SettingsComponent = React.lazy(() =>
@@ -297,7 +308,19 @@ const routes = [
   {
     path: "/clientes",
     name: "Clientes",
-    element: Popovers,
+    element: ClientsComponent,
+    exact: true,
+  },
+  {
+    path: "/clientes/nuevo",
+    name: "Nuevo",
+    element: NewClientComponent,
+    exact: true,
+  },
+  {
+    path: "/clientes/editar/:id",
+    name: "Editar",
+    element: EditClientComponent,
     exact: true,
   },
   {
