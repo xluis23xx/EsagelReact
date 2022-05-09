@@ -94,11 +94,11 @@ export const useCourseTypes = () => {
               (courseType: CourseType) => courseType._id !== id
             )
           );
-          const nameCourseType = response?.name || "";
+          const courseTypeName = response?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Tipo de Curso ${nameCourseType} eliminado con éxito`,
+            text: `Tipo de Curso ${courseTypeName} eliminado con éxito`,
             timer: 2000,
           });
         } else {

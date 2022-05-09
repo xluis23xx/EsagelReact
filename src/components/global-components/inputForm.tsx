@@ -13,6 +13,8 @@ type InputProps = {
   className?: string;
   showError?: boolean;
   maxLength?: number;
+  min?: number;
+  max?: number;
   step?: string;
 };
 
@@ -29,6 +31,8 @@ export const InputForm: React.FC<InputProps> = ({
   className = "form-control",
   showError = true,
   maxLength = 50,
+  min = undefined,
+  max = undefined,
   step = undefined,
 }) => {
   return (
@@ -36,6 +40,8 @@ export const InputForm: React.FC<InputProps> = ({
       <input
         id={name}
         type={type}
+        min={min}
+        max={max}
         name={name}
         step={step}
         maxLength={maxLength}

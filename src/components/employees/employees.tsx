@@ -16,6 +16,7 @@ import {
 import { formatNames } from "../../utils/errors";
 import useForm from "../../hooks/useForm";
 import { InputForm } from "../global-components/inputForm";
+import { SharedButtons } from "../global-components/sharedButtons";
 
 const EmployeesComponent = () => {
   const {
@@ -87,36 +88,7 @@ const EmployeesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <div className="mx-auto mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start">
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    COPIA
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    EXCEL
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    CSV
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    PDF
-                  </button>
-                </div>
-
+                <SharedButtons />
                 <form
                   className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
                   onSubmit={handleOnSubmit}
@@ -161,7 +133,6 @@ const EmployeesComponent = () => {
                         <th>Teléfono</th>
                         <th>Fecha de Nacimiento</th>
                         <th>Imagen</th>
-                        {/* <th>Estado</th> */}
                         <th>Opciones</th>
                       </tr>
                     </thead>

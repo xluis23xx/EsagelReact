@@ -3,8 +3,9 @@ import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { ClientItem } from "./_children/client";
-import { Client, Status, useClients } from "../../hooks/useClients";
+import { SharedButtons } from "../global-components/sharedButtons";
+import { CourseItem } from "./_children/course";
+import { Course, Status, useCourses } from "../../hooks/useCourses";
 import {
   CButton,
   CModal,
@@ -13,24 +14,23 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { formatNames } from "../../utils/errors";
+import { formatDescription } from "../../utils/errors";
 import useForm from "../../hooks/useForm";
 import { InputForm } from "../global-components/inputForm";
-import { SharedButtons } from "../global-components/sharedButtons";
 
 const EmployeesComponent = () => {
   const {
-    clients,
-    deleteClient,
-    getAllClients,
-    searchClientsByFilter,
+    courses,
+    deleteCourse,
+    getAllCourses,
+    searchCoursesByFilter,
     status,
-  } = useClients();
+  } = useCourses();
   const [visible, setVisible] = React.useState(false);
-  const [clientId, setClientId] = React.useState("");
+  const [courseId, setCourseId] = React.useState("");
 
   React.useEffect(() => {
-    getAllClients();
+    getAllCourses();
   }, []);
 
   const stateSchema = {
@@ -40,23 +40,23 @@ const EmployeesComponent = () => {
   const stateValidatorSchema = {
     search: {
       required: false,
-      validator: formatNames(),
+      validator: formatDescription(),
       invalidtext: true,
     },
   };
 
-  const removeClient = (id: string) => {
+  const removeCourse = (id: string) => {
     setVisible(!visible);
     if (!visible) {
-      setClientId(id);
-    } else if (visible && clientId) {
-      deleteClient(id);
-      setClientId("");
+      setCourseId(id);
+    } else if (visible && courseId) {
+      deleteCourse(id);
+      setCourseId("");
     }
   };
 
   const handleSearch = (data) => {
-    searchClientsByFilter(data.search);
+    searchCoursesByFilter(data.search);
   };
 
   const {
@@ -73,7 +73,7 @@ const EmployeesComponent = () => {
         <div className="col-12 col-sm-6 col-md-4 col-lg-3">
           <Link
             className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/clientes/nuevo"
+            to="/cursos/nuevo"
           >
             Nuevo
           </Link>
@@ -84,12 +84,11 @@ const EmployeesComponent = () => {
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;CLIENTES
+              &nbsp;CURSOS
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
                 <SharedButtons />
-
                 <form
                   className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
                   onSubmit={handleOnSubmit}
@@ -122,46 +121,46 @@ const EmployeesComponent = () => {
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                clients.length > 0 ? (
+                courses.length > 0 ? (
                   <table className="table">
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre Completo</th>
-                        <th>Tipo de Documento</th>
-                        <th>N° Documento</th>
-                        <th>Teléfono</th>
-                        <th>Fecha de Nacimiento</th>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Modalidad</th>
+                        <th>Precio</th>
+                        <th>Número de Vacantes</th>
+                        <th>Estado</th>
                         <th>Opciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {clients.map((client: Client, index: number) => {
+                      {courses.map((course: Course, index: number) => {
                         const {
                           _id,
+                          code,
                           name,
-                          lastname,
-                          secondLastname,
-                          birthdate,
-                          documentNumber,
-                          documentType,
-                          phoneNumber,
+                          modality,
+                          courseType,
+                          price,
+                          vacanciesNumber,
                           status,
-                        } = client;
+                        } = course;
                         return (
-                          <ClientItem
+                          <CourseItem
                             key={index}
-                            code={_id}
-                            fullName={`${name ? name : ""} ${
-                              lastname ? lastname : ""
-                            } ${secondLastname ? secondLastname : ""}`}
-                            birthdate={birthdate}
-                            documentNumber={documentNumber}
-                            documentType={documentType}
-                            phoneNumber={phoneNumber}
+                            _id={_id}
+                            code={code}
+                            name={name}
+                            modality={modality}
+                            courseType={courseType}
+                            price={price}
                             status={status}
                             orderNumber={index + 1}
-                            handleRemove={removeClient}
+                            vacanciesNumber={vacanciesNumber}
+                            handleRemove={removeCourse}
                           />
                         );
                       })}
@@ -172,21 +171,21 @@ const EmployeesComponent = () => {
               <CModal
                 visible={visible}
                 onClose={() => {
-                  setClientId("");
+                  setCourseId("");
                   setVisible(false);
                 }}
               >
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Eliminar Cliente</CModalTitle>
+                  <CModalTitle>Eliminar Curso</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  ¿Estás seguro que quieres eliminar este cliente?
+                  ¿Estás seguro que quieres eliminar este curso?
                 </CModalBody>
                 <CModalFooter>
                   <CButton
                     color="secondary"
                     onClick={() => {
-                      setClientId("");
+                      setCourseId("");
                       setVisible(false);
                     }}
                   >
@@ -194,7 +193,7 @@ const EmployeesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
-                    onClick={() => removeClient(clientId)}
+                    onClick={() => removeCourse(courseId)}
                   >
                     Eliminar
                   </CButton>

@@ -92,11 +92,11 @@ export const useDocumentTypes = () => {
           setDocuments(
             documents.filter((document: DocumentType) => document._id !== id)
           );
-          const nameDocument = response?.name || "";
+          const documentName = response?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Tipo de Documento ${nameDocument} eliminado con éxito`,
+            text: `Tipo de Documento ${documentName} eliminado con éxito`,
             timer: 2000,
           });
         } else {

@@ -102,12 +102,12 @@ export const useClients = () => {
         if (response?.status === 201 || response?.status === 200) {
           setClients(clients.filter((client: Client) => client._id !== id));
           setClientsAll(clients.filter((client: Client) => client._id !== id));
-          const nameClient = response?.updatedClient?.name || "";
-          const lastnameClient = response?.updatedClient?.lastname || "";
+          const clientName = response?.updatedClient?.name || "";
+          const clientLastname = response?.updatedClient?.lastname || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Cliente ${nameClient} ${lastnameClient} eliminado con éxito`,
+            text: `Cliente ${clientName} ${clientLastname} eliminado con éxito`,
             timer: 2000,
           });
         } else {

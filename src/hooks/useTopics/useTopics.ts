@@ -101,11 +101,11 @@ export const useTopics = () => {
         if (response?.status === 201 || response?.status === 200) {
           setTopics(topics.filter((topic: Topic) => topic._id !== id));
           setTopicsAll(topics.filter((topic: Topic) => topic._id !== id));
-          const nameTopic = response?.updateTopic?.name || "";
+          const topicName = response?.updateTopic?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Tema ${nameTopic} eliminado con éxito`,
+            text: `Tema ${topicName} eliminado con éxito`,
             timer: 2000,
           });
         } else {

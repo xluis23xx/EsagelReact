@@ -2,13 +2,8 @@ import * as React from "react";
 import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
-import {
-  getEmployeeById,
-  getEmployees,
-  postEmployee,
-  putEmployee,
-} from "./helpers";
-import { Employee } from "./index";
+import { getCourseById, getCourses, postCourse, putCourse } from "./helpers";
+import { Course } from "./index";
 
 export enum Status {
   Loading,
@@ -17,33 +12,32 @@ export enum Status {
   Error,
 }
 
-export const useEmployees = () => {
-  const [employees, setEmployees] = React.useState<Employee[]>([]);
-  const [employeesAll, setEmployeesAll] = React.useState<Employee[]>([]);
-  const [employeeProfile, setEmployeeProfile] = React.useState<Employee>(null);
+export const useCourses = () => {
+  const [courses, setCourses] = React.useState<Course[]>([]);
+  const [coursesAll, setCoursesAll] = React.useState<Course[]>([]);
+  const [courseInfo, setCourseInfo] = React.useState<Course>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function setEmployeeById(id: string) {
+  function setCourseById(id: string) {
     setStatus(Status.Loading);
 
     const token = getCookie("esagel_token") || "";
-    getEmployeeById(token, id).then((response) => {
+    getCourseById(token, id).then((response) => {
       if (response?._id) {
-        setEmployeeProfile(response);
+        setCourseInfo(response);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getAllEmployees() {
+  function getAllCourses() {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token)
-      .then((allEmployees) => {
-        const enableEmployees =
-          allEmployees.filter((employee: Employee) => employee.status === 1) ||
-          [];
-        setEmployees(enableEmployees);
-        setEmployeesAll(enableEmployees);
+    getCourses(token)
+      .then((allCourses) => {
+        const enableCourses =
+          allCourses.filter((course: Course) => course.status === 1) || [];
+        setCourses(enableCourses);
+        setCoursesAll(enableCourses);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -51,35 +45,29 @@ export const useEmployees = () => {
       });
   }
 
-  function searchEmployeesByName(filter: string) {
+  function searchCoursesByFilter(filter: string) {
     if (filter.length === 0) {
-      setEmployees(employeesAll);
+      setCoursesAll(coursesAll);
     } else {
-      const employeesFilter = employeesAll.filter((employee: Employee) => {
-        const {
-          name = "",
-          lastname = "",
-          secondLastname = "",
-        } = employee || {};
+      const coursesFilter = coursesAll.filter((course: Course) => {
+        const { name = "", price = 0 } = course || {};
         const regex = new RegExp(filter.toLowerCase());
-        return regex.test(
-          `${name} ${lastname} ${secondLastname}`.toLowerCase()
-        );
+        return regex.test(`${name} ${price}`.toLowerCase());
       });
-      setEmployees(employeesFilter);
+      setCourses(coursesFilter);
     }
   }
 
-  async function updateEmployee(id: string, employee: any) {
+  async function updateCourse(id: string, course: any) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    return putEmployee(token, id, employee)
+    return putCourse(token, id, course)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Empleado actualizado éxitosamente",
+            text: "Curso actualizado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -104,24 +92,19 @@ export const useEmployees = () => {
       });
   }
 
-  async function deleteEmployee(id: string) {
+  async function deleteCourse(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putEmployee(token, id, { status: 0, isDelete: true })
+    putCourse(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
-          setEmployees(
-            employees.filter((employee: Employee) => employee._id !== id)
-          );
-          setEmployeesAll(
-            employees.filter((employee: Employee) => employee._id !== id)
-          );
-          const employeeName = response?.updatedEmployee?.name || "";
-          const employeeLastname = response?.updatedEmployee?.lastname || "";
+          setCourses(courses.filter((course: Course) => course._id !== id));
+          setCoursesAll(courses.filter((course: Course) => course._id !== id));
+          const courseName = response?.updatedCourse?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Empleado ${employeeName} ${employeeLastname} eliminado con éxito`,
+            text: `Curso ${courseName} eliminado con éxito`,
             timer: 2000,
           });
         } else {
@@ -144,16 +127,16 @@ export const useEmployees = () => {
       });
   }
 
-  async function registerEmployee(employee: any) {
+  async function registerCourse(course: any) {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
-    return postEmployee(token, employee)
+    return postCourse(token, course)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Empleado registrado éxitosamente",
+            text: "Curso registrado éxitosamente",
             timer: 2000,
           });
         } else {
@@ -179,14 +162,16 @@ export const useEmployees = () => {
   }
 
   return {
-    employees,
-    deleteEmployee,
-    searchEmployeesByName,
-    registerEmployee,
-    updateEmployee,
-    setEmployeeById,
-    employeeProfile,
-    getAllEmployees,
+    courses,
+    deleteCourse,
+    searchCoursesByFilter,
+    registerCourse,
+    updateCourse,
+    setCourseById,
+    courseInfo,
+    getAllCourses,
     status,
   };
 };
+
+// FALTA CREAR METODOS PARA AGREGAR TEMAS A LOS CURSOS

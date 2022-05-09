@@ -26,7 +26,7 @@ import {
 import { getUbigeo } from "../../utils/services";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 
-const EditEmployeeComponent = () => {
+const EditClientComponent = () => {
   const { updateClient, setClientById, clientInfo, status } = useClients();
   const { getAllDocumentTypes, documents } = useDocumentTypes();
   const { getAllContactForms, contactForms } = useContactForms();
@@ -546,4 +546,4 @@ const EditEmployeeComponent = () => {
   );
 };
 
-export default EditEmployeeComponent;
+export default EditClientComponent;

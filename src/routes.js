@@ -15,11 +15,6 @@ const FormControl = React.lazy(() =>
   import("./views/forms/form-control/FormControl")
 );
 
-// Icons
-const CoreUIIcons = React.lazy(() =>
-  import("./views/icons/coreui-icons/CoreUIIcons")
-);
-
 // Notifications
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
@@ -131,11 +126,23 @@ const EditClientComponent = React.lazy(() =>
   import("./components/clients/editClient")
 );
 
+const CoursesComponent = React.lazy(() =>
+  import("./components/courses/courses")
+);
+
+const NewCourseComponent = React.lazy(() =>
+  import("./components/courses/newCourse")
+);
+
+const EditCourseComponent = React.lazy(() =>
+  import("./components/courses/editCourse")
+);
+
 const SettingsComponent = React.lazy(() =>
   import("./components/settings/settings")
 );
 const routes = [
-  { path: "/", exact: true, name: "Home", element: Dashboard },
+  { path: "/", exact: true, name: "Escritorio", element: Dashboard },
   { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
   {
     path: "/empleados",
@@ -200,7 +207,19 @@ const routes = [
   {
     path: "/cursos",
     name: "Cursos",
-    element: CoreUIIcons,
+    element: CoursesComponent,
+    exact: true,
+  },
+  {
+    path: "/cursos/nuevo",
+    name: "Nuevo",
+    element: NewCourseComponent,
+    exact: true,
+  },
+  {
+    path: "/cursos/editar/:id",
+    name: "Editar",
+    element: EditCourseComponent,
     exact: true,
   },
   {

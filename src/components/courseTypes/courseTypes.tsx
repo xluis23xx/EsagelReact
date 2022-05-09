@@ -13,6 +13,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
+import { SharedButtons } from "../global-components/sharedButtons";
 
 const CourseTypesComponent = () => {
   const { courseTypes, deleteCourseType, getAllCourseTypes, status } =
@@ -55,35 +56,7 @@ const CourseTypesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <div className="mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start">
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    COPIA
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    EXCEL
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    CSV
-                  </button>
-
-                  <button
-                    type="button"
-                    className="btn btn-default btn-secondary"
-                  >
-                    PDF
-                  </button>
-                </div>
+                <SharedButtons />
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>

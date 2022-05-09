@@ -4,7 +4,6 @@
 
 (function () {
   let lightSwitch = document.getElementById("lightSwitch");
-  console.log("llego aca");
   if (!lightSwitch) {
     return;
   }

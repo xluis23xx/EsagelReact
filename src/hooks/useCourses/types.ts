@@ -1,15 +1,18 @@
 import { CourseType } from "../useCourseTypes";
+import { Topic } from "../useTopics";
 
 export type Course = {
   _id?: string;
   code?: string;
   name?: string;
+  description?: string;
   modality?: string;
   price?: number;
   image?: string | null;
   vacanciesNumber?: number;
-  status?: number | null;
   courseType?: CourseType;
+  status?: number | null;
+  topics?: Topic[] | null;
   createdAt?: string;
   updatedAt?: string;
 };
