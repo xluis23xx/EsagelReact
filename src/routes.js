@@ -7,7 +7,6 @@ const Typography = React.lazy(() =>
 
 // Base
 const Progress = React.lazy(() => import("./views/base/progress/Progress"));
-const Spinners = React.lazy(() => import("./views/base/spinners/Spinners"));
 const Tables = React.lazy(() => import("./views/base/tables/Tables"));
 
 //Forms
@@ -354,7 +353,7 @@ const routes = [
     element: FormControl,
     exact: true,
   },
-  { path: "/reportes", name: "Reportes", element: Spinners, exact: true },
+  // { path: "/reportes", name: "Reportes", element: Spinners, exact: true },
   {
     path: "/configuracion",
     name: "Configuración",

@@ -2,7 +2,6 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { ProviderItem } from "./_children/provider";
 import { Provider, Status, useProviders } from "../../hooks/useProviders";
 import {
@@ -14,9 +13,11 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { formatNames, formatRuc } from "../../utils/errors";
-import useForm from "../../hooks/useForm";
-import { InputForm } from "../global-components/inputForm";
 import { SharedButtons } from "../global-components/sharedButtons";
+import {
+  RedirectionButton,
+  SearchButton,
+} from "../global-components/globalButtons";
 
 const ProvidersComponent = () => {
   const {
@@ -33,16 +34,10 @@ const ProvidersComponent = () => {
     getAllProviders();
   }, []);
 
-  const stateSchema = {
-    search: { value: "", error: "" },
-  };
-
-  const stateValidatorSchema = {
-    search: {
-      required: false,
-      validator: formatNames() || formatRuc(),
-      invalidtext: true,
-    },
+  const validators = {
+    required: false,
+    validator: formatNames() || formatRuc(),
+    invalidtext: true,
   };
 
   const removeProvider = (id: string) => {
@@ -59,25 +54,10 @@ const ProvidersComponent = () => {
     searchProvidersByFilter(data.search);
   };
 
-  const {
-    values: { search },
-    errors: { search: searchError },
-    handleOnChange,
-    handleOnSubmit,
-    disable,
-  } = useForm(stateSchema, stateValidatorSchema, handleSearch);
-
   return (
     <>
       <div className="row mb-3">
-        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-          <Link
-            className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/proveedores/nuevo"
-          >
-            Nuevo
-          </Link>
-        </div>
+        <RedirectionButton redirection="/proveedores/nuevo" />
       </div>
       <div className="row mt-3">
         <div className="col-lg-12">
@@ -89,31 +69,10 @@ const ProvidersComponent = () => {
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
                 <SharedButtons />
-                <form
-                  className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
-                  onSubmit={handleOnSubmit}
-                >
-                  <div className="col-12 col-sm-8">
-                    <InputForm
-                      type="search"
-                      name="search"
-                      className="form-control"
-                      placeholder="Buscar"
-                      aria-label="Search"
-                      value={search}
-                      error={searchError}
-                      showError={false}
-                      onChange={handleOnChange}
-                    />
-                  </div>
-                  <button
-                    className="btn btn-success text-white col-12 col-sm-4 my-1 my-sm-0"
-                    type="submit"
-                    disabled={disable}
-                  >
-                    Buscar
-                  </button>
-                </form>
+                <SearchButton
+                  validators={validators}
+                  handleSearch={handleSearch}
+                />
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>

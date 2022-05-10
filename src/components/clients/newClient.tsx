@@ -133,7 +133,7 @@ const NewClientComponent = () => {
     };
     registerClient(client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/clients");
+        history.push("/clientes");
       }
     });
   };
@@ -470,6 +470,7 @@ const NewClientComponent = () => {
                     error={professionError}
                   />
                 </div>
+                <div className="col-12" />
                 <div className="form-group col-sm-6 col-md-4 mt-3">
                   <button
                     type="submit"

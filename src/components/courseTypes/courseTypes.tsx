@@ -2,7 +2,6 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { CourseTypeItem } from "./_children/courseType";
 import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
 import {
@@ -14,6 +13,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { SharedButtons } from "../global-components/sharedButtons";
+import { RedirectionButton } from "../global-components/globalButtons";
 
 const CourseTypesComponent = () => {
   const { courseTypes, deleteCourseType, getAllCourseTypes, status } =
@@ -38,14 +38,7 @@ const CourseTypesComponent = () => {
   return (
     <>
       <div className="row mb-3">
-        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-          <Link
-            className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/tipos-curso/nuevo"
-          >
-            Nuevo
-          </Link>
-        </div>
+        <RedirectionButton redirection="/tipos-curso/nuevo" />
       </div>
       <div className="row mt-3">
         <div className="col-lg-12">
@@ -57,6 +50,7 @@ const CourseTypesComponent = () => {
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
                 <SharedButtons />
+                <div className="col-12 col-md-6" />
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>

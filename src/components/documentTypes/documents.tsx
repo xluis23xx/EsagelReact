@@ -2,7 +2,6 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { DocumentTypeItem } from "./_children/document";
 import {
   DocumentType,
@@ -18,6 +17,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { SharedButtons } from "../global-components/sharedButtons";
+import { RedirectionButton } from "../global-components/globalButtons";
 
 const DocumentTypesComponent = () => {
   const { documents, deleteDocumentType, getAllDocumentTypes, status } =
@@ -42,14 +42,7 @@ const DocumentTypesComponent = () => {
   return (
     <>
       <div className="row mb-3">
-        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-          <Link
-            className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/tipos-documento/nuevo"
-          >
-            Nuevo
-          </Link>
-        </div>
+        <RedirectionButton redirection="/tipos-documento/nuevo" />
       </div>
       <div className="row mt-3">
         <div className="col-lg-12">
@@ -61,6 +54,7 @@ const DocumentTypesComponent = () => {
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
                 <SharedButtons />
+                <div className="col-12 col-md-6" />
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>

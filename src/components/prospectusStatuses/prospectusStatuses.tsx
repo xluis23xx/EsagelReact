@@ -2,7 +2,6 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { PropesctusStatusItem } from "./_children/prospectusStatus";
 import {
   CButton,
@@ -18,6 +17,7 @@ import {
   Status,
 } from "../../hooks/usePropectusStatus";
 import { SharedButtons } from "../global-components/sharedButtons";
+import { RedirectionButton } from "../global-components/globalButtons";
 
 const ProspectStatusesComponent = () => {
   const {
@@ -46,14 +46,7 @@ const ProspectStatusesComponent = () => {
   return (
     <>
       <div className="row mb-3">
-        <div className="col-12 col-sm-6 col-md-4 col-lg-3">
-          <Link
-            className="btn btn-block btn-success w-100 h-auto text-white"
-            to="/estados-prospecto/nuevo"
-          >
-            Nuevo
-          </Link>
-        </div>
+        <RedirectionButton redirection="/estados-prospecto/nuevo" />
       </div>
       <div className="row mt-3">
         <div className="col-lg-12">
@@ -65,6 +58,7 @@ const ProspectStatusesComponent = () => {
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
                 <SharedButtons />
+                <div className="col-12 col-md-6" />
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>

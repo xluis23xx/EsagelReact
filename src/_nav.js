@@ -158,12 +158,12 @@ const _nav = [
         to: "/metas",
         icon: <CIcon icon={cibGraphcool} customClassName="nav-icon" />,
       },
-      {
-        component: CNavItem,
-        name: "Reportes",
-        to: "/reportes",
-        icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
-      },
+      // {
+      //   component: CNavItem,
+      //   name: "Reportes",
+      //   to: "/reportes",
+      //   icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+      // },
     ],
   },
   {

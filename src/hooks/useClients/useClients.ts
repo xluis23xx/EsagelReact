@@ -47,7 +47,7 @@ export const useClients = () => {
 
   function searchClientsByFilter(filter: string) {
     if (filter.length === 0) {
-      setClientsAll(clientsAll);
+      setClients(clientsAll);
     } else {
       const clientsFilter = clientsAll.filter((client: Client) => {
         const { name = "", lastname = "", secondLastname = "" } = client || {};
