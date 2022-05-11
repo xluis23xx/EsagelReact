@@ -6,6 +6,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import { Topic, Status, useTopics } from "../../hooks/useTopics";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewTopicComponent = () => {
   const { registerTopic, status } = useTopics();
@@ -101,11 +102,9 @@ const NewTopicComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={disable || status === Status.Updating}
                   >
                     {status === Status.Updating ? (
                       <>
@@ -119,9 +118,9 @@ const NewTopicComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/temas"
                     className="btn btn-block btn-secondary w-100"

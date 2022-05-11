@@ -24,6 +24,7 @@ import {
 } from "../../hooks/useProspectusOrigin";
 import { getUbigeo } from "../../utils/services";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
@@ -471,11 +472,9 @@ const NewClientComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={disable || status === Status.Updating}
                   >
                     {status === Status.Updating ? (
                       <>
@@ -489,9 +488,9 @@ const NewClientComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/clientes"
                     className="btn btn-block btn-secondary w-100"

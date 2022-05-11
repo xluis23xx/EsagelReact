@@ -6,6 +6,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewCourseTypeComponent = () => {
   const { registerCourseType, status: statusUse } = useCourseTypes();
@@ -148,11 +149,11 @@ const NewCourseTypeComponent = () => {
                     error={descriptionError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={disable || statusUse === Status.Updating}
                   >
                     {statusUse === Status.Updating ? (
                       <>
@@ -166,9 +167,9 @@ const NewCourseTypeComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/tipos-curso"
                     className="btn btn-block btn-secondary w-100"

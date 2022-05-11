@@ -12,6 +12,7 @@ import {
 } from "../../hooks/usePropectusStatus";
 import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditProspectStatusComponent = () => {
   const { updateProspectStatus, setProspectStatusById, prospectInfo, status } =
@@ -95,7 +96,9 @@ const EditProspectStatusComponent = () => {
                     name="name"
                     value={(name ?? prospectInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -109,7 +112,9 @@ const EditProspectStatusComponent = () => {
                     value={(description ?? prospectInfo?.description) || ""}
                     rows={2}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={descriptionError}
                   />
                 </div>
@@ -148,11 +153,14 @@ const EditProspectStatusComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -166,9 +174,9 @@ const EditProspectStatusComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/estados-prospecto"
                     className="btn btn-block btn-secondary w-100"

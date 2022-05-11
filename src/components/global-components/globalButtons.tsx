@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import * as React from "react";
 import useForm from "../../hooks/useForm";
 import { InputForm } from "./inputForm";
+import CIcon from "@coreui/icons-react";
+import { cilPencil } from "@coreui/icons";
 
 export const RedirectionButton = ({
   redirection = "",
-  classContainer = "col-12 col-sm-3 col-lg-2",
+  classContainer = "col-12 col-sm-3 col-md-2 col-lg-2",
   classButton = "btn btn-block btn-success w-100 h-auto text-white",
   textButton = "Nuevo",
 }) => (
@@ -15,6 +17,24 @@ export const RedirectionButton = ({
     </Link>
   </div>
 );
+
+export const EditItemButton = ({
+  className = "btn btn-warning",
+  code = "",
+  path = "",
+  subsection = "editar",
+}) => {
+  return (
+    <Link
+      type="button"
+      className={className}
+      style={{ height: 40, width: 40 }}
+      to={`/${path}/${subsection}/${code}`}
+    >
+      <CIcon icon={cilPencil} />
+    </Link>
+  );
+};
 
 export const SearchButton = ({
   validators,
@@ -44,7 +64,7 @@ export const SearchButton = ({
       className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
       onSubmit={handleOnSubmit}
     >
-      <div className="col-12 col-sm-8 my-1">
+      <div className="col-12 col-sm-6 my-1 ms-sm-auto">
         <InputForm
           type="search"
           name="search"
@@ -58,12 +78,30 @@ export const SearchButton = ({
         />
       </div>
       <button
-        className="btn btn-success text-white col-12 col-sm-3 my-1 ms-sm-auto"
+        className="btn btn-dark text-white col-12 col-sm-3 my-1 ms-sm-3"
         type="submit"
         disabled={disable}
       >
         {textButton}
       </button>
     </form>
+  );
+};
+
+export const SubmitButton = ({
+  disabled = undefined,
+  children,
+  className = "btn btn-block btn-info w-100",
+  style = undefined,
+}) => {
+  return (
+    <button
+      type="submit"
+      className={className}
+      disabled={disabled}
+      style={style ? { ...style } : undefined}
+    >
+      {children}
+    </button>
   );
 };

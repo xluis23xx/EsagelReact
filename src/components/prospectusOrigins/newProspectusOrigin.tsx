@@ -10,6 +10,7 @@ import {
   useProspectOrigins,
 } from "../../hooks/useProspectusOrigin";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewProspectOriginComponent = () => {
   const { registerProspectOrigin, status } = useProspectOrigins();
@@ -125,11 +126,9 @@ const NewProspectOriginComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={disable || status === Status.Updating}
                   >
                     {status === Status.Updating ? (
                       <>
@@ -143,9 +142,9 @@ const NewProspectOriginComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/origenes-prospecto"
                     className="btn btn-block btn-secondary w-100"

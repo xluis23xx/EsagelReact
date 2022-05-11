@@ -187,6 +187,7 @@ const NewCourseTypeComponent = () => {
                       Swal.fire({
                         imageUrl: showImage,
                         imageHeight: "auto",
+                        padding: "20",
                         imageAlt: "Logo de la empresa",
                       })
                     }

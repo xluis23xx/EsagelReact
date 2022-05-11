@@ -5,6 +5,7 @@ import { formatNames, formatPhone, formatRuc } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import { Status, useProviders } from "../../hooks/useProviders";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewProviderComponent = () => {
   const { registerProvider, status } = useProviders();
@@ -151,16 +152,25 @@ const NewProviderComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={disable || status === Status.Updating}
                   >
-                    {status === Status.Updating ? "Cargando" : "Registrar"}
-                  </button>
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Registrar"
+                    )}
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/proveedores"
                     className="btn btn-block btn-secondary w-100"

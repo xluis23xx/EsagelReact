@@ -34,7 +34,11 @@ const AppHeader = () => {
   let roles = "";
   if (Object.keys(user).length > 0) {
     if (user?.employee?.name) {
-      nameProfile = user.employee.name;
+      if (user?.employee?.lastname) {
+        nameProfile = `${user.employee.name} ${user.employee.lastname}`;
+      } else {
+        nameProfile = user.employee.name;
+      }
     } else if (user.username) {
       nameProfile = user.username;
     } else {

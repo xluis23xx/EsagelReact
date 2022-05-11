@@ -1,7 +1,7 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import {  cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 import { Course } from "../../../hooks/useCourses";
 
@@ -48,14 +48,7 @@ export const CourseItem: React.FC<CourseItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/cursos/editar/${_id}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={_id} path={"cursos"} />
             &nbsp;
             <button
               type="button"

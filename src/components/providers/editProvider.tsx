@@ -7,6 +7,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import { Status, useProviders } from "../../hooks/useProviders";
 import { setFormatDate } from "../../utils/formats";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditProviderComponent = () => {
   const { updateProvider, setProviderById, providerInfo, status } =
@@ -87,7 +88,7 @@ const EditProviderComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR EMPLEADO
+                <i className="fa fa-align-justify"></i>EDITAR PROVEEDOR
               </div>
             </div>
           </div>
@@ -175,7 +176,9 @@ const EditProviderComponent = () => {
                     name="contactName"
                     value={(contactName ?? providerInfo?.contactName) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={contactNameError}
                   />
                 </div>
@@ -189,16 +192,20 @@ const EditProviderComponent = () => {
                     name="phoneNumber"
                     value={(phoneNumber ?? providerInfo?.phoneNumber) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={phoneNumberError}
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -212,9 +219,9 @@ const EditProviderComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/proveedores"
                     className="btn btn-block btn-secondary w-100"

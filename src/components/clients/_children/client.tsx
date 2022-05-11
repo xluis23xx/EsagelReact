@@ -1,7 +1,7 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 import { Client } from "../../../hooks/useClients";
 import { setFormatDate } from "../../../utils/formats";
@@ -34,14 +34,7 @@ export const ClientItem: React.FC<ClientItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/clientes/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"clientes"} />
             &nbsp;
             <button
               type="button"

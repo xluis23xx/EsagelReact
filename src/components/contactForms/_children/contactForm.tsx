@@ -1,10 +1,10 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { setFormatCharacters } from "../../../utils/formats";
 
 import { ContactForm } from "../../../hooks/useContactForms";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 type ContactFormItemProps = ContactForm & {
   orderNumber: number;
@@ -31,14 +31,7 @@ export const ContactFormItem: React.FC<ContactFormItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/medios-contacto/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"medios-contacto"} />
             &nbsp;
             <button
               type="button"

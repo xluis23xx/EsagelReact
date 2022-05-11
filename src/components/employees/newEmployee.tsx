@@ -18,6 +18,7 @@ import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { usePositions, Position } from "../../hooks/usePositions";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewEmployeeComponent = () => {
   const { registerEmployee, status } = useEmployees();
@@ -223,6 +224,7 @@ const NewEmployeeComponent = () => {
                       Swal.fire({
                         imageUrl: showImage,
                         imageHeight: "auto",
+                        padding: "20",
                         imageAlt: "imagen del empleado",
                       })
                     }
@@ -465,13 +467,14 @@ const NewEmployeeComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage ? true : false
+                      disable || uploading || errorMessage
+                        ? true
+                        : false || status === Status.Updating
                     }
-                    className="btn btn-block btn-primary w-100"
                   >
                     {status === Status.Updating ? (
                       <>
@@ -485,9 +488,9 @@ const NewEmployeeComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/empleados"
                     className="btn btn-block btn-secondary w-100"

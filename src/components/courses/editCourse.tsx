@@ -12,6 +12,7 @@ import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { useCourseTypes, CourseType } from "../../hooks/useCourseTypes";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
@@ -185,6 +186,7 @@ const EditCourseComponent = () => {
                       Swal.fire({
                         imageUrl: showImage,
                         imageHeight: "auto",
+                        padding: "20",
                         imageAlt: "imagen del curso",
                       })
                     }
@@ -390,7 +392,9 @@ const EditCourseComponent = () => {
                     id="courseType"
                     name="courseType"
                     required
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     value={(courseType ?? courseInfo?.courseType?.name) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -439,16 +443,17 @@ const EditCourseComponent = () => {
                     </p>
                   )}
                 </div>
-
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
                     disabled={
                       disable || uploading || errorMessage
                         ? true
-                        : false || modalityError
+                        : false ||
+                          modalityError ||
+                          status === Status.Loading ||
+                          status === Status.Updating
                     }
-                    className="btn btn-block btn-primary w-100"
                   >
                     {status === Status.Updating ? (
                       <>
@@ -462,9 +467,9 @@ const EditCourseComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/cursos"
                     className="btn btn-block btn-secondary w-100"

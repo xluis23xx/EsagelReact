@@ -8,6 +8,7 @@ import { InputForm } from "../global-components/inputForm";
 import { Topic, Status, useTopics } from "../../hooks/useTopics";
 import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditTopicComponent = () => {
   const { updateTopic, setTopicById, topicInfo, status } = useTopics();
@@ -89,7 +90,9 @@ const EditTopicComponent = () => {
                     name="name"
                     value={(name ?? topicInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -103,7 +106,9 @@ const EditTopicComponent = () => {
                     value={(description ?? topicInfo?.description) || ""}
                     rows={2}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={descriptionError}
                   />
                 </div>
@@ -142,16 +147,30 @@ const EditTopicComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
-                    {status === Status.Updating ? "Cargando" : "Actualizar"}
-                  </button>
+                    {status === Status.Updating ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        &nbsp;Cargando...
+                      </>
+                    ) : (
+                      "Actualizar"
+                    )}
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/temas"
                     className="btn btn-block btn-secondary w-100"

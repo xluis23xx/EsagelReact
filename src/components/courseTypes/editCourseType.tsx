@@ -7,6 +7,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewCourseTypeComponent = () => {
   const {
@@ -31,12 +32,6 @@ const NewCourseTypeComponent = () => {
   };
 
   const stateValidatorSchema = {
-    // code: {
-    //   required: true,
-    //   validator: formatNames(),
-    //   min2caracts: true,
-    //   invalidtext: true,
-    // },
     name: {
       required: true,
       validator: formatNames(),
@@ -56,7 +51,6 @@ const NewCourseTypeComponent = () => {
 
   const onSubmitForm = (data: CourseType) => {
     const courseType = {
-      // code: data?.code || null,
       name: (data?.name ?? courseTypeInfo?.name) || null,
       description: (data?.description ?? courseTypeInfo?.description) || null,
       status: (data?.status ?? courseTypeInfo?.status) || 1,
@@ -124,7 +118,10 @@ const NewCourseTypeComponent = () => {
                     name="name"
                     value={(name ?? courseTypeInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={statusUse === Status.Updating}
+                    disabled={
+                      statusUse === Status.Loading ||
+                      statusUse === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -134,7 +131,10 @@ const NewCourseTypeComponent = () => {
                     id="status"
                     name="status"
                     required
-                    disabled={statusUse === Status.Updating}
+                    disabled={
+                      statusUse === Status.Loading ||
+                      statusUse === Status.Updating
+                    }
                     value={(status ?? courseTypeInfo?.status?.toString()) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -157,15 +157,21 @@ const NewCourseTypeComponent = () => {
                     rows={3}
                     value={(description ?? courseTypeInfo?.description) || ""}
                     onChange={handleOnChange}
-                    disabled={statusUse === Status.Updating}
+                    disabled={
+                      statusUse === Status.Loading ||
+                      statusUse === Status.Updating
+                    }
                     error={descriptionError}
                   />
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      statusUse === Status.Loading ||
+                      statusUse === Status.Updating
+                    }
                   >
                     {statusUse === Status.Updating ? (
                       <>
@@ -179,9 +185,9 @@ const NewCourseTypeComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/tipos-curso"
                     className="btn btn-block btn-secondary w-100"

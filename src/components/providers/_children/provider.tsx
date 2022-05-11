@@ -1,8 +1,8 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
-import { setFormatDate } from "src/utils/formats";
+import { EditItemButton } from "../../global-components/globalButtons";
+import { setFormatDate } from "../../../utils/formats";
 
 import { Provider } from "../../../hooks/useProviders";
 
@@ -35,14 +35,7 @@ export const ProviderItem: React.FC<ProviderItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/proveedores/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"proveedores"} />
             &nbsp;
             <button
               type="button"

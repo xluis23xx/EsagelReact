@@ -1,10 +1,10 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { setFormatDate } from "../../../utils/formats";
 
 import { DocumentType } from "../../../hooks/useDocuments";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 type DocumentTypeItemProps = DocumentType & {
   orderNumber: number;
@@ -29,18 +29,11 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
       <td>{operation || ""}</td>
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
-      {/* <td>{status ? "activo" : "inactivo"}</td> */}
+
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/tipos-documento/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"tipos-documento"} />
             &nbsp;
             <button
               type="button"

@@ -25,6 +25,7 @@ import {
 } from "../../hooks/useProspectusOrigin";
 import { getUbigeo } from "../../utils/services";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditClientComponent = () => {
   const { updateClient, setClientById, clientInfo, status } = useClients();
@@ -270,7 +271,9 @@ const EditClientComponent = () => {
                     name="email"
                     value={(email ?? clientInfo?.email) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={emailError}
                   />
                 </div>
@@ -330,7 +333,9 @@ const EditClientComponent = () => {
                     id="department"
                     name="department"
                     required
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     value={(department ?? clientInfo?.department) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -359,7 +364,9 @@ const EditClientComponent = () => {
                     name="address"
                     value={(address ?? clientInfo?.address) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={addressError}
                   />
                 </div>
@@ -407,7 +414,9 @@ const EditClientComponent = () => {
                     id="leadSource"
                     name="leadSource"
                     required
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     value={(leadSource ?? clientInfo?.leadSource?.name) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -434,7 +443,9 @@ const EditClientComponent = () => {
                     id="prospectStatus"
                     name="prospectStatus"
                     required
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     value={
                       (prospectStatus ?? clientInfo?.prospectStatus?.name) || ""
                     }
@@ -461,7 +472,9 @@ const EditClientComponent = () => {
                     id="contactForm"
                     name="contactForm"
                     required
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     value={(contactForm ?? clientInfo?.contactForm?.name) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -489,7 +502,9 @@ const EditClientComponent = () => {
                     name="business"
                     value={(business ?? clientInfo?.business) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={businessError}
                   />
                 </div>
@@ -503,16 +518,20 @@ const EditClientComponent = () => {
                     name="profession"
                     value={(profession ?? clientInfo?.profession) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={professionError}
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -526,9 +545,10 @@ const EditClientComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/clientes"
                     className="btn btn-block btn-secondary w-100"

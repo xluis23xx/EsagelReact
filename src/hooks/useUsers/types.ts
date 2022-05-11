@@ -14,3 +14,6 @@ export type User = {
   employee: Employee | null;
   image: string | null;
 };
+
+export type GetUser = User;
+export type GetUsers = User[];

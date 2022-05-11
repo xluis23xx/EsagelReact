@@ -1,9 +1,9 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { setFormatCharacters } from "../../../utils/formats";
 import { Topic } from "../../../hooks/useTopics";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 type TopicItemProps = Topic & {
   orderNumber: number;
@@ -30,14 +30,7 @@ export const TopicItem: React.FC<TopicItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/temas/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"temas"} />
             &nbsp;
             <button
               type="button"

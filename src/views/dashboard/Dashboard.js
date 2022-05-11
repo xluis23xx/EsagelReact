@@ -1,10 +1,14 @@
 import React from "react";
 
-import { CButton, CCol, CRow } from "@coreui/react";
-import { CChartLine } from "@coreui/react-chartjs";
+import {
+  // CButton,
+  CCol,
+  CRow,
+} from "@coreui/react";
+import { CChartLine, CChartDoughnut } from "@coreui/react-chartjs";
 import { getStyle, hexToRgba } from "@coreui/utils";
-import CIcon from "@coreui/icons-react";
-import { cilCloudDownload } from "@coreui/icons";
+// import CIcon from "@coreui/icons-react";
+// import { cilCloudDownload } from "@coreui/icons";
 
 import WidgetsDropdown from "../widgets/WidgetsDropdown";
 
@@ -52,9 +56,9 @@ const Dashboard = () => {
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
-                  <CButton color="primary" className="float-end">
+                  {/* <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton>
+                  </CButton> */}
                 </CCol>
               </CRow>
 
@@ -78,7 +82,7 @@ const Dashboard = () => {
                   maintainAspectRatio: false,
                   plugins: {
                     legend: {
-                      display: false,
+                      display: true,
                     },
                   },
                   scales: {
@@ -126,9 +130,9 @@ const Dashboard = () => {
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
-                  <CButton color="primary" className="float-end">
+                  {/* <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton>
+                  </CButton> */}
                 </CCol>
               </CRow>
 
@@ -152,7 +156,7 @@ const Dashboard = () => {
                   maintainAspectRatio: false,
                   plugins: {
                     legend: {
-                      display: false,
+                      display: true,
                     },
                   },
                   scales: {
@@ -170,6 +174,132 @@ const Dashboard = () => {
                       },
                     },
                   },
+                  elements: {
+                    line: {
+                      tension: 0.4,
+                    },
+                    point: {
+                      radius: 0,
+                      hitRadius: 10,
+                      hoverRadius: 4,
+                      hoverBorderWidth: 3,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-6">
+          <div className="card">
+            <div className="card-header">Ventas - últimos 3 meses</div>
+            <div className="card card-body bg-white p-4">
+              <CRow>
+                <CCol sm={8}>
+                  <h4 id="traffic" className="card-title mb-0">
+                    Monto Ganado por mes
+                  </h4>
+                  <div className="medium text-medium-emphasis">
+                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                  </div>
+                </CCol>
+                <CCol sm={4} className="d-none d-md-block">
+                  {/* <CButton color="primary" className="float-end">
+                    <CIcon icon={cilCloudDownload} />
+                  </CButton> */}
+                </CCol>
+              </CRow>
+
+              <CChartDoughnut
+                style={{ height: "290px", marginTop: "15px" }}
+                data={{
+                  labels: [thirthMonth, secondMonth, firstMonth],
+                  datasets: [
+                    {
+                      label: "Egresos",
+                      borderColor: "#ffffff",
+                      borderWidth: 2,
+                      backgroundColor: [
+                        "rgb(255, 99, 132)",
+                        "rgb(54, 162, 235)",
+                        "rgb(255, 205, 86)",
+                      ],
+                      data: [400, 500, 100],
+                      fill: true,
+                    },
+                  ],
+                }}
+                options={{
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                    },
+                  },
+
+                  elements: {
+                    line: {
+                      tension: 0.4,
+                    },
+                    point: {
+                      radius: 0,
+                      hitRadius: 10,
+                      hoverRadius: 4,
+                      hoverBorderWidth: 3,
+                    },
+                  },
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-6">
+          <div className="card">
+            <div className="card-header">Compras - últimos 3 meses</div>
+            <div className="card card-body bg-white p-4">
+              <CRow>
+                <CCol sm={8}>
+                  <h4 id="traffic" className="card-title mb-0">
+                    Monto Perdido por mes
+                  </h4>
+                  <div className="medium text-medium-emphasis">
+                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                  </div>
+                </CCol>
+                <CCol sm={4} className="d-none d-md-block">
+                  {/* <CButton color="primary" className="float-end">
+                    <CIcon icon={cilCloudDownload} />
+                  </CButton> */}
+                </CCol>
+              </CRow>
+
+              <CChartDoughnut
+                style={{ height: "290px", marginTop: "15px" }}
+                data={{
+                  labels: [thirthMonth, secondMonth, firstMonth],
+                  datasets: [
+                    {
+                      label: "Egresos",
+                      borderColor: "#ffffff",
+                      borderWidth: 2,
+                      backgroundColor: [
+                        "rgb(255, 99, 132)",
+                        "rgb(54, 162, 235)",
+                        "rgb(255, 205, 86)",
+                      ],
+                      data: [400, 800, 10],
+                      fill: true,
+                    },
+                  ],
+                }}
+                options={{
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                    },
+                  },
+
                   elements: {
                     line: {
                       tension: 0.4,

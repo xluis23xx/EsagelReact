@@ -12,6 +12,7 @@ import {
 } from "../../hooks/useContactForms";
 import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditContactFormComponent = () => {
   const { updateContactForm, setContactFormById, contactFormInfo, status } =
@@ -94,7 +95,9 @@ const EditContactFormComponent = () => {
                     name="name"
                     value={(name ?? contactFormInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -108,7 +111,9 @@ const EditContactFormComponent = () => {
                     value={(description ?? contactFormInfo?.description) || ""}
                     rows={2}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={descriptionError}
                   />
                 </div>
@@ -147,11 +152,14 @@ const EditContactFormComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -165,9 +173,9 @@ const EditContactFormComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/medios-contacto"
                     className="btn btn-block btn-secondary w-100"

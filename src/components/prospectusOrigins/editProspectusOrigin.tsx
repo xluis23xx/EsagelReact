@@ -12,6 +12,7 @@ import {
 } from "../../hooks/useProspectusOrigin";
 import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditProspectOriginComponent = () => {
   const { updateProspectOrigin, setProspectOriginById, prospectInfo, status } =
@@ -106,7 +107,9 @@ const EditProspectOriginComponent = () => {
                     name="name"
                     value={(name ?? prospectInfo?.name) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={nameError}
                   />
                 </div>
@@ -120,7 +123,9 @@ const EditProspectOriginComponent = () => {
                     value={(description ?? prospectInfo?.description) || ""}
                     rows={2}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     error={descriptionError}
                   />
                 </div>
@@ -159,11 +164,14 @@ const EditProspectOriginComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -177,9 +185,9 @@ const EditProspectOriginComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/origenes-prospecto"
                     className="btn btn-block btn-secondary w-100"

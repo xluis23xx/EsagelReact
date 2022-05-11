@@ -1,9 +1,9 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { setFormatCharacters } from "../../../utils/formats";
 import { ProspectusOrigin } from "../../../hooks/useProspectusOrigin";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 type ProspectOriginItemProps = ProspectusOrigin & {
   orderNumber: number;
@@ -30,14 +30,7 @@ export const PropesctusOriginItem: React.FC<ProspectOriginItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/origenes-prospecto/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"origenes-prospecto"} />
             &nbsp;
             <button
               type="button"

@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { CInputGroupText } from "@coreui/react";
+import { CImage, CInputGroupText } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
 import { formatEmail, formatPass } from "../../../utils/errors";
@@ -11,6 +10,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { SettingsContext } from "../../../context/SettingsContext";
 import { setCookie } from "../../../utils/cookies";
 import { useSettings } from "../../../hooks/useSettings";
+import esagelImage from "src/assets/images/esagel.png";
 
 const Login = () => {
   const { setUser } = React.useContext(AuthContext);
@@ -68,15 +68,48 @@ const Login = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div
+      className="min-vh-100 d-flex flex-row align-items-center"
+      style={{ backgroundColor: "#EF3A01" }}
+    >
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-sm-8 col-md-5 col-lg-4">
             <div className="card-group">
-              <div className="card p-4">
-                <div className="card-body">
-                  <h1>Iniciar Sesión</h1>
-                  <p className="text-medium-emphasis">Accede a tu cuenta</p>
+              <div className="card">
+                <div
+                  className="card-header"
+                  style={{ backgroundColor: "#000000", maxHeight: 90 }}
+                >
+                  <CImage
+                    src={esagelImage}
+                    style={{
+                      width: "auto",
+                      padding: 3,
+                      margin: "auto",
+                      display: "block",
+                      maxHeight: 70,
+                    }}
+                  />
+                </div>
+                <div className="card-body p-4 pb-5">
+                  <p className="w-100 d-flex">
+                    <span
+                      style={{ height: 3, backgroundColor: "#000000" }}
+                      className="d-flex w-100 my-auto"
+                    />
+                    <span
+                      className="text-large-emphasis text-center fw-bolder mx-2 d-flex"
+                      style={{ color: "red" }}
+                    >
+                      BIENVENIDO
+                    </span>
+                    <span
+                      style={{ height: 3, backgroundColor: "#000000" }}
+                      className="d-flex w-100 my-auto"
+                    />
+                  </p>
+
                   <form onSubmit={handleOnSubmit}>
                     {status === Status.Error ? (
                       <div
@@ -126,12 +159,12 @@ const Login = () => {
                         error={passwordError || showFormatInvalid}
                       />
                     </div>
-                    <Link
+                    {/* <Link
                       className="m-0 ms-auto d-block mb-3 text-end"
                       to="/restore"
                     >
                       ¿Olvidaste tu contraseña?
-                    </Link>
+                    </Link> */}
                     <div className="row">
                       <div className="col-12">
                         <button
@@ -155,7 +188,7 @@ const Login = () => {
                               &nbsp;Cargando...
                             </>
                           ) : (
-                            "Ingresar"
+                            "Iniciar sesión"
                           )}
                         </button>
                       </div>

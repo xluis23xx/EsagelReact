@@ -1,8 +1,8 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CImage } from "@coreui/react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { EditItemButton } from "src/components/global-components/globalButtons";
 
 import { Employee } from "../../../hooks/useEmployees";
 import { setFormatDate } from "../../../utils/formats";
@@ -38,18 +38,10 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
       <td>
         {image ? <CImage src={image} alt={fullName} fluid width={60} /> : ""}
       </td>
-      {/* <td>{status ? "activo" : "inactivo"}</td> */}
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/empleados/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"empleados"} />
             &nbsp;
             <button
               type="button"

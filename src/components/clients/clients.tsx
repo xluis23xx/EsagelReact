@@ -51,7 +51,6 @@ const EmployeesComponent = () => {
   };
 
   const handleSearch = (data) => {
-    console.log(data);
     searchClientsByFilter(data.search);
   };
 

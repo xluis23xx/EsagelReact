@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import { setFormatDate } from "../../utils/formats";
 import { usePositions, Position } from "../../hooks/usePositions";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeProfile, status } =
@@ -231,6 +232,7 @@ const EditEmployeeComponent = () => {
                       Swal.fire({
                         imageUrl: showImage,
                         imageHeight: "auto",
+                        padding: "20",
                         imageAlt: "imagen del empleado",
                       })
                     }
@@ -503,13 +505,16 @@ const EditEmployeeComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage ? true : false
+                      disable || uploading || errorMessage
+                        ? true
+                        : false ||
+                          status === Status.Loading ||
+                          status === Status.Updating
                     }
-                    className="btn btn-block btn-primary w-100"
                   >
                     {status === Status.Updating ? (
                       <>
@@ -523,9 +528,9 @@ const EditEmployeeComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/empleados"
                     className="btn btn-block btn-secondary w-100"

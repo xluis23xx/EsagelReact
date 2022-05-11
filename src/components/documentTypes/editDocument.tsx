@@ -11,6 +11,7 @@ import {
   useDocumentTypes,
 } from "../../hooks/useDocuments";
 import { setFormatDate } from "../../utils/formats";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const EditDocumentTypeComponent = () => {
   const { updateDocumentType, setDocumentTypeById, documentInfo, status } =
@@ -149,11 +150,14 @@ const EditDocumentTypeComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group col-sm-6 mt-3">
-                  <button
-                    type="submit"
-                    disabled={disable}
-                    className="btn btn-block btn-primary w-100"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
+                    disabled={
+                      disable ||
+                      status === Status.Loading ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>
@@ -167,9 +171,9 @@ const EditDocumentTypeComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/tipos-documento"
                     className="btn btn-block btn-secondary w-100"

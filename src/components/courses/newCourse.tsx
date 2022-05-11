@@ -11,6 +11,7 @@ import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { useCourseTypes, CourseType } from "../../hooks/useCourseTypes";
 import FileUploader from "react-firebase-file-uploader";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewEmployeeComponent = () => {
   const { registerCourse, status } = useCourses();
@@ -163,6 +164,7 @@ const NewEmployeeComponent = () => {
                       Swal.fire({
                         imageUrl: showImage,
                         imageHeight: "auto",
+                        padding: "20",
                         imageAlt: "imagen del curso",
                       })
                     }
@@ -389,15 +391,17 @@ const NewEmployeeComponent = () => {
                   )}
                 </div>
 
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
+                <div className="col-12" />
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage
+                      disable ||
+                      status === Status.Updating ||
+                      uploading ||
+                      errorMessage
                         ? true
                         : false || modalityError
                     }
-                    className="btn btn-block btn-primary w-100"
                   >
                     {status === Status.Updating ? (
                       <>
@@ -411,9 +415,9 @@ const NewEmployeeComponent = () => {
                     ) : (
                       "Registrar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/cursos"
                     className="btn btn-block btn-secondary w-100"

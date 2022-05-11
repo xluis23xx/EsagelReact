@@ -1,9 +1,10 @@
-import { cilPencil, cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
-import { Link } from "react-router-dom";
+
 import { setFormatCharacters } from "../../../utils/formats";
 import { ProspectusStatus } from "../../../hooks/usePropectusStatus";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 type ProspectStatusItemProps = ProspectusStatus & {
   orderNumber: number;
@@ -30,14 +31,7 @@ export const PropesctusStatusItem: React.FC<ProspectStatusItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <Link
-              type="button"
-              className="btn btn-primary"
-              style={{ height: 40, width: 40 }}
-              to={`/estados-prospecto/editar/${code}`}
-            >
-              <CIcon icon={cilPencil} />
-            </Link>
+            <EditItemButton code={code} path={"estados-prospecto"} />
             &nbsp;
             <button
               type="button"
