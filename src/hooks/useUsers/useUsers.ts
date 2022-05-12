@@ -106,7 +106,7 @@ export const useUsers = () => {
         if (response?.status === 201 || response?.status === 200) {
           setUsers(users.filter((user: User) => user._id !== id));
           setUsersAll(users.filter((user: User) => user._id !== id));
-          const username = response?.username || "";
+          const username = response?.updatedUser?.username || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -142,8 +142,8 @@ export const useUsers = () => {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Usuario registrado éxitosamente",
-            timer: 2000,
+            text: `Contraseña generada éxitosamente: ${response.message}`,
+            showConfirmButton: true,
           });
         } else {
           Swal.fire({

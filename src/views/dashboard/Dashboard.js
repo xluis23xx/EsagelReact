@@ -42,7 +42,7 @@ const Dashboard = () => {
     <>
       <WidgetsDropdown />
       <div className="row">
-        <div className="col-6">
+        <div className="col-6 mt-2">
           <div className="card">
             <div className="card-header">Ventas - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
@@ -116,7 +116,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-6 mt-2">
           <div className="card">
             <div className="card-header">Compras - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
@@ -190,7 +190,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-6 mt-2">
           <div className="card">
             <div className="card-header">Ventas - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
@@ -253,7 +253,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6">
+        <div className="col-6 mt-2">
           <div className="card">
             <div className="card-header">Compras - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">

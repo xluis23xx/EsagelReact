@@ -40,6 +40,7 @@ export const SearchButton = ({
   validators,
   handleSearch,
   textButton = "Buscar",
+  className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex",
 }) => {
   const stateSchema = {
     search: { value: "", error: "" },
@@ -60,10 +61,7 @@ export const SearchButton = ({
   } = useForm(stateSchema, stateValidatorSchema, handleSearch);
 
   return (
-    <form
-      className="align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex"
-      onSubmit={handleOnSubmit}
-    >
+    <form className={className} onSubmit={handleOnSubmit}>
       <div className="col-12 col-sm-6 my-1 ms-sm-auto">
         <InputForm
           type="search"

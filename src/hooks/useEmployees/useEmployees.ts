@@ -35,6 +35,9 @@ export const useEmployees = () => {
     });
   }
 
+  function cleanEmployeeProfile() {
+    setEmployeeProfile(null);
+  }
   function getAllEmployees() {
     const token = getCookie("esagel_token") || "";
     getEmployees(token)
@@ -52,6 +55,9 @@ export const useEmployees = () => {
   }
 
   function searchEmployeesByName(filter: string) {
+    if (employeesAll.length === 0) {
+      getAllEmployees();
+    }
     if (filter.length === 0) {
       setEmployees(employeesAll);
     } else {
@@ -182,6 +188,7 @@ export const useEmployees = () => {
     employees,
     deleteEmployee,
     searchEmployeesByName,
+    cleanEmployeeProfile,
     registerEmployee,
     updateEmployee,
     setEmployeeById,

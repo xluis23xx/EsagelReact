@@ -13,7 +13,8 @@ import { sygnet } from "src/assets/brand/sygnet";
 
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import esagelImage from "src/assets/images/esagel.png";
+import esagelImage from "src/assets/images/esagel-blanco.png";
+// import esagelImag2 from "src/assets/images/esagel.png";
 
 import navigation from "../_nav";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,26 +40,16 @@ const AppSidebar = () => {
       <CSidebarBrand className="d-md-flex" to="/">
         {config?.url ? (
           <a href={config?.url} target={"_blank"} rel="noreferrer">
-            <CImage
-              src={config?.logo || esagelImage}
-              align="center"
-              width={150}
-              alt="Logo"
-            />
+            <CImage src={esagelImage} align="center" width={150} alt="Logo" />
           </a>
         ) : (
-          <CImage
-            src={config?.logo || esagelImage}
-            align="center"
-            width={150}
-            alt="Logo"
-          />
+          <CImage src={esagelImage} align="center" width={150} alt="Logo" />
         )}
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={navigation()} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler

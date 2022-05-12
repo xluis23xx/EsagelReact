@@ -15,6 +15,13 @@ export const formatEmail = () => ({
   error: "Correo electrónico Inválido",
 });
 
+export const formatDocument = () => ({
+  func: (value: string) =>
+    !value.match(/00000000|12345678/) &&
+    /^(?:\d{8}|[a-zA-Z0-9]{9,15})$/.test(value),
+  error: "Formato inválido",
+});
+
 export const formatPass = () => ({
   func: (value) => value.length >= 6,
   error: "Mínimo 6 caracteres",

@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import {
   formatDescription,
+  formatDocument,
   formatEmail,
   formatNames,
   formatPhone,
@@ -80,10 +81,7 @@ const NewEmployeeComponent = () => {
     },
     documentNumber: {
       required: true,
-      validator: {
-        func: (value: string) => !value.match(/00000000|12345678/),
-        error: "Formato inválido.",
-      },
+      validator: formatDocument(),
     },
     corporateEmail: {
       required: true,
