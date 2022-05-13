@@ -10,7 +10,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { SettingsContext } from "../../../context/SettingsContext";
 import { setCookie } from "../../../utils/cookies";
 import { useSettings } from "../../../hooks/useSettings";
-import esagelImage from "src/assets/images/esagel.png";
+import esagelImage from "src/assets/images/esagel-blanco.png";
 
 const Login = () => {
   const { setUser } = React.useContext(AuthContext);
@@ -70,7 +70,7 @@ const Login = () => {
   return (
     <div
       className="min-vh-100 d-flex flex-row align-items-center"
-      style={{ backgroundColor: "#EF3A01" }}
+      style={{ backgroundColor: "#D9D9D9" }}
     >
       <div className="container">
         <div className="row justify-content-center">
@@ -79,7 +79,7 @@ const Login = () => {
               <div className="card">
                 <div
                   className="card-header"
-                  style={{ backgroundColor: "#000000", maxHeight: 90 }}
+                  style={{ backgroundColor: "#F50000", maxHeight: 90 }}
                 >
                   <CImage
                     src={esagelImage}
@@ -100,7 +100,7 @@ const Login = () => {
                     />
                     <span
                       className="text-large-emphasis text-center fw-bolder mx-2 d-flex"
-                      style={{ color: "red" }}
+                      style={{ color: "#F50000" }}
                     >
                       BIENVENIDO
                     </span>
@@ -168,7 +168,8 @@ const Login = () => {
                     <div className="row">
                       <div className="col-12">
                         <button
-                          className="btn btn-info text-white w-100"
+                          className="btn text-white w-100"
+                          style={{ backgroundColor: "red" }}
                           type="submit"
                           disabled={
                             disable ||
