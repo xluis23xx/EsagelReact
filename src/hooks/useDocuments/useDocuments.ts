@@ -37,10 +37,11 @@ export const useDocumentTypes = () => {
   function getAllDocumentTypes() {
     const token = getCookie("esagel_token") || "";
     getDocumentTypes(token)
-      .then((response) => {
+      .then((documentsObtained: DocumentType[]) => {
         const enableDocuments =
-          response.filter((document: DocumentType) => document.status === 1) ||
-          [];
+          documentsObtained.filter(
+            (document: DocumentType) => document.status === 1
+          ) || [];
         setDocuments(enableDocuments);
         setStatus(Status.Ready);
       })
@@ -60,6 +61,7 @@ export const useDocumentTypes = () => {
             title: "¡Actualización Exitosa!",
             text: "Tipo de Documento actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -67,6 +69,7 @@ export const useDocumentTypes = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -78,7 +81,9 @@ export const useDocumentTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -98,6 +103,7 @@ export const useDocumentTypes = () => {
             icon: "success",
             text: `Tipo de Documento ${documentName} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -105,6 +111,7 @@ export const useDocumentTypes = () => {
             icon: "error",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -115,7 +122,9 @@ export const useDocumentTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -130,6 +139,7 @@ export const useDocumentTypes = () => {
             title: "¡Registro Exitoso!",
             text: "Tipo de Documento registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -137,6 +147,7 @@ export const useDocumentTypes = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -148,7 +159,9 @@ export const useDocumentTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

@@ -24,6 +24,7 @@ export const useSettings = () => {
         setStatus(Status.Ready);
         localStorage.setItem("esagel_config", JSON.stringify(response));
       }
+      setStatus(Status.Ready);
     });
   }
 
@@ -42,6 +43,7 @@ export const useSettings = () => {
             title: "¡Actualización Exitosa!",
             text: "Configuración actualizada éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -49,6 +51,7 @@ export const useSettings = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -60,7 +63,9 @@ export const useSettings = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

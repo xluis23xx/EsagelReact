@@ -123,7 +123,7 @@ const EditUserComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO USUARIO
+                <i className="fa fa-align-justify"></i>EDITAR USUARIO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -134,7 +134,8 @@ const EditUserComponent = () => {
                         imageUrl: showImage,
                         imageHeight: "auto",
                         padding: "20",
-                        imageAlt: "imagen del empleado",
+                        imageAlt: "imagen del usuario",
+                        confirmButtonColor: "#ff0000",
                       })
                     }
                   >
@@ -188,7 +189,7 @@ const EditUserComponent = () => {
                     disabled={
                       status === Status.Loading || status === Status.Updating
                     }
-                    value={(statusForm ?? userInfo?.status) || ""}
+                    value={(statusForm ?? userInfo?.status.toString()) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${

@@ -33,9 +33,9 @@ export const useTopics = () => {
   function getAllTopics() {
     const token = getCookie("esagel_token") || "";
     getTopics(token)
-      .then((allTopics) => {
+      .then((topicsObtained: Topic[]) => {
         const enableTopics =
-          allTopics.filter((topic: Topic) => topic.status === 1) || [];
+          topicsObtained.filter((topic: Topic) => topic.status === 1) || [];
         setTopics(enableTopics);
         setTopicsAll(enableTopics);
         setStatus(Status.Ready);
@@ -69,6 +69,7 @@ export const useTopics = () => {
             title: "¡Actualización Exitosa!",
             text: "Tema actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -76,6 +77,7 @@ export const useTopics = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -87,6 +89,7 @@ export const useTopics = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
         return undefined;
@@ -107,6 +110,7 @@ export const useTopics = () => {
             icon: "success",
             text: `Tema ${topicName} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -114,6 +118,7 @@ export const useTopics = () => {
             title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -124,6 +129,7 @@ export const useTopics = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
       });
@@ -140,6 +146,7 @@ export const useTopics = () => {
             title: "¡Registro Exitoso!",
             text: "Tema registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -147,6 +154,7 @@ export const useTopics = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -158,6 +166,7 @@ export const useTopics = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
         return undefined;

@@ -36,9 +36,9 @@ export const useCourseTypes = () => {
   function getAllCourseTypes() {
     const token = getCookie("esagel_token") || "";
     getCourseTypes(token)
-      .then((response) => {
+      .then((courseTypesObtained: CourseType[]) => {
         const enableCourseTypes =
-          response.filter(
+          courseTypesObtained.filter(
             (courseType: CourseType) => courseType.status === 1
           ) || [];
         setCourseTypes(enableCourseTypes);
@@ -60,6 +60,7 @@ export const useCourseTypes = () => {
             title: "¡Actualización Exitosa!",
             text: "Tipo de Curso actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -67,6 +68,7 @@ export const useCourseTypes = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -78,7 +80,9 @@ export const useCourseTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -100,6 +104,7 @@ export const useCourseTypes = () => {
             icon: "success",
             text: `Tipo de Curso ${courseTypeName} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -107,6 +112,7 @@ export const useCourseTypes = () => {
             icon: "error",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -117,7 +123,9 @@ export const useCourseTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -132,6 +140,7 @@ export const useCourseTypes = () => {
             title: "¡Registro Exitoso!",
             text: "Tipo de Curso registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -139,6 +148,7 @@ export const useCourseTypes = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -150,7 +160,9 @@ export const useCourseTypes = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

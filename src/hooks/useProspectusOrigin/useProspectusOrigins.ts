@@ -40,9 +40,9 @@ export const useProspectOrigins = () => {
   function getAllProspectOrigins() {
     const token = getCookie("esagel_token") || "";
     getProspectusOrigins(token)
-      .then((response) => {
+      .then((prospectsObtained: ProspectusOrigin[]) => {
         const enableProspects =
-          response.filter(
+          prospectsObtained.filter(
             (prospect: ProspectusOrigin) => prospect.status === 1
           ) || [];
         setProspectOrigins(enableProspects);
@@ -64,6 +64,7 @@ export const useProspectOrigins = () => {
             title: "¡Actualización Exitosa!",
             text: "Origen de Prospecto actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -71,6 +72,7 @@ export const useProspectOrigins = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -82,7 +84,9 @@ export const useProspectOrigins = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -104,6 +108,7 @@ export const useProspectOrigins = () => {
             icon: "success",
             text: `Origen de Prospecto ${prospectName} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -111,6 +116,7 @@ export const useProspectOrigins = () => {
             icon: "error",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -121,7 +127,9 @@ export const useProspectOrigins = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -136,6 +144,7 @@ export const useProspectOrigins = () => {
             title: "¡Registro Exitoso!",
             text: "Origen de Prospecto registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -143,6 +152,7 @@ export const useProspectOrigins = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -154,7 +164,9 @@ export const useProspectOrigins = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

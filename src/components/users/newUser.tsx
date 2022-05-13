@@ -170,7 +170,8 @@ const NewUserComponent = () => {
                         imageUrl: showImage,
                         imageHeight: "auto",
                         padding: "20",
-                        imageAlt: "imagen del empleado",
+                        imageAlt: "imagen del usuario",
+                        confirmButtonColor: "#ff0000",
                       })
                     }
                   >

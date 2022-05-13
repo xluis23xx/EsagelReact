@@ -38,9 +38,9 @@ export const useContactForms = () => {
   function getAllContactForms() {
     const token = getCookie("esagel_token") || "";
     getContactForms(token)
-      .then((response) => {
+      .then((contactFormsObtained: ContactForm[]) => {
         const enableContactForms =
-          response.filter(
+          contactFormsObtained.filter(
             (contactForm: ContactForm) => contactForm.status === 1
           ) || [];
         setContactForms(enableContactForms);
@@ -62,6 +62,7 @@ export const useContactForms = () => {
             title: "¡Actualización Exitosa!",
             text: "Forma de contacto actualizada éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -69,6 +70,7 @@ export const useContactForms = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -80,7 +82,9 @@ export const useContactForms = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -102,6 +106,7 @@ export const useContactForms = () => {
             icon: "success",
             text: `Forma de Contacto ${contactFormName} eliminada con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -109,6 +114,7 @@ export const useContactForms = () => {
             icon: "error",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -119,7 +125,9 @@ export const useContactForms = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -134,6 +142,7 @@ export const useContactForms = () => {
             title: "¡Registro Exitoso!",
             text: "Forma de Contacto registrada éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -141,6 +150,7 @@ export const useContactForms = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -152,7 +162,9 @@ export const useContactForms = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

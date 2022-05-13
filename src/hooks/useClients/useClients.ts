@@ -33,9 +33,9 @@ export const useClients = () => {
   function getAllClients() {
     const token = getCookie("esagel_token") || "";
     getClients(token)
-      .then((allClients) => {
+      .then((clientsObtained: Client[]) => {
         const enableClients =
-          allClients.filter((client: Client) => client.status === 1) || [];
+          clientsObtained.filter((client: Client) => client.status === 1) || [];
         setClients(enableClients);
         setClientsAll(enableClients);
         setStatus(Status.Ready);
@@ -71,6 +71,7 @@ export const useClients = () => {
             title: "¡Actualización Exitosa!",
             text: "Cliente actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -78,6 +79,7 @@ export const useClients = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -89,7 +91,9 @@ export const useClients = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -109,6 +113,7 @@ export const useClients = () => {
             icon: "success",
             text: `Cliente ${clientName} ${clientLastname} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -116,6 +121,7 @@ export const useClients = () => {
             title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -126,7 +132,9 @@ export const useClients = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -141,6 +149,7 @@ export const useClients = () => {
             title: "¡Registro Exitoso!",
             text: "Cliente registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -148,6 +157,7 @@ export const useClients = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -159,7 +169,9 @@ export const useClients = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

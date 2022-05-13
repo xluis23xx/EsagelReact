@@ -33,9 +33,9 @@ export const useCourses = () => {
   function getAllCourses() {
     const token = getCookie("esagel_token") || "";
     getCourses(token)
-      .then((allCourses) => {
+      .then((coursesObtained: Course[]) => {
         const enableCourses =
-          allCourses.filter((course: Course) => course.status === 1) || [];
+          coursesObtained.filter((course: Course) => course.status === 1) || [];
         setCourses(enableCourses);
         setCoursesAll(enableCourses);
         setStatus(Status.Ready);
@@ -69,6 +69,7 @@ export const useCourses = () => {
             title: "¡Actualización Exitosa!",
             text: "Curso actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -76,6 +77,7 @@ export const useCourses = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -87,7 +89,9 @@ export const useCourses = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -106,6 +110,7 @@ export const useCourses = () => {
             icon: "success",
             text: `Curso ${courseName} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -113,6 +118,7 @@ export const useCourses = () => {
             title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -123,7 +129,9 @@ export const useCourses = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -138,6 +146,7 @@ export const useCourses = () => {
             title: "¡Registro Exitoso!",
             text: "Curso registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -145,6 +154,7 @@ export const useCourses = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -156,7 +166,9 @@ export const useCourses = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

@@ -2,13 +2,8 @@ import * as React from "react";
 import { getCookie } from "../../utils/cookies";
 import Swal from "sweetalert2";
 
-import {
-  getProviderById,
-  getProviders,
-  postProvider,
-  putProvider,
-} from "./helpers";
-import { Provider } from "./index";
+import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
+import { Order } from "./index";
 
 export enum Status {
   Loading,
@@ -17,34 +12,27 @@ export enum Status {
   Error,
 }
 
-export const useProviders = () => {
-  const [providers, setProviders] = React.useState<Provider[]>([]);
-  const [providersAll, setprovidersAll] = React.useState<Provider[]>([]);
-  const [providerInfo, setProviderInfo] = React.useState<Provider>(null);
+export const useOrders = () => {
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const [orderInfo, setOrderInfo] = React.useState<Order>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function setProviderById(id: string) {
+  function setOrderById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
-    getProviderById(token, id).then((response) => {
+    getOrderById(token, id).then((response) => {
       if (response?._id) {
-        setProviderInfo(response);
+        setOrderInfo(response);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getAllProviders() {
+  function getOrdersByInterval({ startDate, endDate }) {
     const token = getCookie("esagel_token") || "";
-    getProviders(token)
-      .then((providersObtained: Provider[]) => {
-        const enableProviders =
-          providersObtained.filter(
-            (provider: Provider) => provider.status === 1
-          ) || [];
-        setProviders(enableProviders);
-        setprovidersAll(enableProviders);
+    getOrders(token, { startDate, endDate })
+      .then((ordersObtained: Order[]) => {
+        setOrders(ordersObtained);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -52,29 +40,16 @@ export const useProviders = () => {
       });
   }
 
-  function searchProvidersByFilter(filter: string) {
-    if (filter.length === 0) {
-      setProviders(providersAll);
-    } else {
-      const providersFilter = providersAll.filter((provider: Provider) => {
-        const { businessName = "", documentNumber = "" } = provider || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(`${businessName} ${documentNumber}`.toLowerCase());
-      });
-      setProviders(providersFilter);
-    }
-  }
-
-  async function updateProvider(id: string, provider: any) {
+  async function updateOrder(id: string, order: any) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    return putProvider(token, id, provider)
+    return putOrder(token, id, order)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Proveedor actualizado éxitosamente",
+            text: "Pedido actualizado éxitosamente",
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });
@@ -103,23 +78,22 @@ export const useProviders = () => {
       });
   }
 
-  async function deleteProvider(id: string) {
+  async function confirmOrder(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putProvider(token, id, { status: 0, isDelete: true })
+    putOrder(token, id, { status: 2, isCorfirm: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
-          setProviders(
-            providers.filter((provider: Provider) => provider._id !== id)
+          setOrders(
+            orders.map((order: Order) =>
+              order?._id === id ? { ...order, status: 2 } : order
+            )
           );
-          setprovidersAll(
-            providers.filter((provider: Provider) => provider._id !== id)
-          );
-          const businessName = response?.updatedProvider?.businessName || "";
+          const orderNumber = response?.updatedOrder?.orderNumber || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Proveedor ${businessName} eliminado con éxito`,
+            text: `El Pedido Nro. ${orderNumber} fue aceptado con éxito`,
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });
@@ -146,16 +120,59 @@ export const useProviders = () => {
       });
   }
 
-  async function registerProvider(provider: any) {
+  async function cancelOrder(id: string) {
+    setStatus(Status.Updating);
+    const token = getCookie("esagel_token") || "";
+    putOrder(token, id, { status: 0, isCancel: true })
+      .then((response) => {
+        if (response?.status === 201 || response?.status === 200) {
+          setOrders(
+            orders.map((order: Order) =>
+              order?._id === id ? { ...order, status: 0 } : order
+            )
+          );
+          const orderNumber = response?.updatedOrder?.orderNumber || "";
+          Swal.fire({
+            title: "¡Todo salió bien!",
+            icon: "success",
+            text: `El Pedido Nro. ${orderNumber} fue anulado con éxito`,
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "¡Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
+        setStatus(Status.Ready);
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: "Ocurrió un error inesperado",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+        setStatus(Status.Ready);
+      });
+  }
+
+  async function registerOrder(order: any) {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
-    return postProvider(token, provider)
+    return postOrder(token, order)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
+          const orderNumber = response?.savedOrder?.orderNumber || "";
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: "Proveedor registrado éxitosamente",
+            text: `El Pedido Nro. ${orderNumber} fue registrado éxitosamente`,
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });
@@ -185,14 +202,14 @@ export const useProviders = () => {
   }
 
   return {
-    providers,
-    deleteProvider,
-    searchProvidersByFilter,
-    registerProvider,
-    updateProvider,
-    setProviderById,
-    providerInfo,
-    getAllProviders,
+    orders,
+    confirmOrder,
+    cancelOrder,
+    registerOrder,
+    updateOrder,
+    setOrderById,
+    orderInfo,
+    getOrdersByInterval,
     status,
   };
 };

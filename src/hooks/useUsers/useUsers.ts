@@ -33,11 +33,9 @@ export const useUsers = () => {
   function getAllUsers() {
     const token = getCookie("esagel_token") || "";
     getUsers(token)
-      .then((allUsers) => {
-        const enableUsers =
-          allUsers.filter((user: User) => user.status === 1) || [];
-        setUsers(enableUsers);
-        setUsersAll(enableUsers);
+      .then((usersObtained: User[]) => {
+        setUsers(usersObtained);
+        setUsersAll(usersObtained);
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -75,6 +73,7 @@ export const useUsers = () => {
             title: "¡Actualización Exitosa!",
             text: "Usuario actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -82,6 +81,7 @@ export const useUsers = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -93,25 +93,35 @@ export const useUsers = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
         return undefined;
       });
   }
 
-  async function deleteUser(id: string) {
+  async function disableUser(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     putUser(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
-          setUsers(users.filter((user: User) => user._id !== id));
-          setUsersAll(users.filter((user: User) => user._id !== id));
+          setUsers(
+            users.map((user: User) =>
+              user._id === id ? { ...user, status: 0 } : user
+            )
+          );
+          setUsersAll(
+            users.map((user: User) =>
+              user._id === id ? { ...user, status: 0 } : user
+            )
+          );
           const username = response?.updatedUser?.username || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `Usuario ${username} eliminado con éxito`,
+            text: `Usuario ${username} deshabilitado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -119,6 +129,7 @@ export const useUsers = () => {
             title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -129,7 +140,9 @@ export const useUsers = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -144,6 +157,7 @@ export const useUsers = () => {
             title: "¡Registro Exitoso!",
             text: `Contraseña generada éxitosamente: ${response.message}`,
             showConfirmButton: true,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -151,6 +165,7 @@ export const useUsers = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -162,14 +177,16 @@ export const useUsers = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
 
   return {
     users,
-    deleteUser,
+    disableUser,
     searchUsersByFilter,
     registerUser,
     updateUser,

@@ -18,9 +18,11 @@ export const usePositions = () => {
   function getAllPositions() {
     const token = getCookie("esagel_token") || "";
     getPositions(token)
-      .then((response) => {
+      .then((positionsObtained: Position[]) => {
         const enablePositions =
-          response.filter((position: Position) => position.status === 1) || [];
+          positionsObtained.filter(
+            (position: Position) => position.status === 1
+          ) || [];
         setPositions(enablePositions);
         setStatus(Status.Ready);
       })

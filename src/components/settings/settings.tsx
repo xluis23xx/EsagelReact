@@ -18,6 +18,7 @@ import FileUploader from "react-firebase-file-uploader";
 
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
+import { SubmitButton } from "../global-components/globalButtons";
 
 const NewCourseTypeComponent = () => {
   const { status, getSettingsConfig, updateSetting } = useSettings();
@@ -189,6 +190,7 @@ const NewCourseTypeComponent = () => {
                         imageHeight: "auto",
                         padding: "20",
                         imageAlt: "Logo de la empresa",
+                        confirmButtonColor: "#ff0000",
                       })
                     }
                   >
@@ -220,7 +222,7 @@ const NewCourseTypeComponent = () => {
                     name="companyName"
                     value={(companyName ?? config?.companyName) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={!config || status === Status.Updating}
                     error={companyNameError}
                   />
                 </div>
@@ -233,7 +235,7 @@ const NewCourseTypeComponent = () => {
                     maxLength={200}
                     value={(description ?? config?.description) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={!config || status === Status.Updating}
                     error={descriptionError}
                   />
                 </div>
@@ -247,7 +249,7 @@ const NewCourseTypeComponent = () => {
                     name="businessName"
                     value={(businessName ?? config?.businessName) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={!config || status === Status.Updating}
                     error={businessNameError}
                   />
                 </div>
@@ -261,7 +263,7 @@ const NewCourseTypeComponent = () => {
                     maxLength={11}
                     value={(ruc ?? config?.ruc) || ""}
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={!config || status === Status.Updating}
                     error={rucError}
                   />
                 </div>
@@ -321,18 +323,18 @@ const NewCourseTypeComponent = () => {
                       ((config?.tax ? config?.tax.toString() : "") || "0")
                     }
                     onChange={handleOnChange}
-                    disabled={status === Status.Updating}
+                    disabled={!config || status === Status.Updating}
                     error={taxError}
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-4 mt-3">
-                  <button
-                    type="submit"
+                <div className="form-group col-sm-6 col-md-3 mt-3">
+                  <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage ? true : false
+                      disable || uploading || errorMessage
+                        ? true
+                        : false || status === Status.Updating || !config
                     }
-                    className="btn btn-block btn-primary w-100"
                   >
                     {status === Status.Updating ? (
                       <>
@@ -346,9 +348,9 @@ const NewCourseTypeComponent = () => {
                     ) : (
                       "Actualizar"
                     )}
-                  </button>
+                  </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-4 mt-3">
+                <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/home"
                     className="btn btn-block btn-secondary w-100"

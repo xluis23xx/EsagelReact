@@ -38,13 +38,15 @@ export const useEmployees = () => {
   function cleanEmployeeProfile() {
     setEmployeeProfile(null);
   }
+
   function getAllEmployees() {
     const token = getCookie("esagel_token") || "";
     getEmployees(token)
-      .then((allEmployees) => {
+      .then((employeesObtained: Employee[]) => {
         const enableEmployees =
-          allEmployees.filter((employee: Employee) => employee.status === 1) ||
-          [];
+          employeesObtained.filter(
+            (employee: Employee) => employee.status === 1
+          ) || [];
         setEmployees(enableEmployees);
         setEmployeesAll(enableEmployees);
         setStatus(Status.Ready);
@@ -87,6 +89,7 @@ export const useEmployees = () => {
             title: "¡Actualización Exitosa!",
             text: "Empleado actualizado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -94,6 +97,7 @@ export const useEmployees = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -105,7 +109,9 @@ export const useEmployees = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }
@@ -129,6 +135,7 @@ export const useEmployees = () => {
             icon: "success",
             text: `Empleado ${employeeName} ${employeeLastname} eliminado con éxito`,
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -136,6 +143,7 @@ export const useEmployees = () => {
             title: "¡Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -146,7 +154,9 @@ export const useEmployees = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
       });
   }
 
@@ -161,6 +171,7 @@ export const useEmployees = () => {
             title: "¡Registro Exitoso!",
             text: "Empleado registrado éxitosamente",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         } else {
           Swal.fire({
@@ -168,6 +179,7 @@ export const useEmployees = () => {
             title: "Algo ocurrió!",
             text: response?.message || "",
             timer: 2000,
+            confirmButtonColor: "#ff0000",
           });
         }
         setStatus(Status.Ready);
@@ -179,7 +191,9 @@ export const useEmployees = () => {
           title: "Algo ocurrió!",
           text: "Ocurrió un error inesperado",
           timer: 2000,
+          confirmButtonColor: "#ff0000",
         });
+        setStatus(Status.Ready);
         return undefined;
       });
   }

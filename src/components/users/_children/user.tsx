@@ -49,14 +49,16 @@ export const UserItem: React.FC<UserItemProps> = ({
           <div className="btn-group">
             <EditItemButton code={code} path={"usuarios"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn btn-block btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            {status === 1 ? (
+              <button
+                type="button"
+                className="btn btn-block btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            ) : null}
           </div>
         </div>
       </td>

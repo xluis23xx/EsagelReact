@@ -188,6 +188,7 @@ const EditCourseComponent = () => {
                         imageHeight: "auto",
                         padding: "20",
                         imageAlt: "imagen del curso",
+                        confirmButtonColor: "#ff0000",
                       })
                     }
                   >

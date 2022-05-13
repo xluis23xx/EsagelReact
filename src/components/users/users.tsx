@@ -20,7 +20,7 @@ import {
 } from "../global-components/globalButtons";
 
 const UsersComponent = () => {
-  const { users, deleteUser, getAllUsers, searchUsersByFilter, status } =
+  const { users, disableUser, getAllUsers, searchUsersByFilter, status } =
     useUsers();
   const [visible, setVisible] = React.useState(false);
   const [userId, setUserId] = React.useState("");
@@ -40,7 +40,7 @@ const UsersComponent = () => {
     if (!visible) {
       setUserId(id);
     } else if (visible && userId) {
-      deleteUser(id);
+      disableUser(id);
       setUserId("");
     }
   };
@@ -81,8 +81,9 @@ const UsersComponent = () => {
                       <tr>
                         <th>N°</th>
                         <th>Empleado</th>
-                        <th>Tipo</th>
+                        <th>Rol</th>
                         <th>Usuario</th>
+                        <th>Estado</th>
                         <th>Opciones</th>
                       </tr>
                     </thead>
@@ -114,10 +115,10 @@ const UsersComponent = () => {
                 }}
               >
                 <CModalHeader closeButton={true}>
-                  <CModalTitle>Eliminar Usuario</CModalTitle>
+                  <CModalTitle>Deshabilitar Usuario</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                  ¿Estás seguro que quieres eliminar este usuario?
+                  ¿Estás seguro que quieres deshabilitar este usuario?
                 </CModalBody>
                 <CModalFooter>
                   <CButton

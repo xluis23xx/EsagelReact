@@ -232,6 +232,7 @@ const EditEmployeeComponent = () => {
                         imageHeight: "auto",
                         padding: "20",
                         imageAlt: "imagen del empleado",
+                        confirmButtonColor: "#ff0000",
                       })
                     }
                   >
