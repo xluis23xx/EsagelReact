@@ -45,7 +45,7 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
             &nbsp;
             <button
               type="button"
-              className="btn btn-block btn-danger"
+              className="btn   btn-danger"
               style={{ height: 40, width: 40 }}
               onClick={() => handleRemove(code)}
             >

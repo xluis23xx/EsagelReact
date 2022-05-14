@@ -211,7 +211,7 @@ const NewCourseTypeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="companyName">
+                  <label className="form-label" htmlFor="companyName">
                     Nombre de la Compañía (*):
                   </label>
                   <InputForm
@@ -227,7 +227,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <InputForm
                     required
                     placeholder="Descripción"
@@ -240,7 +242,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="businessName">Razón Social (*):</label>
+                  <label className="form-label" htmlFor="businessName">
+                    Razón Social (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -254,7 +258,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="ruc">Nro. RUC (*):</label>
+                  <label className="form-label" htmlFor="ruc">
+                    Nro. RUC (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -268,7 +274,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="url">URL Página Oficial:</label>
+                  <label className="form-label" htmlFor="url">
+                    URL Página Oficial:
+                  </label>
                   <InputForm
                     type="text"
                     maxLength={100}
@@ -281,7 +289,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="image">Foto:</label>
+                  <label className="form-label" htmlFor="image">
+                    Foto:
+                  </label>
                   <FileUploader
                     accept="image/*"
                     id="imagen"
@@ -311,7 +321,9 @@ const NewCourseTypeComponent = () => {
                   )}
                 </div>
                 <div className="form-group mt- 1 col-sm-6 col-md-4">
-                  <label htmlFor="tax">% Impuesto:</label>
+                  <label className="form-label" htmlFor="tax">
+                    % Impuesto:
+                  </label>
                   <InputForm
                     type="number"
                     maxLength={4}
@@ -351,10 +363,7 @@ const NewCourseTypeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/home"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/home" className="btn   btn-secondary w-100">
                     Volver
                   </Link>
                 </div>

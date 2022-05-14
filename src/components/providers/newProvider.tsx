@@ -91,7 +91,7 @@ const NewProviderComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="businessName">
+                  <label className="form-label" htmlFor="businessName">
                     Nombre de la Empresa (*):
                   </label>
                   <InputForm
@@ -108,7 +108,9 @@ const NewProviderComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="documentNumber">Nro. RUC (*):</label>
+                  <label className="form-label" htmlFor="documentNumber">
+                    Nro. RUC (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -123,7 +125,9 @@ const NewProviderComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="contactName">Nombre del Contacto (*):</label>
+                  <label className="form-label" htmlFor="contactName">
+                    Nombre del Contacto (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -138,7 +142,9 @@ const NewProviderComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="phoneNumber">Télefono (*):</label>
+                  <label className="form-label" htmlFor="phoneNumber">
+                    Télefono (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -171,10 +177,7 @@ const NewProviderComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/proveedores"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/proveedores" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

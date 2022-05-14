@@ -91,7 +91,9 @@ const NewCourseTypeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="code">Código (*):</label>
+                  <label className="form-label" htmlFor="code">
+                    Código (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -104,7 +106,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="name">Nombre (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -117,7 +121,9 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="status">Estado (*):</label>
+                  <label className="form-label" htmlFor="status">
+                    Estado (*):
+                  </label>
                   <select
                     id="status"
                     name="status"
@@ -136,7 +142,9 @@ const NewCourseTypeComponent = () => {
                   </select>
                 </div>
                 <div className="form-group mt-1 col-12">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <TextAreaForm
                     required
                     placeholder="Descripción"
@@ -170,10 +178,7 @@ const NewCourseTypeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/tipos-curso"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/tipos-curso" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

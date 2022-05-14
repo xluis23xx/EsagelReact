@@ -22,6 +22,12 @@ export const formatDocument = () => ({
   error: "Formato inválido",
 });
 
+export const formatExceedDate = () => ({
+  func: (value: string) =>
+    value === "" || new Date(value).getTime() <= new Date().getTime(),
+  error: "La fecha excede a la fecha actual",
+});
+
 export const formatPass = () => ({
   func: (value) => value.length >= 6,
   error: "Mínimo 6 caracteres",

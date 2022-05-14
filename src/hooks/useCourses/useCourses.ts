@@ -46,8 +46,11 @@ export const useCourses = () => {
   }
 
   function searchCoursesByFilter(filter: string) {
+    if (coursesAll.length === 0) {
+      getAllCourses();
+    }
     if (filter.length === 0) {
-      setCoursesAll(coursesAll);
+      setCourses(coursesAll);
     } else {
       const coursesFilter = coursesAll.filter((course: Course) => {
         const { name = "", price = 0 } = course || {};

@@ -82,7 +82,9 @@ const EditTopicComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group col-sm-6">
-                  <label htmlFor="name">Nombre (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -98,7 +100,9 @@ const EditTopicComponent = () => {
                 </div>
 
                 <div className="form-group col-sm-6">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <TextAreaForm
                     required
                     placeholder="Descripción"
@@ -114,7 +118,9 @@ const EditTopicComponent = () => {
                 </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6">
-                  <label htmlFor="createdAt">Fecha de creación:</label>
+                  <label className="form-label" htmlFor="createdAt">
+                    Fecha de creación:
+                  </label>
                   <InputForm
                     type="date"
                     placeholder="Fecha de creación"
@@ -131,7 +137,9 @@ const EditTopicComponent = () => {
                   />
                 </div>
                 <div className="form-group col-sm-6">
-                  <label htmlFor="createdAt">Fecha de actualización:</label>
+                  <label className="form-label" htmlFor="createdAt">
+                    Fecha de actualización:
+                  </label>
                   <InputForm
                     type="date"
                     placeholder="Fecha de actualización"
@@ -171,10 +179,7 @@ const EditTopicComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/temas"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/temas" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

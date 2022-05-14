@@ -253,7 +253,9 @@ const EditEmployeeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="name">Nombres (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombres (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -270,7 +272,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="lastname">Apellido Paterno (*):</label>
+                  <label className="form-label" htmlFor="lastname">
+                    Apellido Paterno (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -287,7 +291,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="secondLastname">Apellido Materno (*):</label>
+                  <label className="form-label" htmlFor="secondLastname">
+                    Apellido Materno (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -306,7 +312,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="documentType">Tipo de Documento (*):</label>
+                  <label className="form-label" htmlFor="documentType">
+                    Tipo de Documento (*):
+                  </label>
                   <select
                     id="documentType"
                     name="documentType"
@@ -339,7 +347,7 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="documentNumber">
+                  <label className="form-label" htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
                   <InputForm
@@ -358,7 +366,7 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="corporateEmail">
+                  <label className="form-label" htmlFor="corporateEmail">
                     Correo Corporativo (*):
                   </label>
                   <InputForm
@@ -376,7 +384,9 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="address">Dirección (*):</label>
+                  <label className="form-label" htmlFor="address">
+                    Dirección (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -393,7 +403,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="phoneNumber">Teléfono (*):</label>
+                  <label className="form-label" htmlFor="phoneNumber">
+                    Teléfono (*):
+                  </label>
                   <InputForm
                     type="tel"
                     required
@@ -410,7 +422,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="personalEmail">Correo personal (*):</label>
+                  <label className="form-label" htmlFor="personalEmail">
+                    Correo personal (*):
+                  </label>
                   <InputForm
                     type="email"
                     required
@@ -428,7 +442,9 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="birthdate">Fecha de Nacimiento (*):</label>
+                  <label className="form-label" htmlFor="birthdate">
+                    Fecha de Nacimiento (*):
+                  </label>
                   <InputForm
                     type="date"
                     required
@@ -448,7 +464,9 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="image">Foto:</label>
+                  <label className="form-label" htmlFor="image">
+                    Foto:
+                  </label>
                   <FileUploader
                     accept="image/*"
                     id="imagen"
@@ -479,7 +497,9 @@ const EditEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="position">Cargo (*):</label>
+                  <label className="form-label" htmlFor="position">
+                    Cargo (*):
+                  </label>
                   <select
                     id="position"
                     name="position"
@@ -530,10 +550,7 @@ const EditEmployeeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/empleados"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/empleados" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

@@ -79,7 +79,9 @@ const NewProspectStatusComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6">
-                  <label htmlFor="name">Nombre (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -93,7 +95,9 @@ const NewProspectStatusComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <TextAreaForm
                     required
                     placeholder="Descripción"
@@ -127,7 +131,7 @@ const NewProspectStatusComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/estados-prospecto"
-                    className="btn btn-block btn-secondary w-100"
+                    className="btn   btn-secondary w-100"
                   >
                     Cancelar
                   </Link>

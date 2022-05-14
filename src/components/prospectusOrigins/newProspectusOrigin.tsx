@@ -87,7 +87,9 @@ const NewProspectOriginComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6">
-                  <label htmlFor="code">Código (*):</label>
+                  <label className="form-label" htmlFor="code">
+                    Código (*):
+                  </label>
                   <InputForm
                     required
                     placeholder="Código"
@@ -99,7 +101,9 @@ const NewProspectOriginComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6">
-                  <label htmlFor="name">Nombre (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -113,7 +117,9 @@ const NewProspectOriginComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <TextAreaForm
                     required
                     placeholder="Descripción"
@@ -147,7 +153,7 @@ const NewProspectOriginComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/origenes-prospecto"
-                    className="btn btn-block btn-secondary w-100"
+                    className="btn   btn-secondary w-100"
                   >
                     Cancelar
                   </Link>

@@ -209,7 +209,9 @@ const EditClientComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="name">Nombres (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombres (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -226,7 +228,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="lastname">Apellido Paterno (*):</label>
+                  <label className="form-label" htmlFor="lastname">
+                    Apellido Paterno (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -243,7 +247,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="secondLastname">Apellido Materno (*):</label>
+                  <label className="form-label" htmlFor="secondLastname">
+                    Apellido Materno (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -260,7 +266,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="email">Correo Personal (*):</label>
+                  <label className="form-label" htmlFor="email">
+                    Correo Personal (*):
+                  </label>
                   <InputForm
                     type="email"
                     required
@@ -277,7 +285,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="documentType">Tipo de Documento (*):</label>
+                  <label className="form-label" htmlFor="documentType">
+                    Tipo de Documento (*):
+                  </label>
                   <select
                     id="documentType"
                     name="documentType"
@@ -309,7 +319,7 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="documentNumber">
+                  <label className="form-label" htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
                   <InputForm
@@ -326,7 +336,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="department">Departamento (*):</label>
+                  <label className="form-label" htmlFor="department">
+                    Departamento (*):
+                  </label>
                   <select
                     id="department"
                     name="department"
@@ -353,7 +365,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="address">Dirección (*):</label>
+                  <label className="form-label" htmlFor="address">
+                    Dirección (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -370,7 +384,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="phoneNumber">Teléfono (*):</label>
+                  <label className="form-label" htmlFor="phoneNumber">
+                    Teléfono (*):
+                  </label>
                   <InputForm
                     type="tel"
                     required
@@ -387,7 +403,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="birthdate">Fecha de Nacimiento (*):</label>
+                  <label className="form-label" htmlFor="birthdate">
+                    Fecha de Nacimiento (*):
+                  </label>
                   <InputForm
                     type="date"
                     required
@@ -407,7 +425,9 @@ const EditClientComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="leadSource">Origen de Prospecto (*):</label>
+                  <label className="form-label" htmlFor="leadSource">
+                    Origen de Prospecto (*):
+                  </label>
                   <select
                     id="leadSource"
                     name="leadSource"
@@ -434,7 +454,7 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="prospectStatus">
+                  <label className="form-label" htmlFor="prospectStatus">
                     Estado de Prospecto (*):
                   </label>
                   <select
@@ -465,7 +485,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="contactForm">Medio de Contacto (*):</label>
+                  <label className="form-label" htmlFor="contactForm">
+                    Medio de Contacto (*):
+                  </label>
                   <select
                     id="contactForm"
                     name="contactForm"
@@ -492,7 +514,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="business">Negocio:</label>
+                  <label className="form-label" htmlFor="business">
+                    Negocio:
+                  </label>
                   <InputForm
                     type="text"
                     placeholder="Negocio"
@@ -508,7 +532,9 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="profession">Profesión:</label>
+                  <label className="form-label" htmlFor="profession">
+                    Profesión:
+                  </label>
                   <InputForm
                     type="text"
                     placeholder="Profesión"
@@ -547,10 +573,7 @@ const EditClientComponent = () => {
                 </div>
 
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/clientes"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/clientes" className="btn btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

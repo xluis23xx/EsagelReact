@@ -30,6 +30,10 @@ export const useClients = () => {
     });
   }
 
+  function cleanClientInfo() {
+    setClientInfo(null);
+  }
+
   function getAllClients() {
     const token = getCookie("esagel_token") || "";
     getClients(token)
@@ -46,6 +50,9 @@ export const useClients = () => {
   }
 
   function searchClientsByFilter(filter: string) {
+    if (clientsAll.length === 0) {
+      getAllClients();
+    }
     if (filter.length === 0) {
       setClients(clientsAll);
     } else {
@@ -180,6 +187,7 @@ export const useClients = () => {
     clients,
     deleteClient,
     searchClientsByFilter,
+    cleanClientInfo,
     registerClient,
     updateClient,
     setClientById,

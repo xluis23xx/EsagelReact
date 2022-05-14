@@ -15,7 +15,6 @@ const FormControl = React.lazy(
 
 // Notifications
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
-const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
 
 // Componentes propios del proyecto ESAGEL
 const EmployeesComponent = React.lazy(
@@ -58,6 +57,16 @@ const NewTopicComponent = React.lazy(
 
 const EditTopicComponent = React.lazy(
   () => import("./components/topics/editTopic")
+);
+
+const OrdersComponent = React.lazy(() => import("./components/orders/orders"));
+
+const NewOrderComponent = React.lazy(
+  () => import("./components/orders/newOrder")
+);
+
+const DetailOrderComponent = React.lazy(
+  () => import("./components/orders/detailOrder")
 );
 
 const ProspectusStatusesComponent = React.lazy(
@@ -171,7 +180,19 @@ export const RoutesArray = (): any[] => {
     {
       path: "/pedidos",
       name: "Pedidos",
-      element: Modals,
+      element: OrdersComponent,
+      exact: true,
+    },
+    {
+      path: "/pedidos/nuevo",
+      name: "Nuevo",
+      element: NewOrderComponent,
+      exact: true,
+    },
+    {
+      path: "/pedidos/detalle/:id",
+      name: "Detalle",
+      element: DetailOrderComponent,
       exact: true,
     },
     {

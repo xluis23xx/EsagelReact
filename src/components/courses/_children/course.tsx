@@ -1,4 +1,4 @@
-import {  cilTrash } from "@coreui/icons";
+import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { EditItemButton } from "../../global-components/globalButtons";
@@ -52,7 +52,7 @@ export const CourseItem: React.FC<CourseItemProps> = ({
             &nbsp;
             <button
               type="button"
-              className="btn btn-block btn-danger"
+              className="btn   btn-danger"
               style={{ height: 40, width: 40 }}
               onClick={() => handleRemove(_id)}
             >

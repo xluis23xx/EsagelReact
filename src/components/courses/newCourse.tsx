@@ -187,7 +187,9 @@ const NewEmployeeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="code">Código (*):</label>
+                  <label className="form-label" htmlFor="code">
+                    Código (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -201,7 +203,9 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="name">Nombre (*):</label>
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
                   <InputForm
                     type="text"
                     required
@@ -215,7 +219,9 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="modality">Modalidad (*):</label>
+                  <label className="form-label" htmlFor="modality">
+                    Modalidad (*):
+                  </label>
                   <div className="w-100 d-flex">
                     <div className="form-check">
                       <input
@@ -293,7 +299,9 @@ const NewEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-8">
-                  <label htmlFor="description">Descripción (*):</label>
+                  <label className="form-label" htmlFor="description">
+                    Descripción (*):
+                  </label>
                   <TextAreaForm
                     placeholder="Descripción"
                     name="description"
@@ -306,7 +314,9 @@ const NewEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="price">Precio (*):</label>
+                  <label className="form-label" htmlFor="price">
+                    Precio (*):
+                  </label>
                   <InputForm
                     type="number"
                     required
@@ -322,7 +332,9 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="vacanciesNumber">Nro. Vacantes (*):</label>
+                  <label className="form-label" htmlFor="vacanciesNumber">
+                    Nro. Vacantes (*):
+                  </label>
                   <InputForm
                     type="number"
                     required
@@ -337,7 +349,9 @@ const NewEmployeeComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="courseType">Tipo de Curso (*):</label>
+                  <label className="form-label" htmlFor="courseType">
+                    Tipo de Curso (*):
+                  </label>
                   <select
                     id="courseType"
                     name="courseType"
@@ -362,7 +376,9 @@ const NewEmployeeComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="image">Foto:</label>
+                  <label className="form-label" htmlFor="image">
+                    Foto:
+                  </label>
                   <FileUploader
                     accept="image/*"
                     id="imagen"
@@ -419,10 +435,7 @@ const NewEmployeeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/cursos"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/cursos" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

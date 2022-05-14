@@ -192,8 +192,10 @@ const NewUserComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="employee">Empleado (*):</label>
-                  <div className="d-flex mt-1">
+                  <label className="form-label" htmlFor="employee">
+                    Empleado (*):
+                  </label>
+                  <div className="d-flex">
                     <input
                       required
                       className={`w-100 ${
@@ -206,7 +208,7 @@ const NewUserComponent = () => {
                           selectedEmployee?.name ? selectedEmployee?.name : ""
                         }${
                           selectedEmployee?.lastname
-                            ? ` ${selectedEmployee?.name}`
+                            ? ` ${selectedEmployee?.lastname}`
                             : ""
                         }` || ""
                       }
@@ -244,7 +246,9 @@ const NewUserComponent = () => {
                   ) : null}
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="status">Estado (*):</label>
+                  <label className="form-label" htmlFor="status">
+                    Estado (*):
+                  </label>
                   <select
                     id="status"
                     name="status"
@@ -264,7 +268,9 @@ const NewUserComponent = () => {
                 </div>
 
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="roles">Roles (*):</label>
+                  <label className="form-label" htmlFor="roles">
+                    Roles (*):
+                  </label>
                   <select
                     id="roles"
                     name="roles"
@@ -308,8 +314,10 @@ const NewUserComponent = () => {
                   ) : null}
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="username">Usuario (*):</label>
-                  <div className="d-flex mt-1">
+                  <label className="form-label" htmlFor="username">
+                    Usuario (*):
+                  </label>
+                  <div className="d-flex">
                     <input
                       id="username"
                       type="text"
@@ -338,7 +346,9 @@ const NewUserComponent = () => {
                   </div>
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label htmlFor="image">Foto:</label>
+                  <label className="form-label" htmlFor="image">
+                    Foto:
+                  </label>
                   <FileUploader
                     accept="image/*"
                     id="imagen"
@@ -401,10 +411,7 @@ const NewUserComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/usuarios"
-                    className="btn btn-block btn-secondary w-100"
-                  >
+                  <Link to="/usuarios" className="btn   btn-secondary w-100">
                     Cancelar
                   </Link>
                 </div>

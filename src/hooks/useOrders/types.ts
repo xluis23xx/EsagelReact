@@ -8,10 +8,11 @@ export type Order = {
   orderNumber?: string;
   client?: Client;
   documentType?: DocumentType;
+  documentNumber?: string | null;
   user?: User;
   percentIva?: number;
   subtotal?: number;
-  amountWithIva?: number;
+  amountInIva?: number;
   total?: number;
   status?: number | null;
   createdAt?: string | null;
@@ -20,9 +21,10 @@ export type Order = {
 };
 
 export type OrderDetail = {
-  _id?: string;
-  order?: Order;
-  course?: Course;
+  _id?: string | null;
+  order?: Order | null;
+  course?: Course | null;
+  name?: string | null;
   quantity?: number;
   discount?: number;
   price?: number;

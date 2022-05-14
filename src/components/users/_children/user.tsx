@@ -1,5 +1,6 @@
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
+import { CBadge } from "@coreui/react";
 import React from "react";
 import { User } from "../../../hooks/useUsers";
 import { EditItemButton } from "../../global-components/globalButtons";
@@ -43,7 +44,13 @@ export const UserItem: React.FC<UserItemProps> = ({
       <td>{fullname || ""}</td>
       <td>{rolesText}</td>
       <td>{username || ""}</td>
-      <td>{status ? "activo" : "inactivo"}</td>
+      <td>
+        <CBadge
+          color={status === 0 ? "danger" : "" || status === 1 ? "success" : ""}
+        >
+          {status ? "Activo" : "Inactivo"}
+        </CBadge>
+      </td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
@@ -52,7 +59,7 @@ export const UserItem: React.FC<UserItemProps> = ({
             {status === 1 ? (
               <button
                 type="button"
-                className="btn btn-block btn-danger"
+                className="btn   btn-danger"
                 style={{ height: 40, width: 40 }}
                 onClick={() => handleRemove(code)}
               >
