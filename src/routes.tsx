@@ -4,15 +4,6 @@ import { Role } from "./hooks/useUsers";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 
-// Base
-const Progress = React.lazy(() => import("./views/base/progress/Progress"));
-const Tables = React.lazy(() => import("./views/base/tables/Tables"));
-
-//Forms
-const FormControl = React.lazy(
-  () => import("./views/forms/form-control/FormControl")
-);
-
 // Notifications
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 
@@ -67,6 +58,24 @@ const NewOrderComponent = React.lazy(
 
 const DetailOrderComponent = React.lazy(
   () => import("./components/orders/detailOrder")
+);
+
+const SalesComponent = React.lazy(() => import("./components/sales/sales"));
+
+const PurchasesComponent = React.lazy(
+  () => import("./components/purchases/purchases")
+);
+
+const NewPurchaseComponent = React.lazy(
+  () => import("./components/purchases/newPurchase")
+);
+
+const EditPurchaseComponent = React.lazy(
+  () => import("./components/purchases/editPurchase")
+);
+
+const DetailSaleComponent = React.lazy(
+  () => import("./components/sales/detailSale")
 );
 
 const ProspectusStatusesComponent = React.lazy(
@@ -153,6 +162,14 @@ const EditCourseComponent = React.lazy(
   () => import("./components/courses/editCourse")
 );
 
+const GoalsComponent = React.lazy(() => import("./components/goals/goals"));
+
+const NewGoalComponent = React.lazy(() => import("./components/goals/newGoal"));
+
+const EditGoalComponent = React.lazy(
+  () => import("./components/goals/editGoal")
+);
+
 const SettingsComponent = React.lazy(
   () => import("./components/settings/settings")
 );
@@ -198,7 +215,13 @@ export const RoutesArray = (): any[] => {
     {
       path: "/ventas",
       name: "Ventas",
-      element: Progress,
+      element: SalesComponent,
+      exact: true,
+    },
+    {
+      path: "/ventas/detalle/:id",
+      name: "Detalle",
+      element: DetailSaleComponent,
       exact: true,
     },
     {
@@ -375,9 +398,21 @@ export const RoutesArray = (): any[] => {
       exact: true,
     },
     {
-      path: "/egresos",
-      name: "Egresos",
-      element: Tables,
+      path: "/compras",
+      name: "Compras",
+      element: PurchasesComponent,
+      exact: true,
+    },
+    {
+      path: "/compras/nuevo",
+      name: "Nuevo",
+      element: NewPurchaseComponent,
+      exact: true,
+    },
+    {
+      path: "/compras/editar/:id",
+      name: "Editar",
+      element: EditPurchaseComponent,
       exact: true,
     },
     {
@@ -401,7 +436,19 @@ export const RoutesArray = (): any[] => {
     {
       path: "/metas",
       name: "Metas",
-      element: FormControl,
+      element: GoalsComponent,
+      exact: true,
+    },
+    {
+      path: "/metas/nuevo",
+      name: "Nuevo",
+      element: NewGoalComponent,
+      exact: true,
+    },
+    {
+      path: "/metas/editar/:id",
+      name: "Editar",
+      element: EditGoalComponent,
       exact: true,
     },
   ];

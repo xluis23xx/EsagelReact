@@ -76,7 +76,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               code={code}
               className="btn btn-success"
               subsection={"detalle"}
-              path={"orders"}
+              path={"pedidos"}
               icon={cilEyedropper}
             />
             {status === 1 ? (

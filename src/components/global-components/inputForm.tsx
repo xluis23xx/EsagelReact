@@ -10,6 +10,7 @@ type InputProps = {
   disabled?: boolean;
   name?: string;
   required?: boolean;
+  readonly?: boolean;
   className?: string;
   showError?: boolean;
   maxLength?: number;
@@ -34,6 +35,7 @@ export const InputForm: React.FC<InputProps> = ({
   min = undefined,
   max = undefined,
   step = undefined,
+  readonly = undefined,
 }) => {
   return (
     <>
@@ -49,6 +51,7 @@ export const InputForm: React.FC<InputProps> = ({
         autoComplete={autoComplete}
         className={`${className} ${error ? "border border-danger" : ""}`}
         value={value}
+        readOnly={readonly}
         required={required}
         disabled={disabled}
         onBlur={onChange}

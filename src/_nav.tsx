@@ -149,7 +149,7 @@ const NavRoutes = (): any[] => {
             {
               component: CNavItem,
               name: "Egresos",
-              to: "/egresos",
+              to: "/compras",
               icon: <CIcon icon={cilActionRedo} customClassName="nav-icon" />,
             },
             {

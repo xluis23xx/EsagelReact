@@ -320,7 +320,7 @@ const NewCourseTypeComponent = () => {
                     </p>
                   )}
                 </div>
-                <div className="form-group mt- 1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label className="form-label" htmlFor="tax">
                     % Impuesto:
                   </label>

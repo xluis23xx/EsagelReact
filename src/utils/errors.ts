@@ -55,6 +55,19 @@ export const formatTax = () => ({
   error: "El igv debe estar entre 0 y 1.",
 });
 
+export const minNumber = (number = 0) => ({
+  func: (value) => {
+    if (value) {
+      if (value >= number) {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  },
+  error: `El valor mínimo no puede ser ${number} o menor.`,
+});
+
 export const formatURL = () => ({
   func: (value) =>
     value === "" ||

@@ -9,7 +9,7 @@ export type Order = {
   client?: Client;
   documentType?: DocumentType;
   documentNumber?: string | null;
-  user?: User;
+  seller?: User;
   percentIva?: number;
   subtotal?: number;
   amountInIva?: number;

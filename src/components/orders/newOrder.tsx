@@ -164,7 +164,7 @@ const NewOrderComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
-                  <label className="form-label" htmlFor="employee">
+                  <label className="form-label" htmlFor="client">
                     Cliente (*):
                   </label>
                   <div className="d-flex">
@@ -284,10 +284,16 @@ const NewOrderComponent = () => {
                   <InputForm
                     type="text"
                     required
-                    maxLength={11}
-                    placeholder="Nro de Documento"
+                    maxLength={50}
+                    placeholder="Vendedor"
                     name="seller"
-                    value={user?.employee?.name ? user?.employee?.name : ""}
+                    value={`${
+                      user?.employee?.name ? user?.employee?.name : ""
+                    }${
+                      user?.employee?.lastname
+                        ? ` ${user?.employee?.lastname}`
+                        : ""
+                    }`}
                     onChange={handleOnChange}
                     disabled={true}
                   />
@@ -473,7 +479,6 @@ const NewOrderComponent = () => {
                     </tbody>
                   </table>
                 </div>
-                <div></div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <SubmitButton
@@ -499,7 +504,10 @@ const NewOrderComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/pedidos" className="btn btn-secondary w-100">
+                  <Link
+                    to="/pedidos"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>

@@ -1,0 +1,35 @@
+import { Client } from "../useClients";
+import { Course } from "../useCourses";
+import { Order } from "../useOrders";
+import { User } from "../useUsers";
+
+export type Sale = {
+  _id?: string;
+  saleNumber?: string;
+  order?: Order;
+  seller?: User;
+  client?: Client;
+  percentIva?: number;
+  subtotal?: number;
+  amountInIva?: number;
+  total?: number;
+  status?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  items?: SaleDetail[];
+};
+
+export type SaleDetail = {
+  _id?: string | null;
+  sale?: Sale | null;
+  course?: Course | null;
+  name?: string | null;
+  quantity?: number;
+  discount?: number;
+  price?: number;
+  amount?: number;
+};
+
+export type GetSale = Sale;
+export type GetSales = Sale[];
+export type GetSaleDetails = SaleDetail[];

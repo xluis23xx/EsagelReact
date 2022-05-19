@@ -35,6 +35,10 @@ export const useProviders = () => {
     });
   }
 
+  function cleanProviderInfo() {
+    setProviderInfo(null);
+  }
+
   function getAllProviders() {
     const token = getCookie("esagel_token") || "";
     getProviders(token)
@@ -53,6 +57,9 @@ export const useProviders = () => {
   }
 
   function searchProvidersByFilter(filter: string) {
+    if (providersAll.length === 0) {
+      getAllProviders();
+    }
     if (filter.length === 0) {
       setProviders(providersAll);
     } else {
@@ -191,6 +198,7 @@ export const useProviders = () => {
     registerProvider,
     updateProvider,
     setProviderById,
+    cleanProviderInfo,
     providerInfo,
     getAllProviders,
     status,

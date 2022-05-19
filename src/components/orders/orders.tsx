@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { cilHamburgerMenu, cilSearch } from "@coreui/icons";
+import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { OrderItem } from "./_children/order";
@@ -17,10 +17,9 @@ import {
   IntervalButton,
   RedirectionButton,
 } from "../global-components/globalButtons";
-import { InputForm } from "../global-components/inputForm";
 import { formatExceedDate } from "../../utils/errors";
 
-const ProspectOriginsComponent = () => {
+const OrdersComponent = () => {
   const { orders, cancelOrder, confirmOrder, getOrdersByInterval, status } =
     useOrders();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
@@ -197,4 +196,4 @@ const ProspectOriginsComponent = () => {
   );
 };
 
-export default ProspectOriginsComponent;
+export default OrdersComponent;

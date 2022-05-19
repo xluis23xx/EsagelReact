@@ -1,69 +1,71 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { Link, useHistory, useParams } from "react-router-dom";
-import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames } from "../../utils/errors";
+import { Link } from "react-router-dom";
+
+import { OrderDetail, Status, useOrders } from "../../hooks/useOrders";
 import { InputForm } from "../global-components/inputForm";
-
-import {
-  ProspectusOrigin,
-  Status,
-  useProspectOrigins,
-} from "../../hooks/useProspectusOrigin";
+import { useParams, useHistory } from "react-router-dom";
 import { setFormatDate } from "../../utils/formats";
-import { TextAreaForm } from "../global-components/textareaForm";
-import { SubmitButton } from "../global-components/globalButtons";
 
-const EditProspectOriginComponent = () => {
-  const { updateProspectOrigin, setProspectOriginById, prospectInfo, status } =
-    useProspectOrigins();
+const DetailOrderComponent = () => {
+  const { setOrderById, orderInfo, status } = useOrders();
+
   const history = useHistory();
   const { id } = useParams<any>();
 
   React.useEffect(() => {
-    setProspectOriginById(id);
+    if (!id) {
+      history.push("/pedidos");
+    }
+    setOrderById(id);
   }, []);
 
-  const stateSchema = {
-    name: { value: null, error: "" },
-    description: { value: null, error: "" },
-  };
+  let fullNameOfClient = "";
+  let statusOfOrder = "";
+  let sellerOfOrder = "";
+  let itemsOfOrder = [];
 
-  const stateValidatorSchema = {
-    name: {
-      required: true,
-      validator: formatNames(),
-      min2caracts: true,
-      invalidtext: true,
-    },
-    description: {
-      required: true,
-      validator: formatDescription(),
-      min2caracts: true,
-      invalidtext: true,
-    },
-  };
-
-  const onSubmitForm = (data: ProspectusOrigin) => {
-    const prospectOrigin = {
-      name: (data?.name ?? prospectInfo?.name) || null,
-      description: (data?.description ?? prospectInfo?.description) || null,
-      status: 1,
-    };
-    updateProspectOrigin(id, prospectOrigin).then((response) => {
-      if (response?.status === 200 || response?.status === 201) {
-        history.push("/origenes-prospecto");
+  React.useEffect(() => {
+    if (orderInfo) {
+      const {
+        client = null,
+        status = null,
+        seller = null,
+        courses = [],
+      } = orderInfo;
+      if (client) {
+        fullNameOfClient = `${client?.name} ${client?.lastname} ${client?.secondLastname}`;
       }
-    });
-  };
-
-  const {
-    values: { name, description },
-    errors: { name: nameError, description: descriptionError },
-    handleOnChange,
-    handleOnSubmit,
-    disable,
-  } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
+      if (status) {
+        switch (status) {
+          case 0:
+            statusOfOrder = "Anulado";
+            break;
+          case 1:
+            statusOfOrder = "Pendiente";
+            break;
+          case 2:
+            statusOfOrder = "Aceptado";
+            break;
+          default:
+            break;
+        }
+      }
+      if (seller) {
+        if (seller?.employee) {
+          const { employee = null } = seller;
+          sellerOfOrder = `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`;
+        } else {
+          sellerOfOrder = `${seller?.username || ""}`;
+        }
+      }
+      if (courses) {
+        if (courses.length > 0) {
+          itemsOfOrder = courses;
+        }
+      }
+    }
+  }, [orderInfo]);
 
   return (
     <div className="row mt-3">
@@ -72,137 +74,229 @@ const EditProspectOriginComponent = () => {
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR ORIGEN DE
-                PROSPECTO
+                <i className="fa fa-align-justify"></i>DETALLE PEDIDO
               </div>
             </div>
           </div>
           <div className="card-body">
-            <div className="col-sm-12">
+            <div className="col-12">
               <div className="form-group">
-                <label className="fw-bold">
-                  Los campos con (*) son obligatorios
-                </label>
+                <label className="fw-bold">Resumen del pedido</label>
                 <br />
               </div>
 
-              <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6">
-                  <label className="form-label" htmlFor="code">
-                    Código (*):
+              <form className="row">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="orderNumber">
+                    Nro. Pedido:
                   </label>
                   <InputForm
-                    required
-                    placeholder="Código"
-                    name="code"
-                    value={prospectInfo?.code || ""}
-                    onChange={handleOnChange}
-                    disabled={true}
+                    placeholder="-"
+                    name="orderNumber"
+                    value={orderInfo?.orderNumber ? orderInfo?.orderNumber : ""}
+                    disabled={status === Status.Loading}
+                    readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6">
-                  <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="client">
+                    Cliente:
                   </label>
                   <InputForm
-                    type="text"
-                    required
-                    placeholder="Nombre"
-                    name="name"
-                    value={(name ?? prospectInfo?.name) || ""}
-                    onChange={handleOnChange}
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
-                    }
-                    error={nameError}
+                    placeholder="-"
+                    name="client"
+                    value={fullNameOfClient}
+                    disabled={status === Status.Loading}
+                    readonly={true}
                   />
                 </div>
-
-                <div className="form-group mt-1 col-sm-6">
-                  <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="documentType">
+                    Tipo de Comprobante:
                   </label>
-                  <TextAreaForm
-                    required
-                    placeholder="Descripción"
-                    name="description"
-                    value={(description ?? prospectInfo?.description) || ""}
-                    rows={2}
-                    onChange={handleOnChange}
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
+                  <InputForm
+                    placeholder="-"
+                    name="documentType"
+                    value={
+                      orderInfo?.documentType
+                        ? orderInfo?.documentType?.name
+                        : ""
                     }
-                    error={descriptionError}
+                    disabled={status === Status.Loading}
+                    readonly={true}
                   />
                 </div>
-                <div className="col-12" />
-                <div className="form-group mt-1 col-sm-6">
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="documentNumber">
+                    Número de Documento:
+                  </label>
+                  <InputForm
+                    placeholder="-"
+                    name="documentNumber"
+                    value={
+                      orderInfo?.documentNumber
+                        ? orderInfo?.documentNumber
+                        : "-"
+                    }
+                    disabled={status === Status.Loading}
+                    readonly={true}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="seller">
+                    Vendedor:
+                  </label>
+                  <InputForm
+                    placeholder="-"
+                    name="seller"
+                    value={sellerOfOrder}
+                    disabled={status === Status.Loading}
+                    readonly={true}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="status">
+                    Estado:
+                  </label>
+                  <InputForm
+                    placeholder="-"
+                    name="status"
+                    value={statusOfOrder}
+                    disabled={status === Status.Loading}
+                    readonly={true}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label className="form-label" htmlFor="createdAt">
-                    Fecha de creación:
+                    Fecha de Emisión:
                   </label>
                   <InputForm
                     type="date"
-                    placeholder="Fecha de creación"
-                    name="createdAt"
+                    placeholder="-"
+                    name="status"
                     value={
-                      setFormatDate({
-                        date: prospectInfo?.createdAt,
-                        order: 1,
-                      }) || ""
+                      orderInfo?.createdAt
+                        ? setFormatDate({
+                            date: orderInfo?.createdAt,
+                            order: 1,
+                          })
+                        : ""
                     }
-                    onChange={handleOnChange}
-                    disabled={true}
-                    showError={false}
+                    disabled={status === Status.Loading}
+                    readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6">
-                  <label className="form-label" htmlFor="createdAt">
-                    Fecha de actualización:
-                  </label>
-                  <InputForm
-                    type="date"
-                    placeholder="Fecha de actualización"
-                    name="updatedAt"
-                    value={
-                      setFormatDate({
-                        date: prospectInfo?.updatedAt,
-                        order: 1,
-                      }) || ""
-                    }
-                    onChange={handleOnChange}
-                    disabled={true}
-                    showError={false}
-                  />
+                <div
+                  className="w-100 overflow-auto mt-3"
+                  style={{ minHeight: 200 }}
+                >
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th style={{ minWidth: 60 }}>N°</th>
+                        <th style={{ minWidth: 60 }}>Curso</th>
+                        <th style={{ minWidth: 60 }}>Precio Venta</th>
+                        <th style={{ minWidth: 60 }}>Cantidad</th>
+                        <th style={{ minWidth: 60 }}>Descuento</th>
+                        <th style={{ minWidth: 60 }}>Importe</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {itemsOfOrder.length > 0
+                        ? itemsOfOrder.map(
+                            (item: OrderDetail, index: number) => {
+                              const {
+                                course,
+                                price,
+                                quantity,
+                                discount,
+                                amount,
+                              } = item;
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>
+                                    {course?.name ? course?.name : "" || ""}
+                                  </td>
+                                  <td>{price.toFixed(2) || ""}</td>
+                                  <td>{quantity || ""}</td>
+                                  <td>{discount.toFixed(2) || ""}</td>
+                                  <td>{amount.toFixed(2) || ""}</td>
+                                </tr>
+                              );
+                            }
+                          )
+                        : null}
+                      <tr className="mt-3">
+                        <td colSpan={2}>
+                          <div className="d-block d-md-flex">
+                            <input
+                              className="form-control bg-warning text-center fw-bold"
+                              value="Subtotal"
+                              disabled={true}
+                            />
+                            <input
+                              type={"number"}
+                              className="form-control text-center"
+                              value={
+                                orderInfo?.subtotal
+                                  ? orderInfo?.subtotal.toFixed(2)
+                                  : ""
+                              }
+                              disabled={true}
+                            />
+                          </div>
+                        </td>
+                        <td colSpan={2}>
+                          <div className="d-block d-md-flex">
+                            <input
+                              className="form-control bg-warning text-center fw-bold d-flex"
+                              value={`IGV ${
+                                orderInfo?.percentIva
+                                  ? `${orderInfo?.percentIva * 100}%`
+                                  : ""
+                              }`}
+                              disabled={true}
+                            />
+                            <input
+                              type={"number"}
+                              className="form-control text-center d-flex"
+                              value={
+                                orderInfo?.amountInIva
+                                  ? orderInfo?.amountInIva.toFixed(2)
+                                  : ""
+                              }
+                              disabled={true}
+                            />
+                          </div>
+                        </td>
+                        <td colSpan={2}>
+                          <div className="d-block d-md-flex">
+                            <input
+                              className="form-control bg-warning text-center fw-bold"
+                              value="Total"
+                              disabled={true}
+                            />
+                            <input
+                              type={"number"}
+                              className="form-control text-center fw-bold"
+                              value={
+                                orderInfo?.total
+                                  ? orderInfo?.total.toFixed(2)
+                                  : ""
+                              }
+                              disabled={true}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <SubmitButton
-                    disabled={
-                      disable ||
-                      status === Status.Loading ||
-                      status === Status.Updating
-                    }
-                  >
-                    {status === Status.Updating ? (
-                      <>
-                        <span
-                          className="spinner-border spinner-border-sm"
-                          role="status"
-                          aria-hidden="true"
-                        ></span>
-                        &nbsp;Cargando...
-                      </>
-                    ) : (
-                      "Actualizar"
-                    )}
-                  </SubmitButton>
-                </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link
-                    to="/origenes-prospecto"
-                    className="btn   btn-secondary w-100"
-                  >
-                    Cancelar
+                <div className="form-group col-sm-6 col-md-2 mt-3">
+                  <Link to="/pedidos" className="btn btn-info w-100 text-white">
+                    Regresar
                   </Link>
                 </div>
               </form>
@@ -215,4 +309,4 @@ const EditProspectOriginComponent = () => {
   );
 };
 
-export default EditProspectOriginComponent;
+export default DetailOrderComponent;

@@ -21,6 +21,9 @@ const NewCourseTypeComponent = () => {
   const { id } = useParams<any>();
 
   React.useEffect(() => {
+    if (!id) {
+      history.push("/tipos-curso");
+    }
     setCourseTypeById(id);
   }, []);
 
@@ -196,7 +199,7 @@ const NewCourseTypeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/tipos-curso" className="btn   btn-secondary w-100">
+                  <Link to="/tipos-curso" className="btn btn-secondary text-white w-100">
                     Cancelar
                   </Link>
                 </div>

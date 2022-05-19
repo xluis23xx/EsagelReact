@@ -21,6 +21,9 @@ const EditProspectOriginComponent = () => {
   const { id } = useParams<any>();
 
   React.useEffect(() => {
+    if (!id) {
+      history.push("/origenes-prospecto");
+    }
     setProspectOriginById(id);
   }, []);
 
@@ -200,7 +203,7 @@ const EditProspectOriginComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <Link
                     to="/origenes-prospecto"
-                    className="btn   btn-secondary w-100"
+                    className="btn btn-secondary text-white w-100"
                   >
                     Cancelar
                   </Link>

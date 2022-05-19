@@ -162,7 +162,7 @@ export const IntervalButton = ({
 export const SubmitButton = ({
   disabled = undefined,
   children,
-  className = "btn btn-info w-100",
+  className = "btn btn-info w-100 text-white",
   style = undefined,
 }) => {
   return (

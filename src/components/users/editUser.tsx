@@ -36,9 +36,10 @@ const EditUserComponent = () => {
   };
 
   React.useEffect(() => {
-    if (id) {
-      setUserById(id);
+    if (!id) {
+      history.push("/usuarios");
     }
+    setUserById(id);
   }, []);
 
   React.useEffect(() => {
@@ -337,7 +338,7 @@ const EditUserComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/usuarios" className="btn   btn-secondary w-100">
+                  <Link to="/usuarios" className="btn btn-secondary text-white w-100">
                     Cancelar
                   </Link>
                 </div>

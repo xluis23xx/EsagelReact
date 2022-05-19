@@ -36,10 +36,10 @@ const EditCourseComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/courses");
+      history.push("/cursos");
     }
-    setCourseById(id);
     getAllCourseTypes();
+    setCourseById(id);
   }, []);
 
   React.useEffect(() => {
@@ -487,7 +487,10 @@ const EditCourseComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/cursos" className="btn   btn-secondary w-100">
+                  <Link
+                    to="/cursos"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>
