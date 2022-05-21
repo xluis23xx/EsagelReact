@@ -89,7 +89,7 @@ const DetailOrderComponent = () => {
               </div>
 
               <form className="row">
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="orderNumber">
                     Nro. Pedido:
                   </label>
@@ -101,7 +101,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="client">
                     Cliente:
                   </label>
@@ -113,7 +113,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Comprobante:
                   </label>
@@ -129,7 +129,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
                     Número de Documento:
                   </label>
@@ -145,7 +145,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="seller">
                     Vendedor:
                   </label>
@@ -157,7 +157,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
                     Estado:
                   </label>
@@ -169,7 +169,7 @@ const DetailOrderComponent = () => {
                     readonly={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="createdAt">
                     Fecha de Emisión:
                   </label>

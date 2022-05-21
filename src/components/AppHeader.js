@@ -83,7 +83,7 @@ const AppHeader = () => {
           </CNavItem>
           <CNavItem className="d-block ms-5 fw-bold">Rol(es): {roles}</CNavItem>
         </CHeaderNav>
-        <CHeaderNav className="ms-3">
+        <CHeaderNav className="ms-auto">
           {/* <ToggleButtonThemeComponent /> */}
           <AppHeaderDropdown />
         </CHeaderNav>

@@ -51,3 +51,21 @@ export const putUser = (token: string, id: string, user: any) =>
       "x-access-token": `${token}`,
     },
   }).then((res) => res.json());
+
+export const putPassword = (
+  id: string,
+  token: string,
+  { newPassword, oldPassword }: { newPassword: string; oldPassword: string }
+) =>
+  fetch(`${GENERAL_API}/users/password/${id}`, {
+    method: "PUT",
+    cache: "no-cache",
+    body: JSON.stringify({
+      newPassword,
+      oldPassword,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": `${token}`,
+    },
+  }).then((res) => res.json());

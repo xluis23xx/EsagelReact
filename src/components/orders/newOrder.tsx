@@ -169,7 +169,7 @@ const NewOrderComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="client">
                     Cliente (*):
                   </label>
@@ -221,7 +221,7 @@ const NewOrderComponent = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Comprobante (*):
                   </label>
@@ -253,7 +253,7 @@ const NewOrderComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
                     Estado (*):
                   </label>
@@ -264,7 +264,7 @@ const NewOrderComponent = () => {
                   />
                 </div>
                 {documentType === "Factura" ? (
-                  <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <div className="form-group mt-1 col-sm-6 col-xl-4">
                     <label className="form-label" htmlFor="documentNumber">
                       Número de Documento (*):
                     </label>
@@ -283,7 +283,7 @@ const NewOrderComponent = () => {
                   </div>
                 ) : null}
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="seller">
                     Vendedor:
                   </label>
@@ -486,7 +486,7 @@ const NewOrderComponent = () => {
                   </table>
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -509,7 +509,7 @@ const NewOrderComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/pedidos"
                     className="btn btn-secondary text-white w-100"

@@ -81,7 +81,7 @@ const NewPurchaseComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombres (*):
                   </label>
@@ -97,7 +97,7 @@ const NewPurchaseComponent = () => {
                     error={false}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="reason">
                     Motivo (*):
                   </label>
@@ -114,7 +114,7 @@ const NewPurchaseComponent = () => {
                     error={reasonError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="provider">
                     Proveedor (*):
                   </label>
@@ -132,7 +132,7 @@ const NewPurchaseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="price">
                     Precio Unitario:
                   </label>
@@ -152,7 +152,7 @@ const NewPurchaseComponent = () => {
                     error={false}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="quantity">
                     Cantidad:
                   </label>
@@ -173,7 +173,7 @@ const NewPurchaseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="total">
                     Total:
                   </label>
@@ -194,7 +194,7 @@ const NewPurchaseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="buyer">
                     Comprador:
                   </label>
@@ -219,7 +219,7 @@ const NewPurchaseComponent = () => {
                 </div>
 
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -242,7 +242,7 @@ const NewPurchaseComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/compras"
                     className="btn btn-secondary text-white w-100"

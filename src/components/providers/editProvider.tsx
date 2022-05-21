@@ -105,7 +105,7 @@ const EditProviderComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="createdAt">
                     Fecha de Registro:
                   </label>
@@ -123,7 +123,7 @@ const EditProviderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="updatedAt">
                     Última modificación:
                   </label>
@@ -141,7 +141,7 @@ const EditProviderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="businessName">
                     Nombre de la Empresa (*):
                   </label>
@@ -157,7 +157,7 @@ const EditProviderComponent = () => {
                     error={businessNameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
                     Nro. RUC (*):
                   </label>
@@ -175,7 +175,7 @@ const EditProviderComponent = () => {
                     error={documentNumberError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactName">
                     Nombre del Contacto (*):
                   </label>
@@ -193,7 +193,7 @@ const EditProviderComponent = () => {
                     error={contactNameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
                     Télefono (*):
                   </label>
@@ -212,7 +212,7 @@ const EditProviderComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -234,7 +234,7 @@ const EditProviderComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/proveedores"
                     className="btn btn-secondary text-white w-100"

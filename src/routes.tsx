@@ -7,9 +7,7 @@ const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 // Notifications
 const HelpComponent = React.lazy(() => import("./components/help/help"));
 
-const MyAccountComponent = React.lazy(
-  () => import("./components/myAccount/profile")
-);
+const MyAccountComponent = React.lazy(() => import("./components/myAccount"));
 
 // Componentes propios del proyecto ESAGEL
 const EmployeesComponent = React.lazy(

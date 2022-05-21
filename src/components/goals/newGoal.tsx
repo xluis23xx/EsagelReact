@@ -120,7 +120,7 @@ const NewGoalComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
                     Empleado (*):
                   </label>
@@ -174,7 +174,7 @@ const NewGoalComponent = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="estimatedQuantity">
                     Cantidad Estimada (*):
                   </label>
@@ -193,7 +193,7 @@ const NewGoalComponent = () => {
                     error={estimatedQuantityError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="quantitySold">
                     Cantidad Vendida:
                   </label>
@@ -207,7 +207,7 @@ const NewGoalComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="startDate">
                     Fecha de Inicio (*):
                   </label>
@@ -222,7 +222,7 @@ const NewGoalComponent = () => {
                     error={startDateError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="endDate">
                     Fecha de Fin (*):
                   </label>
@@ -238,7 +238,7 @@ const NewGoalComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable || !selectedEmployee || status === Status.Updating
@@ -258,7 +258,7 @@ const NewGoalComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/metas"
                     className="btn btn-secondary text-white w-100"

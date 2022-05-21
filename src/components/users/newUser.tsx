@@ -164,7 +164,7 @@ const NewUserComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
                     Empleado (*):
                   </label>
@@ -218,7 +218,7 @@ const NewUserComponent = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
                     Estado (*):
                   </label>
@@ -240,7 +240,7 @@ const NewUserComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="roles">
                     Roles (*):
                   </label>
@@ -286,7 +286,7 @@ const NewUserComponent = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="username">
                     Usuario (*):
                   </label>
@@ -318,7 +318,7 @@ const NewUserComponent = () => {
                     </button>
                   </div>
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="image">
                     Foto:
                   </label>
@@ -351,7 +351,7 @@ const NewUserComponent = () => {
                   )}
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       statusForm === ""
@@ -383,7 +383,7 @@ const NewUserComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/usuarios"
                     className="btn btn-secondary text-white w-100"

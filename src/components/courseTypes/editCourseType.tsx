@@ -102,7 +102,7 @@ const NewCourseTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="code">
                     Código (*):
                   </label>
@@ -117,7 +117,7 @@ const NewCourseTypeComponent = () => {
                     error={codeError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombre (*):
                   </label>
@@ -135,7 +135,7 @@ const NewCourseTypeComponent = () => {
                     error={nameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
                     Estado (*):
                   </label>
@@ -179,7 +179,7 @@ const NewCourseTypeComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -201,7 +201,7 @@ const NewCourseTypeComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/tipos-curso"
                     className="btn btn-secondary text-white w-100"

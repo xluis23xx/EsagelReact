@@ -218,7 +218,7 @@ const EditEmployeeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombres (*):
                   </label>
@@ -237,7 +237,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="lastname">
                     Apellido Paterno (*):
                   </label>
@@ -256,7 +256,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="secondLastname">
                     Apellido Materno (*):
                   </label>
@@ -277,7 +277,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Documento (*):
                   </label>
@@ -312,7 +312,7 @@ const EditEmployeeComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
@@ -331,7 +331,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="corporateEmail">
                     Correo Corporativo (*):
                   </label>
@@ -349,7 +349,7 @@ const EditEmployeeComponent = () => {
                     error={corporateEmailError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="address">
                     Dirección (*):
                   </label>
@@ -368,7 +368,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
                     Teléfono (*):
                   </label>
@@ -387,7 +387,7 @@ const EditEmployeeComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="personalEmail">
                     Correo personal (*):
                   </label>
@@ -407,7 +407,7 @@ const EditEmployeeComponent = () => {
                     error={personalEmailError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="birthdate">
                     Fecha de Nacimiento (*):
                   </label>
@@ -429,7 +429,7 @@ const EditEmployeeComponent = () => {
                     error={birthdateError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="image">
                     Foto:
                   </label>
@@ -462,7 +462,7 @@ const EditEmployeeComponent = () => {
                   )}
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="position">
                     Cargo (*):
                   </label>
@@ -491,7 +491,7 @@ const EditEmployeeComponent = () => {
                   </select>
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable || imageUploading || imageErrorMessage
@@ -515,7 +515,7 @@ const EditEmployeeComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/empleados"
                     className="btn btn-secondary text-white w-100"

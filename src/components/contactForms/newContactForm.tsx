@@ -113,7 +113,7 @@ const NewContactFormComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={disable || status === Status.Updating}
                   >
@@ -131,7 +131,7 @@ const NewContactFormComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/medios-contacto"
                     className="btn btn-secondary text-white w-100"

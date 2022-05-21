@@ -201,7 +201,7 @@ const NewClientComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombres (*):
                   </label>
@@ -218,7 +218,7 @@ const NewClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="lastname">
                     Apellido Paterno (*):
                   </label>
@@ -235,7 +235,7 @@ const NewClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="secondLastname">
                     Apellido Materno (*):
                   </label>
@@ -251,7 +251,7 @@ const NewClientComponent = () => {
                     error={secondLastnameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="email">
                     Correo Personal (*):
                   </label>
@@ -267,7 +267,7 @@ const NewClientComponent = () => {
                     error={emailError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Documento (*):
                   </label>
@@ -299,7 +299,7 @@ const NewClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
@@ -315,7 +315,7 @@ const NewClientComponent = () => {
                     error={documentNumberError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="department">
                     Departamento (*):
                   </label>
@@ -341,7 +341,7 @@ const NewClientComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="address">
                     Dirección (*):
                   </label>
@@ -358,7 +358,7 @@ const NewClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
                     Teléfono (*):
                   </label>
@@ -375,7 +375,7 @@ const NewClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="birthdate">
                     Fecha de Nacimiento (*):
                   </label>
@@ -390,7 +390,7 @@ const NewClientComponent = () => {
                     error={birthdateError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="leadSource">
                     Origen de Prospecto (*):
                   </label>
@@ -416,7 +416,7 @@ const NewClientComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="prospectStatus">
                     Estado de Prospecto (*):
                   </label>
@@ -442,7 +442,7 @@ const NewClientComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactForm">
                     Medio de Contacto (*):
                   </label>
@@ -468,7 +468,7 @@ const NewClientComponent = () => {
                       : null}
                   </select>
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="business">
                     Negocio:
                   </label>
@@ -483,7 +483,7 @@ const NewClientComponent = () => {
                     error={businessError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="profession">
                     Profesión:
                   </label>
@@ -499,7 +499,7 @@ const NewClientComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={disable || status === Status.Updating}
                   >
@@ -517,7 +517,7 @@ const NewClientComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/clientes"
                     className="btn btn-secondary text-white w-100"

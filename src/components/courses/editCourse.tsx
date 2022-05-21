@@ -183,7 +183,7 @@ const EditCourseComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="code">
                     Código (*):
                   </label>
@@ -199,7 +199,7 @@ const EditCourseComponent = () => {
                     error={codeError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombre (*):
                   </label>
@@ -218,7 +218,7 @@ const EditCourseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="modality">
                     Modalidad (*):
                   </label>
@@ -321,7 +321,7 @@ const EditCourseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="price">
                     Precio (*):
                   </label>
@@ -348,7 +348,7 @@ const EditCourseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="vacanciesNumber">
                     Nro. Vacantes (*):
                   </label>
@@ -374,7 +374,7 @@ const EditCourseComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="courseType">
                     Tipo de Curso (*):
                   </label>
@@ -403,7 +403,7 @@ const EditCourseComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="image">
                     Foto:
                   </label>
@@ -436,7 +436,7 @@ const EditCourseComponent = () => {
                   )}
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable || imageUploading || imageErrorMessage
@@ -461,7 +461,7 @@ const EditCourseComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/cursos"
                     className="btn btn-secondary text-white w-100"

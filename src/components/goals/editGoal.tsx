@@ -79,7 +79,7 @@ const EditGoalComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
                     Empleado (*):
                   </label>
@@ -99,7 +99,7 @@ const EditGoalComponent = () => {
                     disabled={true}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="estimatedQuantity">
                     Cantidad Estimada (*):
                   </label>
@@ -124,7 +124,7 @@ const EditGoalComponent = () => {
                     error={estimatedQuantityError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="quantitySold">
                     Cantidad Vendida:
                   </label>
@@ -138,7 +138,7 @@ const EditGoalComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="startDate">
                     Fecha de Inicio (*):
                   </label>
@@ -158,7 +158,7 @@ const EditGoalComponent = () => {
                     showError={false}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="endDate">
                     Fecha de Fin (*):
                   </label>
@@ -179,7 +179,7 @@ const EditGoalComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -201,7 +201,7 @@ const EditGoalComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/metas"
                     className="btn btn-secondary text-white w-100"

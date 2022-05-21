@@ -127,12 +127,8 @@ const EditClientComponent = () => {
       secondLastname:
         (data?.secondLastname ?? clientInfo?.secondLastname) || null,
       phoneNumber: (data?.phoneNumber ?? clientInfo?.phoneNumber) || null,
-      // documentType: (data?.documentType ?? clientInfo?.documentType) || null,
-      // documentNumber:
-      //   (data?.documentNumber ?? clientInfo?.documentNumber) || null,
       address: (data?.address ?? clientInfo?.address) || null,
       email: (data?.email ?? clientInfo?.email) || null,
-      // birthdate: (data?.birthdate ?? clientInfo?.birthdate) || null,
       department: (data?.department ?? clientInfo?.department) || null,
       leadSource: (data?.leadSource ?? clientInfo?.leadSource) || null,
       prospectStatus:
@@ -140,7 +136,6 @@ const EditClientComponent = () => {
       contactForm: (data?.contactForm ?? clientInfo?.contactForm) || null,
       profession: (data?.profession ?? clientInfo?.profession) || null,
       business: (data?.business ?? clientInfo?.business) || null,
-      // status: 1,
     };
     updateClient(id, client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
@@ -211,7 +206,7 @@ const EditClientComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
                     Nombres (*):
                   </label>
@@ -230,7 +225,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="lastname">
                     Apellido Paterno (*):
                   </label>
@@ -249,7 +244,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="secondLastname">
                     Apellido Materno (*):
                   </label>
@@ -268,7 +263,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="email">
                     Correo Personal (*):
                   </label>
@@ -287,7 +282,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Documento (*):
                   </label>
@@ -321,7 +316,7 @@ const EditClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
                     Número de Documento (*):
                   </label>
@@ -338,7 +333,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="department">
                     Departamento (*):
                   </label>
@@ -367,7 +362,7 @@ const EditClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="address">
                     Dirección (*):
                   </label>
@@ -386,7 +381,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
                     Teléfono (*):
                   </label>
@@ -405,7 +400,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="birthdate">
                     Fecha de Nacimiento (*):
                   </label>
@@ -427,7 +422,7 @@ const EditClientComponent = () => {
                     error={birthdateError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="leadSource">
                     Origen de Prospecto (*):
                   </label>
@@ -456,7 +451,7 @@ const EditClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="prospectStatus">
                     Estado de Prospecto (*):
                   </label>
@@ -487,7 +482,7 @@ const EditClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactForm">
                     Medio de Contacto (*):
                   </label>
@@ -516,7 +511,7 @@ const EditClientComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="business">
                     Negocio:
                   </label>
@@ -534,7 +529,7 @@ const EditClientComponent = () => {
                   />
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="profession">
                     Profesión:
                   </label>
@@ -552,7 +547,7 @@ const EditClientComponent = () => {
                   />
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable ||
@@ -575,7 +570,7 @@ const EditClientComponent = () => {
                   </SubmitButton>
                 </div>
 
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/clientes"
                     className="btn btn-secondary text-white w-100"

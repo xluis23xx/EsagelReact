@@ -222,7 +222,7 @@ const NewCourseTypeComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="companyName">
                     Nombre de la Compañía (*):
                   </label>
@@ -238,7 +238,7 @@ const NewCourseTypeComponent = () => {
                     error={companyNameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="description">
                     Descripción (*):
                   </label>
@@ -253,7 +253,7 @@ const NewCourseTypeComponent = () => {
                     error={descriptionError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="businessName">
                     Razón Social (*):
                   </label>
@@ -269,7 +269,7 @@ const NewCourseTypeComponent = () => {
                     error={businessNameError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="ruc">
                     Nro. RUC (*):
                   </label>
@@ -285,7 +285,7 @@ const NewCourseTypeComponent = () => {
                     error={rucError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="url">
                     URL Página Oficial:
                   </label>
@@ -300,7 +300,7 @@ const NewCourseTypeComponent = () => {
                     error={urlError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="image">
                     Foto:
                   </label>
@@ -332,7 +332,7 @@ const NewCourseTypeComponent = () => {
                     </p>
                   )}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="tax">
                     % Impuesto:
                   </label>
@@ -351,7 +351,7 @@ const NewCourseTypeComponent = () => {
                     error={taxError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-md-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="manual">
                     Manual:
                   </label>
@@ -384,7 +384,7 @@ const NewCourseTypeComponent = () => {
                   )}
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
                       disable || imageUploading || imageErrorMessage
@@ -408,7 +408,7 @@ const NewCourseTypeComponent = () => {
                     )}
                   </SubmitButton>
                 </div>
-                <div className="form-group col-sm-6 col-md-3 mt-3">
+                <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
                     to="/home"
                     className="btn btn-secondary w-100 text-white"

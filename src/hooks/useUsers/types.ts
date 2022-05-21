@@ -8,7 +8,10 @@ export type Role = {
 export type User = {
   _id?: string;
   username?: string;
-  password?: string;
+  firstname?: string | null;
+  lastname?: string | null;
+  secondLastname?: string | null;
+  password?: string | null;
   status?: number | null;
   roles?: Role[];
   employee?: Employee | null;
