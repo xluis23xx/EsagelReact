@@ -9,6 +9,8 @@ import { Topic, Status, useTopics } from "../../hooks/useTopics";
 import { setFormatDate } from "../../utils/formats";
 import { TextAreaForm } from "../global-components/textareaForm";
 import { SubmitButton } from "../global-components/globalButtons";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const EditTopicComponent = () => {
   const { updateTopic, setTopicById, topicInfo, status } = useTopics();
@@ -64,13 +66,14 @@ const EditTopicComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR TEMA
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;EDITAR TEMA
               </div>
             </div>
           </div>
@@ -182,7 +185,10 @@ const EditTopicComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/temas" className="btn btn-secondary text-white w-100">
+                  <Link
+                    to="/temas"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>

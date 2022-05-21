@@ -18,7 +18,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { cilCheckCircle, cilSearch } from "@coreui/icons";
+import { cilCheckCircle, cilHamburgerMenu, cilSearch } from "@coreui/icons";
 
 import { InputForm } from "../global-components/inputForm";
 
@@ -99,13 +99,14 @@ const NewGoalComponent = () => {
   };
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVA META
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;NUEVA META
               </div>
             </div>
           </div>

@@ -19,20 +19,30 @@ import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { usePositions, Position } from "../../hooks/usePositions";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
+import { useFileUpload } from "../../hooks/useFileUpload";
 import { SubmitButton } from "../global-components/globalButtons";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const NewEmployeeComponent = () => {
   const { registerEmployee, status } = useEmployees();
   const { getAllDocumentTypes, documents } = useDocumentTypes();
   const { getAllPositions, positions } = usePositions();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    showDocument: showImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "employees",
+    timerMessage: 3000,
+  });
   const history = useHistory();
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState("");
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
@@ -164,55 +174,15 @@ const NewEmployeeComponent = () => {
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-    if (showImage) {
-      setShowImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("employees")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO EMPLEADO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;NUEVO EMPLEADO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -242,7 +212,6 @@ const NewEmployeeComponent = () => {
                 </label>
                 <br />
               </div>
-
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-md-4">
                   <label className="form-label" htmlFor="name">
@@ -437,20 +406,20 @@ const NewEmployeeComponent = () => {
                     name="imagen"
                     randomizeFilename
                     storageRef={firebase.storage.ref("employees")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-dark p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-danger p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -490,7 +459,7 @@ const NewEmployeeComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage
+                      disable || imageUploading || imageErrorMessage
                         ? true
                         : false || status === Status.Updating
                     }
@@ -510,7 +479,10 @@ const NewEmployeeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/empleados" className="btn btn-secondary text-white w-100">
+                  <Link
+                    to="/empleados"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>

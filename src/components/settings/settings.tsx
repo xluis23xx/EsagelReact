@@ -14,25 +14,52 @@ import { InputForm } from "../global-components/inputForm";
 import { Setting, Status, useSettings } from "../../hooks/useSettings";
 import { SettingsContext } from "../../context/SettingsContext";
 
+import { useFileUpload } from "../../hooks/useFileUpload";
 import FileUploader from "react-firebase-file-uploader";
 
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { SubmitButton } from "../global-components/globalButtons";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const NewCourseTypeComponent = () => {
   const { status, getSettingsConfig, updateSetting } = useSettings();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    setShowDocument: setShowImage,
+    showDocument: showImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "esagel",
+    timerMessage: 3000,
+  });
+
+  const {
+    uploading: manualUploading,
+    progress: manualProgress,
+    setShowDocument: setShowManual,
+    showDocument: showManual,
+    urlDocument: urlManual,
+    errorMessage: manualErrorMessage,
+    handleUploadError: handleUploadManualError,
+    handleUploadStart: handleUploadManualStart,
+    handleUploadSuccess: handleUploadManualSuccess,
+    handleProgress: handleManualProgress,
+  } = useFileUpload({
+    directory: "esagel",
+    timerMessage: 3000,
+  });
   const { config, setConfig } = React.useContext(SettingsContext);
 
-  // Context con las operaciones de firebase
+  // // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState(null);
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   React.useEffect(() => {
     const ESAGEL_CONFIG = localStorage.getItem("esagel_config");
@@ -49,7 +76,10 @@ const NewCourseTypeComponent = () => {
 
   React.useEffect(() => {
     if (config?.logo) {
-      setShowImage(config?.logo);
+      setShowImage(config.logo);
+    }
+    if (config?.manual) {
+      setShowManual(config.manual);
     }
   }, [config]);
 
@@ -110,6 +140,7 @@ const NewCourseTypeComponent = () => {
           ? Number(config?.tax)
           : null) || 0.18,
       logo: showImage || null,
+      manual: showManual || null,
     };
     updateSetting(config._id, setting).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
@@ -133,70 +164,51 @@ const NewCourseTypeComponent = () => {
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("saegel")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
-              <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>Configuración de Sistema
+              <div className="col-12 col-sm-6 col-md-8 my-auto">
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;CONFIGURACIÓN DE SISTEMA
               </div>
+              {showManual ? (
+                <>
+                  {showImage ? null : <div className="col-md-2" />}
+                  <div className="col-12 col-sm-6 col-md-2 my-1 text-end">
+                    <a
+                      href={showManual}
+                      target="_blank"
+                      className="btn btn-dark w-100"
+                      rel="noreferrer"
+                    >
+                      Ver Manual
+                    </a>
+                  </div>
+                </>
+              ) : null}
               {showImage ? (
-                <div className="col-12 col-sm-6 col-md-2 text-end">
-                  <button
-                    className="btn btn-dark w-100"
-                    onClick={() =>
-                      Swal.fire({
-                        imageUrl: showImage,
-                        imageHeight: "auto",
-                        padding: "20",
-                        imageAlt: "Logo de la empresa",
-                        confirmButtonColor: "#ff0000",
-                      })
-                    }
-                  >
-                    Ver Foto
-                  </button>
-                </div>
+                <>
+                  {showManual ? null : <div className="col-md-2" />}
+                  <div className="col-12 col-sm-6 col-md-2 my-1 text-end">
+                    <button
+                      className="btn btn-dark w-100"
+                      onClick={() =>
+                        Swal.fire({
+                          imageUrl: showImage,
+                          imageHeight: "auto",
+                          padding: "20",
+                          imageAlt: "Logo de la empresa",
+                          confirmButtonColor: "#ff0000",
+                        })
+                      }
+                    >
+                      Ver Foto
+                    </button>
+                  </div>
+                </>
               ) : null}
             </div>
           </div>
@@ -297,21 +309,21 @@ const NewCourseTypeComponent = () => {
                     id="imagen"
                     name="imagen"
                     randomizeFilename
-                    storageRef={firebase.storage.ref("saegel")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    storageRef={firebase.storage.ref("esagel")}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-black p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-red p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -339,11 +351,45 @@ const NewCourseTypeComponent = () => {
                     error={taxError}
                   />
                 </div>
+                <div className="form-group mt-1 col-sm-6 col-md-4">
+                  <label className="form-label" htmlFor="manual">
+                    Manual:
+                  </label>
+                  <FileUploader
+                    accept="application/pdf"
+                    id="manual"
+                    name="manual"
+                    randomizeFilename
+                    storageRef={firebase.storage.ref("esagel")}
+                    onUploadStart={handleUploadManualStart}
+                    onUploadError={handleUploadManualError}
+                    className="form-control"
+                    onUploadSuccess={handleUploadManualSuccess}
+                    onProgress={handleManualProgress}
+                  />
+                  {manualUploading && (
+                    <div className="text-black p-1 text-center my-1">
+                      {manualProgress} %
+                    </div>
+                  )}
+                  {manualErrorMessage && (
+                    <div className="text-red p-1 text-center my-1">
+                      {manualErrorMessage}
+                    </div>
+                  )}
+                  {urlManual && (
+                    <p className="text-black p-1 text-center my-1">
+                      El manual se subió correctamente
+                    </p>
+                  )}
+                </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage
+                      disable || imageUploading || imageErrorMessage
+                        ? true
+                        : false || manualUploading || manualErrorMessage
                         ? true
                         : false || status === Status.Updating || !config
                     }
@@ -363,7 +409,10 @@ const NewCourseTypeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/home" className="btn   btn-secondary w-100">
+                  <Link
+                    to="/home"
+                    className="btn btn-secondary w-100 text-white"
+                  >
                     Volver
                   </Link>
                 </div>

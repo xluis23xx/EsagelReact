@@ -10,21 +10,32 @@ import FileUploader from "react-firebase-file-uploader";
 
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
+import { useFileUpload } from "../../hooks/useFileUpload";
 
 const EditUserComponent = () => {
   const { updateUser, status, setUserById, userInfo } = useUsers();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    showDocument: showImage,
+    setShowDocument: setShowImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "users",
+    timerMessage: 3000,
+  });
 
   const { id } = useParams<any>();
 
   const [selectedRoles, setSelectedRoles] = React.useState<string[]>([]);
   const [showRolesError, setShowRolesError] = React.useState<boolean>(false);
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState("");
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
@@ -46,7 +57,9 @@ const EditUserComponent = () => {
     if (userInfo) {
       const roles = userInfo?.roles.map((rol) => rol.name);
       setSelectedRoles([...roles]);
-      setShowImage(userInfo?.image);
+      if (userInfo?.image) {
+        setShowImage(userInfo.image);
+      }
     }
   }, [userInfo]);
 
@@ -76,55 +89,15 @@ const EditUserComponent = () => {
     handleOnSubmit,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-    if (showImage) {
-      setShowImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("usuarios")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR USUARIO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;EDITAR USUARIO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -284,21 +257,21 @@ const EditUserComponent = () => {
                     id="imagen"
                     name="imagen"
                     randomizeFilename
-                    storageRef={firebase.storage.ref("usuarios")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    storageRef={firebase.storage.ref("users")}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-dark p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-danger p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -317,8 +290,8 @@ const EditUserComponent = () => {
                         ? true
                         : false ||
                           status === Status.Updating ||
-                          uploading ||
-                          errorMessage
+                          imageUploading ||
+                          imageErrorMessage
                         ? true
                         : false
                     }
@@ -338,7 +311,10 @@ const EditUserComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/usuarios" className="btn btn-secondary text-white w-100">
+                  <Link
+                    to="/usuarios"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>

@@ -10,6 +10,8 @@ import {
   useDocumentTypes,
 } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const NewDocumentTypeComponent = () => {
   const { registerDocumentType, status } = useDocumentTypes();
@@ -52,13 +54,14 @@ const NewDocumentTypeComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO TIPO DE DOCUMENTO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;NUEVO TIPO DE DOCUMENTO
               </div>
             </div>
           </div>

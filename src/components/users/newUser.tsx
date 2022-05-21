@@ -18,9 +18,15 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { cilCheckCircle, cilPencil, cilSearch } from "@coreui/icons";
+import {
+  cilCheckCircle,
+  cilHamburgerMenu,
+  cilPencil,
+  cilSearch,
+} from "@coreui/icons";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
+import { useFileUpload } from "../../hooks/useFileUpload";
 
 const NewUserComponent = () => {
   const { registerUser, status } = useUsers();
@@ -32,6 +38,20 @@ const NewUserComponent = () => {
     setEmployeeById,
     cleanEmployeeProfile,
   } = useEmployees();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    showDocument: showImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "users",
+    timerMessage: 3000,
+  });
 
   const [visible, setVisible] = React.useState(false);
 
@@ -46,13 +66,6 @@ const NewUserComponent = () => {
 
   const [enableCustomUsername, setEnableCustomUsername] =
     React.useState<boolean>(false);
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState("");
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
@@ -107,59 +120,19 @@ const NewUserComponent = () => {
     handleOnSubmit,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-    if (showImage) {
-      setShowImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("usuarios")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   const handleSearch = (data) => {
     searchEmployeesByName(data.search);
   };
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>NUEVO USUARIO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;NUEVO USUARIO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -354,21 +327,21 @@ const NewUserComponent = () => {
                     id="imagen"
                     name="imagen"
                     randomizeFilename
-                    storageRef={firebase.storage.ref("usuarios")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    storageRef={firebase.storage.ref("users")}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-dark p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-danger p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -390,8 +363,8 @@ const NewUserComponent = () => {
                         ? true
                         : false ||
                           status === Status.Updating ||
-                          uploading ||
-                          errorMessage
+                          imageUploading ||
+                          imageErrorMessage
                         ? true
                         : false
                     }

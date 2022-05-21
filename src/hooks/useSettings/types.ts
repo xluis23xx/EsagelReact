@@ -7,6 +7,7 @@ export type Setting = {
   url?: string | null;
   logo?: string | null;
   tax?: number | null;
+  manual?: string | null;
   createdAt?: string;
   updatedAt?: string;
 };

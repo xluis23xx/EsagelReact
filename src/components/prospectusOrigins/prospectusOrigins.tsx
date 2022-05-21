@@ -48,12 +48,12 @@ const ProspectOriginsComponent = () => {
       <div className="row mb-3">
         <RedirectionButton redirection="/origenes-prospecto/nuevo" />
       </div>
-      <div className="row mt-3">
+      <div className="row my-3">
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;Orígenes de Prospecto
+              &nbsp;ORÍGENES DE PROSPECTO
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">

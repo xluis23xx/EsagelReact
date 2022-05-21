@@ -54,7 +54,7 @@ const UsersComponent = () => {
       <div className="row mb-3">
         <RedirectionButton redirection="/usuarios/nuevo" />
       </div>
-      <div className="row mt-3">
+      <div className="row my-3">
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">

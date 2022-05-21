@@ -5,7 +5,11 @@ import { Role } from "./hooks/useUsers";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 
 // Notifications
-const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
+const HelpComponent = React.lazy(() => import("./components/help/help"));
+
+const MyAccountComponent = React.lazy(
+  () => import("./components/myAccount/profile")
+);
 
 // Componentes propios del proyecto ESAGEL
 const EmployeesComponent = React.lazy(
@@ -201,6 +205,12 @@ export const RoutesArray = (): any[] => {
       exact: true,
     },
     {
+      path: "/mi-perfil",
+      name: "Mi Perfil",
+      element: MyAccountComponent,
+      exact: true,
+    },
+    {
       path: "/pedidos/nuevo",
       name: "Nuevo",
       element: NewOrderComponent,
@@ -264,7 +274,7 @@ export const RoutesArray = (): any[] => {
     {
       path: "/ayuda",
       name: "Ayuda",
-      element: Badges,
+      element: HelpComponent,
       exact: true,
     },
   ];

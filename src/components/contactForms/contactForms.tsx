@@ -45,12 +45,12 @@ const ContactFormsComponent = () => {
       <div className="row mb-3">
         <RedirectionButton redirection="/medios-contacto/nuevo" />
       </div>
-      <div className="row mt-3">
+      <div className="row my-3">
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">
               <CIcon icon={cilHamburgerMenu} />
-              &nbsp;Medios de Contacto
+              &nbsp;MEDIOS DE CONTACTO
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">

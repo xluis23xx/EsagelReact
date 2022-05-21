@@ -13,10 +13,29 @@ import Swal from "sweetalert2";
 import { useCourseTypes, CourseType } from "../../hooks/useCourseTypes";
 import { TextAreaForm } from "../global-components/textareaForm";
 import { SubmitButton } from "../global-components/globalButtons";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
+import { useFileUpload } from "../../hooks/useFileUpload";
 
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
   const { getAllCourseTypes, courseTypes } = useCourseTypes();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    setShowDocument: setShowImage,
+    showDocument: showImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "courses",
+    timerMessage: 3000,
+  });
+
   const [modalitys, setModalitys] = React.useState<string[]>([]);
 
   const [modalityError, setModalityError] = React.useState<boolean>(false);
@@ -24,13 +43,6 @@ const EditCourseComponent = () => {
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
   const history = useHistory();
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState(null);
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   const { id } = useParams<any>();
 
@@ -44,10 +56,10 @@ const EditCourseComponent = () => {
 
   React.useEffect(() => {
     if (courseInfo?.image) {
-      setShowImage(courseInfo?.image);
+      setShowImage(courseInfo.image);
     }
     if (courseInfo?.modality) {
-      setModalitys([...courseInfo?.modality]);
+      setModalitys([...courseInfo.modality]);
     }
   }, [courseInfo]);
 
@@ -131,52 +143,15 @@ const EditCourseComponent = () => {
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("employees")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR CURSO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;EDITAR CURSO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -438,20 +413,20 @@ const EditCourseComponent = () => {
                     name="imagen"
                     randomizeFilename
                     storageRef={firebase.storage.ref("courses")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-dark p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-danger p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -464,7 +439,7 @@ const EditCourseComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage
+                      disable || imageUploading || imageErrorMessage
                         ? true
                         : false ||
                           modalityError ||

@@ -56,7 +56,7 @@ const OrdersComponent = () => {
   return (
     <>
       <div className="row mb-3" />
-      <div className="row mt-3">
+      <div className="row my-3">
         <div className="col-lg-12">
           <div className="card">
             <div className="card-header">

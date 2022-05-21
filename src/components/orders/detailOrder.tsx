@@ -6,6 +6,8 @@ import { OrderDetail, Status, useOrders } from "../../hooks/useOrders";
 import { InputForm } from "../global-components/inputForm";
 import { useParams, useHistory } from "react-router-dom";
 import { setFormatDate } from "../../utils/formats";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const DetailOrderComponent = () => {
   const { setOrderById, orderInfo, status } = useOrders();
@@ -68,13 +70,14 @@ const DetailOrderComponent = () => {
   }, [orderInfo]);
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>DETALLE PEDIDO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;DETALLE PEDIDO
               </div>
             </div>
           </div>

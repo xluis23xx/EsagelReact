@@ -9,6 +9,8 @@ import { SubmitButton } from "../global-components/globalButtons";
 
 import { InputForm } from "../global-components/inputForm";
 import { TextAreaForm } from "../global-components/textareaForm";
+import CIcon from "@coreui/icons-react";
+import { cilHamburgerMenu } from "@coreui/icons";
 
 const NewPurchaseComponent = () => {
   const { updatePurchase, purchaseInfo, setPurchaseById, status } =
@@ -58,13 +60,14 @@ const NewPurchaseComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR COMPRA
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;EDITAR COMPRA
               </div>
             </div>
           </div>

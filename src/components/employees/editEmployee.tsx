@@ -21,22 +21,33 @@ import { setFormatDate } from "../../utils/formats";
 import { usePositions, Position } from "../../hooks/usePositions";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
+import { cilHamburgerMenu } from "@coreui/icons";
+import CIcon from "@coreui/icons-react";
+import { useFileUpload } from "../../hooks/useFileUpload";
 
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeProfile, status } =
     useEmployees();
   const { getAllDocumentTypes, documents } = useDocumentTypes();
   const { getAllPositions, positions } = usePositions();
+  const {
+    uploading: imageUploading,
+    progress: imageProgress,
+    showDocument: showImage,
+    setShowDocument: setShowImage,
+    urlDocument: urlImage,
+    errorMessage: imageErrorMessage,
+    handleUploadError: handleUploadImageError,
+    handleUploadStart: handleUploadImageStart,
+    handleUploadSuccess: handleUploadImageSuccess,
+    handleProgress: handleImageProgress,
+  } = useFileUpload({
+    directory: "employees",
+    timerMessage: 3000,
+  });
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
   const history = useHistory();
-
-  // state para las imagenes
-  const [uploading, setUploading] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const [urlImage, setUrlImage] = React.useState(null);
-  const [showImage, setShowImage] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
 
   const { id } = useParams<any>();
 
@@ -51,7 +62,7 @@ const EditEmployeeComponent = () => {
 
   React.useEffect(() => {
     if (employeeProfile?.image) {
-      setShowImage(employeeProfile?.image);
+      setShowImage(employeeProfile.image);
     }
   }, [employeeProfile]);
 
@@ -121,18 +132,10 @@ const EditEmployeeComponent = () => {
       secondLastname:
         (data?.secondLastname ?? employeeProfile?.secondLastname) || null,
       phoneNumber: (data?.phoneNumber ?? employeeProfile?.phoneNumber) || null,
-      //   documentType:
-      //     (data?.documentType ?? employeeProfile?.documentType?.name) || null,
-      //   documentNumber:
-      //     (data?.documentNumber ?? employeeProfile?.documentNumber) || null,
       address: (data?.address ?? employeeProfile?.address) || null,
-      //   corporateEmail:
-      //     (data?.corporateEmail ?? employeeProfile?.corporateEmail) || null,
       personalEmail:
         (data?.personalEmail ?? employeeProfile?.personalEmail) || null,
       image: showImage || null,
-      //   birthdate:
-      //     (data?.birthdate ?? setBirtdate(employeeProfile?.birthdate)) || null,
       position: (data?.position ?? employeeProfile?.position?.name) || null,
       status: 1,
     };
@@ -175,52 +178,15 @@ const EditEmployeeComponent = () => {
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  // Todo sobre las imagenes
-  const handleUploadStart = () => {
-    setProgress(0);
-    setUploading(true);
-    if (urlImage) {
-      setUrlImage("");
-    }
-  };
-
-  const handleUploadError = (error: string) => {
-    setUploading(false);
-    setErrorMessage(error);
-    setTimeout(() => {
-      setErrorMessage("");
-    }, 3000);
-  };
-
-  const handleUploadSuccess = async (nam: string) => {
-    setProgress(100);
-    setUploading(false);
-
-    // Almacenar la URL de destino
-    const url = await firebase.storage
-      .ref("employees")
-      .child(nam)
-      .getDownloadURL();
-
-    setUrlImage(url);
-    setTimeout(() => {
-      setUrlImage("");
-    }, 3000);
-    setShowImage(url);
-  };
-
-  const handleProgress = (prog) => {
-    setProgress(prog);
-  };
-
   return (
-    <div className="row mt-3">
+    <div className="row my-3">
       <div className="col-lg-12">
         <div className="card">
           <div className="card-header">
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
-                <i className="fa fa-align-justify"></i>EDITAR EMPLEADO
+                <CIcon icon={cilHamburgerMenu} />
+                &nbsp;EDITAR EMPLEADO
               </div>
               {showImage ? (
                 <div className="col-12 col-sm-6 col-md-2 text-end">
@@ -473,20 +439,20 @@ const EditEmployeeComponent = () => {
                     name="imagen"
                     randomizeFilename
                     storageRef={firebase.storage.ref("employees")}
-                    onUploadStart={handleUploadStart}
-                    onUploadError={handleUploadError}
+                    onUploadStart={handleUploadImageStart}
+                    onUploadError={handleUploadImageError}
                     className="form-control"
-                    onUploadSuccess={handleUploadSuccess}
-                    onProgress={handleProgress}
+                    onUploadSuccess={handleUploadImageSuccess}
+                    onProgress={handleImageProgress}
                   />
-                  {uploading && (
+                  {imageUploading && (
                     <div className="text-black p-1 text-center my-1">
-                      {progress} %
+                      {imageProgress} %
                     </div>
                   )}
-                  {errorMessage && (
+                  {imageErrorMessage && (
                     <div className="text-red p-1 text-center my-1">
-                      {errorMessage}
+                      {imageErrorMessage}
                     </div>
                   )}
                   {urlImage && (
@@ -528,7 +494,7 @@ const EditEmployeeComponent = () => {
                 <div className="form-group col-sm-6 col-md-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || uploading || errorMessage
+                      disable || imageUploading || imageErrorMessage
                         ? true
                         : false ||
                           status === Status.Loading ||
@@ -550,7 +516,10 @@ const EditEmployeeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-md-3 mt-3">
-                  <Link to="/empleados" className="btn btn-secondary text-white w-100">
+                  <Link
+                    to="/empleados"
+                    className="btn btn-secondary text-white w-100"
+                  >
                     Cancelar
                   </Link>
                 </div>
