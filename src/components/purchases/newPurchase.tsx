@@ -30,6 +30,7 @@ const NewPurchaseComponent = () => {
   const { registerPurchase, status } = usePurchases();
 
   const {
+    getAllProviders,
     searchProvidersByFilter,
     providers,
     providerInfo,
@@ -46,6 +47,10 @@ const NewPurchaseComponent = () => {
     React.useState<boolean>(false);
 
   const history = useHistory();
+
+  React.useEffect(() => {
+    getAllProviders();
+  }, []);
 
   React.useEffect(() => {
     setSelectedProvider(providerInfo);
