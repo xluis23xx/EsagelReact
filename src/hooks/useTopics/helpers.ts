@@ -1,11 +1,15 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateParams, PaginateResponse } from "../types";
 
-import { GetTopic, GetTopics } from "./types";
+import { GetTopic } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getTopics = (token: string): Promise<GetTopics> =>
-  fetch(`${GENERAL_API}/topics`, {
+export const getTopics = (
+  token: string,
+  { limit = 50, pageSize = 1 }: PaginateParams
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/topics/?limit=${limit}&pageSize=${pageSize}`, {
     method: "GET",
     cache: "no-cache",
     headers: {

@@ -38,6 +38,7 @@ const NewOrderComponent = () => {
   const { registerOrder, status } = useOrders();
 
   const {
+    getAllClients,
     searchClientsByFilter,
     clients,
     clientInfo,
@@ -45,7 +46,7 @@ const NewOrderComponent = () => {
     cleanClientInfo,
   } = useClients();
 
-  const { searchCoursesByFilter, courses } = useCourses();
+  const { getAllCourses, searchCoursesByFilter, courses } = useCourses();
 
   const [visibleClientModal, setVisibleClientModal] = React.useState(false);
   const [visibleCoursesModal, setVisibleCoursesModal] = React.useState(false);
@@ -66,6 +67,8 @@ const NewOrderComponent = () => {
 
   React.useEffect(() => {
     getAllDocumentTypes();
+    getAllClients();
+    getAllCourses();
   }, []);
 
   React.useEffect(() => {
@@ -307,9 +310,9 @@ const NewOrderComponent = () => {
                 {documentType === "Factura" ? (
                   <div className="col-12 d-sm-none d-md-block col-md-1" />
                 ) : (
-                  <div className="col-12 col-sm-6 col-md-5" />
+                  <div className="col-12 col-sm-6 col-xl-5" />
                 )}
-                <div className="form-group mt-1 col-sm-6 col-md-3 d-flex">
+                <div className="form-group mt-1 col-sm-6 col-xl-3 d-flex">
                   <button
                     type="button"
                     onClick={() => setVisibleCoursesModal(true)}

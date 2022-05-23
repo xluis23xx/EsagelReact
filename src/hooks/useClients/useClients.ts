@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 import { getClientById, getClients, postClient, putClient } from "./helpers";
 import { Client } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -36,8 +37,9 @@ export const useClients = () => {
 
   function getAllClients() {
     const token = getCookie("esagel_token") || "";
-    getClients(token)
-      .then((clientsObtained: Client[]) => {
+    getClients(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs: clientsObtained = [] } = response || {};
         const enableClients =
           clientsObtained.filter((client: Client) => client.status === 1) || [];
         setClients(enableClients);

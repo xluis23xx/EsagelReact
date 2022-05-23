@@ -1,11 +1,15 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateResponse } from "../types";
 
-import { GetProvider, GetProviders } from "./types";
+import { GetProvider } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getProviders = (token: string): Promise<GetProviders> =>
-  fetch(`${GENERAL_API}/providers`, {
+export const getProviders = (
+  token: string,
+  { limit = 50, pageSize = 1 }
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/providers/?limit=${limit}&pageSize=${pageSize}`, {
     method: "GET",
     cache: "no-cache",
     headers: {

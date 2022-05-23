@@ -1,11 +1,15 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateParams, PaginateResponse } from "../types";
 
-import { GetEmployee, GetEmployees } from "./types";
+import { GetEmployee } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getEmployees = (token: string): Promise<GetEmployees> =>
-  fetch(`${GENERAL_API}/employees`, {
+export const getEmployees = (
+  token: string,
+  { limit = 50, pageSize = 1 }: PaginateParams
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/employees/?limit=${limit}&pageSize=${pageSize}`, {
     method: "GET",
     cache: "no-cache",
     headers: {

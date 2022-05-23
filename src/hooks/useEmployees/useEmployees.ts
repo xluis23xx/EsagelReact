@@ -9,6 +9,7 @@ import {
   putEmployee,
 } from "./helpers";
 import { Employee } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -41,8 +42,9 @@ export const useEmployees = () => {
 
   function getAllEmployees() {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token)
-      .then((employeesObtained: Employee[]) => {
+    getEmployees(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs: employeesObtained = [] } = response || {};
         const enableEmployees =
           employeesObtained.filter(
             (employee: Employee) => employee.status === 1

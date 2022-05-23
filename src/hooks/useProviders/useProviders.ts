@@ -9,6 +9,7 @@ import {
   putProvider,
 } from "./helpers";
 import { Provider } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -41,8 +42,9 @@ export const useProviders = () => {
 
   function getAllProviders() {
     const token = getCookie("esagel_token") || "";
-    getProviders(token)
-      .then((providersObtained: Provider[]) => {
+    getProviders(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs: providersObtained = [] } = response || {};
         const enableProviders =
           providersObtained.filter(
             (provider: Provider) => provider.status === 1

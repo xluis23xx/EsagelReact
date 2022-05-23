@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 import { getCourseById, getCourses, postCourse, putCourse } from "./helpers";
 import { Course } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -32,8 +33,9 @@ export const useCourses = () => {
 
   function getAllCourses() {
     const token = getCookie("esagel_token") || "";
-    getCourses(token)
-      .then((coursesObtained: Course[]) => {
+    getCourses(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs: coursesObtained = [] } = response || {};
         const enableCourses =
           coursesObtained.filter((course: Course) => course.status === 1) || [];
         setCourses(enableCourses);

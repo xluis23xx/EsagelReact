@@ -26,6 +26,7 @@ const NewGoalComponent = () => {
   const { registerGoal, status } = useGoals();
 
   const {
+    getAllEmployees,
     searchEmployeesByName,
     employees,
     employeeProfile,
@@ -42,6 +43,10 @@ const NewGoalComponent = () => {
     React.useState<boolean>(false);
 
   const history = useHistory();
+
+  React.useEffect(() => {
+    getAllEmployees();
+  }, []);
 
   React.useEffect(() => {
     setSelectedEmployee(employeeProfile);

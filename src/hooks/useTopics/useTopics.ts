@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 import { getTopicById, getTopics, postTopic, putTopic } from "./helpers";
 import { Topic } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -32,8 +33,9 @@ export const useTopics = () => {
 
   function getAllTopics() {
     const token = getCookie("esagel_token") || "";
-    getTopics(token)
-      .then((topicsObtained: Topic[]) => {
+    getTopics(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs: topicsObtained = [] } = response || {};
         const enableTopics =
           topicsObtained.filter((topic: Topic) => topic.status === 1) || [];
         setTopics(enableTopics);

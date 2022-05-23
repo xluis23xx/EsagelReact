@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
@@ -32,12 +33,14 @@ const NewUserComponent = () => {
   const { registerUser, status } = useUsers();
 
   const {
+    getAllEmployees,
     searchEmployeesByName,
     employees,
     employeeProfile,
     setEmployeeById,
     cleanEmployeeProfile,
   } = useEmployees();
+
   const {
     uploading: imageUploading,
     progress: imageProgress,
@@ -72,14 +75,18 @@ const NewUserComponent = () => {
 
   const history = useHistory();
 
-  const stateSchema = {
-    username: { value: "", error: "" },
-    status: { value: "", error: "" },
-  };
+  React.useEffect(() => {
+    getAllEmployees();
+  }, []);
 
   React.useEffect(() => {
     setSelectedEmployee(employeeProfile);
   }, [employeeProfile]);
+
+  const stateSchema = {
+    username: { value: "", error: "" },
+    status: { value: "", error: "" },
+  };
 
   const stateValidatorSchema = {
     username: {

@@ -1,11 +1,15 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateParams, PaginateResponse } from "../types";
 
-import { GetCourse, GetCourses } from "./types";
+import { GetCourse } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getCourses = (token: string): Promise<GetCourses> =>
-  fetch(`${GENERAL_API}/courses`, {
+export const getCourses = (
+  token: string,
+  { limit = 50, pageSize = 1 }: PaginateParams
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/courses/?limit=${limit}&pageSize=${pageSize}`, {
     method: "GET",
     cache: "no-cache",
     headers: {
@@ -52,4 +56,4 @@ export const putCourse = (token: string, id: string, course: any) =>
     },
   }).then((res) => res.json());
 
-  // FALTA CREAR METODO QUE REGISTRE TEMAS DENTRO DE UN CURSO
+// FALTA CREAR METODO QUE REGISTRE TEMAS DENTRO DE UN CURSO

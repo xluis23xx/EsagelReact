@@ -1,11 +1,15 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateParams, PaginateResponse } from "../types";
 
-import { GetClient, GetClients } from "./types";
+import { GetClient } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getClients = (token: string): Promise<GetClients> =>
-  fetch(`${GENERAL_API}/clients`, {
+export const getClients = (
+  token: string,
+  { limit = 50, pageSize = 1 }: PaginateParams
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/clients/?limit=${limit}&pageSize=${pageSize}`, {
     method: "GET",
     cache: "no-cache",
     headers: {
@@ -16,10 +20,7 @@ export const getClients = (token: string): Promise<GetClients> =>
     .then((res) => res.json())
     .catch((res) => res.json());
 
-export const getClientById = (
-  token: string,
-  id: string
-): Promise<GetClient> =>
+export const getClientById = (token: string, id: string): Promise<GetClient> =>
   fetch(`${GENERAL_API}/clients/${id}`, {
     method: "GET",
     cache: "no-cache",

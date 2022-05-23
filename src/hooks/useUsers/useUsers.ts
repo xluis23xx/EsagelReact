@@ -10,7 +10,7 @@ import {
   putPassword,
 } from "./helpers";
 import { User } from "./index";
-import { string } from "prop-types";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -78,10 +78,11 @@ export const useUsers = () => {
 
   function getAllUsers() {
     const token = getCookie("esagel_token") || "";
-    getUsers(token)
-      .then((usersObtained: User[]) => {
-        setUsers(usersObtained);
-        setUsersAll(usersObtained);
+    getUsers(token, {})
+      .then((response: PaginateResponse) => {
+        const { docs = [] } = response || {};
+        setUsers(docs);
+        setUsersAll(docs);
         setStatus(Status.Ready);
       })
       .catch(() => {
