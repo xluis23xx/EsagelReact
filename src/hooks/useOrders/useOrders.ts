@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 
 import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
 import { Order } from "./index";
+import { PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -28,10 +29,16 @@ export const useOrders = () => {
     });
   }
 
-  function getOrdersByInterval({ startDate, endDate }) {
+  function getOrdersByInterval() {
+    //  startDate, endDate }
     const token = getCookie("esagel_token") || "";
-    getOrders(token, { startDate, endDate })
-      .then((ordersObtained: Order[]) => {
+    getOrders(
+      token,
+      // , { startDate, endDate }
+      {}
+    )
+      .then((response: PaginateResponse) => {
+        const { docs: ordersObtained = [] } = response || {};
         setOrders(ordersObtained);
         setStatus(Status.Ready);
       })

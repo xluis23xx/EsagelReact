@@ -33,7 +33,7 @@ const DetailOrderComponent = () => {
         client = null,
         status = null,
         seller = null,
-        courses = [],
+        orderLines = [],
       } = orderInfo;
       if (client) {
         fullNameOfClient = `${client?.name} ${client?.lastname} ${client?.secondLastname}`;
@@ -61,9 +61,9 @@ const DetailOrderComponent = () => {
           sellerOfOrder = `${seller?.username || ""}`;
         }
       }
-      if (courses) {
-        if (courses.length > 0) {
-          itemsOfOrder = courses;
+      if (orderLines) {
+        if (orderLines.length > 0) {
+          itemsOfOrder = orderLines;
         }
       }
     }
@@ -297,7 +297,7 @@ const DetailOrderComponent = () => {
                   </table>
                 </div>
                 <div className="col-12" />
-                <div className="form-group col-sm-6 col-md-2 mt-3">
+                <div className="form-group col-sm-6 col-xl-2 mt-3">
                   <Link to="/pedidos" className="btn btn-info w-100 text-white">
                     Regresar
                   </Link>

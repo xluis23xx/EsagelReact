@@ -1,20 +1,23 @@
 import ENVIROMENTS from "../../enviroments/env";
+import { PaginateParams, PaginateResponse } from "../types";
 
-import { GetOrder, GetOrders } from "./types";
+import { GetOrder } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
 export const getOrders = (
   token: string,
-  { startDate, endDate }: { startDate: string; endDate: string }
-): Promise<GetOrders> =>
-  fetch(`${GENERAL_API}/orders`, {
-    method: "POST",
+  // { startDate, endDate }: { startDate: string; endDate: string },
+  { limit = 100, pageSize = 1 }: PaginateParams
+): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/orders/?limit=${limit}&pageSize=${pageSize}`, {
+    // method: "POST",
     cache: "no-cache",
-    body: JSON.stringify({
-      startDate,
-      endDate,
-    }),
+    // body: JSON.stringify({
+    //   startDate,
+    //   endDate,
+    // }),
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,

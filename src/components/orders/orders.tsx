@@ -27,7 +27,7 @@ const OrdersComponent = () => {
   const [orderId, setOrderId] = React.useState("");
 
   React.useEffect(() => {
-    // getAllProspectOrigins();
+    getOrdersByInterval();
   }, []);
 
   const abortOrder = (id: string) => {
@@ -61,10 +61,6 @@ const OrdersComponent = () => {
   };
 
   const handleSearchByInterval = (data) => {
-    console.log(data?.startDate);
-    console.log("convirtiendo a fecha real", data?.startDate);
-    console.log(data?.endDate);
-    console.log("convirtiendo a fecha real", data?.endDate);
     // getOrdersByInterval({ startDate: data?.startDate, endDate: data?.endDate });
   };
 
@@ -90,47 +86,52 @@ const OrdersComponent = () => {
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
-                {/* {status === Status.Loading ? (
+                {status === Status.Loading ? (
                   <h4 className="text-center">Espere un momento...</h4>
-                ) : null} */}
-                {/* {(status === Status.Ready || status === Status.Updating) &&
-                prospectOrigins.length > 0 ? ( */}
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>N°</th>
-                      <th>Nro. Pedido</th>
-                      <th>Cliente</th>
-                      <th>Fecha de Emisión</th>
-                      <th>Total</th>
-                      <th>Estado</th>
-                      <th>Opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {prospectOrigins.map(
-                        (prospect: ProspectusOrigin, index: number) => {
-                          const { _id, name, description, status } = prospect;
-                          return ( */}
-                    <OrderItem
-                      key={10}
-                      code={"perro"}
-                      client={{ name: "perro", lastname: "aguayo" }}
-                      index={1}
-                      status={1}
-                      createdAt={"02-10-2020"}
-                      orderNumber={"0000000001"}
-                      total={500.0}
-                      handlePrint={handlePrint}
-                      handleConfirm={acceptOrder}
-                      handleCancel={abortOrder}
-                    />
-                    {/* );
-                        }
-                      )} */}
-                  </tbody>
-                </table>
-                {/* ) : null} */}
+                ) : null}
+                {(status === Status.Ready || status === Status.Updating) &&
+                orders.length > 0 ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Nro. Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha de Emisión</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.map((order: Order, index: number) => {
+                        const {
+                          _id,
+                          orderNumber,
+                          client,
+                          createdAt,
+                          status,
+                          total,
+                        } = order;
+                        return (
+                          <OrderItem
+                            key={index}
+                            code={_id}
+                            client={client}
+                            index={index + 1}
+                            status={status}
+                            createdAt={createdAt}
+                            orderNumber={orderNumber}
+                            total={total}
+                            handlePrint={handlePrint}
+                            handleConfirm={acceptOrder}
+                            handleCancel={abortOrder}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : null}
               </div>
               <CModal
                 visible={visibleConfirmModal}

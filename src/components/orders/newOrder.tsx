@@ -37,14 +37,7 @@ const NewOrderComponent = () => {
 
   const { registerOrder, status } = useOrders();
 
-  const {
-    getAllClients,
-    searchClientsByFilter,
-    clients,
-    clientInfo,
-    setClientById,
-    cleanClientInfo,
-  } = useClients();
+  const { getAllClients, searchClientsByFilter, clients } = useClients();
 
   const { getAllCourses, searchCoursesByFilter, courses } = useCourses();
 
@@ -70,10 +63,6 @@ const NewOrderComponent = () => {
     getAllClients();
     getAllCourses();
   }, []);
-
-  React.useEffect(() => {
-    setSelectedClient(clientInfo);
-  }, [clientInfo]);
 
   React.useEffect(() => {
     if (selectedCourses.length > 0) {
@@ -105,8 +94,9 @@ const NewOrderComponent = () => {
 
   const onSubmitForm = (data: Order) => {
     const order = {
+      orderNumber: 10,
       seller: user?._id || null,
-      client: clientInfo?._id || null,
+      client: selectedClient?._id || null,
       documentType: data?.documentType || null,
       documentNumber:
         data?.documentType === "Factura" ? data?.documentNumber : null,
@@ -115,12 +105,12 @@ const NewOrderComponent = () => {
       amountInIva: config?.tax ? config?.tax * subtotal : null,
       total: config?.tax ? subtotal + subtotal * config?.tax : null,
       status: 1,
-      courses: selectedCourses || [],
+      orderLines: selectedCourses || [],
     };
     console.log(order);
     registerOrder(order).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/usuarios");
+        history.push("/pedidos");
       }
     });
   };
@@ -308,7 +298,7 @@ const NewOrderComponent = () => {
                   />
                 </div>
                 {documentType === "Factura" ? (
-                  <div className="col-12 d-sm-none d-md-block col-md-1" />
+                  <div className="col-12 d-sm-none d-xl-block col-xl-1" />
                 ) : (
                   <div className="col-12 col-sm-6 col-xl-5" />
                 )}
@@ -526,7 +516,6 @@ const NewOrderComponent = () => {
             <CModal
               visible={visibleClientModal}
               onClose={() => {
-                cleanClientInfo();
                 setVisibleClientModal(false);
               }}
             >
@@ -570,7 +559,12 @@ const NewOrderComponent = () => {
                                       type="button"
                                       color="success"
                                       onClick={() => {
-                                        setClientById(_id);
+                                        setSelectedClient({
+                                          _id,
+                                          name,
+                                          lastname,
+                                          secondLastname,
+                                        });
                                         setShowClientError(false);
                                         setVisibleClientModal(false);
                                       }}
@@ -602,8 +596,19 @@ const NewOrderComponent = () => {
                 <CButton
                   color="secondary"
                   onClick={() => {
-                    cleanClientInfo();
+                    setSelectedClient(null);
                     setShowClientError(true);
+                    setVisibleClientModal(false);
+                  }}
+                >
+                  Limpiar
+                </CButton>
+                <CButton
+                  color="dark"
+                  onClick={() => {
+                    if (!selectedClient) {
+                      setShowClientError(true);
+                    }
                     setVisibleClientModal(false);
                   }}
                 >

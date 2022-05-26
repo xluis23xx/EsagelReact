@@ -17,7 +17,7 @@ export type Order = {
   status?: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
-  courses?: Course[];
+  orderLines?: OrderDetail[];
 };
 
 export type OrderDetail = {
