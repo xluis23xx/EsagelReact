@@ -120,6 +120,7 @@ const DocumentTypesComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setDocumentTypeId("");
                       setVisible(false);

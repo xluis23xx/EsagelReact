@@ -341,6 +341,7 @@ const NewGoalComponent = () => {
               <CModalFooter>
                 <CButton
                   color="secondary"
+                  className="text-white"
                   onClick={() => {
                     setSelectedEmployee(null);
                     setShowEmployeeError(true);

@@ -121,6 +121,7 @@ const TopicsComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setTopicId("");
                       setVisible(false);

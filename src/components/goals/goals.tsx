@@ -142,6 +142,7 @@ const GoalsComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setGoalId("");
                       setVisibleAbortModal(false);

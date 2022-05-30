@@ -398,6 +398,7 @@ const NewPurchaseComponent = () => {
               <CModalFooter>
                 <CButton
                   color="secondary"
+                  className="text-white"
                   onClick={() => {
                     setSelectedProvider(null);
                     setShowProviderError(true);

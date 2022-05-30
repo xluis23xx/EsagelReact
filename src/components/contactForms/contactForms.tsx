@@ -112,6 +112,7 @@ const ContactFormsComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setContactFormId("");
                       setVisible(false);

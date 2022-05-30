@@ -151,6 +151,7 @@ const EmployeesComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setEmployeeId("");
                       setVisible(false);

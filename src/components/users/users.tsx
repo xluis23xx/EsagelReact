@@ -123,6 +123,7 @@ const UsersComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setUserId("");
                       setVisible(false);

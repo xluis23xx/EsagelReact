@@ -119,6 +119,7 @@ const CourseTypesComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setCourseTypeId("");
                       setVisible(false);

@@ -594,6 +594,7 @@ const NewOrderComponent = () => {
               <CModalFooter>
                 <CButton
                   color="secondary"
+                  className="text-white"
                   onClick={() => {
                     setSelectedClient(null);
                     setShowClientError(true);
@@ -727,6 +728,7 @@ const NewOrderComponent = () => {
               <CModalFooter>
                 <CButton
                   color="secondary"
+                  className="text-white"
                   onClick={() => {
                     setVisibleCoursesModal(false);
                   }}

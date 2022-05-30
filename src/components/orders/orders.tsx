@@ -165,6 +165,7 @@ const OrdersComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setOrderId("");
                       setVisibleConfirmModal(false);
@@ -193,6 +194,7 @@ const OrdersComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setOrderId("");
                       setVisibleAbortModal(false);

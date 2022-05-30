@@ -114,6 +114,7 @@ const ProspectOriginsComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setProspectusOriginId("");
                       setVisible(false);

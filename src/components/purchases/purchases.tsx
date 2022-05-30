@@ -155,6 +155,7 @@ const PurchasesComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setPurchaseId("");
                       setVisibleAbortModal(false);

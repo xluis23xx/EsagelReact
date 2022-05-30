@@ -140,6 +140,7 @@ const ProvidersComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setProviderId("");
                       setVisible(false);

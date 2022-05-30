@@ -114,6 +114,7 @@ const ProspectStatusesComponent = () => {
                 <CModalFooter>
                   <CButton
                     color="secondary"
+                    className="text-white"
                     onClick={() => {
                       setProspectusStatusId("");
                       setVisible(false);
