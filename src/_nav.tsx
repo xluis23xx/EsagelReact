@@ -46,7 +46,7 @@ const NavRoutes = (): any[] => {
     isUser || isAdmin || isModerator
       ? {
           component: CNavTitle,
-          name: "Sistema de Ventas",
+          name: "Sistema Administrativo",
         }
       : undefined,
     isUser || isAdmin || isModerator
