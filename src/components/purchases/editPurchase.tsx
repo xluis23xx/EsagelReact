@@ -28,6 +28,7 @@ const NewPurchaseComponent = () => {
 
   const stateSchema = {
     reason: { value: null, error: "" },
+    status: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
@@ -36,14 +37,18 @@ const NewPurchaseComponent = () => {
       validator: formatDescription(),
       min2caracts: true,
     },
+    status: {
+      required: true,
+    },
   };
 
   const onSubmitForm = (data: Purchase) => {
     const purchase = {
       reason: (data?.reason ?? purchaseInfo?.reason) || null,
-      status: 1,
+      buyer: purchaseInfo?.buyer?._id,
+      provider: purchaseInfo?.provider?._id,
+      status: (data?.status ?? purchaseInfo?.status) || 0,
     };
-    console.log(purchase);
     updatePurchase(id, purchase).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/compras");
@@ -52,8 +57,8 @@ const NewPurchaseComponent = () => {
   };
 
   const {
-    values: { reason },
-    errors: { reason: reasonError },
+    values: { reason, status: statusPurchase },
+    errors: { reason: reasonError, status: statusError },
     disable,
     handleOnChange,
     handleOnSubmit,
@@ -81,14 +86,30 @@ const NewPurchaseComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
-                  <label className="form-label" htmlFor="name">
-                    Nombres (*):
+              <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="purchaseNumber">
+                    Nro. Compra (*):
                   </label>
                   <InputForm
                     type="text"
                     required
-                    placeholder="Nombres"
+                    placeholder="Nro. Compra"
+                    name="purchaseNumber"
+                    maxLength={50}
+                    value={purchaseInfo?.purchaseNumber || ""}
+                    onChange={handleOnChange}
+                    disabled={true}
+                    error={false}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="name">
+                    Nombre (*):
+                  </label>
+                  <InputForm
+                    type="text"
+                    required
+                    placeholder="Nombre"
                     name="name"
                     maxLength={25}
                     value={purchaseInfo?.name || ""}
@@ -217,7 +238,31 @@ const NewPurchaseComponent = () => {
                     disabled={true}
                   />
                 </div>
-
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="status">
+                    Estado (*):
+                  </label>
+                  <select
+                    id="status"
+                    name="status"
+                    required
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
+                    value={
+                      (statusPurchase ?? purchaseInfo?.status?.toString()) || ""
+                    }
+                    onChange={handleOnChange}
+                    onBlur={handleOnChange}
+                    className={`btn border-secondary btn-default w-100 ${
+                      statusError ? "border border-danger" : ""
+                    }`}
+                  >
+                    <option value="">Seleccione</option>
+                    <option value="0">Anulado</option>
+                    <option value="1">Aceptado</option>
+                  </select>
+                </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton

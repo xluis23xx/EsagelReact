@@ -40,7 +40,6 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
       lastname: (data?.lastname ?? profile?.lastname) || null,
       secondLastname: (data?.secondLastname ?? profile?.secondLastname) || null,
     };
-    console.log(updateProfile);
     updateUser(profile?._id, updateProfile).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/mi-perfil");

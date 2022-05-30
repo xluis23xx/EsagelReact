@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 
 import { getSaleById, getSales, postSale, putSale } from "./helpers";
 import { Sale } from "./index";
+import { PaginateResponse } from "../types";
+import { setFormatDate } from "../../utils/formats";
 
 export enum Status {
   Loading,
@@ -14,6 +16,7 @@ export enum Status {
 
 export const useSales = () => {
   const [sales, setSales] = React.useState<Sale[]>([]);
+  const [salesAll, setSalesAll] = React.useState<Sale[]>([]);
   const [saleInfo, setSaleInfo] = React.useState<Sale>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
@@ -28,16 +31,44 @@ export const useSales = () => {
     });
   }
 
-  function getSalesByInterval({ startDate, endDate }) {
+  function getAllSales(
+    // { startDate, endDate }
+    ) {
     const token = getCookie("esagel_token") || "";
-    getSales(token, { startDate, endDate })
-      .then((salesObtained: Sale[]) => {
+    getSales(token,
+      // , { startDate, endDate }
+      {}
+      )
+      .then((response: PaginateResponse) => {
+        const { docs: salesObtained = [] } = response || {};
         setSales(salesObtained);
+        setSalesAll(salesObtained)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
+  }
+
+  function searchSalesByInterval(startDate:string= "", endDate:string ="") {
+    if (salesAll.length === 0) {
+      getAllSales();
+    }else if(startDate==="" && endDate===""){
+      setSales(salesAll)
+    }
+    else {
+      const salesFilter = salesAll.filter((sale: Sale) => {
+        const {
+          createdAt
+        } = sale || {};
+        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
+        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        let emitedDate =  setFormatDate({order:1,date: createdAt})
+        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
+      });
+      setSales(salesFilter);
+    }
   }
 
   async function updateSale(id: string, sale: any) {
@@ -209,7 +240,8 @@ export const useSales = () => {
     updateSale,
     setSaleById,
     saleInfo,
-    getSalesByInterval,
+    getAllSales,
+    searchSalesByInterval,
     status,
   };
 };

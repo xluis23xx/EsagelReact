@@ -17,12 +17,13 @@ import { IntervalButton } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
 
 const OrdersComponent = () => {
-  const { sales, cancelSale, getSalesByInterval, status } = useSales();
+  const { sales, cancelSale, getAllSales, searchSalesByInterval, status } =
+    useSales();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [saleId, setSaleId] = React.useState("");
 
   React.useEffect(() => {
-    // getAllProspectOrigins();
+    getAllSales();
   }, []);
 
   const abortSale = (id: string) => {
@@ -40,17 +41,21 @@ const OrdersComponent = () => {
   };
 
   const validators = {
-    required: false,
+    required: true,
     validator: formatExceedDate(),
     invalidtext: true,
   };
 
   const handleSearchByInterval = (data) => {
-    console.log(data?.startDate);
-    console.log("convirtiendo a fecha real", data?.startDate);
-    console.log(data?.endDate);
-    console.log("convirtiendo a fecha real", data?.endDate);
-    // getOrdersByInterval({ startDate: data?.startDate, endDate: data?.endDate });
+    let startDate = "";
+    let endDate = "";
+    if (data?.startDate) {
+      startDate = data?.startDate;
+    }
+    if (data?.endDate) {
+      endDate = data?.endDate;
+    }
+    searchSalesByInterval(startDate, endDate);
   };
 
   return (
@@ -73,56 +78,57 @@ const OrdersComponent = () => {
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
-                {/* {status === Status.Loading ? (
+                {status === Status.Loading ? (
                   <h4 className="text-center">Espere un momento...</h4>
-                ) : null} */}
-                {/* {(status === Status.Ready || status === Status.Updating) &&
-                prospectOrigins.length > 0 ? ( */}
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>N°</th>
-                      <th>Nro. Venta</th>
-                      <th>Fecha de Emisión</th>
-                      <th>Cliente</th>
-                      <th>Vendedor</th>
-                      <th>Subtotal</th>
-                      <th>Total</th>
-                      <th>Estado</th>
-                      <th>Opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {sales.map(
-                        (sale: Sale, index: number) => {
-                          const { _id, name, description, status } = sale;
-                          return ( */}
-                    <SaleItem
-                      key={1}
-                      index={1}
-                      code={"243242343243434343"}
-                      client={{ name: "Pablo", lastname: "Urbano" }}
-                      seller={{
-                        employee: {
-                          name: "Pedro",
-                          lastname: "Tineo",
-                          secondLastname: "Te Vi",
-                        },
-                      }}
-                      status={2}
-                      createdAt={"02-10-2020"}
-                      saleNumber={"0000000001"}
-                      subtotal={400}
-                      total={500.0}
-                      handlePrint={handlePrint}
-                      handleCancel={abortSale}
-                    />
-                    {/* );
-                        }
-                      )} */}
-                  </tbody>
-                </table>
-                {/* ) : null} */}
+                ) : null}
+                {(status === Status.Ready || status === Status.Updating) &&
+                sales.length > 0 ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Nro. Venta</th>
+                        <th>Fecha de Emisión</th>
+                        <th>Cliente</th>
+                        <th>Vendedor</th>
+                        {/* <th>Subtotal</th> */}
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sales.map((sale: Sale, index: number) => {
+                        const {
+                          _id,
+                          seller = null,
+                          client = null,
+                          status,
+                          createdAt,
+                          saleNumber,
+                          subtotal,
+                          total,
+                        } = sale;
+                        return (
+                          <SaleItem
+                            key={index}
+                            index={index + 1}
+                            code={_id}
+                            client={client}
+                            seller={seller}
+                            status={status}
+                            createdAt={createdAt}
+                            saleNumber={saleNumber}
+                            subtotal={subtotal}
+                            total={total}
+                            handlePrint={handlePrint}
+                            handleCancel={abortSale}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : null}
               </div>
               <CModal
                 visible={visibleAbortModal}

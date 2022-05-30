@@ -26,7 +26,7 @@ import CIcon from "@coreui/icons-react";
 import { useFileUpload } from "../../hooks/useFileUpload";
 
 const EditEmployeeComponent = () => {
-  const { updateEmployee, setEmployeeById, employeeProfile, status } =
+  const { updateEmployee, setEmployeeById, employeeInfo, status } =
     useEmployees();
   const { getAllDocumentTypes, documents } = useDocumentTypes();
   const { getAllPositions, positions } = usePositions();
@@ -61,10 +61,10 @@ const EditEmployeeComponent = () => {
   }, []);
 
   React.useEffect(() => {
-    if (employeeProfile?.image) {
-      setShowImage(employeeProfile.image);
+    if (employeeInfo?.image) {
+      setShowImage(employeeInfo.image);
     }
-  }, [employeeProfile]);
+  }, [employeeInfo]);
 
   const stateSchema = {
     name: { value: null, error: "" },
@@ -127,16 +127,16 @@ const EditEmployeeComponent = () => {
 
   const onSubmitForm = (data: Employee) => {
     const employee = {
-      name: (data?.name ?? employeeProfile?.name) || null,
-      lastname: (data?.lastname ?? employeeProfile?.lastname) || null,
+      name: (data?.name ?? employeeInfo?.name) || null,
+      lastname: (data?.lastname ?? employeeInfo?.lastname) || null,
       secondLastname:
-        (data?.secondLastname ?? employeeProfile?.secondLastname) || null,
-      phoneNumber: (data?.phoneNumber ?? employeeProfile?.phoneNumber) || null,
-      address: (data?.address ?? employeeProfile?.address) || null,
+        (data?.secondLastname ?? employeeInfo?.secondLastname) || null,
+      phoneNumber: (data?.phoneNumber ?? employeeInfo?.phoneNumber) || null,
+      address: (data?.address ?? employeeInfo?.address) || null,
       personalEmail:
-        (data?.personalEmail ?? employeeProfile?.personalEmail) || null,
+        (data?.personalEmail ?? employeeInfo?.personalEmail) || null,
       image: showImage || null,
-      position: (data?.position ?? employeeProfile?.position?.name) || null,
+      position: (data?.position ?? employeeInfo?.position?.name) || null,
       status: 1,
     };
     updateEmployee(id, employee).then((response) => {
@@ -228,7 +228,7 @@ const EditEmployeeComponent = () => {
                     maxLength={25}
                     placeholder="Nombres"
                     name="name"
-                    value={(name ?? employeeProfile?.name) || ""}
+                    value={(name ?? employeeInfo?.name) || ""}
                     onChange={handleOnChange}
                     disabled={
                       status === Status.Loading || status === Status.Updating
@@ -247,7 +247,7 @@ const EditEmployeeComponent = () => {
                     maxLength={25}
                     placeholder="Apellido Paterno"
                     name="lastname"
-                    value={(lastname ?? employeeProfile?.lastname) || ""}
+                    value={(lastname ?? employeeInfo?.lastname) || ""}
                     onChange={handleOnChange}
                     disabled={
                       status === Status.Loading || status === Status.Updating
@@ -267,7 +267,7 @@ const EditEmployeeComponent = () => {
                     placeholder="Apellido Materno"
                     name="secondLastname"
                     value={
-                      (secondLastname ?? employeeProfile?.secondLastname) || ""
+                      (secondLastname ?? employeeInfo?.secondLastname) || ""
                     }
                     onChange={handleOnChange}
                     disabled={
@@ -286,8 +286,7 @@ const EditEmployeeComponent = () => {
                     name="documentType"
                     required
                     value={
-                      (documentType ?? employeeProfile?.documentType?.name) ||
-                      ""
+                      (documentType ?? employeeInfo?.documentType?.name) || ""
                     }
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -323,7 +322,7 @@ const EditEmployeeComponent = () => {
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={
-                      (documentNumber ?? employeeProfile?.documentNumber) || ""
+                      (documentNumber ?? employeeInfo?.documentNumber) || ""
                     }
                     onChange={handleOnChange}
                     disabled={true}
@@ -342,7 +341,7 @@ const EditEmployeeComponent = () => {
                     placeholder="Correo Corporativo"
                     name="corporateEmail"
                     value={
-                      (corporateEmail ?? employeeProfile?.corporateEmail) || ""
+                      (corporateEmail ?? employeeInfo?.corporateEmail) || ""
                     }
                     onChange={handleOnChange}
                     disabled={true}
@@ -359,7 +358,7 @@ const EditEmployeeComponent = () => {
                     maxLength={100}
                     placeholder="Dirección"
                     name="address"
-                    value={(address ?? employeeProfile?.address) || ""}
+                    value={(address ?? employeeInfo?.address) || ""}
                     onChange={handleOnChange}
                     disabled={
                       status === Status.Loading || status === Status.Updating
@@ -378,7 +377,7 @@ const EditEmployeeComponent = () => {
                     maxLength={9}
                     placeholder="Teléfono"
                     name="phoneNumber"
-                    value={(phoneNumber ?? employeeProfile?.phoneNumber) || ""}
+                    value={(phoneNumber ?? employeeInfo?.phoneNumber) || ""}
                     onChange={handleOnChange}
                     disabled={
                       status === Status.Loading || status === Status.Updating
@@ -397,9 +396,7 @@ const EditEmployeeComponent = () => {
                     maxLength={60}
                     placeholder="Correo Personal"
                     name="personalEmail"
-                    value={
-                      (personalEmail ?? employeeProfile?.personalEmail) || ""
-                    }
+                    value={(personalEmail ?? employeeInfo?.personalEmail) || ""}
                     onChange={handleOnChange}
                     disabled={
                       status === Status.Loading || status === Status.Updating
@@ -419,7 +416,7 @@ const EditEmployeeComponent = () => {
                     value={
                       (birthdate ??
                         setFormatDate({
-                          date: employeeProfile?.birthdate,
+                          date: employeeInfo?.birthdate,
                           order: 1,
                         })) ||
                       ""
@@ -473,7 +470,7 @@ const EditEmployeeComponent = () => {
                     disabled={
                       status === Status.Loading || status === Status.Updating
                     }
-                    value={(position ?? employeeProfile?.position?.name) || ""}
+                    value={(position ?? employeeInfo?.position?.name) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${

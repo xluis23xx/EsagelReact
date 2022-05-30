@@ -11,6 +11,10 @@ import { cilHamburgerMenu } from "@coreui/icons";
 
 const DetailOrderComponent = () => {
   const { setSaleById, saleInfo, status } = useSales();
+  const [clientOfSale, setClientOfSale] = React.useState("");
+  const [sellerOfSale, setSellerOfSale] = React.useState("");
+  const [statusOfSale, setStatusOfSale] = React.useState("");
+  const [itemsOfOrder, setItemsOfOrder] = React.useState([]);
 
   const history = useHistory();
   const { id } = useParams<any>();
@@ -22,32 +26,20 @@ const DetailOrderComponent = () => {
     setSaleById(id);
   }, []);
 
-  let fullNameOfClient = "";
-  let statusOfSale = "";
-  let sellerOfSale = "";
-  let itemsOfSale = [];
-
   React.useEffect(() => {
     if (saleInfo) {
-      const {
-        client = null,
-        status = null,
-        seller = null,
-        items = [],
-      } = saleInfo;
+      const { client = null, status = null, seller = null } = saleInfo;
       if (client) {
-        fullNameOfClient = `${client?.name} ${client?.lastname} ${client?.secondLastname}`;
+        setClientOfSale(`${client?.name} ${client?.lastname}`);
       }
       if (status) {
         switch (status) {
           case 0:
-            statusOfSale = "Anulado";
+            setStatusOfSale("Anulado");
             break;
           case 1:
-            statusOfSale = "Pendiente";
-            break;
           case 2:
-            statusOfSale = "Confirmado";
+            setStatusOfSale("Confirmado");
             break;
           default:
             break;
@@ -56,14 +48,16 @@ const DetailOrderComponent = () => {
       if (seller) {
         if (seller?.employee) {
           const { employee = null } = seller;
-          sellerOfSale = `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`;
+          setSellerOfSale(
+            `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`
+          );
         } else {
-          sellerOfSale = `${seller?.username || ""}`;
+          setSellerOfSale(`${seller?.username || ""}`);
         }
       }
-      if (items) {
-        if (items.length > 0) {
-          itemsOfSale = items;
+      if (saleInfo?.order) {
+        if (saleInfo?.order?.orderLines) {
+          setItemsOfOrder(saleInfo?.order?.orderLines);
         }
       }
     }
@@ -124,7 +118,7 @@ const DetailOrderComponent = () => {
                   <InputForm
                     placeholder="-"
                     name="client"
-                    value={fullNameOfClient}
+                    value={clientOfSale}
                     disabled={status === Status.Loading}
                     readonly={true}
                   />
@@ -221,28 +215,30 @@ const DetailOrderComponent = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {itemsOfSale.length > 0
-                        ? itemsOfSale.map((item: SaleDetail, index: number) => {
-                            const {
-                              course,
-                              price,
-                              quantity,
-                              discount,
-                              amount,
-                            } = item;
-                            return (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>
-                                  {course?.name ? course?.name : "" || ""}
-                                </td>
-                                <td>{price.toFixed(2) || ""}</td>
-                                <td>{quantity || ""}</td>
-                                <td>{discount.toFixed(2) || ""}</td>
-                                <td>{amount.toFixed(2) || ""}</td>
-                              </tr>
-                            );
-                          })
+                      {itemsOfOrder.length > 0
+                        ? itemsOfOrder.map(
+                            (item: SaleDetail, index: number) => {
+                              const {
+                                course,
+                                price,
+                                quantity,
+                                discount,
+                                amount,
+                              } = item;
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>
+                                    {course?.name ? course?.name : "" || ""}
+                                  </td>
+                                  <td>{price.toFixed(2) || ""}</td>
+                                  <td>{quantity || ""}</td>
+                                  <td>{discount.toFixed(2) || ""}</td>
+                                  <td>{amount.toFixed(2) || ""}</td>
+                                </tr>
+                              );
+                            }
+                          )
                         : null}
                       <tr className="mt-3">
                         <td colSpan={2}>

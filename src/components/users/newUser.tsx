@@ -32,14 +32,7 @@ import { useFileUpload } from "../../hooks/useFileUpload";
 const NewUserComponent = () => {
   const { registerUser, status } = useUsers();
 
-  const {
-    getAllEmployees,
-    searchEmployeesByName,
-    employees,
-    employeeProfile,
-    setEmployeeById,
-    cleanEmployeeProfile,
-  } = useEmployees();
+  const { getAllEmployees, searchEmployeesByName, employees } = useEmployees();
 
   const {
     uploading: imageUploading,
@@ -56,7 +49,7 @@ const NewUserComponent = () => {
     timerMessage: 3000,
   });
 
-  const [visible, setVisible] = React.useState(false);
+  const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
   const [selectedEmployee, setSelectedEmployee] =
     React.useState<Employee>(null);
@@ -78,10 +71,6 @@ const NewUserComponent = () => {
   React.useEffect(() => {
     getAllEmployees();
   }, []);
-
-  React.useEffect(() => {
-    setSelectedEmployee(employeeProfile);
-  }, [employeeProfile]);
 
   const stateSchema = {
     username: { value: "", error: "" },
@@ -211,7 +200,7 @@ const NewUserComponent = () => {
                     <button
                       type="button"
                       className="btn btn-success"
-                      onClick={() => setVisible(true)}
+                      onClick={() => setVisibleEmployeeModal(true)}
                     >
                       <CIcon icon={cilSearch}></CIcon>
                     </button>
@@ -402,10 +391,9 @@ const NewUserComponent = () => {
               <br />
             </div>
             <CModal
-              visible={visible}
+              visible={visibleEmployeeModal}
               onClose={() => {
-                cleanEmployeeProfile();
-                setVisible(false);
+                setVisibleEmployeeModal(false);
               }}
             >
               <CModalHeader closeButton={true}>
@@ -447,9 +435,14 @@ const NewUserComponent = () => {
                                       type="button"
                                       color="success"
                                       onClick={() => {
-                                        setEmployeeById(_id);
+                                        setSelectedEmployee({
+                                          _id,
+                                          name,
+                                          lastname,
+                                          secondLastname,
+                                        });
                                         setShowEmployeeError(false);
-                                        setVisible(false);
+                                        setVisibleEmployeeModal(false);
                                       }}
                                     >
                                       <CIcon icon={cilCheckCircle}></CIcon>
@@ -474,9 +467,20 @@ const NewUserComponent = () => {
                 <CButton
                   color="secondary"
                   onClick={() => {
-                    cleanEmployeeProfile();
+                    setSelectedEmployee(null);
                     setShowEmployeeError(true);
-                    setVisible(false);
+                    setVisibleEmployeeModal(false);
+                  }}
+                >
+                  Limpiar
+                </CButton>
+                <CButton
+                  color="dark"
+                  onClick={() => {
+                    if (!selectedEmployee) {
+                      setShowEmployeeError(true);
+                    }
+                    setVisibleEmployeeModal(false);
                   }}
                 >
                   Cerrar

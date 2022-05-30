@@ -32,8 +32,6 @@ export const SaleItem: React.FC<SaleItemProps> = ({
       verifyStatus = "Anulado";
       break;
     case 1:
-      verifyStatus = "Pendiente";
-      break;
     case 2:
       verifyStatus = "Confirmado";
       break;
@@ -41,6 +39,14 @@ export const SaleItem: React.FC<SaleItemProps> = ({
       verifyStatus = "Desconocido";
       break;
   }
+  let sellerOfSale = "";
+  if (seller) {
+    if (seller?.employee) {
+      const { name, lastname } = seller?.employee || {};
+      sellerOfSale = `${name ? name : ""}${lastname ? ` ${lastname}` : ""}`;
+    }
+  }
+
   return (
     <tr>
       <td>{index}</td>
@@ -50,34 +56,14 @@ export const SaleItem: React.FC<SaleItemProps> = ({
         {client
           ? `${client?.name ? client?.name : ""}${
               client?.lastname ? ` ${client?.lastname}` : ""
-            }${client?.secondLastname ? ` ${client?.secondLastname}` : ""}`
-          : ""}
-      </td>
-      <td>
-        {seller
-          ? `${seller?.employee?.name ? seller?.employee?.name : ""}${
-              seller?.employee?.lastname ? ` ${seller?.employee?.lastname}` : ""
-            }${
-              seller?.employee?.secondLastname
-                ? ` ${seller?.employee?.secondLastname}`
-                : ""
             }`
           : ""}
       </td>
-      <td>{subtotal.toFixed(2) || ""}</td>
-      <td>{total.toFixed(2) || ""}</td>
+      <td>{sellerOfSale}</td>
+      {/*<td>{subtotal ? subtotal.toFixed(2) : ""}</td>*/}
+      <td>{total ? total.toFixed(2) : ""}</td>
       <td>
-        <CBadge
-          color={
-            status === 0
-              ? "danger"
-              : "" || status === 1
-              ? "info"
-              : "" || status === 2
-              ? "success"
-              : ""
-          }
-        >
+        <CBadge color={status === 0 ? "danger" : status === 1 ? "success" : ""}>
           {verifyStatus}
         </CBadge>
       </td>

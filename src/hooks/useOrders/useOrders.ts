@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
 import { Order } from "./index";
 import { PaginateResponse } from "../types";
+import { setFormatDate } from "../../utils/formats";
 
 export enum Status {
   Loading,
@@ -15,6 +16,7 @@ export enum Status {
 
 export const useOrders = () => {
   const [orders, setOrders] = React.useState<Order[]>([]);
+  const [ordersAll, setOrdersAll] = React.useState<Order[]>([]);
   const [orderInfo, setOrderInfo] = React.useState<Order>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
@@ -29,7 +31,7 @@ export const useOrders = () => {
     });
   }
 
-  function getOrdersByInterval() {
+  function getAllOrders() {
     //  startDate, endDate }
     const token = getCookie("esagel_token") || "";
     getOrders(
@@ -40,12 +42,37 @@ export const useOrders = () => {
       .then((response: PaginateResponse) => {
         const { docs: ordersObtained = [] } = response || {};
         setOrders(ordersObtained);
+        setOrdersAll(ordersObtained)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
   }
+
+  
+  function searchOrdersByInterval(startDate:string= "", endDate:string ="") {
+    if (ordersAll.length === 0) {
+      getAllOrders();
+    }else if(startDate==="" && endDate===""){
+      setOrders(ordersAll)
+    }
+
+    else {
+      const ordersFilter = ordersAll.filter((order: Order) => {
+        const {
+          createdAt
+        } = order || {};
+        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
+        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        let emitedDate =  setFormatDate({order:1,date: createdAt})
+        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
+      });
+      setOrders(ordersFilter);
+    }
+  }
+
 
   async function updateOrder(id: string, order: any) {
     setStatus(Status.Updating);
@@ -88,7 +115,7 @@ export const useOrders = () => {
   async function confirmOrder(id: string) {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putOrder(token, id, { status: 2, isCorfirm: true })
+    putOrder(token, id, { status: 2, isConfirm: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setOrders(
@@ -96,11 +123,11 @@ export const useOrders = () => {
               order?._id === id ? { ...order, status: 2 } : order
             )
           );
-          const orderNumber = response?.updatedOrder?.orderNumber || "";
+          // const orderNumber = response?.updatedOrder?.orderNumber || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
-            text: `El Pedido Nro. ${orderNumber} fue aceptado con éxito`,
+            text: response.message || '',
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });
@@ -216,7 +243,8 @@ export const useOrders = () => {
     updateOrder,
     setOrderById,
     orderInfo,
-    getOrdersByInterval,
+    getAllOrders,
+    searchOrdersByInterval,
     status,
   };
 };

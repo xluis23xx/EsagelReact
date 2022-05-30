@@ -21,7 +21,7 @@ export enum Status {
 export const useEmployees = () => {
   const [employees, setEmployees] = React.useState<Employee[]>([]);
   const [employeesAll, setEmployeesAll] = React.useState<Employee[]>([]);
-  const [employeeProfile, setEmployeeProfile] = React.useState<Employee>(null);
+  const [employeeInfo, setemployeeInfo] = React.useState<Employee>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setEmployeeById(id: string) {
@@ -30,14 +30,14 @@ export const useEmployees = () => {
     const token = getCookie("esagel_token") || "";
     getEmployeeById(token, id).then((response) => {
       if (response?._id) {
-        setEmployeeProfile(response);
+        setemployeeInfo(response);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function cleanEmployeeProfile() {
-    setEmployeeProfile(null);
+  function cleanemployeeInfo() {
+    setemployeeInfo(null);
   }
 
   function getAllEmployees() {
@@ -204,11 +204,11 @@ export const useEmployees = () => {
     employees,
     deleteEmployee,
     searchEmployeesByName,
-    cleanEmployeeProfile,
+    cleanemployeeInfo,
     registerEmployee,
     updateEmployee,
     setEmployeeById,
-    employeeProfile,
+    employeeInfo,
     getAllEmployees,
     status,
   };

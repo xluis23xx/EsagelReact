@@ -90,7 +90,7 @@ const ProvidersComponent = () => {
                         <th>RUC</th>
                         <th>Nombre del Contacto</th>
                         <th>Teléfono</th>
-                        <th>Estado</th>
+                        {/* <th>Estado</th> */}
                         <th>Opciones</th>
                       </tr>
                     </thead>
@@ -103,7 +103,7 @@ const ProvidersComponent = () => {
                           contactName,
                           documentNumber,
                           phoneNumber,
-                          status,
+                          // status,
                         } = provider;
                         return (
                           <ProviderItem
@@ -114,7 +114,7 @@ const ProvidersComponent = () => {
                             contactName={contactName}
                             documentNumber={documentNumber}
                             phoneNumber={phoneNumber}
-                            status={status}
+                            // status={status}
                             orderNumber={index + 1}
                             handleRemove={removeProvider}
                           />

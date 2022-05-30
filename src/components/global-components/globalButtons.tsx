@@ -90,6 +90,7 @@ export const SearchButton = ({
 export const IntervalButton = ({
   validators,
   handleSearch,
+  required = undefined,
   className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex",
   textButton = "Buscar",
 }) => {
@@ -124,6 +125,7 @@ export const IntervalButton = ({
         <InputForm
           name="startDate"
           type="date"
+          required={required}
           className="form-control"
           aria-label="Intervalo Inicial"
           value={startDate}
@@ -139,6 +141,7 @@ export const IntervalButton = ({
         <InputForm
           name="endDate"
           type="date"
+          required={required}
           className="form-control"
           aria-label="Intervalo Final"
           value={endDate}

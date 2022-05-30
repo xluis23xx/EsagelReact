@@ -20,14 +20,20 @@ import {
 import { formatExceedDate } from "../../utils/errors";
 
 const OrdersComponent = () => {
-  const { orders, cancelOrder, confirmOrder, getOrdersByInterval, status } =
-    useOrders();
+  const {
+    orders,
+    cancelOrder,
+    confirmOrder,
+    getAllOrders,
+    searchOrdersByInterval,
+    status,
+  } = useOrders();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [visibleConfirmModal, setVisibleConfirmModal] = React.useState(false);
   const [orderId, setOrderId] = React.useState("");
 
   React.useEffect(() => {
-    getOrdersByInterval();
+    getAllOrders();
   }, []);
 
   const abortOrder = (id: string) => {
@@ -45,6 +51,7 @@ const OrdersComponent = () => {
     if (!visibleConfirmModal) {
       setOrderId(id);
     } else if (visibleConfirmModal && orderId) {
+
       confirmOrder(id);
       setOrderId("");
     }
@@ -55,13 +62,21 @@ const OrdersComponent = () => {
   };
 
   const validators = {
-    required: false,
+    required: true,
     validator: formatExceedDate(),
     invalidtext: true,
   };
 
   const handleSearchByInterval = (data) => {
-    // getOrdersByInterval({ startDate: data?.startDate, endDate: data?.endDate });
+    let startDate = "";
+    let endDate = "";
+    if (data?.startDate) {
+      startDate = data?.startDate;
+    }
+    if (data?.endDate) {
+      endDate = data?.endDate;
+    }
+    searchOrdersByInterval(startDate, endDate);
   };
 
   return (
@@ -82,6 +97,7 @@ const OrdersComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
+                  required={true}
                 />
               </nav>
               <br />

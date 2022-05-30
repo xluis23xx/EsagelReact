@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 
 import { getGoalById, getGoals, postGoal, putGoal } from "./helpers";
 import { Goal } from "./index";
+import { PaginateResponse } from "../types";
+import { setFormatDate } from "../../utils/formats";
 
 export enum Status {
   Loading,
@@ -14,6 +16,7 @@ export enum Status {
 
 export const useGoals = () => {
   const [goals, setGoals] = React.useState<Goal[]>([]);
+  const [goalsAll, setGoalsAll] = React.useState<Goal[]>([]);
   const [goalInfo, setGoalInfo] = React.useState<Goal>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
@@ -28,16 +31,43 @@ export const useGoals = () => {
     });
   }
 
-  function getGoalsByInterval({ startDate, endDate }) {
+  function getAllGoals(
+    // { startDate, endDate }
+    ) {
     const token = getCookie("esagel_token") || "";
-    getGoals(token, { startDate, endDate })
-      .then((goalsObtained: Goal[]) => {
+    getGoals(token,
+      //  { startDate, endDate }
+       {})
+      .then((response: PaginateResponse) => {
+        const {docs: goalsObtained} = response || {}
         setGoals(goalsObtained);
+        setGoalsAll(goalsObtained)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
+  }
+
+  function searchGoalsByInterval(startDate:string= "", endDate:string ="") {
+    if (goalsAll.length === 0) {
+      getAllGoals();
+    }else if(startDate==="" && endDate===""){
+      setGoals(goalsAll)
+    }
+    else {
+      const goalsFilter = goalsAll.filter((goal: Goal) => {
+        const {
+          createdAt
+        } = goal || {};
+        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
+        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        let emitedDate =  setFormatDate({order:1,date: createdAt})
+        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
+        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
+      });
+      setGoals(goalsFilter);
+    }
   }
 
   async function updateGoal(id: string, goal: any) {
@@ -161,7 +191,8 @@ export const useGoals = () => {
     updateGoal,
     setGoalById,
     goalInfo,
-    getGoalsByInterval,
+    getAllGoals,
+    searchGoalsByInterval,
     status,
   };
 };

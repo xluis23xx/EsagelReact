@@ -33,9 +33,6 @@ const NewPurchaseComponent = () => {
     getAllProviders,
     searchProvidersByFilter,
     providers,
-    providerInfo,
-    setProviderById,
-    cleanProviderInfo,
   } = useProviders();
 
   const [visibleProviderModal, setVisibleProviderModal] = React.useState(false);
@@ -51,10 +48,6 @@ const NewPurchaseComponent = () => {
   React.useEffect(() => {
     getAllProviders();
   }, []);
-
-  React.useEffect(() => {
-    setSelectedProvider(providerInfo);
-  }, [providerInfo]);
 
   const stateSchema = {
     name: { value: "", error: "" },
@@ -76,16 +69,16 @@ const NewPurchaseComponent = () => {
 
   const onSubmitForm = (data: Purchase) => {
     const purchase = {
+      purchaseNumber: 100,
       name: data?.name || null,
       reason: data?.reason || null,
       buyer: user?._id || null,
-      provider: providerInfo?._id || null,
+      provider: selectedProvider?._id || null,
       price: data?.price ? Number(data?.price) : 0,
       quantity: data?.quantity ? Math.round(data?.quantity) : 0,
       total: data?.price && data?.quantity ? data?.price * data?.quantity : 0,
       status: 1,
     };
-    console.log(purchase);
     registerPurchase(purchase).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/compras");
@@ -140,12 +133,12 @@ const NewPurchaseComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombres (*):
+                    Nombre (*):
                   </label>
                   <InputForm
                     type="text"
                     required
-                    placeholder="Nombres"
+                    placeholder="Nombre"
                     name="name"
                     maxLength={25}
                     value={name}
@@ -339,7 +332,6 @@ const NewPurchaseComponent = () => {
             <CModal
               visible={visibleProviderModal}
               onClose={() => {
-                cleanProviderInfo();
                 setVisibleProviderModal(false);
               }}
             >
@@ -380,7 +372,11 @@ const NewPurchaseComponent = () => {
                                       type="button"
                                       color="success"
                                       onClick={() => {
-                                        setProviderById(_id);
+                                        setSelectedProvider({
+                                          _id,
+                                          businessName,
+                                          documentNumber: providerDocNumber,
+                                        });
                                         setShowProviderError(false);
                                         setVisibleProviderModal(false);
                                       }}
@@ -403,8 +399,19 @@ const NewPurchaseComponent = () => {
                 <CButton
                   color="secondary"
                   onClick={() => {
-                    cleanProviderInfo();
+                    setSelectedProvider(null);
                     setShowProviderError(true);
+                    setVisibleProviderModal(false);
+                  }}
+                >
+                  Limpiar
+                </CButton>
+                <CButton
+                  color="dark"
+                  onClick={() => {
+                    if (!selectedProvider) {
+                      setShowProviderError(true);
+                    }
                     setVisibleProviderModal(false);
                   }}
                 >

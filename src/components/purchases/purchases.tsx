@@ -20,13 +20,18 @@ import {
 import { formatExceedDate } from "../../utils/errors";
 
 const PurchasesComponent = () => {
-  const { purchases, cancelPurchase, getPurchasesByInterval, status } =
-    usePurchases();
+  const {
+    purchases,
+    cancelPurchase,
+    getAllPurchases,
+    searchPurchasesByInterval,
+    status,
+  } = usePurchases();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [purchaseId, setPurchaseId] = React.useState("");
 
   React.useEffect(() => {
-    // getAllProspectOrigins();
+    getAllPurchases();
   }, []);
 
   const abortPurchase = (id: string) => {
@@ -46,13 +51,16 @@ const PurchasesComponent = () => {
   };
 
   const handleSearchByInterval = (data) => {
-    console.log(data?.startDate);
-    console.log("convirtiendo a fecha real", data?.startDate);
-    console.log(data?.endDate);
-    console.log("convirtiendo a fecha real", data?.endDate);
-    // getOrdersByInterval({ startDate: data?.startDate, endDate: data?.endDate });
+    let startDate = "";
+    let endDate = "";
+    if (data?.startDate) {
+      startDate = data?.startDate;
+    }
+    if (data?.endDate) {
+      endDate = data?.endDate;
+    }
+    searchPurchasesByInterval(startDate, endDate);
   };
-
   return (
     <>
       <div className="row mb-3">
@@ -75,50 +83,60 @@ const PurchasesComponent = () => {
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
-                {/* {status === Status.Loading ? (
+                {status === Status.Loading ? (
                   <h4 className="text-center">Espere un momento...</h4>
-                ) : null} */}
-                {/* {(status === Status.Ready || status === Status.Updating) &&
-                purchases.length > 0 ? ( */}
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>N°</th>
-                      <th>Nro. Compra</th>
-                      <th>Nombre</th>
-                      <th>Fecha de solicitud</th>
-                      <th>Proveedor</th>
-                      <th>Precio</th>
-                      <th>Cantidad</th>
-                      <th>Precio Total</th>
-                      <th>Opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {purchases.map(
-                        (purchase: Purchase, index: number) => {
-                          const { _id, name, description, status } = purchase;
-                          return ( */}
-                    <PurchaseItem
-                      key={10}
-                      code={"compra0001"}
-                      provider={{ businessName: "perro SAC" }}
-                      index={1}
-                      status={1}
-                      createdAt={"02-11-2022"}
-                      purchaseNumber={"0000000001"}
-                      quantity={24}
-                      price={10}
-                      name={"Lapíz Faber Castell"}
-                      total={240.0}
-                      handleCancel={abortPurchase}
-                    />
-                    {/* );
-                        }
-                      )} */}
-                  </tbody>
-                </table>
-                {/* ) : null} */}
+                ) : null}
+                {(status === Status.Ready || status === Status.Updating) &&
+                purchases.length > 0 ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Nro. Compra</th>
+                        <th>Nombre</th>
+                        <th>Fecha de solicitud</th>
+                        <th>Proveedor</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Precio Total</th>
+
+                        <th>Estado</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {purchases.map((purchase: Purchase, index: number) => {
+                        const {
+                          _id,
+                          name,
+                          purchaseNumber,
+                          createdAt,
+                          quantity,
+                          price,
+                          total,
+                          status,
+                          provider = null,
+                        } = purchase;
+                        return (
+                          <PurchaseItem
+                            key={index}
+                            code={_id}
+                            provider={provider}
+                            index={index + 1}
+                            status={status}
+                            createdAt={createdAt}
+                            purchaseNumber={purchaseNumber}
+                            quantity={quantity}
+                            price={price}
+                            name={name}
+                            total={total}
+                            handleCancel={abortPurchase}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : null}
               </div>
 
               <CModal

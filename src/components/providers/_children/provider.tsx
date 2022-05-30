@@ -18,7 +18,7 @@ export const ProviderItem: React.FC<ProviderItemProps> = ({
   businessName,
   createdAt,
   contactName,
-  status,
+  // status,
   documentNumber,
   phoneNumber,
   handleRemove,
@@ -31,7 +31,7 @@ export const ProviderItem: React.FC<ProviderItemProps> = ({
       <td>{documentNumber || ""}</td>
       <td>{contactName || ""}</td>
       <td>{phoneNumber || ""}</td>
-      <td>{status ? "activo" : "inactivo"}</td>
+      {/* <td>{status ? "activo" : "inactivo"}</td> */}
       <td>
         <div className="selection-btn">
           <div className="btn-group">

@@ -107,7 +107,6 @@ const NewOrderComponent = () => {
       status: 1,
       orderLines: selectedCourses || [],
     };
-    console.log(order);
     registerOrder(order).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/pedidos");

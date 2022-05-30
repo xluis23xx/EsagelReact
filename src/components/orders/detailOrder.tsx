@@ -11,6 +11,10 @@ import { cilHamburgerMenu } from "@coreui/icons";
 
 const DetailOrderComponent = () => {
   const { setOrderById, orderInfo, status } = useOrders();
+  const [clientOfOrder, setClientOfOrder]= React.useState("")
+  const [sellerOfOrder, setSellerOfOrder]= React.useState("")
+  const [statusOfOrder, setStatusOfOrder]= React.useState("")
+  const [itemsOfOrder, setItemsOfOrder] = React.useState([])
 
   const history = useHistory();
   const { id } = useParams<any>();
@@ -22,11 +26,6 @@ const DetailOrderComponent = () => {
     setOrderById(id);
   }, []);
 
-  let fullNameOfClient = "";
-  let statusOfOrder = "";
-  let sellerOfOrder = "";
-  let itemsOfOrder = [];
-
   React.useEffect(() => {
     if (orderInfo) {
       const {
@@ -36,18 +35,18 @@ const DetailOrderComponent = () => {
         orderLines = [],
       } = orderInfo;
       if (client) {
-        fullNameOfClient = `${client?.name} ${client?.lastname} ${client?.secondLastname}`;
+        setClientOfOrder(`${client?.name} ${client?.lastname}`)
       }
       if (status) {
         switch (status) {
           case 0:
-            statusOfOrder = "Anulado";
+            setStatusOfOrder("Anulado")
             break;
           case 1:
-            statusOfOrder = "Pendiente";
+            setStatusOfOrder("Pendiente")
             break;
           case 2:
-            statusOfOrder = "Aceptado";
+            setStatusOfOrder("Aceptado")
             break;
           default:
             break;
@@ -56,14 +55,14 @@ const DetailOrderComponent = () => {
       if (seller) {
         if (seller?.employee) {
           const { employee = null } = seller;
-          sellerOfOrder = `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`;
+          setSellerOfOrder( `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`)
         } else {
-          sellerOfOrder = `${seller?.username || ""}`;
+          setSellerOfOrder(`${seller?.username || ""}`)
         }
       }
       if (orderLines) {
         if (orderLines.length > 0) {
-          itemsOfOrder = orderLines;
+          setItemsOfOrder(orderLines)
         }
       }
     }
@@ -108,7 +107,7 @@ const DetailOrderComponent = () => {
                   <InputForm
                     placeholder="-"
                     name="client"
-                    value={fullNameOfClient}
+                    value={clientOfOrder}
                     disabled={status === Status.Loading}
                     readonly={true}
                   />

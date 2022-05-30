@@ -25,14 +25,7 @@ import { InputForm } from "../global-components/inputForm";
 const NewGoalComponent = () => {
   const { registerGoal, status } = useGoals();
 
-  const {
-    getAllEmployees,
-    searchEmployeesByName,
-    employees,
-    employeeProfile,
-    setEmployeeById,
-    cleanEmployeeProfile,
-  } = useEmployees();
+  const { getAllEmployees, searchEmployeesByName, employees } = useEmployees();
 
   const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
@@ -47,10 +40,6 @@ const NewGoalComponent = () => {
   React.useEffect(() => {
     getAllEmployees();
   }, []);
-
-  React.useEffect(() => {
-    setSelectedEmployee(employeeProfile);
-  }, [employeeProfile]);
 
   const stateSchema = {
     startDate: { value: "", error: "" },
@@ -71,6 +60,7 @@ const NewGoalComponent = () => {
       estimatedQuantity: data?.estimatedQuantity
         ? Number(data?.estimatedQuantity)
         : 0,
+      employee: selectedEmployee?._id || null,
       status: 1,
     };
     console.log(goal);
@@ -277,7 +267,6 @@ const NewGoalComponent = () => {
             <CModal
               visible={visibleEmployeeModal}
               onClose={() => {
-                cleanEmployeeProfile();
                 setVisibleEmployeeModal(false);
               }}
             >
@@ -320,7 +309,13 @@ const NewGoalComponent = () => {
                                       type="button"
                                       color="success"
                                       onClick={() => {
-                                        setEmployeeById(_id);
+                                        setSelectedEmployee({
+                                          _id,
+                                          name,
+                                          lastname,
+                                          secondLastname,
+                                          position,
+                                        });
                                         setShowEmployeeError(false);
                                         setVisibleEmployeeModal(false);
                                       }}
@@ -347,8 +342,19 @@ const NewGoalComponent = () => {
                 <CButton
                   color="secondary"
                   onClick={() => {
-                    cleanEmployeeProfile();
+                    setSelectedEmployee(null);
                     setShowEmployeeError(true);
+                    setVisibleEmployeeModal(false);
+                  }}
+                >
+                  Limpiar
+                </CButton>
+                <CButton
+                  color="dark"
+                  onClick={() => {
+                    if (!selectedEmployee) {
+                      setShowEmployeeError(true);
+                    }
                     setVisibleEmployeeModal(false);
                   }}
                 >
