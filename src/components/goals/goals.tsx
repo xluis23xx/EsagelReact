@@ -96,7 +96,7 @@ const GoalsComponent = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {goals.map((goal: Goal, index: number) => {
+                      {/* {goals.map((goal: Goal, index: number) => {
                         const {
                           _id,
                           estimatedQuantity,
@@ -106,21 +106,21 @@ const GoalsComponent = () => {
                           employee = null,
                           status,
                         } = goal;
-                        return (
-                          <GoalItem
-                            key={index}
-                            code={_id}
-                            employee={employee}
-                            estimatedQuantity={estimatedQuantity}
-                            quantitySold={quantitySold}
-                            index={index + 1}
-                            status={status}
-                            startDate={startDate}
-                            endDate={endDate}
-                            handleCancel={abortGoal}
-                          />
-                        );
-                      })}
+                        return ( */}
+                      <GoalItem
+                        key={5}
+                        code={"fdfdfdfdf"}
+                        employee={{ lastname: "Pablo", name: "pablo" }}
+                        estimatedQuantity={500}
+                        quantitySold={800}
+                        index={5 + 1}
+                        status={1}
+                        startDate={"2022/09/10"}
+                        endDate={"2022/10/13"}
+                        handleCancel={abortGoal}
+                      />
+                      {/* );
+                      })} */}
                     </tbody>
                   </table>
                 ) : null}
