@@ -77,11 +77,11 @@ const GoalsComponent = () => {
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
-                {status === Status.Loading ? (
+                {/* {status === Status.Loading ? (
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                goals.length > 0 ? (
+                goals.length > 0 ? ( */}
                   <table className="table">
                     <thead>
                       <tr>
@@ -123,7 +123,7 @@ const GoalsComponent = () => {
                       })} */}
                     </tbody>
                   </table>
-                ) : null}
+                {/* ) : null} */}
               </div>
 
               <CModal
