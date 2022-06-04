@@ -130,6 +130,7 @@ const DocumentTypesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeDocumentType(documentTypeId)}
                   >
                     Eliminar

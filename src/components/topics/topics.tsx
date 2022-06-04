@@ -129,7 +129,11 @@ const TopicsComponent = () => {
                   >
                     Cerrar
                   </CButton>
-                  <CButton color="danger" onClick={() => removeTopic(topicId)}>
+                  <CButton
+                    color="danger"
+                    className="text-white"
+                    onClick={() => removeTopic(topicId)}
+                  >
                     Eliminar
                   </CButton>
                 </CModalFooter>

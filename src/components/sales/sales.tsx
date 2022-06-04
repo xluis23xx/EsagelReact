@@ -154,7 +154,11 @@ const OrdersComponent = () => {
                   >
                     Cerrar
                   </CButton>
-                  <CButton color="danger" onClick={() => abortSale(saleId)}>
+                  <CButton
+                    color="danger"
+                    className="text-white"
+                    onClick={() => abortSale(saleId)}
+                  >
                     Anular
                   </CButton>
                 </CModalFooter>

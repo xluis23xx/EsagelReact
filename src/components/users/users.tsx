@@ -131,7 +131,11 @@ const UsersComponent = () => {
                   >
                     Cerrar
                   </CButton>
-                  <CButton color="danger" onClick={() => removeUser(userId)}>
+                  <CButton
+                    color="danger"
+                    className="text-white"
+                    onClick={() => removeUser(userId)}
+                  >
                     Eliminar
                   </CButton>
                 </CModalFooter>

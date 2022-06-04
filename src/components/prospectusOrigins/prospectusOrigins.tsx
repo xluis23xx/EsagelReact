@@ -124,6 +124,7 @@ const ProspectOriginsComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeProspectOrigin(prospectusOriginId)}
                   >
                     Eliminar

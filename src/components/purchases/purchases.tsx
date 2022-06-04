@@ -165,6 +165,7 @@ const PurchasesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => abortPurchase(purchaseId)}
                   >
                     Anular

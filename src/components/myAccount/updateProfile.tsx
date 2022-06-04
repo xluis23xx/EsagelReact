@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
-import { useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { Status, User, useUsers } from "../../hooks/useUsers";
+import { Status, User } from "../../hooks/useUsers";
 import { formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 import FormContainer from "./formContainer";
+import { AuthContext } from "../../context/AuthContext";
+import { useProfile } from "../../hooks/useProfile/useProfile";
 
 const ProfileComponent = ({ profile }: { profile: User }) => {
-  const { status, updateUser } = useUsers();
-  const history = useHistory();
+  const { status, updateProfile } = useProfile();
+  const { setUser } = React.useContext(AuthContext);
   const stateSchema = {
     firstname: { value: null, error: "" },
     lastname: { value: null, error: "" },
@@ -35,14 +36,31 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
   };
 
   const onSubmitForm = (data: User) => {
-    const updateProfile = {
-      firstname: (data?.firstname ?? profile?.firstname) || null,
-      lastname: (data?.lastname ?? profile?.lastname) || null,
-      secondLastname: (data?.secondLastname ?? profile?.secondLastname) || null,
+    const newProfile = {
+      name: (data?.firstname ?? profile?.employee?.name) || null,
+      lastname: (data?.lastname ?? profile?.employee?.lastname) || null,
+      secondLastname:
+        (data?.secondLastname ?? profile?.employee?.secondLastname) || null,
     };
-    updateUser(profile?._id, updateProfile).then((response) => {
+    updateProfile(profile?.employee?._id, newProfile).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/mi-perfil");
+        if (data?.firstname || data?.lastname || data?.secondLastname) {
+          const USER_PROFILE = localStorage.getItem("esagel_profile");
+          if (USER_PROFILE) {
+            const USER_PROFILEJSON = JSON.parse(USER_PROFILE);
+            const NEW_PROFILE = {
+              ...USER_PROFILEJSON,
+              employee: {
+                ...USER_PROFILEJSON.employee,
+                name: data?.firstname ?? profile?.employee?.name,
+                lastname: data?.lastname,
+                secondLastname: data?.secondLastname,
+              },
+            };
+            setUser(NEW_PROFILE);
+            localStorage.setItem("esagel_profile", JSON.stringify(NEW_PROFILE));
+          }
+        }
       }
     });
   };
@@ -73,7 +91,7 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
         <InputForm
           placeholder="Nombres"
           name="firstname"
-          value={(firstname ?? profile?.firstname) || ""}
+          value={(firstname ?? profile?.employee?.name) || ""}
           onChange={handleOnChange}
           disabled={status === Status.Updating}
           error={firstnameError}
@@ -86,7 +104,7 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
         <InputForm
           placeholder="Ape. Paterno"
           name="lastname"
-          value={(lastname ?? profile?.lastname) || ""}
+          value={(lastname ?? profile?.employee?.lastname) || ""}
           onChange={handleOnChange}
           disabled={status === Status.Updating}
           error={lastnameError}
@@ -99,7 +117,7 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
         <InputForm
           placeholder="Ape. Materno"
           name="secondLastname"
-          value={(secondLastname ?? profile?.secondLastname) || ""}
+          value={(secondLastname ?? profile?.employee?.secondLastname) || ""}
           onChange={handleOnChange}
           disabled={status === Status.Updating}
           error={secondLastnameError}

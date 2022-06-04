@@ -7,7 +7,6 @@ import {
   getUsers,
   postUser,
   putUser,
-  putPassword,
 } from "./helpers";
 import { User } from "./index";
 import { PaginateResponse } from "../types";
@@ -35,45 +34,6 @@ export const useUsers = () => {
         setStatus(Status.Ready);
       }
     });
-  }
-
-  function updatedpassword(
-    id: string,
-    { newPassword, oldPassword }: { newPassword: string; oldPassword: string }
-  ) {
-    const token = getCookie("esagel_token") || "";
-    return putPassword(id, token, { newPassword, oldPassword })
-      .then((response) => {
-        if (response?.status === 200 || response?.status === 201) {
-          Swal.fire({
-            icon: "success",
-            title: "¡Actualización Exitosa!",
-            text: "Contraseña actualizada éxitosamente",
-            timer: 2000,
-            confirmButtonColor: "#ff0000",
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Algo ocurrió!",
-            text: response?.message || "",
-            timer: 2000,
-            confirmButtonColor: "#ff0000",
-          });
-        }
-        setStatus(Status.Ready);
-        return response;
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: "error",
-          title: "Algo ocurrió!",
-          text: "Ocurrió un error inesperado",
-          timer: 2000,
-          confirmButtonColor: "#ff0000",
-        });
-        return undefined;
-      });
   }
 
   function getAllUsers() {
@@ -240,7 +200,6 @@ export const useUsers = () => {
     setUserById,
     userInfo,
     getAllUsers,
-    updatedpassword,
     status,
   };
 };

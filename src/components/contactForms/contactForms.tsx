@@ -122,6 +122,7 @@ const ContactFormsComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeContactForm(contactFormId)}
                   >
                     Eliminar

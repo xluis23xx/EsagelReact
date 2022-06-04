@@ -51,7 +51,6 @@ const OrdersComponent = () => {
     if (!visibleConfirmModal) {
       setOrderId(id);
     } else if (visibleConfirmModal && orderId) {
-
       confirmOrder(id);
       setOrderId("");
     }
@@ -202,7 +201,11 @@ const OrdersComponent = () => {
                   >
                     Cerrar
                   </CButton>
-                  <CButton color="danger" onClick={() => abortOrder(orderId)}>
+                  <CButton
+                    color="danger"
+                    className="text-white"
+                    onClick={() => abortOrder(orderId)}
+                  >
                     Anular
                   </CButton>
                 </CModalFooter>

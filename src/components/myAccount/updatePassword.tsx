@@ -3,13 +3,18 @@ import { cilLockLocked } from "@coreui/icons";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { Status, User, useUsers } from "../../hooks/useUsers";
+import { useProfile, Status } from "../../hooks/useProfile/useProfile";
+import { useAuth } from "../../hooks/useAuth/useAuth";
+import { User } from "../../hooks/useUsers";
 import { formatPass } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 import FormContainer from "./formContainer";
+import { AuthContext } from "../../context/AuthContext";
 
 const UpdatePassComponent = ({ profile }: { profile: User }) => {
-  const { status, updatedpassword } = useUsers();
+  const { status, updatedpassword } = useProfile();
+  const { logoutUser } = useAuth();
+  const { setUser } = React.useContext(AuthContext);
   const history = useHistory();
   const stateSchema = {
     newPassword: { value: null, error: "" },
@@ -40,10 +45,11 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
       oldPassword: oldPassword || null,
       newPassword: newPassword || null,
     };
-    console.log(changePassword);
     updatedpassword(profile?._id, changePassword).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/mi-perfil");
+        logoutUser();
+        setUser(null);
+        history.push("/auth/login");
       }
     });
   };
@@ -70,7 +76,8 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
         </label>
         <InputForm
           required
-          placeholder="Nombres"
+          type="password"
+          placeholder="Nueva contraseña"
           name="newPassword"
           value={newPassword || ""}
           onChange={handleOnChange}
@@ -84,7 +91,8 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
         </label>
         <InputForm
           required
-          placeholder="Cont. Actual"
+          type="password"
+          placeholder="Contraseña Actual"
           name="oldPassword"
           value={oldPassword || ""}
           onChange={handleOnChange}

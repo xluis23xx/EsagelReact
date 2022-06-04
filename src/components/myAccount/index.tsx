@@ -4,12 +4,13 @@ import * as React from "react";
 import ProfileComponent from "./updateProfile";
 
 import ChangePasswordComponent from "./updatePassword";
-import { useUsers, Status } from "../../hooks/useUsers";
 import { AuthContext } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
+import { useProfile, Status } from "../../hooks/useProfile/useProfile";
+import DisableAccountComponent from "./disableAccount";
 
 const MyAccountComponent = () => {
-  const { setUserById, userInfo, status } = useUsers();
+  const { setProfileById, profileInfo, status } = useProfile();
 
   const { user } = React.useContext(AuthContext);
   const history = useHistory();
@@ -19,18 +20,19 @@ const MyAccountComponent = () => {
       history.push("/auth/login");
     } else {
       if (user?._id) {
-        setUserById(user._id);
+        setProfileById(user._id);
       }
     }
   }, [user]);
   return !user || status === Status.Loading ? (
     <div className="container">
-      <p className="text-white fs-3">Cargando...</p>
+      <p className="text-white fs-4">Cargando...</p>
     </div>
   ) : (
     <div className="w-100">
-      <ProfileComponent profile={userInfo} />
-      <ChangePasswordComponent profile={userInfo} />
+      <ProfileComponent profile={profileInfo} />
+      <ChangePasswordComponent profile={profileInfo} />
+      <DisableAccountComponent profile={profileInfo} />
     </div>
   );
 };

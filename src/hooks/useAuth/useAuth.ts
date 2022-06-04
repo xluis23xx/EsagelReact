@@ -27,7 +27,7 @@ export const useAuth = () => {
           setTimeout(() => {
             setMessage("");
             setStatus(Status.Ready);
-          }, 2000);
+          }, 3000);
         }
         return response;
       })

@@ -161,6 +161,7 @@ const EmployeesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeEmployee(employeeId)}
                   >
                     Eliminar

@@ -150,6 +150,7 @@ const ProvidersComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeProvider(providerId)}
                   >
                     Eliminar

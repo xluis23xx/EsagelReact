@@ -124,6 +124,7 @@ const ProspectStatusesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeProspectStatus(prospectusStatusId)}
                   >
                     Eliminar

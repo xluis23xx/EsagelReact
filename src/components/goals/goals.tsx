@@ -82,21 +82,21 @@ const GoalsComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 goals.length > 0 ? ( */}
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>N°</th>
-                        <th>Empleado</th>
-                        <th>Cantidad Estimada</th>
-                        <th>Cantidad Vendida</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th>Cumplió?</th>
-                        <th>Opciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* {goals.map((goal: Goal, index: number) => {
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Empleado</th>
+                      <th>Cantidad Estimada</th>
+                      <th>Cantidad Vendida</th>
+                      <th>Fecha Inicio</th>
+                      <th>Fecha Fin</th>
+                      <th>Cumplió?</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* {goals.map((goal: Goal, index: number) => {
                         const {
                           _id,
                           estimatedQuantity,
@@ -107,22 +107,22 @@ const GoalsComponent = () => {
                           status,
                         } = goal;
                         return ( */}
-                      <GoalItem
-                        key={5}
-                        code={"fdfdfdfdf"}
-                        employee={{ lastname: "Pablo", name: "pablo" }}
-                        estimatedQuantity={500}
-                        quantitySold={800}
-                        index={5 + 1}
-                        status={1}
-                        startDate={"2022/09/10"}
-                        endDate={"2022/10/13"}
-                        handleCancel={abortGoal}
-                      />
-                      {/* );
+                    <GoalItem
+                      key={5}
+                      code={"fdfdfdfdf"}
+                      employee={{ lastname: "Pablo", name: "pablo" }}
+                      estimatedQuantity={500}
+                      quantitySold={800}
+                      index={5 + 1}
+                      status={1}
+                      startDate={"2022/09/10"}
+                      endDate={"2022/10/13"}
+                      handleCancel={abortGoal}
+                    />
+                    {/* );
                       })} */}
-                    </tbody>
-                  </table>
+                  </tbody>
+                </table>
                 {/* ) : null} */}
               </div>
 
@@ -150,7 +150,11 @@ const GoalsComponent = () => {
                   >
                     Cerrar
                   </CButton>
-                  <CButton color="danger" onClick={() => abortGoal(goalId)}>
+                  <CButton
+                    color="danger"
+                    className="text-white"
+                    onClick={() => abortGoal(goalId)}
+                  >
                     Eliminar
                   </CButton>
                 </CModalFooter>

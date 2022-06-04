@@ -129,6 +129,7 @@ const CourseTypesComponent = () => {
                   </CButton>
                   <CButton
                     color="danger"
+                    className="text-white"
                     onClick={() => removeCourseType(courseTypeId)}
                   >
                     Eliminar
