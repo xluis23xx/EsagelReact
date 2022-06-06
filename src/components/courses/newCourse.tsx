@@ -140,7 +140,7 @@ const NewCourseComponent = () => {
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  const handleSearchCourses = (data) => {
+  const handleSearchTopics = (data) => {
     searchTopicsByFilter(data.search);
   };
 
@@ -513,7 +513,7 @@ const NewCourseComponent = () => {
               <SearchButton
                 validators={validators}
                 textButton={"Buscar"}
-                handleSearch={handleSearchCourses}
+                handleSearch={handleSearchTopics}
                 className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
               />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
