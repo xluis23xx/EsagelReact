@@ -109,6 +109,7 @@ const NewCourseComponent = () => {
       price: data.price ? Number(data.price) : 0.0,
       vacanciesNumber: data.vacanciesNumber || 0,
       courseType: data.courseType || null,
+      courseLines: selectedTopics || [],
       status: 1,
     };
     registerCourse(course).then((response) => {
