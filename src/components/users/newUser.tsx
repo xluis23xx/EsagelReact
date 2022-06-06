@@ -19,12 +19,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import {
-  cilCheckCircle,
-  cilHamburgerMenu,
-  cilPencil,
-  cilSearch,
-} from "@coreui/icons";
+import { cilHamburgerMenu, cilPencil, cilSearch } from "@coreui/icons";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { useFileUpload } from "../../hooks/useFileUpload";
@@ -431,9 +426,9 @@ const NewUserComponent = () => {
                               return (
                                 <tr key={_id}>
                                   <td>
-                                    <CButton
-                                      type="button"
-                                      color="success"
+                                    <input
+                                      type="checkbox"
+                                      className="form-check-input form-check-success p-2"
                                       onClick={() => {
                                         setSelectedEmployee({
                                           _id,
@@ -444,9 +439,8 @@ const NewUserComponent = () => {
                                         setShowEmployeeError(false);
                                         setVisibleEmployeeModal(false);
                                       }}
-                                    >
-                                      <CIcon icon={cilCheckCircle}></CIcon>
-                                    </CButton>
+                                      checked={selectedEmployee?._id === _id}
+                                    />
                                   </td>
                                   <td>
                                     {name} {lastname} {secondLastname}

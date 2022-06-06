@@ -11,13 +11,23 @@ import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import { useCourseTypes, CourseType } from "../../hooks/useCourseTypes";
 import FileUploader from "react-firebase-file-uploader";
-import { SubmitButton } from "../global-components/globalButtons";
+import { SearchButton, SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
-import { cilHamburgerMenu } from "@coreui/icons";
+import { cilHamburgerMenu, cilTrash } from "@coreui/icons";
 import { useFileUpload } from "../../hooks/useFileUpload";
+import {
+  CButton,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+} from "@coreui/react";
+import { Topic, useTopics } from "../../hooks/useTopics";
 
-const NewEmployeeComponent = () => {
+const NewCourseComponent = () => {
   const { registerCourse, status } = useCourses();
+  const { topics, getAllTopics, searchTopicsByFilter } = useTopics();
   const { getAllCourseTypes, courseTypes } = useCourseTypes();
   const {
     uploading: imageUploading,
@@ -37,6 +47,12 @@ const NewEmployeeComponent = () => {
 
   const [modalityError, setModalityError] = React.useState<boolean>(false);
 
+  const [visibleTopicsModal, setVisibleTopicsModal] = React.useState(false);
+  const [selectedTopics, setSelectedTopics] = React.useState<Topic[]>([]);
+  const [selectedTopicsIds, setSelectedTopicsIds] = React.useState<string[]>(
+    []
+  );
+
   const history = useHistory();
 
   // Context con las operaciones de firebase
@@ -44,6 +60,7 @@ const NewEmployeeComponent = () => {
 
   React.useEffect(() => {
     getAllCourseTypes();
+    getAllTopics();
   }, []);
 
   const stateSchema = {
@@ -101,6 +118,12 @@ const NewEmployeeComponent = () => {
     });
   };
 
+  const validators = {
+    required: false,
+    validator: formatNames(),
+    invalidtext: true,
+  };
+
   const {
     values: { code, name, description, price, vacanciesNumber, courseType },
     errors: {
@@ -115,6 +138,10 @@ const NewEmployeeComponent = () => {
     handleOnSubmit,
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
+
+  const handleSearchCourses = (data) => {
+    searchTopicsByFilter(data.search);
+  };
 
   return (
     <div className="row my-3">
@@ -268,7 +295,7 @@ const NewEmployeeComponent = () => {
                   ) : null}
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-md-8">
+                <div className="form-group mt-1 col-sm-6 col-xl-8">
                   <label className="form-label" htmlFor="description">
                     Descripción (*):
                   </label>
@@ -377,7 +404,63 @@ const NewEmployeeComponent = () => {
                     </p>
                   )}
                 </div>
-
+                <div className="form-group mt-3 col-sm-6 col-xl-9 d-flex" />
+                <div className="form-group mt-3 col-sm-6 col-xl-3 d-flex">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleTopicsModal(true)}
+                    className="ms-auto btn btn-success text-white w-100 mt-auto"
+                  >
+                    Buscar Temas
+                  </button>
+                </div>
+                <div
+                  className="w-100 overflow-auto mt-3"
+                  style={{ minHeight: 200 }}
+                >
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th style={{ minWidth: 60 }}>N°</th>
+                        <th style={{ minWidth: 60 }}>Tema</th>
+                        <th style={{ minWidth: 60 }}>Opción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedTopics?.length > 0
+                        ? selectedTopics.map((item: Topic, index: number) => {
+                            const { name, _id } = item;
+                            return (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{name || ""}</td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    style={{ height: 40, width: 40 }}
+                                    onClick={() => {
+                                      const cleanTopics = selectedTopics.filter(
+                                        (top: Topic) => top?._id !== _id
+                                      );
+                                      const cleanTopicIds =
+                                        selectedTopicsIds.filter(
+                                          (id: string) => id !== _id
+                                        );
+                                      setSelectedTopics([...cleanTopics]);
+                                      setSelectedTopicsIds([...cleanTopicIds]);
+                                    }}
+                                  >
+                                    <CIcon icon={cilTrash} color="#fffff" />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        : null}
+                    </tbody>
+                  </table>
+                </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
@@ -416,10 +499,111 @@ const NewEmployeeComponent = () => {
               <br />
             </div>
           </div>
+          <CModal
+            visible={visibleTopicsModal}
+            onClose={() => {
+              setVisibleTopicsModal(false);
+            }}
+          >
+            <CModalHeader closeButton={true}>
+              <CModalTitle>Seleccione el(os) tema(s)</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <SearchButton
+                validators={validators}
+                textButton={"Buscar"}
+                handleSearch={handleSearchCourses}
+                className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
+              />
+              <div className="w-100 overflow-auto" style={{ height: 300 }}>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: 20 }}></th>
+                      <th>índice</th>
+                      <th>Nombre</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topics?.length > 0
+                      ? topics.map((top: Topic, index) => {
+                          const { _id, name = "" } = top;
+                          if (index > 4) {
+                            return null;
+                          } else {
+                            return (
+                              <tr key={_id}>
+                                <td>
+                                  <input
+                                    type="checkbox"
+                                    name="topic"
+                                    checked={selectedTopicsIds.includes(_id)}
+                                    className="form-check-input form-check-success p-2"
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        const cleanTopics =
+                                          selectedTopics.filter(
+                                            (topi: Topic) => topi?._id !== _id
+                                          );
+                                        const cleanTopicIds =
+                                          selectedTopicsIds.filter(
+                                            (id: string) => id !== _id
+                                          );
+                                        setSelectedTopics([
+                                          ...cleanTopics,
+                                          {
+                                            _id: _id,
+                                            name: name,
+                                          },
+                                        ]);
+                                        setSelectedTopicsIds([
+                                          ...cleanTopicIds,
+                                          _id,
+                                        ]);
+                                      } else {
+                                        const cleanTopics =
+                                          selectedTopics.filter(
+                                            (topi: Topic) => topi?._id !== _id
+                                          );
+                                        const cleanTopicIds =
+                                          selectedTopicsIds.filter(
+                                            (id: string) => id !== _id
+                                          );
+                                        setSelectedTopics([...cleanTopics]);
+                                        setSelectedTopicsIds([
+                                          ...cleanTopicIds,
+                                        ]);
+                                      }
+                                    }}
+                                  />
+                                </td>
+                                <td>{index + 1 || ""}</td>
+                                <td>{name || ""}</td>
+                              </tr>
+                            );
+                          }
+                        })
+                      : null}
+                  </tbody>
+                </table>
+              </div>
+            </CModalBody>
+            <CModalFooter>
+              <CButton
+                color="secondary"
+                className="text-white"
+                onClick={() => {
+                  setVisibleTopicsModal(false);
+                }}
+              >
+                Cerrar
+              </CButton>
+            </CModalFooter>
+          </CModal>
         </div>
       </div>
     </div>
   );
 };
 
-export default NewEmployeeComponent;
+export default NewCourseComponent;

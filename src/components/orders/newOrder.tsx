@@ -19,7 +19,6 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import {
-  cilCheckCircle,
   cilHamburgerMenu,
   cilSearch,
   cilTrash,
@@ -297,11 +296,11 @@ const NewOrderComponent = () => {
                   />
                 </div>
                 {documentType === "Factura" ? (
-                  <div className="col-12 d-sm-none d-xl-block col-xl-1" />
+                  <div className="col-12 mt-3 d-sm-none d-xl-block col-xl-1" />
                 ) : (
-                  <div className="col-12 col-sm-6 col-xl-5" />
+                  <div className="col-12  mt-3 col-sm-6 col-xl-5" />
                 )}
-                <div className="form-group mt-1 col-sm-6 col-xl-3 d-flex">
+                <div className="form-group mt-3 col-sm-6 col-xl-3 d-flex">
                   <button
                     type="button"
                     onClick={() => setVisibleCoursesModal(true)}
@@ -554,9 +553,9 @@ const NewOrderComponent = () => {
                               return (
                                 <tr key={_id}>
                                   <td>
-                                    <CButton
-                                      type="button"
-                                      color="success"
+                                    <input
+                                      type="checkbox"
+                                      className="form-check-input form-check-success p-2"
                                       onClick={() => {
                                         setSelectedClient({
                                           _id,
@@ -567,9 +566,8 @@ const NewOrderComponent = () => {
                                         setShowClientError(false);
                                         setVisibleClientModal(false);
                                       }}
-                                    >
-                                      <CIcon icon={cilCheckCircle}></CIcon>
-                                    </CButton>
+                                      checked={selectedClient?._id === _id}
+                                    />
                                   </td>
                                   <td>
                                     {name} {lastname} {secondLastname}

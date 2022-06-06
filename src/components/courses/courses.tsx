@@ -19,7 +19,7 @@ import {
   SearchButton,
 } from "../global-components/globalButtons";
 
-const EmployeesComponent = () => {
+const CoursesComponent = () => {
   const {
     courses,
     deleteCourse,
@@ -168,4 +168,4 @@ const EmployeesComponent = () => {
   );
 };
 
-export default EmployeesComponent;
+export default CoursesComponent;

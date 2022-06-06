@@ -12,7 +12,7 @@ export type Course = {
   vacanciesNumber?: number;
   courseType?: CourseType;
   status?: number | null;
-  topics?: Topic[] | null;
+  courseLines?: Topic[] | null;
   createdAt?: string;
   updatedAt?: string;
 };

@@ -18,7 +18,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { cilCheckCircle, cilHamburgerMenu, cilSearch } from "@coreui/icons";
+import { cilHamburgerMenu, cilSearch } from "@coreui/icons";
 
 import { InputForm } from "../global-components/inputForm";
 
@@ -305,9 +305,9 @@ const NewGoalComponent = () => {
                               return (
                                 <tr key={_id}>
                                   <td>
-                                    <CButton
-                                      type="button"
-                                      color="success"
+                                    <input
+                                      type="checkbox"
+                                      className="form-check-input form-check-success p-2"
                                       onClick={() => {
                                         setSelectedEmployee({
                                           _id,
@@ -319,9 +319,8 @@ const NewGoalComponent = () => {
                                         setShowEmployeeError(false);
                                         setVisibleEmployeeModal(false);
                                       }}
-                                    >
-                                      <CIcon icon={cilCheckCircle}></CIcon>
-                                    </CButton>
+                                      checked={selectedEmployee?._id === _id}
+                                    />
                                   </td>
                                   <td>
                                     {name} {lastname} {secondLastname}
