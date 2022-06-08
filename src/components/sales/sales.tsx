@@ -12,7 +12,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { Sale, useSales, Status } from "../../hooks/useSales";
-import { SharedButtons } from "../global-components/sharedButtons";
+import { ExportButtons } from "../global-components/exportButtons";
 import { IntervalButton } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
 
@@ -70,7 +70,7 @@ const OrdersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons />
+                <ExportButtons />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}

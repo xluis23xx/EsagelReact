@@ -2,7 +2,7 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { SharedButtons } from "../global-components/sharedButtons";
+import { ExportButtons } from "../global-components/exportButtons";
 import { CourseItem } from "./_children/course";
 import { Course, Status, useCourses } from "../../hooks/useCourses";
 import {
@@ -79,7 +79,7 @@ const CoursesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons
+                <ExportButtons
                   tableId={tableExportId}
                   documentName="courses"
                   dataReport={courses}

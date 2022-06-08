@@ -2,7 +2,7 @@
 import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
-import { SharedButtons } from "../global-components/sharedButtons";
+import { ExportButtons } from "../global-components/exportButtons";
 import { UserItem } from "./_children/user";
 import { User, Status, useUsers } from "../../hooks/useUsers";
 import {
@@ -63,7 +63,7 @@ const UsersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons />
+                <ExportButtons />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}

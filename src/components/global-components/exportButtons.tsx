@@ -14,19 +14,19 @@ type HeaderReport = {
   key: string;
 };
 
-interface SharedButtonsProps {
+interface ExportButtonsProps {
   tableId?: string;
   documentName?: string;
   dataReport?: any;
   headers?: HeaderReport[];
 }
 
-export const SharedButtons = ({
+export const ExportButtons = ({
   tableId,
   documentName,
   dataReport,
   headers,
-}: SharedButtonsProps) => {
+}: ExportButtonsProps) => {
   // TOAST EN CASO DE EXITO O ERROR
   const notifySuccess = (text: string = "Copiado en el portapapeles") => {
     toast.success(text, {

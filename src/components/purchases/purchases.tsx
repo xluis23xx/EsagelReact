@@ -12,7 +12,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { Purchase, usePurchases, Status } from "../../hooks/usePurchases";
-import { SharedButtons } from "../global-components/sharedButtons";
+import { ExportButtons } from "../global-components/exportButtons";
 import {
   IntervalButton,
   RedirectionButton,
@@ -75,7 +75,7 @@ const PurchasesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons />
+                <ExportButtons />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}

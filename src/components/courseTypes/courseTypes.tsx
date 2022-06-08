@@ -12,7 +12,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { SharedButtons } from "../global-components/sharedButtons";
+import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
 
 const CourseTypesComponent = () => {
@@ -49,7 +49,7 @@ const CourseTypesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons />
+                <ExportButtons />
                 <div className="col-12 col-md-6" />
               </nav>
               <br />
