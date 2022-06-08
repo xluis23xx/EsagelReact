@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { types } from "../types/types";
 import { AuthContext } from "../context/AuthContext";
 import { SettingsContext } from "../context/SettingsContext";
+import { formatRolName } from "../utils/formats";
 // import { ToggleButtonThemeComponent } from "./global-components/toggleButtonTheme";
 
 const AppHeader = () => {
@@ -51,8 +52,8 @@ const AppHeader = () => {
     if (user?.roles.length > 0) {
       user?.roles.map((rol, index) =>
         index === 0
-          ? (roles = roles.concat(rol.name))
-          : (roles = roles.concat(` - ${rol.name}`))
+          ? (roles = roles.concat(formatRolName(rol.name)))
+          : (roles = roles.concat(` - ${formatRolName(rol.name)}`))
       );
     }
   }

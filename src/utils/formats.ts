@@ -59,3 +59,41 @@ export const setFormatCharacters = ({
     return "";
   }
 };
+
+
+export const formatRolName = (rol: string) => {
+  switch (rol) {
+    case "user":
+      return "Usuario";
+    case "admin":
+      return "Administrador";
+    case "moderator":
+      return "Moderador";
+    default:
+      return "";
+  }
+};
+
+export const extendedDate = () => {
+  const newDate = new Date();
+  const dateFormat = `${
+    newDate.getDate() + 1 >= 10
+      ? newDate.getDate() + 1
+      : `0${newDate.getDate() + 1}`
+  }-${
+    newDate.getMonth() + 1 >= 10
+      ? newDate.getMonth() + 1
+      : `0${newDate.getMonth() + 1}`
+  }-${newDate.getFullYear()} ${
+    newDate.getHours() >= 10 ? newDate.getHours() : `0${newDate.getHours()}`
+  } ${
+    newDate.getMinutes() >= 10
+      ? newDate.getMinutes()
+      : `0${newDate.getMinutes()}`
+  } ${
+    newDate.getSeconds() >= 10
+      ? newDate.getSeconds()
+      : `0${newDate.getSeconds()}`
+  }`;
+  return dateFormat;
+};

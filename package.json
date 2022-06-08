@@ -26,12 +26,6 @@
     "coreui_library_short_version": "4.1"
   },
   "files.eol": "\n",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "dependencies": {
     "@coreui/chartjs": "^3.0.0",
     "@coreui/coreui": "^4.1.2",
@@ -44,13 +38,18 @@
     "classnames": "^2.3.1",
     "core-js": "^3.21.1",
     "firebase": "^9.6.11",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.25",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-app-polyfill": "^3.0.0",
+    "react-csv": "^2.2.2",
     "react-dom": "^17.0.2",
     "react-firebase-file-uploader": "^2.4.4",
+    "react-html-table-to-excel": "^2.0.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.3.0",
+    "react-toastify": "^9.0.4",
     "redux": "4.1.2",
     "redux-thunk": "^2.3.0",
     "simplebar-react": "^2.3.6",

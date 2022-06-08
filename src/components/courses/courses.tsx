@@ -54,6 +54,17 @@ const CoursesComponent = () => {
     searchCoursesByFilter(data.search);
   };
 
+  const tableExportId = "courses-table";
+
+  const headers = [
+    { label: "Código", key: "code" },
+    { label: "Nombre", key: "name" },
+    { label: "Modalidad", key: "modality" },
+    { label: "Precio", key: "price" },
+    { label: "Número de Vacantes", key: "vacanciesNumber" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -68,7 +79,12 @@ const CoursesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <SharedButtons />
+                <SharedButtons
+                  tableId={tableExportId}
+                  documentName="courses"
+                  dataReport={courses}
+                  headers={headers}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -81,17 +97,15 @@ const CoursesComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 courses.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Tipo</th>
-                        <th>Modalidad</th>
-                        <th>Precio</th>
-                        <th>Número de Vacantes</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>
