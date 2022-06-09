@@ -40,6 +40,14 @@ const ContactFormsComponent = () => {
     }
   };
 
+  const tableExportId = "contactForms-table";
+
+  const headers = [
+    { label: "Nombre", key: "name" },
+    { label: "Descripción", key: "description" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -54,7 +62,12 @@ const ContactFormsComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={contactForms}
+                  documentName={"contact forms"}
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <div className="col-12 col-md-6" />
               </nav>
               <br />
@@ -64,13 +77,15 @@ const ContactFormsComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 contactForms.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

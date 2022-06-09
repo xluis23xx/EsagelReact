@@ -51,6 +51,15 @@ const UsersComponent = () => {
     searchUsersByFilter(data.search);
   };
 
+  const tableExportId = "users-table";
+
+  const headers = [
+    { label: "Empleado", key: "employeeName" },
+    { label: "Rol", key: "rolesName" },
+    { label: "Usuario", key: "username" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -65,7 +74,41 @@ const UsersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={users.map((user: User) => {
+                    const { employee = null, roles = [] } = user || {};
+                    let employeeName = "Desconocido";
+                    let rolesName = "";
+                    if (employee) {
+                      const { name, lastname, secondLastname } = employee || {};
+                      name ? (employeeName = name) : "";
+                      lastname
+                        ? (employeeName = `${employeeName} ${lastname}`)
+                        : "";
+                      secondLastname
+                        ? (employeeName = `${employeeName} ${secondLastname}`)
+                        : "";
+                    }
+                    if (roles.length > 0) {
+                      roles.map((rol, index) => {
+                        if (index) {
+                          rolesName = `${rolesName} - ${rol.name}`;
+                        } else {
+                          rolesName = rol.name;
+                        }
+                      });
+                    }
+
+                    return {
+                      ...user,
+                      employeeName: employeeName,
+                      rolesName: rolesName,
+                    };
+                  })}
+                  documentName={"users"}
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -78,14 +121,15 @@ const UsersComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 users.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Empleado</th>
-                        <th>Rol</th>
-                        <th>Usuario</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

@@ -56,6 +56,17 @@ const EmployeesComponent = () => {
     searchEmployeesByName(data.search);
   };
 
+  const tableExportId = "employees-table";
+
+  const headers = [
+    { label: "Nombre Completo", key: "employeeName" },
+    { label: "Tipo de Documento", key: "documentTypeName" },
+    { label: "Nro. Documento", key: "documentNumber" },
+    { label: "Correo Corporativo", key: "corporateEmail" },
+    { label: "Teléfono", key: "phoneNumber" },
+    { label: "Fecha de Nacimiento", key: "birthdate" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -70,7 +81,37 @@ const EmployeesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={employees.map((employee: Employee) => {
+                    const {
+                      name,
+                      lastname,
+                      secondLastname,
+                      documentType = null,
+                    } = employee || {};
+                    let employeeName = "Desconocido";
+                    let documentName = "";
+                    name ? (employeeName = name) : "";
+                    lastname
+                      ? (employeeName = `${employeeName} ${lastname}`)
+                      : "";
+                    secondLastname
+                      ? (employeeName = `${employeeName} ${secondLastname}`)
+                      : "";
+                    if (documentType) {
+                      const { name: documentTypeName } = documentType || {};
+                      documentTypeName ? (documentName = documentTypeName) : "";
+                    }
+                    return {
+                      ...employee,
+                      employeeName: employeeName,
+                      documentTypeName: documentName,
+                    };
+                  })}
+                  headers={headers}
+                  tableId={tableExportId}
+                  documentName={"employees"}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -83,16 +124,15 @@ const EmployeesComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 employees.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre Completo</th>
-                        <th>Tipo de Documento</th>
-                        <th>N° Documento</th>
-                        <th>Correo Corporativo</th>
-                        <th>Teléfono</th>
-                        <th>Fecha de Nacimiento</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Imagen</th>
                         <th>Opciones</th>
                       </tr>

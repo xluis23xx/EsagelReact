@@ -37,6 +37,16 @@ const CourseTypesComponent = () => {
     }
   };
 
+  const tableExportId = "courseTypes-table";
+
+  const headers = [
+    { label: "Código", key: "code" },
+    { label: "Nombre", key: "name" },
+    { label: "Fecha de creación", key: "createdAt" },
+    { label: "Última fecha de actualización", key: "updatedAt" },
+    { label: "Descripción", key: "description" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -51,7 +61,12 @@ const CourseTypesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={courseTypes}
+                  documentName={"course types"}
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <div className="col-12 col-md-6" />
               </nav>
               <br />
@@ -61,15 +76,15 @@ const CourseTypesComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 courseTypes.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Código</th>
-                        <th>Nombre</th>
-                        <th>Fecha de creación</th>
-                        <th>Última fecha de actualización</th>
-                        <th>Descripción</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

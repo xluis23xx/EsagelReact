@@ -63,6 +63,20 @@ const PurchasesComponent = () => {
     }
     searchPurchasesByInterval(startDate, endDate);
   };
+
+  const tableExportId = "purchases-table";
+
+  const headers = [
+    { label: "Nro. Compra", key: "purchaseNumber" },
+    { label: "Nombre", key: "name" },
+    { label: "Fecha de solicitud", key: "createdAt" },
+    { label: "Proveedor", key: "providerName" },
+    { label: "Precio Unit.", key: "price" },
+    { label: "Cantidad", key: "quantity" },
+    { label: "Monto Total", key: "total" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -77,7 +91,27 @@ const PurchasesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={purchases.map((purchase: Purchase) => {
+                    const { provider = null } = purchase || {};
+                    let providerName = "Desconocido";
+                    if (provider) {
+                      const { businessName } = provider || {};
+                      businessName ? (providerName = businessName) : "";
+                    }
+
+                    return {
+                      ...purchase,
+                      providerName: providerName,
+                      price: purchase?.price || "",
+                      quantity: purchase?.quantity || "",
+                      total: purchase?.total || "",
+                    };
+                  })}
+                  documentName={"purchases"}
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
@@ -90,19 +124,15 @@ const PurchasesComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 purchases.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nro. Compra</th>
-                        <th>Nombre</th>
-                        <th>Fecha de solicitud</th>
-                        <th>Proveedor</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Precio Total</th>
-
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

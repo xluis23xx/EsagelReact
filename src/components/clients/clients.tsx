@@ -56,6 +56,16 @@ const ClientsComponent = () => {
     searchClientsByFilter(data.search);
   };
 
+  const tableExportId = "clients-table";
+
+  const headers = [
+    { label: "Nombre Completo", key: "clientName" },
+    { label: "Tipo de Documento", key: "documentTypeName" },
+    { label: "Nro. Documento", key: "documentNumber" },
+    { label: "Teléfono", key: "phoneNumber" },
+    { label: "Fecha de Nacimiento", key: "birthdate" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -70,7 +80,35 @@ const ClientsComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={clients.map((client: Client) => {
+                    const {
+                      name,
+                      lastname,
+                      secondLastname,
+                      documentType = null,
+                    } = client || {};
+                    let clientName = "Desconocido";
+                    let documentName = "";
+                    name ? (clientName = name) : "";
+                    lastname ? (clientName = `${clientName} ${lastname}`) : "";
+                    secondLastname
+                      ? (clientName = `${clientName} ${secondLastname}`)
+                      : "";
+                    if (documentType) {
+                      const { name: documentTypeName } = documentType || {};
+                      documentTypeName ? (documentName = documentTypeName) : "";
+                    }
+                    return {
+                      ...client,
+                      clientName: clientName,
+                      documentTypeName: documentName,
+                    };
+                  })}
+                  documentName={"clients"}
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -83,15 +121,15 @@ const ClientsComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 clients.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre Completo</th>
-                        <th>Tipo de Documento</th>
-                        <th>N° Documento</th>
-                        <th>Teléfono</th>
-                        <th>Fecha de Nacimiento</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

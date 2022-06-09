@@ -56,6 +56,16 @@ const ProvidersComponent = () => {
     searchProvidersByFilter(data.search);
   };
 
+  const tableExportId = "providers-table";
+
+  const headers = [
+    { label: "Fecha de solicitud", key: "createdAt" },
+    { label: "Nombre de la Empresa", key: "businessName" },
+    { label: "RUC", key: "documentNumber" },
+    { label: "Nombre del Contacto", key: "contactName" },
+    { label: "Teléfono", key: "phoneNumber" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -70,7 +80,12 @@ const ProvidersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={providers}
+                  tableId={tableExportId}
+                  documentName={"providers"}
+                  headers={headers}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -83,16 +98,15 @@ const ProvidersComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 providers.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Fecha de Registro</th>
-                        <th>Nombre de la Empresa</th>
-                        <th>RUC</th>
-                        <th>Nombre del Contacto</th>
-                        <th>Teléfono</th>
-                        {/* <th>Estado</th> */}
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

@@ -41,6 +41,15 @@ const DocumentTypesComponent = () => {
     }
   };
 
+  const tableExportId = "documentTypes-table";
+
+  const headers = [
+    { label: "Nombre", key: "name" },
+    { label: "Operación", key: "operation" },
+    { label: "Fecha de creación", key: "createdAt" },
+    { label: "Última fecha de actualización", key: "updatedAt" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -55,7 +64,12 @@ const DocumentTypesComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={documents}
+                  documentName="document types"
+                  headers={headers}
+                  tableId={tableExportId}
+                />
                 <div className="col-12 col-md-6" />
               </nav>
               <br />
@@ -65,14 +79,15 @@ const DocumentTypesComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 documents.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre</th>
-                        <th>Operación</th>
-                        <th>Fecha de creación</th>
-                        <th>Última fecha de actualización</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>
