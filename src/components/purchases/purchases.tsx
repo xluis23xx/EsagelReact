@@ -18,6 +18,7 @@ import {
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
+import { savePathname } from "../../utils/location";
 
 const PurchasesComponent = () => {
   const {
@@ -31,6 +32,7 @@ const PurchasesComponent = () => {
   const [purchaseId, setPurchaseId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllPurchases();
   }, []);
 

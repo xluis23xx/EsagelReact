@@ -8,12 +8,17 @@ import { AuthContext } from "../../context/AuthContext";
 import { useHistory } from "react-router-dom";
 import { useProfile, Status } from "../../hooks/useProfile/useProfile";
 import DisableAccountComponent from "./disableAccount";
+import { savePathname } from "../../utils/location";
 
 const MyAccountComponent = () => {
   const { setProfileById, profileInfo, status } = useProfile();
 
   const { user } = React.useContext(AuthContext);
   const history = useHistory();
+
+  React.useEffect(() => {
+    savePathname();
+  }, []);
 
   React.useEffect(() => {
     if (!user) {

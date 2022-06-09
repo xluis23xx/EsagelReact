@@ -18,6 +18,7 @@ import {
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
+import { savePathname } from "../../utils/location";
 
 const OrdersComponent = () => {
   const {
@@ -33,6 +34,7 @@ const OrdersComponent = () => {
   const [orderId, setOrderId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllOrders();
   }, []);
 
@@ -78,6 +80,16 @@ const OrdersComponent = () => {
     searchOrdersByInterval(startDate, endDate);
   };
 
+  const tableExportId = "orders-table";
+
+  const headers = [
+    { label: "Nro. Pedido", key: "orderNumber" },
+    { label: "Cliente", key: "clientName" },
+    { label: "Fecha de Emisión", key: "createdAt" },
+    { label: "Total", key: "total" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -92,7 +104,26 @@ const OrdersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={orders.map((order: Order) => {
+                    const { client = null } = order || {};
+                    let clientName = "Desconocido";
+                    if (client) {
+                      client?.name ? (clientName = client?.name) : "";
+                      client?.lastname
+                        ? (clientName = `${clientName} ${client?.lastname}`)
+                        : "";
+                    }
+                    return {
+                      ...order,
+                      clientName: clientName,
+                      total: order?.total || "",
+                    };
+                  })}
+                  headers={headers}
+                  tableId={tableExportId}
+                  documentName={"orders"}
+                />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
@@ -106,15 +137,15 @@ const OrdersComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 orders.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nro. Pedido</th>
-                        <th>Cliente</th>
-                        <th>Fecha de Emisión</th>
-                        <th>Total</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

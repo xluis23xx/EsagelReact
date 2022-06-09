@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const EmployeesComponent = () => {
   const {
@@ -31,6 +32,7 @@ const EmployeesComponent = () => {
   const [employeeId, setEmployeeId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllEmployees();
   }, []);
 

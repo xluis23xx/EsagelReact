@@ -15,6 +15,7 @@ import { Sale, useSales, Status } from "../../hooks/useSales";
 import { ExportButtons } from "../global-components/exportButtons";
 import { IntervalButton } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
+import { savePathname } from "../../utils/location";
 
 const OrdersComponent = () => {
   const { sales, cancelSale, getAllSales, searchSalesByInterval, status } =
@@ -23,6 +24,7 @@ const OrdersComponent = () => {
   const [saleId, setSaleId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllSales();
   }, []);
 
@@ -58,6 +60,17 @@ const OrdersComponent = () => {
     searchSalesByInterval(startDate, endDate);
   };
 
+  const tableExportId = "sales-table";
+
+  const headers = [
+    { label: "Nro. Venta", key: "saleNumber" },
+    { label: "Fecha de Emisión", key: "createdAt" },
+    { label: "Cliente", key: "clientName" },
+    { label: "Vendedor", key: "sellerName" },
+    { label: "Total", key: "total" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3" />
@@ -70,7 +83,38 @@ const OrdersComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={sales.map((sale: Sale) => {
+                    const { client = null, seller = null } = sale || {};
+                    let clientName = "Desconocido";
+                    let sellerName = "Desconocido";
+                    if (client) {
+                      client?.name ? (clientName = client?.name) : "";
+                      client?.lastname
+                        ? (clientName = `${clientName} ${client?.lastname}`)
+                        : "";
+                    }
+
+                    if (seller) {
+                      const { employee = null } = seller || {};
+                      if (employee) {
+                        employee?.name ? (sellerName = employee?.name) : "";
+                        employee?.lastname
+                          ? (sellerName = `${sellerName} ${employee?.lastname}`)
+                          : "";
+                      }
+                    }
+                    return {
+                      ...sale,
+                      clientName: clientName,
+                      sellerName: sellerName,
+                      total: sale?.total || "",
+                    };
+                  })}
+                  headers={headers}
+                  tableId={tableExportId}
+                  documentName={"sales"}
+                />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
@@ -83,17 +127,15 @@ const OrdersComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 sales.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nro. Venta</th>
-                        <th>Fecha de Emisión</th>
-                        <th>Cliente</th>
-                        <th>Vendedor</th>
-                        {/* <th>Subtotal</th> */}
-                        <th>Total</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

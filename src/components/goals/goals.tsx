@@ -17,6 +17,7 @@ import {
   IntervalButton,
   RedirectionButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const GoalsComponent = () => {
   const { goals, deleteGoal, getAllGoals, searchGoalsByInterval, status } =
@@ -25,6 +26,7 @@ const GoalsComponent = () => {
   const [goalId, setGoalId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllGoals();
   }, []);
 

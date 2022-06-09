@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const CoursesComponent = () => {
   const {
@@ -31,6 +32,7 @@ const CoursesComponent = () => {
   const [courseId, setCourseId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllCourses();
   }, []);
 

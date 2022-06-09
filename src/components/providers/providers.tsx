@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const ProvidersComponent = () => {
   const {
@@ -31,6 +32,7 @@ const ProvidersComponent = () => {
   const [providerId, setProviderId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllProviders();
   }, []);
 

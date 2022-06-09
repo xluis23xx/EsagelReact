@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const TopicsComponent = () => {
   const { topics, deleteTopic, getAllTopics, searchTopicsByFilter, status } =
@@ -26,6 +27,7 @@ const TopicsComponent = () => {
   const [topicId, setTopicId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllTopics();
   }, []);
 
@@ -49,6 +51,14 @@ const TopicsComponent = () => {
     searchTopicsByFilter(data.search);
   };
 
+  const tableExportId = "topics-table";
+
+  const headers = [
+    { label: "Nombre", key: "name" },
+    { label: "Descripción", key: "description" },
+    { label: "Estado", key: "status" },
+  ];
+
   return (
     <>
       <div className="row mb-3">
@@ -63,7 +73,12 @@ const TopicsComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={topics}
+                  tableId={tableExportId}
+                  documentName={"topics"}
+                  headers={headers}
+                />
                 <SearchButton
                   validators={validators}
                   handleSearch={handleSearch}
@@ -76,13 +91,15 @@ const TopicsComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 topics.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Estado</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>

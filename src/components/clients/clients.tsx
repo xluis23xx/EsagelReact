@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const ClientsComponent = () => {
   const {
@@ -31,6 +32,7 @@ const ClientsComponent = () => {
   const [clientId, setClientId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllClients();
   }, []);
 

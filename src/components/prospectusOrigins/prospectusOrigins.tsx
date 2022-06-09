@@ -18,6 +18,7 @@ import {
 } from "../../hooks/useProspectusOrigin";
 import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const ProspectOriginsComponent = () => {
   const {
@@ -30,6 +31,7 @@ const ProspectOriginsComponent = () => {
   const [prospectusOriginId, setProspectusOriginId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllProspectOrigins();
   }, []);
 

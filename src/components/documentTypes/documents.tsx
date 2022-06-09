@@ -18,6 +18,7 @@ import {
 } from "@coreui/react";
 import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const DocumentTypesComponent = () => {
   const { documents, deleteDocumentType, getAllDocumentTypes, status } =
@@ -26,6 +27,7 @@ const DocumentTypesComponent = () => {
   const [documentTypeId, setDocumentTypeId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllDocumentTypes();
   }, []);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, useLocation } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
 import DefaultLayout from "../layout/DefaultLayout";
@@ -14,6 +14,7 @@ import { SettingsContext } from "../context/SettingsContext";
 export const AppRouter = () => {
   const [user, setUser] = React.useState(null);
   const [config, setConfig] = React.useState(null);
+  const [lastPath, setLastPath] = React.useState("/");
   React.useEffect(() => {
     const ESAGEL_TOKEN = getCookie("esagel_token");
     const ESAGEL_PROFILE = JSON.parse(
@@ -22,6 +23,7 @@ export const AppRouter = () => {
     const ESAGEL_CONFIG = JSON.parse(
       localStorage.getItem("esagel_config") || "{}"
     );
+    const ESAGEL_LAST_PATH = localStorage.getItem("last_path");
     if (
       ESAGEL_TOKEN &&
       Object.keys(ESAGEL_PROFILE).length > 0 &&
@@ -29,6 +31,7 @@ export const AppRouter = () => {
     ) {
       setUser(ESAGEL_PROFILE);
       setConfig(ESAGEL_CONFIG);
+      setLastPath(ESAGEL_LAST_PATH || "/");
     } else {
       if (ESAGEL_TOKEN) {
         deleteCookie("esagel_token");
@@ -38,6 +41,9 @@ export const AppRouter = () => {
       }
       if (ESAGEL_CONFIG) {
         localStorage.removeItem("esagel_config");
+      }
+      if (ESAGEL_LAST_PATH) {
+        localStorage.removeItem("last_path");
       }
     }
   }, []);
@@ -50,6 +56,7 @@ export const AppRouter = () => {
             <Router>
               <Switch>
                 <PublicRoute
+                  lastPath={lastPath}
                   path="/auth"
                   component={AuthRouter}
                   isAuthenticated={!user ? false : true}

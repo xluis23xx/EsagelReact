@@ -26,6 +26,7 @@ const AppHeaderDropdown = () => {
     logoutUser();
     setUser(null);
     setConfig(null);
+    localStorage.removeItem("last_path");
   };
 
   let userImage = "";

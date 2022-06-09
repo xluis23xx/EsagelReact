@@ -18,6 +18,7 @@ import {
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const UsersComponent = () => {
   const { users, disableUser, getAllUsers, searchUsersByFilter, status } =
@@ -26,6 +27,7 @@ const UsersComponent = () => {
   const [userId, setUserId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllUsers();
   }, []);
 

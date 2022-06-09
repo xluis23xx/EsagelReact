@@ -18,6 +18,7 @@ import {
 } from "../../hooks/usePropectusStatus";
 import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const ProspectStatusesComponent = () => {
   const {
@@ -30,6 +31,7 @@ const ProspectStatusesComponent = () => {
   const [prospectusStatusId, setProspectusStatusId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllProspectStatuses();
   }, []);
 

@@ -2,9 +2,14 @@ import { cilHamburgerMenu } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import * as React from "react";
 import { SettingsContext } from "../../context/SettingsContext";
+import { savePathname } from "../../utils/location";
 
 const HelpComponent = () => {
   const { config } = React.useContext(SettingsContext);
+  
+  React.useEffect(() => {
+    savePathname();
+  }, []);
 
   return (
     <div className="row my-3">

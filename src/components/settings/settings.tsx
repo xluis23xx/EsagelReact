@@ -22,6 +22,7 @@ import Swal from "sweetalert2";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { savePathname } from "../../utils/location";
 
 const NewCourseTypeComponent = () => {
   const { status, getSettingsConfig, updateSetting } = useSettings();
@@ -72,6 +73,7 @@ const NewCourseTypeComponent = () => {
         setConfig(configRP);
       }
     }
+    savePathname();
   }, []);
 
   React.useEffect(() => {

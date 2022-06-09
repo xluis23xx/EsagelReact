@@ -14,6 +14,7 @@ import {
 } from "@coreui/react";
 import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
+import { savePathname } from "../../utils/location";
 
 const CourseTypesComponent = () => {
   const { courseTypes, deleteCourseType, getAllCourseTypes, status } =
@@ -22,6 +23,7 @@ const CourseTypesComponent = () => {
   const [courseTypeId, setCourseTypeId] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
     getAllCourseTypes();
   }, []);
 

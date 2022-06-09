@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Route, Redirect } from "react-router-dom";
+import DefaultLayout from "../layout/DefaultLayout";
 
 export const PublicRoute = ({
+  lastPath = "/",
   isAuthenticated,
   component: Component,
   ...rest
@@ -13,7 +15,10 @@ export const PublicRoute = ({
       {...rest}
       component={(props) =>
         isAuthenticated ? (
-          <Redirect to="/" />
+          <>
+            <DefaultLayout {...props}></DefaultLayout>
+            <Redirect to={lastPath} />
+          </>
         ) : (
           <Component {...props} />
         )
