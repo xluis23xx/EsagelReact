@@ -275,7 +275,7 @@ const NewClientComponent = () => {
                     id="documentType"
                     name="documentType"
                     required
-                    value={documentType}
+                    value={documentType || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     disabled={status === Status.Updating}
@@ -289,7 +289,7 @@ const NewClientComponent = () => {
                           if (pos?.operation === "persona") {
                             return (
                               <option key={pos.name} value={`${pos.name}`}>
-                                {pos.name.toUpperCase()}
+                                {pos?.name?.toUpperCase()}
                               </option>
                             );
                           }
@@ -324,7 +324,7 @@ const NewClientComponent = () => {
                     name="department"
                     required
                     disabled={status === Status.Updating}
-                    value={department}
+                    value={department || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -399,7 +399,7 @@ const NewClientComponent = () => {
                     name="leadSource"
                     required
                     disabled={status === Status.Updating}
-                    value={leadSource}
+                    value={leadSource || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -425,7 +425,7 @@ const NewClientComponent = () => {
                     name="prospectStatus"
                     required
                     disabled={status === Status.Updating}
-                    value={prospectStatus}
+                    value={prospectStatus || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -451,7 +451,7 @@ const NewClientComponent = () => {
                     name="contactForm"
                     required
                     disabled={status === Status.Updating}
-                    value={contactForm}
+                    value={contactForm || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${

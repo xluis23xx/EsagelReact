@@ -10,6 +10,6 @@
     "lib": ["es2019", "dom"],
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["src"]
 }

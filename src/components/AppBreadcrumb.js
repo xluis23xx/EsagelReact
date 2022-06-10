@@ -49,7 +49,7 @@ const AppBreadcrumb = () => {
           <Link
             key={index}
             className={`breadcrumb-item text-decoration-none ${
-              breadcrumb.active ? "active" : "text-danger"
+              breadcrumb.active ? "active text-white" : "text-danger"
             }`}
             to={breadcrumb.pathname}
           >

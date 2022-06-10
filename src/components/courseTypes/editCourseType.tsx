@@ -30,7 +30,6 @@ const NewCourseTypeComponent = () => {
   }, []);
 
   const stateSchema = {
-    // code: { value: null, error: "" },
     name: { value: null, error: "" },
     description: { value: null, error: "" },
     status: { value: null, error: "" },
@@ -58,6 +57,7 @@ const NewCourseTypeComponent = () => {
     const courseType = {
       name: (data?.name ?? courseTypeInfo?.name) || null,
       description: (data?.description ?? courseTypeInfo?.description) || null,
+      
       status: (data?.status ?? courseTypeInfo?.status) || 1,
     };
     updateCourseType(id, courseType).then((response) => {

@@ -13,7 +13,7 @@ type CourseItemProps = Course & {
 
 export const CourseItem: React.FC<CourseItemProps> = ({
   orderNumber,
-  _id,
+  _id = "",
   code,
   name,
   price,

@@ -7,24 +7,25 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getGoals = (
   token: string,
-  // { startDate, endDate }: { startDate: string; endDate: string },
+  { startDate, endDate }: { startDate: string; endDate: string },
   { limit = 100, pageSize = 1 }: PaginateParams
-): Promise<PaginateResponse> =>
-  fetch(`${GENERAL_API}/goals/?limit=${limit}&pageSize=${pageSize}`, {
-    // method: "POST",
-    cache: "no-cache",
-    // body: JSON.stringify({
-    //   startDate,
-    //   endDate,
-    // }),
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": `${token}`,
-    },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+): Promise<PaginateResponse> => {
+  console.log(startDate, endDate)
+    return fetch(`${GENERAL_API}/goals/?limit=${limit}&pageSize=${pageSize}`, {
+      // method: "POST",
+      cache: "no-cache",
+      method: "GET",
+      body: JSON.stringify({
+        startDate: startDate,
+        endDate:endDate,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": `${token}`,
+      },
+    }).then((res) => res.json()).catch((res) => res.json());
+  }
+  
 
 export const getGoalById = (token: string, id: string): Promise<GetGoal> =>
   fetch(`${GENERAL_API}/goals/${id}`, {

@@ -2,8 +2,8 @@ import React from "react";
 
 type TextAreaProps = {
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
-  error?: string | boolean;
-  value: string;
+  error?: string | boolean | null;
+  value: string | null;
   placeholder?: string;
   disabled?: boolean;
   name?: string;
@@ -19,8 +19,8 @@ export const TextAreaForm: React.FC<TextAreaProps> = ({
   placeholder = "",
   onChange,
   disabled,
-  error,
-  value,
+  error = false,
+  value = "",
   name = "",
   required = false,
   className = "form-control",

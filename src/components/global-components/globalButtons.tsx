@@ -70,8 +70,8 @@ export const SearchButton = ({
           className="form-control"
           placeholder="Buscar"
           aria-label="Buscar"
-          value={search}
-          error={searchError}
+          value={search || ""}
+          error={searchError || false}
           showError={false}
           onChange={handleOnChange}
         />
@@ -128,8 +128,8 @@ export const IntervalButton = ({
           required={required}
           className="form-control"
           aria-label="Intervalo Inicial"
-          value={startDate}
-          error={startDateError}
+          value={startDate || ""}
+          error={startDateError || false}
           showError={false}
           onChange={handleOnChange}
         />
@@ -144,8 +144,8 @@ export const IntervalButton = ({
           required={required}
           className="form-control"
           aria-label="Intervalo Final"
-          value={endDate}
-          error={endDateError}
+          value={endDate || ""}
+          error={endDateError || false}
           showError={false}
           onChange={handleOnChange}
         />
@@ -164,9 +164,14 @@ export const IntervalButton = ({
 
 export const SubmitButton = ({
   disabled = undefined,
-  children,
+  children = null,
   className = "btn btn-info w-100 text-white",
   style = undefined,
+}: {
+  disabled?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+  style?: any;
 }) => {
   return (
     <button

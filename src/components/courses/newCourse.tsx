@@ -471,7 +471,7 @@ const NewCourseComponent = () => {
                       imageUploading ||
                       imageErrorMessage
                         ? true
-                        : false || modalityError
+                        : false || modalityError || selectedTopics.length === 0
                     }
                   >
                     {status === Status.Updating ? (

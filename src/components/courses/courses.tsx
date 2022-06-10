@@ -114,8 +114,8 @@ const CoursesComponent = () => {
                     <tbody>
                       {courses.map((course: Course, index: number) => {
                         const {
-                          _id,
-                          code,
+                          _id = "",
+                          code = "",
                           name,
                           modality,
                           courseType,

@@ -306,7 +306,7 @@ const EditClientComponent = () => {
                           if (pos?.operation === "persona") {
                             return (
                               <option key={pos.name} value={`${pos.name}`}>
-                                {pos.name.toUpperCase()}
+                                {pos?.name?.toUpperCase()}
                               </option>
                             );
                           }

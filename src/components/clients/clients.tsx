@@ -136,7 +136,7 @@ const ClientsComponent = () => {
                     <tbody>
                       {clients.map((client: Client, index: number) => {
                         const {
-                          _id,
+                          _id="",
                           name,
                           lastname,
                           secondLastname,

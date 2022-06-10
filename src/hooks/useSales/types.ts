@@ -7,8 +7,8 @@ export type Sale = {
   _id?: string;
   saleNumber?: string;
   order?: Order;
-  seller?: User;
-  client?: Client;
+  seller?: User | null;
+  client?: Client | null;
   percentIva?: number;
   subtotal?: number;
   amountInIva?: number;

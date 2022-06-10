@@ -17,7 +17,7 @@ export enum Status {
 export const useGoals = () => {
   const [goals, setGoals] = React.useState<Goal[]>([]);
   const [goalsAll, setGoalsAll] = React.useState<Goal[]>([]);
-  const [goalInfo, setGoalInfo] = React.useState<Goal>(null);
+  const [goalInfo, setGoalInfo] = React.useState<Goal | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setGoalById(id: string) {
@@ -32,26 +32,27 @@ export const useGoals = () => {
   }
 
   function getAllGoals(
-    // { startDate, endDate }
+    { startDate, endDate }: {startDate: string, endDate:string}
     ) {
+    console.log(startDate, endDate)
     const token = getCookie("esagel_token") || "";
-    getGoals(token,
-      //  { startDate, endDate }
-       {})
+    getGoals(token,{startDate, endDate}, {})
       .then((response: PaginateResponse) => {
+        console.log(response)
         const {docs: goalsObtained} = response || {}
         setGoals(goalsObtained);
-        setGoalsAll(goalsObtained)
+        setGoalsAll(goalsObtained);
         setStatus(Status.Ready);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err)
         setStatus(Status.Error);
       });
   }
 
   function searchGoalsByInterval(startDate:string= "", endDate:string ="") {
     if (goalsAll.length === 0) {
-      getAllGoals();
+      getAllGoals({startDate, endDate});
     }else if(startDate==="" && endDate===""){
       setGoals(goalsAll)
     }

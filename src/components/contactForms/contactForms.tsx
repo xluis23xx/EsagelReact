@@ -92,8 +92,12 @@ const ContactFormsComponent = () => {
                     <tbody>
                       {contactForms.map(
                         (contactForm: ContactForm, index: number) => {
-                          const { _id, name, description, status } =
-                            contactForm;
+                          const {
+                            _id = "",
+                            name,
+                            description,
+                            status,
+                          } = contactForm;
                           return (
                             <ContactFormItem
                               key={index}

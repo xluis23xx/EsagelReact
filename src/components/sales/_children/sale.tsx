@@ -7,8 +7,8 @@ import { EditItemButton } from "../../global-components/globalButtons";
 import { CBadge } from "@coreui/react";
 
 type SaleItemProps = Sale & {
-  index: number;
-  code: string;
+  index?: number;
+  code?: string;
   handleCancel: (id: string) => void;
   handlePrint: (id: string) => void;
 };

@@ -18,6 +18,7 @@ import {
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
+import { setFormatDate } from "../../utils/formats";
 
 const GoalsComponent = () => {
   const { goals, deleteGoal, getAllGoals, searchGoalsByInterval, status } =
@@ -27,7 +28,19 @@ const GoalsComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllGoals();
+    const currentDate = new Date();
+    const startDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T00:00:00.0+00:00`;
+    const endDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T23:59:59.999+00:00`;
+    console.log(startDate, endDate);
+    getAllGoals({ startDate, endDate });
   }, []);
 
   const abortGoal = (id: string) => {
@@ -49,12 +62,21 @@ const GoalsComponent = () => {
     let startDate = "";
     let endDate = "";
     if (data?.startDate) {
-      startDate = data?.startDate;
+      startDate = `${setFormatDate({
+        order: 1,
+        date: data?.startDate,
+        separator: "-",
+      })}T00:00:00.0+00:00`;
     }
     if (data?.endDate) {
-      endDate = data?.endDate;
+      endDate = `${setFormatDate({
+        order: 1,
+        date: data?.endDate,
+        separator: "-",
+      })}T23:59:59.999+00:00`;
     }
-    searchGoalsByInterval(startDate, endDate);
+    console.log(startDate, endDate);
+    getAllGoals({ startDate, endDate });
   };
 
   return (
@@ -79,26 +101,26 @@ const GoalsComponent = () => {
               </nav>
               <br />
               <div className="w-100 overflow-auto" style={{ height: 300 }}>
-                {/* {status === Status.Loading ? (
+                {status === Status.Loading ? (
                   <h4 className="text-center">Espere un momento...</h4>
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
-                goals.length > 0 ? ( */}
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>N°</th>
-                      <th>Empleado</th>
-                      <th>Cantidad Estimada</th>
-                      <th>Cantidad Vendida</th>
-                      <th>Fecha Inicio</th>
-                      <th>Fecha Fin</th>
-                      <th>Cumplió?</th>
-                      <th>Opciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {goals.map((goal: Goal, index: number) => {
+                goals.length > 0 ? (
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Empleado</th>
+                        <th>Cantidad Estimada</th>
+                        <th>Cantidad Vendida</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Cumplió?</th>
+                        <th>Opciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {goals.map((goal: Goal, index: number) => {
                         const {
                           _id,
                           estimatedQuantity,
@@ -108,24 +130,24 @@ const GoalsComponent = () => {
                           employee = null,
                           status,
                         } = goal;
-                        return ( */}
-                    <GoalItem
-                      key={5}
-                      code={"fdfdfdfdf"}
-                      employee={{ lastname: "Pablo", name: "pablo" }}
-                      estimatedQuantity={500}
-                      quantitySold={800}
-                      index={5 + 1}
-                      status={1}
-                      startDate={"2022/09/10"}
-                      endDate={"2022/10/13"}
-                      handleCancel={abortGoal}
-                    />
-                    {/* );
-                      })} */}
-                  </tbody>
-                </table>
-                {/* ) : null} */}
+                        return (
+                          <GoalItem
+                            key={index}
+                            code={_id}
+                            employee={employee}
+                            estimatedQuantity={estimatedQuantity}
+                            quantitySold={quantitySold}
+                            index={index + 1}
+                            status={status}
+                            startDate={startDate}
+                            endDate={endDate}
+                            handleCancel={abortGoal}
+                          />
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : null}
               </div>
 
               <CModal

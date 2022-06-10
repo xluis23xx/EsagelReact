@@ -1,5 +1,5 @@
 type FormatDate = {
-  date: string;
+  date: string | Date | undefined| null;
   order?: number; // 0 dia-mes-año | 1 año-mes-dia
   separator?: string;
 };
@@ -23,15 +23,15 @@ export const setFormatDate = ({
     if (order === 0) {
       return year && month && day
         ? `${day}${separator}${month}${separator}${year}`
-        : null;
+        : "";
     }
     if (order === 1) {
       return year && month && day
         ? `${year}${separator}${month}${separator}${day}`
-        : null;
+        : "";
     }
   }
-  return null;
+  return "";
 };
 
 type FormatCharacter = {

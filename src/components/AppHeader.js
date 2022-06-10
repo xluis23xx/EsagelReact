@@ -67,7 +67,7 @@ const AppHeader = () => {
             distpatch({ type: types.nav.set, payload: !sidebarShow })
           }
         >
-          <CIcon icon={cilMenu} size="lg" />
+          <CIcon icon={cilMenu} size="lg" style={{ color: "#fff" }} />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none text-light" to="/">
           {config?.url ? (

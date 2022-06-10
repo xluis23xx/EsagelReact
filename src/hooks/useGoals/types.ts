@@ -2,7 +2,7 @@ import { Employee } from "../useEmployees";
 
 export type Goal = {
   _id?: string;
-  employee?: Employee;
+  employee?: Employee | null;
   startDate?: string;
   endDate?: string;
   estimatedQuantity?: number;

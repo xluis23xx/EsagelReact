@@ -3,8 +3,8 @@ import React from "react";
 type InputProps = {
   type?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  error?: string | boolean;
-  value: string;
+  error?: string | boolean | null;
+  value: string | null;
   placeholder?: string;
   autoComplete?: string;
   disabled?: boolean;
@@ -25,8 +25,8 @@ export const InputForm: React.FC<InputProps> = ({
   autoComplete = "",
   onChange,
   disabled,
-  error,
-  value,
+  error = "",
+  value = "",
   name = "",
   required = false,
   className = "form-control",
@@ -50,7 +50,7 @@ export const InputForm: React.FC<InputProps> = ({
         placeholder={placeholder}
         autoComplete={autoComplete}
         className={`${className} ${error ? "border border-danger" : ""}`}
-        value={value}
+        value={value || ""}
         readOnly={readonly}
         required={required}
         disabled={disabled}

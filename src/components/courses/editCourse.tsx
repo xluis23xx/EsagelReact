@@ -82,9 +82,8 @@ const EditCourseComponent = () => {
     if (courseInfo?.courseLines) {
       if (courseInfo?.courseLines.length > 0) {
         setSelectedTopics([...courseInfo?.courseLines]);
-        setSelectedTopicsIds([
-          ...courseInfo?.courseLines.map((top) => top._id),
-        ]);
+
+        setSelectedTopicsIds([...courseInfo.courseLines.map((top) => top._id)]);
       }
     }
   }, [courseInfo]);
@@ -538,7 +537,8 @@ const EditCourseComponent = () => {
                         : false ||
                           modalityError ||
                           status === Status.Loading ||
-                          status === Status.Updating
+                          status === Status.Updating ||
+                          selectedTopics.length === 0
                     }
                   >
                     {status === Status.Updating ? (
