@@ -70,9 +70,9 @@ const UsersComponent = () => {
   const tableExportId = "users-table";
 
   const headers = [
-    { label: "Empleado", key: "employeeName" },
-    { label: "Rol", key: "rolesName" },
     { label: "Usuario", key: "username" },
+    { label: "Rol", key: "rolesName" },
+    { label: "Empleado", key: "employeeName" },
     { label: "Estado", key: "status" },
   ];
 

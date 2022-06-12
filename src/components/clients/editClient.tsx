@@ -130,13 +130,14 @@ const EditClientComponent = () => {
       address: (data?.address ?? clientInfo?.address) || null,
       email: (data?.email ?? clientInfo?.email) || null,
       department: (data?.department ?? clientInfo?.department) || null,
-      leadSource: (data?.leadSource ?? clientInfo?.leadSource) || null,
+      leadSource: (data?.leadSource ?? clientInfo?.leadSource?.name) || null,
       prospectStatus:
-        (data?.prospectStatus ?? clientInfo?.prospectStatus) || null,
-      contactForm: (data?.contactForm ?? clientInfo?.contactForm) || null,
+        (data?.prospectStatus ?? clientInfo?.prospectStatus?.name) || null,
+      contactForm: (data?.contactForm ?? clientInfo?.contactForm?.name) || null,
       profession: (data?.profession ?? clientInfo?.profession) || null,
       business: (data?.business ?? clientInfo?.business) || null,
     };
+    console.log(client);
     updateClient(id, client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/clientes");

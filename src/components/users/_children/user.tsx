@@ -42,9 +42,9 @@ export const UserItem: React.FC<UserItemProps> = ({
   return (
     <tr>
       <td>{orderNumber || ""}</td>
-      <td>{fullname || ""}</td>
-      <td>{rolesText}</td>
       <td>{username || ""}</td>
+      <td>{rolesText}</td>
+      <td>{fullname || ""}</td>
       <td>
         <CBadge
           color={status === 0 ? "danger" : "" || status === 1 ? "success" : ""}
