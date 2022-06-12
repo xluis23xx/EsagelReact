@@ -15,6 +15,7 @@ import {
 import { formatNames } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
@@ -25,7 +26,9 @@ const ClientsComponent = () => {
     clients,
     deleteClient,
     getAllClients,
-    searchClientsByFilter,
+    setSearchFilter,
+    changePage,
+    paginateData,
     status,
   } = useClients();
   const [visible, setVisible] = React.useState(false);
@@ -33,7 +36,10 @@ const ClientsComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllClients();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllClients({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -53,7 +59,11 @@ const ClientsComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchClientsByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllClients({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "clients-table";
@@ -136,7 +146,7 @@ const ClientsComponent = () => {
                     <tbody>
                       {clients.map((client: Client, index: number) => {
                         const {
-                          _id="",
+                          _id = "",
                           name,
                           lastname,
                           secondLastname,
@@ -167,6 +177,14 @@ const ClientsComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {clients.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

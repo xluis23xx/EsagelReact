@@ -17,7 +17,10 @@ type StateSchema = Record<string, StateSchemaValue>;
 
 type StateValidatorProps = {
   required?: boolean;
-  validator?: { func: (value: string) => boolean; error: string };
+  validator?: {
+    func: (value: string) => boolean;
+    error: string;
+  };
   nospaces?: boolean;
   min2caracts?: boolean;
   min6caracts?: boolean;

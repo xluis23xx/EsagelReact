@@ -20,9 +20,12 @@ export enum Status {
 
 export const useEmployees = () => {
   const [employees, setEmployees] = React.useState<Employee[]>([]);
-  const [employeesAll, setEmployeesAll] = React.useState<Employee[]>([]);
-  const [employeeInfo, setemployeeInfo] = React.useState<Employee>(null);
+  const [employeeInfo, setemployeeInfo] = React.useState<Employee | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
 
   function setEmployeeById(id: string) {
     setStatus(Status.Loading);
@@ -40,9 +43,12 @@ export const useEmployees = () => {
     setemployeeInfo(null);
   }
 
-  function getAllEmployees() {
+  function getAllEmployees(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token, {})
+    getEmployees(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: employeesObtained = [] } = response || {};
         const enableEmployees =
@@ -50,34 +56,12 @@ export const useEmployees = () => {
             (employee: Employee) => employee.status === 1
           ) || [];
         setEmployees(enableEmployees);
-        setEmployeesAll(enableEmployees);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchEmployeesByName(filter: string) {
-    if (employeesAll.length === 0) {
-      getAllEmployees();
-    }
-    if (filter.length === 0) {
-      setEmployees(employeesAll);
-    } else {
-      const employeesFilter = employeesAll.filter((employee: Employee) => {
-        const {
-          name = "",
-          lastname = "",
-          secondLastname = "",
-        } = employee || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(
-          `${name} ${lastname} ${secondLastname}`.toLowerCase()
-        );
-      });
-      setEmployees(employeesFilter);
-    }
   }
 
   async function updateEmployee(id: string, employee: any) {
@@ -125,9 +109,6 @@ export const useEmployees = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setEmployees(
-            employees.filter((employee: Employee) => employee._id !== id)
-          );
-          setEmployeesAll(
             employees.filter((employee: Employee) => employee._id !== id)
           );
           const employeeName = response?.updatedEmployee?.name || "";
@@ -200,16 +181,22 @@ export const useEmployees = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllEmployees(searchFilter, {limit: 20, pageSize:index})
+  }
+
   return {
     employees,
     deleteEmployee,
-    searchEmployeesByName,
     cleanemployeeInfo,
     registerEmployee,
     updateEmployee,
     setEmployeeById,
     employeeInfo,
     getAllEmployees,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

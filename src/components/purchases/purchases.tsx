@@ -15,17 +15,21 @@ import { Purchase, usePurchases, Status } from "../../hooks/usePurchases";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
   IntervalButton,
+  PaginateButtons,
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
 import { savePathname } from "../../utils/location";
+import { setFormatDate } from "../../utils/formats";
 
 const PurchasesComponent = () => {
   const {
     purchases,
     cancelPurchase,
     getAllPurchases,
-    searchPurchasesByInterval,
+    setIntervalFilter,
+    changePage,
+    paginateData,
     status,
   } = usePurchases();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
@@ -33,7 +37,23 @@ const PurchasesComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllPurchases();
+
+    const currentDate = new Date();
+    const startDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T00:00:00.0+00:00`;
+    const endDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T23:59:59.999+00:00`;
+    setIntervalFilter({
+      startDate: startDate,
+      endDate: endDate,
+    });
+    getAllPurchases({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortPurchase = (id: string) => {
@@ -56,12 +76,13 @@ const PurchasesComponent = () => {
     let startDate = "";
     let endDate = "";
     if (data?.startDate) {
-      startDate = data?.startDate;
+      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
     if (data?.endDate) {
-      endDate = data?.endDate;
+      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    searchPurchasesByInterval(startDate, endDate);
+    setIntervalFilter({ startDate: startDate, endDate: endDate });
+    getAllPurchases({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "purchases-table";
@@ -139,7 +160,7 @@ const PurchasesComponent = () => {
                     <tbody>
                       {purchases.map((purchase: Purchase, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           name,
                           purchaseNumber,
                           createdAt,
@@ -170,7 +191,14 @@ const PurchasesComponent = () => {
                   </table>
                 ) : null}
               </div>
-
+              {purchases.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visibleAbortModal}
                 onClose={() => {

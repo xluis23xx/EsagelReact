@@ -15,20 +15,31 @@ import {
 import { formatDescription } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
 
 const TopicsComponent = () => {
-  const { topics, deleteTopic, getAllTopics, searchTopicsByFilter, status } =
-    useTopics();
+  const {
+    topics,
+    deleteTopic,
+    getAllTopics,
+    setSearchFilter,
+    changePage,
+    paginateData,
+    status,
+  } = useTopics();
   const [visible, setVisible] = React.useState(false);
   const [topicId, setTopicId] = React.useState("");
 
   React.useEffect(() => {
     savePathname();
-    getAllTopics();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllTopics({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -48,7 +59,11 @@ const TopicsComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchTopicsByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllTopics({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "topics-table";
@@ -105,7 +120,7 @@ const TopicsComponent = () => {
                     </thead>
                     <tbody>
                       {topics.map((topic: Topic, index: number) => {
-                        const { _id, name, description, status } = topic;
+                        const { _id = "", name, description, status } = topic;
                         return (
                           <TopicItem
                             key={index}
@@ -122,6 +137,14 @@ const TopicsComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {topics.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

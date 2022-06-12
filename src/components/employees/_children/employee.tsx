@@ -23,7 +23,7 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
   corporateEmail,
   phoneNumber,
   birthdate,
-  image,
+  // image,
   handleRemove,
 }) => {
   return (
@@ -35,9 +35,9 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
       <td>{corporateEmail || ""}</td>
       <td>{phoneNumber || ""}</td>
       <td>{setFormatDate({ date: birthdate }) || ""}</td>
-      <td>
+      {/* <td>
         {image ? <CImage src={image} alt={fullName} fluid width={60} /> : ""}
-      </td>
+      </td> */}
       <td>
         <div className="selection-btn">
           <div className="btn-group">

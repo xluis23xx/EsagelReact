@@ -88,13 +88,20 @@ export const SearchButton = ({
   );
 };
 
+type IntervalButtonProps = {
+  validators: any;
+  handleSearch: (filter: any) => void;
+  required: boolean;
+  className?: string;
+  textButton?: string;
+};
 export const IntervalButton = ({
   validators,
   handleSearch,
-  required = undefined,
+  required = false,
   className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex",
   textButton = "Buscar",
-}) => {
+}: IntervalButtonProps) => {
   const stateSchema = {
     startDate: { value: "", error: "" },
     endDate: { value: "", error: "" },

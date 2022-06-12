@@ -21,9 +21,14 @@ export enum Status {
 
 export const usePurchases = () => {
   const [purchases, setPurchases] = React.useState<Purchase[]>([]);
-  const [purchasesAll, setPurchasesAll] = React.useState<Purchase[]>([]);
-  const [purchaseInfo, setPurchaseInfo] = React.useState<Purchase>(null);
+  const [purchaseInfo, setPurchaseInfo] = React.useState<Purchase | null>(null);
+
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [intervalFilter, setIntervalFilter] = React.useState({
+    startDate: "",
+    endDate:""
+  })
 
   function setPurchaseById(id: string) {
     setStatus(Status.Loading);
@@ -36,44 +41,19 @@ export const usePurchases = () => {
     });
   }
 
-  function getAllPurchases(
-    // { startDate, endDate } 
-    ) {
+  function getAllPurchases( { startDate, endDate }: {startDate: string, endDate:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
     const token = getCookie("esagel_token") || "";
-    getPurchases(token,
-      //  { startDate, endDate }
-      {}
-       )
+    getPurchases(token, {startDate, endDate}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const {docs: purchasesObtained= []}= response || {}
         setPurchases(purchasesObtained);
-        setPurchasesAll(purchasesObtained)
+        setPaginateData(response)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchPurchasesByInterval(startDate:string= "", endDate:string ="") {
-    if (purchasesAll.length === 0) {
-      getAllPurchases();
-    }else if(startDate==="" && endDate===""){
-      setPurchases(purchasesAll)
-    }
-    else {
-      const purchasesFilter = purchasesAll.filter((purchase: Purchase) => {
-        const {
-          createdAt
-        } = purchase || {};
-        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
-        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        let emitedDate =  setFormatDate({order:1, date: createdAt})
-        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
-      });
-      setPurchases(purchasesFilter);
-    }
   }
 
   async function updatePurchase(id: string, purchase: any) {
@@ -196,6 +176,10 @@ export const usePurchases = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllPurchases(intervalFilter, {limit: 20, pageSize:index})
+  }
+
   return {
     purchases,
     cancelPurchase,
@@ -204,7 +188,9 @@ export const usePurchases = () => {
     setPurchaseById,
     purchaseInfo,
     getAllPurchases,
-    searchPurchasesByInterval,
+    paginateData,
+    setIntervalFilter,
+    changePage,
     status,
   };
 };

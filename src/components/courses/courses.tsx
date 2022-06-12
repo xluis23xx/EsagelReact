@@ -15,6 +15,7 @@ import {
 } from "@coreui/react";
 import { formatDescription } from "../../utils/errors";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
@@ -25,7 +26,9 @@ const CoursesComponent = () => {
     courses,
     deleteCourse,
     getAllCourses,
-    searchCoursesByFilter,
+    setSearchFilter,
+    changePage,
+    paginateData,
     status,
   } = useCourses();
   const [visible, setVisible] = React.useState(false);
@@ -33,7 +36,10 @@ const CoursesComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllCourses();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllCourses({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -53,7 +59,11 @@ const CoursesComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchCoursesByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllCourses({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "courses-table";
@@ -143,6 +153,14 @@ const CoursesComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {courses.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

@@ -13,7 +13,7 @@ import { savePathname } from "../../utils/location";
 const MyAccountComponent = () => {
   const { setProfileById, profileInfo, status } = useProfile();
 
-  const { user } = React.useContext(AuthContext);
+  const { user } = React.useContext<any>(AuthContext);
   const history = useHistory();
 
   React.useEffect(() => {

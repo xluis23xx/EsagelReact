@@ -51,7 +51,7 @@ const GoalsComponent = () => {
       startDate: startDate,
       endDate: endDate,
     });
-    getAllGoals({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllGoals({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortGoal = (id: string) => {
@@ -79,7 +79,7 @@ const GoalsComponent = () => {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
     setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllGoals({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllGoals({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "goals-table";
@@ -186,7 +186,7 @@ const GoalsComponent = () => {
                 ) : null}
               </div>
               {goals.length > 0 ? (
-                <div className="w-100 text-center">
+                <div className="w-100 text-center mt-2">
                   <PaginateButtons
                     handleChange={changePage}
                     paginate={paginateData}

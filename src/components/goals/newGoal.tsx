@@ -25,7 +25,7 @@ import { User, useUsers } from "../../hooks/useUsers";
 
 const NewGoalComponent = () => {
   const { registerGoal, status } = useGoals();
-  const { getAllUsers, searchUsersByFilter, users } = useUsers();
+  const { getAllUsers, setSearchFilter, users } = useUsers();
 
   const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
@@ -36,7 +36,10 @@ const NewGoalComponent = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllUsers();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllUsers({ filter: "" }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -87,7 +90,11 @@ const NewGoalComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   const handleSearchSellers = (data) => {
-    searchUsersByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllUsers({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -282,32 +289,28 @@ const NewGoalComponent = () => {
                               employee = null,
                               username,
                             } = user || {};
-                            if (index > 4) {
-                              return null;
-                            } else {
-                              return (
-                                <tr key={_id}>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      className="form-check-input form-check-success p-2"
-                                      onClick={() => {
-                                        setSelectedSeller(user);
-                                        setShowSellerError(false);
-                                        setVisibleEmployeeModal(false);
-                                      }}
-                                      checked={selectedSeller?._id === _id}
-                                    />
-                                  </td>
-                                  <td>
-                                    {employee?.name || ""}{" "}
-                                    {employee?.lastname || ""}{" "}
-                                    {employee?.secondLastname || ""}
-                                  </td>
-                                  <td>{username}</td>
-                                </tr>
-                              );
-                            }
+                            return (
+                              <tr key={_id}>
+                                <td>
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input form-check-success p-2"
+                                    onClick={() => {
+                                      setSelectedSeller(user);
+                                      setShowSellerError(false);
+                                      setVisibleEmployeeModal(false);
+                                    }}
+                                    checked={selectedSeller?._id === _id}
+                                  />
+                                </td>
+                                <td>
+                                  {employee?.name || ""}{" "}
+                                  {employee?.lastname || ""}{" "}
+                                  {employee?.secondLastname || ""}
+                                </td>
+                                <td>{username || ""}</td>
+                              </tr>
+                            );
                           })
                         : null}
                     </tbody>

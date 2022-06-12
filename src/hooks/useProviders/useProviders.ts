@@ -20,9 +20,12 @@ export enum Status {
 
 export const useProviders = () => {
   const [providers, setProviders] = React.useState<Provider[]>([]);
-  const [providersAll, setprovidersAll] = React.useState<Provider[]>([]);
-  const [providerInfo, setProviderInfo] = React.useState<Provider>(null);
+  const [providerInfo, setProviderInfo] = React.useState<Provider | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
 
   function setProviderById(id: string) {
     setStatus(Status.Loading);
@@ -40,9 +43,12 @@ export const useProviders = () => {
     setProviderInfo(null);
   }
 
-  function getAllProviders() {
+  function getAllProviders(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getProviders(token, {})
+    getProviders(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: providersObtained = [] } = response || {};
         const enableProviders =
@@ -50,28 +56,12 @@ export const useProviders = () => {
             (provider: Provider) => provider.status === 1
           ) || [];
         setProviders(enableProviders);
-        setprovidersAll(enableProviders);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchProvidersByFilter(filter: string) {
-    if (providersAll.length === 0) {
-      getAllProviders();
-    }
-    if (filter.length === 0) {
-      setProviders(providersAll);
-    } else {
-      const providersFilter = providersAll.filter((provider: Provider) => {
-        const { businessName = "", documentNumber = "" } = provider || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(`${businessName} ${documentNumber}`.toLowerCase());
-      });
-      setProviders(providersFilter);
-    }
   }
 
   async function updateProvider(id: string, provider: any) {
@@ -119,9 +109,6 @@ export const useProviders = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setProviders(
-            providers.filter((provider: Provider) => provider._id !== id)
-          );
-          setprovidersAll(
             providers.filter((provider: Provider) => provider._id !== id)
           );
           const businessName = response?.updatedProvider?.businessName || "";
@@ -193,16 +180,22 @@ export const useProviders = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllProviders(searchFilter, {limit: 20, pageSize:index})
+  }
+
   return {
     providers,
     deleteProvider,
-    searchProvidersByFilter,
     registerProvider,
     updateProvider,
     setProviderById,
     cleanProviderInfo,
     providerInfo,
     getAllProviders,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

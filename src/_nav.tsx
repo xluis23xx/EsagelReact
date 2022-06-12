@@ -34,7 +34,7 @@ enum Roles {
 }
 
 const NavRoutes = (): any[] => {
-  const { user } = React.useContext(AuthContext);
+  const { user } = React.useContext<any>(AuthContext);
 
   const roles = user?.roles ? user?.roles?.map((rol: Role) => rol?.name) : [];
 

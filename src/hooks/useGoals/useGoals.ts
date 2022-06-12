@@ -17,7 +17,7 @@ export const useGoals = () => {
   const [goals, setGoals] = React.useState<Goal[]>([]);
   const [goalInfo, setGoalInfo] = React.useState<Goal | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
-  const [paginateData, setPaginateDate] = React.useState<PaginateResponse| null>(null)
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
   const [intervalFilter, setIntervalFilter] = React.useState({
     startDate: "",
     endDate:""
@@ -42,7 +42,7 @@ export const useGoals = () => {
     getGoals(token,{startDate, endDate}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const {docs: goalsObtained} = response || {}
-        setPaginateDate(response)
+        setPaginateData(response)
         setGoals(goalsObtained);
         setStatus(Status.Ready);
       })
@@ -166,7 +166,7 @@ export const useGoals = () => {
   }
 
   function changePage (index: number) {
-     getAllGoals(intervalFilter, {limit: 3, pageSize:index})
+     getAllGoals(intervalFilter, {limit: 20, pageSize:index})
   }
 
   return {

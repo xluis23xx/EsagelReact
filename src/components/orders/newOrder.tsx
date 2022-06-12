@@ -18,11 +18,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import {
-  cilHamburgerMenu,
-  cilSearch,
-  cilTrash,
-} from "@coreui/icons";
+import { cilHamburgerMenu, cilSearch, cilTrash } from "@coreui/icons";
 
 import { AuthContext } from "../../context/AuthContext";
 import { InputForm } from "../global-components/inputForm";
@@ -31,19 +27,29 @@ import { Course, useCourses } from "../../hooks/useCourses";
 import { SettingsContext } from "../../context/SettingsContext";
 
 const NewOrderComponent = () => {
-  const { user } = React.useContext(AuthContext);
-  const { config } = React.useContext(SettingsContext);
+  const { user } = React.useContext<any>(AuthContext);
+  const { config } = React.useContext<any>(SettingsContext);
 
   const { registerOrder, status } = useOrders();
 
-  const { getAllClients, searchClientsByFilter, clients } = useClients();
+  const {
+    getAllClients,
+    setSearchFilter: setSearchClientFilter,
+    clients,
+  } = useClients();
 
-  const { getAllCourses, searchCoursesByFilter, courses } = useCourses();
+  const {
+    getAllCourses,
+    setSearchFilter: setSearchCourseFilter,
+    courses,
+  } = useCourses();
 
   const [visibleClientModal, setVisibleClientModal] = React.useState(false);
   const [visibleCoursesModal, setVisibleCoursesModal] = React.useState(false);
 
-  const [selectedClient, setSelectedClient] = React.useState<Client>(null);
+  const [selectedClient, setSelectedClient] = React.useState<Client | null>(
+    null
+  );
   const [selectedCourses, setSelectedCourses] = React.useState<OrderDetail[]>(
     []
   );
@@ -59,15 +65,21 @@ const NewOrderComponent = () => {
 
   React.useEffect(() => {
     getAllDocumentTypes();
-    getAllClients();
-    getAllCourses();
+    setSearchClientFilter({
+      filter: "",
+    });
+    getAllClients({ filter: "" }, { limit: 5, pageSize: 1 });
+    setSearchCourseFilter({
+      filter: "",
+    });
+    getAllCourses({ filter: "" }, { limit: 5, pageSize: 1 });
   }, []);
 
   React.useEffect(() => {
     if (selectedCourses.length > 0) {
       let subtotalAmount = 0;
       selectedCourses.map((item: OrderDetail) => {
-        subtotalAmount = subtotalAmount + item?.amount;
+        subtotalAmount = subtotalAmount + (item?.amount || 0);
         return true;
       });
       setSubtotal(subtotalAmount);
@@ -131,11 +143,19 @@ const NewOrderComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   const handleSearchClients = (data) => {
-    searchClientsByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllClients({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   const handleSearchCourses = (data) => {
-    searchCoursesByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllCourses({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -234,7 +254,7 @@ const NewOrderComponent = () => {
                           if (pos?.operation === "comprobante") {
                             return (
                               <option key={pos.name} value={`${pos.name}`}>
-                                {pos.name.toUpperCase()}
+                                {pos?.name?.toUpperCase()}
                               </option>
                             );
                           }
@@ -342,7 +362,7 @@ const NewOrderComponent = () => {
                                 <tr key={index}>
                                   <td>{index + 1}</td>
                                   <td>{name || ""}</td>
-                                  <td>{price.toFixed(2) || ""}</td>
+                                  <td>{price?.toFixed(2) || ""}</td>
                                   <td>{1}</td>
                                   <td>
                                     <input
@@ -359,7 +379,8 @@ const NewOrderComponent = () => {
                                                     ...item,
                                                     discount: 0,
                                                     amount:
-                                                      item?.price * quantity,
+                                                      (item?.price || 0) *
+                                                      quantity,
                                                   }
                                                 : item
                                             ),
@@ -374,7 +395,8 @@ const NewOrderComponent = () => {
                                                       e.target.value
                                                     ),
                                                     amount:
-                                                      item?.price * quantity -
+                                                      (item?.price || 0) *
+                                                        quantity -
                                                       Number(e.target.value),
                                                   }
                                                 : item
@@ -661,7 +683,7 @@ const NewOrderComponent = () => {
                                         type="checkbox"
                                         name="course"
                                         checked={selectedCoursesIds.includes(
-                                          _id
+                                          _id || ""
                                         )}
                                         className="form-check-input form-check-success p-2"
                                         onChange={(e) => {
@@ -688,7 +710,7 @@ const NewOrderComponent = () => {
                                             ]);
                                             setSelectedCoursesIds([
                                               ...cleanCourseIds,
-                                              _id,
+                                              _id || "",
                                             ]);
                                           } else {
                                             const cleanCourses =

@@ -15,9 +15,12 @@ export enum Status {
 
 export const useClients = () => {
   const [clients, setClients] = React.useState<Client[]>([]);
-  const [clientsAll, setClientsAll] = React.useState<Client[]>([]);
-  const [clientInfo, setClientInfo] = React.useState<Client>(null);
+  const [clientInfo, setClientInfo] = React.useState<Client | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
 
   function setClientById(id: string) {
     setStatus(Status.Loading);
@@ -35,38 +38,23 @@ export const useClients = () => {
     setClientInfo(null);
   }
 
-  function getAllClients() {
+  function getAllClients(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getClients(token, {})
+    getClients(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: clientsObtained = [] } = response || {};
         const enableClients =
           clientsObtained.filter((client: Client) => client.status === 1) || [];
         setClients(enableClients);
-        setClientsAll(enableClients);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchClientsByFilter(filter: string) {
-    if (clientsAll.length === 0) {
-      getAllClients();
-    }
-    if (filter.length === 0) {
-      setClients(clientsAll);
-    } else {
-      const clientsFilter = clientsAll.filter((client: Client) => {
-        const { name = "", lastname = "", secondLastname = "" } = client || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(
-          `${name} ${lastname} ${secondLastname}`.toLowerCase()
-        );
-      });
-      setClients(clientsFilter);
-    }
   }
 
   async function updateClient(id: string, client: any) {
@@ -114,7 +102,6 @@ export const useClients = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setClients(clients.filter((client: Client) => client._id !== id));
-          setClientsAll(clients.filter((client: Client) => client._id !== id));
           const clientName = response?.updatedClient?.name || "";
           const clientLastname = response?.updatedClient?.lastname || "";
           Swal.fire({
@@ -183,18 +170,25 @@ export const useClients = () => {
         setStatus(Status.Ready);
         return undefined;
       });
+  
+  }
+
+  function changePage (index: number) {
+    getAllClients(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     clients,
     deleteClient,
-    searchClientsByFilter,
     cleanClientInfo,
     registerClient,
     updateClient,
     setClientById,
     clientInfo,
     getAllClients,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

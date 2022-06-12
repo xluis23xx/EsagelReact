@@ -15,6 +15,7 @@ import {
 import { formatNames } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
@@ -25,7 +26,9 @@ const EmployeesComponent = () => {
     employees,
     deleteEmployee,
     getAllEmployees,
-    searchEmployeesByName,
+    setSearchFilter,
+    changePage,
+    paginateData,
     status,
   } = useEmployees();
   const [visible, setVisible] = React.useState(false);
@@ -33,7 +36,10 @@ const EmployeesComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllEmployees();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllEmployees({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -53,7 +59,11 @@ const EmployeesComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchEmployeesByName(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllEmployees({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "employees-table";
@@ -130,17 +140,19 @@ const EmployeesComponent = () => {
                         <th>N°</th>
                         {headers
                           ? headers.map((header) => (
-                              <th key={header.label}>{header.label}</th>
+                              <th key={header.label} style={{ minWidth: 120 }}>
+                                {header.label}
+                              </th>
                             ))
                           : null}
-                        <th>Imagen</th>
+                        {/* <th>Imagen</th> */}
                         <th>Opciones</th>
                       </tr>
                     </thead>
                     <tbody>
                       {employees.map((employee: Employee, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           name,
                           lastname,
                           secondLastname,
@@ -150,7 +162,7 @@ const EmployeesComponent = () => {
                           documentType,
                           personalEmail,
                           phoneNumber,
-                          image,
+                          // image,
                           status,
                         } = employee;
                         return (
@@ -168,7 +180,7 @@ const EmployeesComponent = () => {
                             phoneNumber={phoneNumber}
                             status={status}
                             orderNumber={index + 1}
-                            image={image}
+                            // image={image}
                             handleRemove={removeEmployee}
                           />
                         );
@@ -177,6 +189,14 @@ const EmployeesComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {employees.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

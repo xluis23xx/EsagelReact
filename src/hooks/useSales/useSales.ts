@@ -18,7 +18,7 @@ export const useSales = () => {
   const [sales, setSales] = React.useState<Sale[]>([]);
   const [saleInfo, setSaleInfo] = React.useState<Sale | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
-  const [paginateData, setPaginateDate] = React.useState<PaginateResponse| null>(null)
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
   const [intervalFilter, setIntervalFilter] = React.useState({
     startDate: "",
     endDate:""
@@ -42,7 +42,7 @@ export const useSales = () => {
       .then((response: PaginateResponse) => {
         const { docs: salesObtained = [] } = response || {};
         setSales(salesObtained);
-        setPaginateDate(response)
+        setPaginateData(response)
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -212,7 +212,7 @@ export const useSales = () => {
   }
 
   function changePage (index: number) {
-    getAllSales(intervalFilter, {limit: 3, pageSize:index})
+    getAllSales(intervalFilter, {limit: 20, pageSize:index})
   }
 
   return {

@@ -17,7 +17,7 @@ export const useOrders = () => {
   const [orders, setOrders] = React.useState<Order[]>([]);
   const [orderInfo, setOrderInfo] = React.useState<Order | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
-  const [paginateData, setPaginateDate] = React.useState<PaginateResponse| null>(null)
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
   const [intervalFilter, setIntervalFilter] = React.useState({
     startDate: "",
     endDate:""
@@ -41,7 +41,7 @@ export const useOrders = () => {
       .then((response: PaginateResponse) => {
         const { docs: ordersObtained = [] } = response || {};
         setOrders(ordersObtained);
-        setPaginateDate(response)
+        setPaginateData(response)
         setStatus(Status.Ready);
       })
       .catch(() => {
@@ -211,7 +211,7 @@ export const useOrders = () => {
 
   
   function changePage (index: number) {
-    getAllOrders(intervalFilter, {limit: 3, pageSize:index})
+    getAllOrders(intervalFilter, {limit: 20, pageSize:index})
   }
 
   return {

@@ -52,7 +52,7 @@ const SalesComponent = () => {
       startDate: startDate,
       endDate: endDate,
     });
-    getAllSales({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllSales({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortSale = (id: string) => {
@@ -85,7 +85,7 @@ const SalesComponent = () => {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
     setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllSales({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllSales({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "sales-table";
@@ -201,7 +201,7 @@ const SalesComponent = () => {
                 ) : null}
               </div>
               {sales.length > 0 ? (
-                <div className="w-100 text-center">
+                <div className="w-100 text-center mt-2">
                   <PaginateButtons
                     handleChange={changePage}
                     paginate={paginateData}

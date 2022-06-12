@@ -15,6 +15,7 @@ import {
 } from "@coreui/react";
 import { formatDescription } from "../../utils/errors";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
@@ -22,14 +23,24 @@ import { savePathname } from "../../utils/location";
 import { formatRolName } from "../../utils/formats";
 
 const UsersComponent = () => {
-  const { users, disableUser, getAllUsers, searchUsersByFilter, status } =
-    useUsers();
+  const {
+    users,
+    disableUser,
+    getAllUsers,
+    setSearchFilter,
+    changePage,
+    paginateData,
+    status,
+  } = useUsers();
   const [visible, setVisible] = React.useState(false);
   const [userId, setUserId] = React.useState("");
 
   React.useEffect(() => {
     savePathname();
-    getAllUsers();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllUsers({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -49,7 +60,11 @@ const UsersComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchUsersByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllUsers({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "users-table";
@@ -138,7 +153,13 @@ const UsersComponent = () => {
                     </thead>
                     <tbody>
                       {users.map((user: User, index: number) => {
-                        const { _id, employee, username, roles, status } = user;
+                        const {
+                          _id = "",
+                          employee,
+                          username,
+                          roles,
+                          status,
+                        } = user;
                         return (
                           <UserItem
                             key={index}
@@ -156,6 +177,14 @@ const UsersComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {users.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

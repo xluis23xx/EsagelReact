@@ -15,9 +15,12 @@ export enum Status {
 
 export const useTopics = () => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
-  const [topicsAll, setTopicsAll] = React.useState<Topic[]>([]);
-  const [topicInfo, setTopicInfo] = React.useState<Topic>(null);
+  const [topicInfo, setTopicInfo] = React.useState<Topic | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
 
   function setTopicById(id: string) {
     setStatus(Status.Loading);
@@ -31,33 +34,23 @@ export const useTopics = () => {
     });
   }
 
-  function getAllTopics() {
+  function getAllTopics(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getTopics(token, {})
+    getTopics(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: topicsObtained = [] } = response || {};
         const enableTopics =
           topicsObtained.filter((topic: Topic) => topic.status === 1) || [];
         setTopics(enableTopics);
-        setTopicsAll(enableTopics);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchTopicsByFilter(filter: string) {
-    if (filter.length === 0) {
-      setTopics(topicsAll);
-    } else {
-      const topicsFilter = topicsAll.filter((topic: Topic) => {
-        const { name = "", description = "" } = topic || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(`${name} ${description}`.toLowerCase());
-      });
-      setTopics(topicsFilter);
-    }
   }
 
   async function updateTopic(id: string, topic: any) {
@@ -105,7 +98,6 @@ export const useTopics = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setTopics(topics.filter((topic: Topic) => topic._id !== id));
-          setTopicsAll(topics.filter((topic: Topic) => topic._id !== id));
           const topicName = response?.updateTopic?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
@@ -175,15 +167,21 @@ export const useTopics = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllTopics(searchFilter, {limit: 20, pageSize:index})
+  }
+
   return {
     topics,
     deleteTopic,
-    searchTopicsByFilter,
     registerTopic,
     updateTopic,
     setTopicById,
     topicInfo,
     getAllTopics,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

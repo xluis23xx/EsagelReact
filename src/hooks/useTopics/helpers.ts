@@ -7,11 +7,15 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getTopics = (
   token: string,
-  { limit = 50, pageSize = 1 }: PaginateParams
+  {filter=""}: {filter:string},
+  { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> =>
-  fetch(`${GENERAL_API}/topics/?limit=${limit}&pageSize=${pageSize}`, {
-    method: "GET",
+  fetch(`${GENERAL_API}/topics/consult/?limit=${limit}&pageSize=${pageSize}`, {
+    method: "POST",
     cache: "no-cache",
+    body: JSON.stringify({
+      filter,
+    }),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,

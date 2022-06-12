@@ -15,9 +15,13 @@ export enum Status {
 
 export const useCourses = () => {
   const [courses, setCourses] = React.useState<Course[]>([]);
-  const [coursesAll, setCoursesAll] = React.useState<Course[]>([]);
-  const [courseInfo, setCourseInfo] = React.useState<Course>(null);
+  const [courseInfo, setCourseInfo] = React.useState<Course | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
+
 
   function setCourseById(id: string) {
     setStatus(Status.Loading);
@@ -31,36 +35,24 @@ export const useCourses = () => {
     });
   }
 
-  function getAllCourses() {
+
+  function getAllCourses(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getCourses(token, {})
+    getCourses(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: coursesObtained = [] } = response || {};
         const enableCourses =
           coursesObtained.filter((course: Course) => course.status === 1) || [];
         setCourses(enableCourses);
-        setCoursesAll(enableCourses);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchCoursesByFilter(filter: string) {
-    if (coursesAll.length === 0) {
-      getAllCourses();
-    }
-    if (filter.length === 0) {
-      setCourses(coursesAll);
-    } else {
-      const coursesFilter = coursesAll.filter((course: Course) => {
-        const { name = "", price = 0 } = course || {};
-        const regex = new RegExp(filter.toLowerCase());
-        return regex.test(`${name} ${price}`.toLowerCase());
-      });
-      setCourses(coursesFilter);
-    }
   }
 
   async function updateCourse(id: string, course: any) {
@@ -108,7 +100,6 @@ export const useCourses = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setCourses(courses.filter((course: Course) => course._id !== id));
-          setCoursesAll(courses.filter((course: Course) => course._id !== id));
           const courseName = response?.updatedCourse?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
@@ -177,16 +168,21 @@ export const useCourses = () => {
         return undefined;
       });
   }
+  function changePage (index: number) {
+    getAllCourses(searchFilter, {limit: 20, pageSize:index})
+  }
 
   return {
     courses,
     deleteCourse,
-    searchCoursesByFilter,
     registerCourse,
     updateCourse,
     setCourseById,
     courseInfo,
     getAllCourses,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

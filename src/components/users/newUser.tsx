@@ -27,7 +27,7 @@ import { useFileUpload } from "../../hooks/useFileUpload";
 const NewUserComponent = () => {
   const { registerUser, status } = useUsers();
 
-  const { getAllEmployees, searchEmployeesByName, employees } = useEmployees();
+  const { getAllEmployees, setSearchFilter, employees } = useEmployees();
 
   const {
     uploading: imageUploading,
@@ -47,7 +47,7 @@ const NewUserComponent = () => {
   const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
   const [selectedEmployee, setSelectedEmployee] =
-    React.useState<Employee>(null);
+    React.useState<Employee | null>(null);
 
   const [showEmployeeError, setShowEmployeeError] =
     React.useState<boolean>(false);
@@ -64,7 +64,10 @@ const NewUserComponent = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllEmployees();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllEmployees({ filter: "" }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -112,7 +115,11 @@ const NewUserComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   const handleSearch = (data) => {
-    searchEmployeesByName(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllEmployees({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -242,7 +249,7 @@ const NewUserComponent = () => {
                     multiple
                     disabled={status === Status.Updating}
                     onChange={(e) => {
-                      let values = [];
+                      let values: any = [];
                       Array.from(e.target.selectedOptions).map((val) =>
                         values.push(val.value)
                       );
@@ -291,7 +298,7 @@ const NewUserComponent = () => {
                       name="username"
                       value={
                         enableCustomUsername
-                          ? username
+                          ? username || ""
                           : selectedEmployee?.corporateEmail || ""
                       }
                       onChange={handleOnChange}
@@ -418,6 +425,7 @@ const NewUserComponent = () => {
                               name = "",
                               lastname = "",
                               secondLastname = "",
+                              corporateEmail = "",
                               position = null,
                             } = emp;
                             if (index > 4) {
@@ -435,6 +443,7 @@ const NewUserComponent = () => {
                                           name,
                                           lastname,
                                           secondLastname,
+                                          corporateEmail,
                                         });
                                         setShowEmployeeError(false);
                                         setVisibleEmployeeModal(false);

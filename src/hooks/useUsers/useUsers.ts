@@ -20,9 +20,12 @@ export enum Status {
 
 export const useUsers = () => {
   const [users, setUsers] = React.useState<User[]>([]);
-  const [usersAll, setUsersAll] = React.useState<User[]>([]);
-  const [userInfo, setUserInfo] = React.useState<User>(null);
+  const [userInfo, setUserInfo] = React.useState<User | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState({
+    filter: "",
+  })
 
   function setUserById(id: string) {
     setStatus(Status.Loading);
@@ -36,37 +39,21 @@ export const useUsers = () => {
     });
   }
 
-  function getAllUsers() {
+  function getAllUsers(
+    { filter }: {filter:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+    ) {
     const token = getCookie("esagel_token") || "";
-    getUsers(token, {})
+    getUsers(token,{filter}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs = [] } = response || {};
         setUsers(docs);
-        setUsersAll(docs);
+        setPaginateData(response);
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchUsersByFilter(filter: string) {
-    if (filter.length === 0) {
-      setUsers(usersAll);
-    } else {
-      const usersFilter = usersAll.filter((user: User) => {
-        const { username = "", employee = null } = user || {};
-        const regex = new RegExp(filter.toLowerCase());
-        if (employee) {
-          return regex.test(
-            `${username} ${employee?.name} ${employee?.lastname}`.toLowerCase()
-          );
-        } else {
-          return regex.test(`${username}`.toLowerCase());
-        }
-      });
-      setUsers(usersFilter);
-    }
   }
 
   async function updateUser(id: string, user: any) {
@@ -113,11 +100,6 @@ export const useUsers = () => {
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setUsers(
-            users.map((user: User) =>
-              user._id === id ? { ...user, status: 0 } : user
-            )
-          );
-          setUsersAll(
             users.map((user: User) =>
               user._id === id ? { ...user, status: 0 } : user
             )
@@ -191,15 +173,21 @@ export const useUsers = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllUsers(searchFilter, {limit: 20, pageSize:index})
+  }
+
   return {
     users,
     disableUser,
-    searchUsersByFilter,
     registerUser,
     updateUser,
     setUserById,
     userInfo,
     getAllUsers,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

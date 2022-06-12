@@ -25,17 +25,16 @@ import { InputForm } from "../global-components/inputForm";
 import { TextAreaForm } from "../global-components/textareaForm";
 
 const NewPurchaseComponent = () => {
-  const { user } = React.useContext(AuthContext);
+  const { user } = React.useContext<any>(AuthContext);
 
   const { registerPurchase, status } = usePurchases();
 
-  const { getAllProviders, searchProvidersByFilter, providers } =
-    useProviders();
+  const { getAllProviders, setSearchFilter, providers } = useProviders();
 
   const [visibleProviderModal, setVisibleProviderModal] = React.useState(false);
 
   const [selectedProvider, setSelectedProvider] =
-    React.useState<Provider>(null);
+    React.useState<Provider | null>(null);
 
   const [showProviderError, setShowProviderError] =
     React.useState<boolean>(false);
@@ -43,7 +42,10 @@ const NewPurchaseComponent = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllProviders();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllProviders({ filter: "" }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -103,7 +105,11 @@ const NewPurchaseComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   const handleSearchProviders = (data) => {
-    searchProvidersByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllProviders({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -380,8 +386,8 @@ const NewPurchaseComponent = () => {
                                       checked={selectedProvider?._id === _id}
                                     />
                                   </td>
-                                  <td>{businessName}</td>
-                                  <td>{providerDocNumber}</td>
+                                  <td>{businessName || ""}</td>
+                                  <td>{providerDocNumber || ""}</td>
                                 </tr>
                               );
                             }

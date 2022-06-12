@@ -15,6 +15,7 @@ import {
 import { formatNames, formatRuc } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
+  PaginateButtons,
   RedirectionButton,
   SearchButton,
 } from "../global-components/globalButtons";
@@ -25,7 +26,9 @@ const ProvidersComponent = () => {
     providers,
     deleteProvider,
     getAllProviders,
-    searchProvidersByFilter,
+    setSearchFilter,
+    changePage,
+    paginateData,
     status,
   } = useProviders();
   const [visible, setVisible] = React.useState(false);
@@ -33,7 +36,10 @@ const ProvidersComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllProviders();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllProviders({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -53,7 +59,11 @@ const ProvidersComponent = () => {
   };
 
   const handleSearch = (data) => {
-    searchProvidersByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllProviders({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "providers-table";
@@ -113,7 +123,7 @@ const ProvidersComponent = () => {
                     <tbody>
                       {providers.map((provider: Provider, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           businessName,
                           createdAt,
                           contactName,
@@ -140,6 +150,14 @@ const ProvidersComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {providers.length > 0 ? (
+                <div className="w-100 text-center mt-2">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visible}
                 onClose={() => {

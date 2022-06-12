@@ -55,7 +55,7 @@ const OrdersComponent = () => {
       startDate: startDate,
       endDate: endDate,
     });
-    getAllOrders({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllOrders({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortOrder = (id: string) => {
@@ -98,7 +98,7 @@ const OrdersComponent = () => {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
     setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllOrders({ startDate, endDate }, { limit: 3, pageSize: 1 });
+    getAllOrders({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "orders-table";
@@ -173,7 +173,7 @@ const OrdersComponent = () => {
                     <tbody>
                       {orders.map((order: Order, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           orderNumber,
                           client,
                           createdAt,
@@ -201,7 +201,7 @@ const OrdersComponent = () => {
                 ) : null}
               </div>
               {orders.length > 0 ? (
-                <div className="w-100 text-center">
+                <div className="w-100 text-center mt-2">
                   <PaginateButtons
                     handleChange={changePage}
                     paginate={paginateData}

@@ -183,7 +183,7 @@ enum Roles {
 }
 
 export const RoutesArray = (): any[] => {
-  const { user } = React.useContext(AuthContext);
+  const { user } = React.useContext<any>(AuthContext);
 
   const routes: any = [];
 
