@@ -71,9 +71,10 @@ const CoursesComponent = () => {
   const headers = [
     { label: "Código", key: "code" },
     { label: "Nombre", key: "name" },
+    { label: "Tipo", key: "courseTypeName" },
     { label: "Modalidad", key: "modality" },
     { label: "Precio", key: "price" },
-    { label: "Número de Vacantes", key: "vacanciesNumber" },
+    { label: "Nro. Vacantes", key: "vacanciesNumber" },
     { label: "Estado", key: "status" },
   ];
 
@@ -94,7 +95,17 @@ const CoursesComponent = () => {
                 <ExportButtons
                   tableId={tableExportId}
                   documentName="courses"
-                  dataReport={courses}
+                  dataReport={courses.map((course: Course) => {
+                    const { courseType = null } = course || {};
+                    let typeName = "";
+                    if (courseType) {
+                      courseType?.name ? (typeName = courseType?.name) : "";
+                    }
+                    return {
+                      ...course,
+                      courseTypeName: typeName,
+                    };
+                  })}
                   headers={headers}
                 />
                 <SearchButton
