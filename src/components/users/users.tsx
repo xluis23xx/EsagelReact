@@ -214,7 +214,7 @@ const UsersComponent = () => {
                     className="text-white"
                     onClick={() => removeUser(userId)}
                   >
-                    Eliminar
+                    Deshabilitar
                   </CButton>
                 </CModalFooter>
               </CModal>
