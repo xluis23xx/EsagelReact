@@ -137,7 +137,6 @@ const EditClientComponent = () => {
       profession: (data?.profession ?? clientInfo?.profession) || null,
       business: (data?.business ?? clientInfo?.business) || null,
     };
-    console.log(client);
     updateClient(id, client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/clientes");
