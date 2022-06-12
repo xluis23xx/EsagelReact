@@ -10,7 +10,7 @@ import { useProfile } from "../../hooks/useProfile/useProfile";
 
 const ProfileComponent = ({ profile }: { profile: User }) => {
   const { status, updateProfile } = useProfile();
-  const { setUser } = React.useContext(AuthContext);
+  const { setUser } = React.useContext<any>(AuthContext);
   const stateSchema = {
     firstname: { value: null, error: "" },
     lastname: { value: null, error: "" },
@@ -42,7 +42,7 @@ const ProfileComponent = ({ profile }: { profile: User }) => {
       secondLastname:
         (data?.secondLastname ?? profile?.employee?.secondLastname) || null,
     };
-    updateProfile(profile?.employee?._id, newProfile).then((response) => {
+    updateProfile(profile?.employee?._id || "", newProfile).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         if (data?.firstname || data?.lastname || data?.secondLastname) {
           const USER_PROFILE = localStorage.getItem("esagel_profile");

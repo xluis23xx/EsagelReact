@@ -312,6 +312,7 @@ const NewCourseComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={description}
+                    maxLength={100}
                     rows={1}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}

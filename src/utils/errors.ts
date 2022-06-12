@@ -47,6 +47,8 @@ export const formatTax = () => ({
     if (value) {
       if (value >= 0 && value <= 1) {
         return true;
+      }else{
+        return false;
       }
     } else {
       return true;
@@ -60,6 +62,8 @@ export const minNumber = (number = 0) => ({
     if (value) {
       if (value >= number) {
         return true;
+      }else {
+        return false;
       }
     } else {
       return true;

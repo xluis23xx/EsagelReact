@@ -3,6 +3,7 @@ import CIcon from "@coreui/icons-react";
 import { CBadge } from "@coreui/react";
 import React from "react";
 import { User } from "../../../hooks/useUsers";
+import { formatRolName } from "../../../utils/formats";
 import { EditItemButton } from "../../global-components/globalButtons";
 
 type UserItemProps = User & {
@@ -31,16 +32,16 @@ export const UserItem: React.FC<UserItemProps> = ({
     if (roles.length > 0) {
       for (let i = 0; i < roles.length; i++) {
         if (i === 0) {
-          rolesText = roles[i]?.name;
+          rolesText = formatRolName(roles[i]?.name || "") || "";
         } else {
-          rolesText = `${rolesText} - ${roles[i]?.name}`;
+          rolesText = `${rolesText} - ${formatRolName(roles[i]?.name || "")}`;
         }
       }
     }
   }
   return (
     <tr>
-      <td>{orderNumber}</td>
+      <td>{orderNumber || ""}</td>
       <td>{fullname || ""}</td>
       <td>{rolesText}</td>
       <td>{username || ""}</td>

@@ -19,7 +19,7 @@ export enum Status {
 
 export const useDocumentTypes = () => {
   const [documents, setDocuments] = React.useState<DocumentType[]>([]);
-  const [documentInfo, setDocumentInfo] = React.useState<DocumentType>(null);
+  const [documentInfo, setDocumentInfo] = React.useState<DocumentType | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setDocumentTypeById(id: string) {

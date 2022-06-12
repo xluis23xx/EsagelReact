@@ -24,7 +24,7 @@ export const TopicItem: React.FC<TopicItemProps> = ({
       <td>{orderNumber}</td>
       <td>{name || ""}</td>
       <td>
-        {setFormatCharacters({ character: description, slice: 50 }) || ""}
+        {setFormatCharacters({ character: description || "", slice: 50 }) || ""}
       </td>
       <td>{status ? "activo" : "inactivo"}</td>
       <td>

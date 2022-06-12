@@ -6,8 +6,8 @@ import { Goal } from "../../../hooks/useGoals";
 import { EditItemButton } from "../../global-components/globalButtons";
 
 type GoalItemProps = Goal & {
-  index?: number;
-  code?: string;
+  index: number;
+  code: string;
   handleCancel: (id: string) => void;
 };
 

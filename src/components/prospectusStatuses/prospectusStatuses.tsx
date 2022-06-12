@@ -97,7 +97,12 @@ const ProspectStatusesComponent = () => {
                     <tbody>
                       {prospectStatuses.map(
                         (prospect: ProspectusStatus, index: number) => {
-                          const { _id, name, description, status } = prospect;
+                          const {
+                            _id = "",
+                            name,
+                            description,
+                            status,
+                          } = prospect;
                           return (
                             <PropesctusStatusItem
                               key={index}

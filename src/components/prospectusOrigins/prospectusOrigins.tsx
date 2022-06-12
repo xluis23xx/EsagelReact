@@ -97,7 +97,12 @@ const ProspectOriginsComponent = () => {
                     <tbody>
                       {prospectOrigins.map(
                         (prospect: ProspectusOrigin, index: number) => {
-                          const { _id, name, description, status } = prospect;
+                          const {
+                            _id = "",
+                            name,
+                            description,
+                            status,
+                          } = prospect;
                           return (
                             <PropesctusOriginItem
                               key={index}

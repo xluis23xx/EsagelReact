@@ -105,7 +105,6 @@ const NewOrderComponent = () => {
 
   const onSubmitForm = (data: Order) => {
     const order = {
-      orderNumber: 10,
       seller: user?._id || null,
       client: selectedClient?._id || null,
       documentType: data?.documentType || null,
@@ -352,7 +351,7 @@ const NewOrderComponent = () => {
                             (item: OrderDetail, index: number) => {
                               const {
                                 name,
-                                price,
+                                price = 0,
                                 _id,
                                 quantity = 1,
                                 discount = 0,
@@ -385,7 +384,9 @@ const NewOrderComponent = () => {
                                                 : item
                                             ),
                                           ]);
-                                        } else {
+                                        } else if (
+                                          Number(e.target.value) < price
+                                        ) {
                                           setSelectedCourses([
                                             ...selectedCourses.map((item) =>
                                               item._id === _id

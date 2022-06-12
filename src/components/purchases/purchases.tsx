@@ -136,6 +136,7 @@ const PurchasesComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
+                  required={true}
                 />
               </nav>
               <br />

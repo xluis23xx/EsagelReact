@@ -8,8 +8,6 @@ export type Department = {
   name?: string;
 };
 
-// export type Ubigeo = [[]];
-
 export type Client = {
   _id?: string;
   name?: string;

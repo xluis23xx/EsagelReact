@@ -119,6 +119,7 @@ const EditContactFormComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={(description ?? contactFormInfo?.description) || ""}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={

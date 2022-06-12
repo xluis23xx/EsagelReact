@@ -132,7 +132,7 @@ const NewCourseTypeComponent = () => {
                     name="status"
                     required
                     disabled={statusUse === Status.Updating}
-                    value={status}
+                    value={status || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -153,8 +153,8 @@ const NewCourseTypeComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     rows={3}
-                    maxLength={100}
                     value={description}
+                    maxLength={100}
                     onChange={handleOnChange}
                     disabled={statusUse === Status.Updating}
                     error={descriptionError}

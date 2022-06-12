@@ -13,7 +13,7 @@ export enum Status {
 }
 
 export const useSettings = () => {
-  const [settingInfo, setSettingInfo] = React.useState<Setting>(null);
+  const [settingInfo, setSettingInfo] = React.useState<Setting | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   async function getSettingsConfig() {

@@ -11,10 +11,10 @@ import { cilHamburgerMenu } from "@coreui/icons";
 
 const DetailOrderComponent = () => {
   const { setOrderById, orderInfo, status } = useOrders();
-  const [clientOfOrder, setClientOfOrder]= React.useState("")
-  const [sellerOfOrder, setSellerOfOrder]= React.useState("")
-  const [statusOfOrder, setStatusOfOrder]= React.useState("")
-  const [itemsOfOrder, setItemsOfOrder] = React.useState([])
+  const [clientOfOrder, setClientOfOrder] = React.useState("");
+  const [sellerOfOrder, setSellerOfOrder] = React.useState("");
+  const [statusOfOrder, setStatusOfOrder] = React.useState("");
+  const [itemsOfOrder, setItemsOfOrder] = React.useState<OrderDetail[]>([]);
 
   const history = useHistory();
   const { id } = useParams<any>();
@@ -35,18 +35,18 @@ const DetailOrderComponent = () => {
         orderLines = [],
       } = orderInfo;
       if (client) {
-        setClientOfOrder(`${client?.name} ${client?.lastname}`)
+        setClientOfOrder(`${client?.name} ${client?.lastname}`);
       }
       if (status) {
         switch (status) {
           case 0:
-            setStatusOfOrder("Anulado")
+            setStatusOfOrder("Anulado");
             break;
           case 1:
-            setStatusOfOrder("Pendiente")
+            setStatusOfOrder("Pendiente");
             break;
           case 2:
-            setStatusOfOrder("Aceptado")
+            setStatusOfOrder("Aceptado");
             break;
           default:
             break;
@@ -55,14 +55,16 @@ const DetailOrderComponent = () => {
       if (seller) {
         if (seller?.employee) {
           const { employee = null } = seller;
-          setSellerOfOrder( `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`)
+          setSellerOfOrder(
+            `${employee?.name} ${employee?.lastname} ${employee?.secondLastname}`
+          );
         } else {
-          setSellerOfOrder(`${seller?.username || ""}`)
+          setSellerOfOrder(`${seller?.username || ""}`);
         }
       }
       if (orderLines) {
-        if (orderLines.length > 0) {
-          setItemsOfOrder(orderLines)
+        if (orderLines?.length > 0) {
+          setItemsOfOrder(orderLines);
         }
       }
     }
@@ -121,7 +123,7 @@ const DetailOrderComponent = () => {
                     name="documentType"
                     value={
                       orderInfo?.documentType
-                        ? orderInfo?.documentType?.name
+                        ? orderInfo?.documentType?.name || ""
                         : ""
                     }
                     disabled={status === Status.Loading}
@@ -220,10 +222,10 @@ const DetailOrderComponent = () => {
                                   <td>
                                     {course?.name ? course?.name : "" || ""}
                                   </td>
-                                  <td>{price.toFixed(2) || ""}</td>
+                                  <td>{price?.toFixed(2) || ""}</td>
                                   <td>{quantity || ""}</td>
-                                  <td>{discount.toFixed(2) || ""}</td>
-                                  <td>{amount.toFixed(2) || ""}</td>
+                                  <td>{discount?.toFixed(2) || ""}</td>
+                                  <td>{amount?.toFixed(2) || ""}</td>
                                 </tr>
                               );
                             }

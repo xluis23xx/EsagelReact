@@ -57,7 +57,7 @@ const NewCourseTypeComponent = () => {
     directory: "esagel",
     timerMessage: 3000,
   });
-  const { config, setConfig } = React.useContext(SettingsContext);
+  const { config, setConfig } = React.useContext<any>(SettingsContext);
 
   // // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);

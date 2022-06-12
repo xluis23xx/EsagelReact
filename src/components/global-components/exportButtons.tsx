@@ -62,12 +62,12 @@ export const ExportButtons = ({
   ) => {
     const doc = new jsPDF();
     // autoTable(doc, { html: "#my-table" });
-    const body = [];
+    const body: any = [];
     try {
       data.map((d: any) => {
-        const arrayValue = [];
+        const arrayValue: any = [];
         headers.map((head) => {
-          const key = head.key;
+          const key: any = head.key;
           arrayValue.push(d[key]);
         });
         body.push(arrayValue);
@@ -85,7 +85,7 @@ export const ExportButtons = ({
   // Función para el botón COPIAR
   const copyToClipBoard = (data: any, headers: HeaderReport[]) => {
     let content = "";
-    const auxArray = [];
+    const auxArray: any = [];
     try {
       data.map((d: any) => {
         let values = "";
@@ -98,7 +98,7 @@ export const ExportButtons = ({
         });
         auxArray.push(values);
       });
-      auxArray.map((value, index) => {
+      auxArray.map((value: string, index: number) => {
         if (index === 0) {
           content = value;
         } else {

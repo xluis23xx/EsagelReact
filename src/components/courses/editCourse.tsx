@@ -28,7 +28,7 @@ import { Topic, useTopics } from "../../hooks/useTopics";
 
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
-  const { topics, getAllTopics, searchTopicsByFilter } = useTopics();
+  const { topics, getAllTopics, setSearchFilter } = useTopics();
   const { getAllCourseTypes, courseTypes } = useCourseTypes();
 
   const {
@@ -68,7 +68,10 @@ const EditCourseComponent = () => {
       history.push("/cursos");
     }
     getAllCourseTypes();
-    getAllTopics();
+    setSearchFilter({
+      filter: "",
+    });
+    getAllTopics({ filter: "" }, { limit: 5, pageSize: 1 });
     setCourseById(id);
   }, []);
 
@@ -83,7 +86,9 @@ const EditCourseComponent = () => {
       if (courseInfo?.courseLines.length > 0) {
         setSelectedTopics([...courseInfo?.courseLines]);
 
-        setSelectedTopicsIds([...courseInfo.courseLines.map((top) => top._id)]);
+        setSelectedTopicsIds([
+          ...courseInfo?.courseLines?.map((top) => top?._id || ""),
+        ]);
       }
     }
   }, [courseInfo]);
@@ -176,7 +181,11 @@ const EditCourseComponent = () => {
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   const handleSearchTopics = (data) => {
-    searchTopicsByFilter(data.search);
+    let filter = "";
+    if (data?.search) {
+      filter = data?.search;
+    }
+    getAllTopics({ filter: filter }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -348,6 +357,7 @@ const EditCourseComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={(description ?? courseInfo?.description) || ""}
+                    maxLength={100}
                     rows={1}
                     onChange={handleOnChange}
                     disabled={
@@ -595,61 +605,53 @@ const EditCourseComponent = () => {
                   <tbody>
                     {topics?.length > 0
                       ? topics.map((top: Topic, index) => {
-                          const { _id, name = "" } = top;
-                          if (index > 4) {
-                            return null;
-                          } else {
-                            return (
-                              <tr key={_id}>
-                                <td>
-                                  <input
-                                    type="checkbox"
-                                    name="topic"
-                                    checked={selectedTopicsIds.includes(_id)}
-                                    className="form-check-input form-check-success p-2"
-                                    onChange={(e) => {
-                                      if (e.target.checked) {
-                                        const cleanTopics =
-                                          selectedTopics.filter(
-                                            (topi: Topic) => topi?._id !== _id
-                                          );
-                                        const cleanTopicIds =
-                                          selectedTopicsIds.filter(
-                                            (id: string) => id !== _id
-                                          );
-                                        setSelectedTopics([
-                                          ...cleanTopics,
-                                          {
-                                            _id: _id,
-                                            name: name,
-                                          },
-                                        ]);
-                                        setSelectedTopicsIds([
-                                          ...cleanTopicIds,
-                                          _id,
-                                        ]);
-                                      } else {
-                                        const cleanTopics =
-                                          selectedTopics.filter(
-                                            (topi: Topic) => topi?._id !== _id
-                                          );
-                                        const cleanTopicIds =
-                                          selectedTopicsIds.filter(
-                                            (id: string) => id !== _id
-                                          );
-                                        setSelectedTopics([...cleanTopics]);
-                                        setSelectedTopicsIds([
-                                          ...cleanTopicIds,
-                                        ]);
-                                      }
-                                    }}
-                                  />
-                                </td>
-                                <td>{index + 1 || ""}</td>
-                                <td>{name || ""}</td>
-                              </tr>
-                            );
-                          }
+                          const { _id = "", name = "" } = top;
+                          return (
+                            <tr key={_id}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  name="topic"
+                                  checked={selectedTopicsIds.includes(_id)}
+                                  className="form-check-input form-check-success p-2"
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      const cleanTopics = selectedTopics.filter(
+                                        (topi: Topic) => topi?._id !== _id
+                                      );
+                                      const cleanTopicIds =
+                                        selectedTopicsIds.filter(
+                                          (id: string) => id !== _id
+                                        );
+                                      setSelectedTopics([
+                                        ...cleanTopics,
+                                        {
+                                          _id: _id,
+                                          name: name,
+                                        },
+                                      ]);
+                                      setSelectedTopicsIds([
+                                        ...cleanTopicIds,
+                                        _id || "",
+                                      ]);
+                                    } else {
+                                      const cleanTopics = selectedTopics.filter(
+                                        (topi: Topic) => topi?._id !== _id
+                                      );
+                                      const cleanTopicIds =
+                                        selectedTopicsIds.filter(
+                                          (id: string) => id !== _id
+                                        );
+                                      setSelectedTopics([...cleanTopics]);
+                                      setSelectedTopicsIds([...cleanTopicIds]);
+                                    }
+                                  }}
+                                />
+                              </td>
+                              <td>{index + 1 || ""}</td>
+                              <td>{name || ""}</td>
+                            </tr>
+                          );
                         })
                       : null}
                   </tbody>

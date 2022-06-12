@@ -146,6 +146,7 @@ const SalesComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
+                  required={true}
                 />
               </nav>
               <br />
@@ -170,7 +171,7 @@ const SalesComponent = () => {
                     <tbody>
                       {sales.map((sale: Sale, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           seller = null,
                           client = null,
                           status,

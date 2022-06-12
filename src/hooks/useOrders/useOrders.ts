@@ -180,7 +180,7 @@ export const useOrders = () => {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: `El Pedido Nro. ${orderNumber} fue registrado éxitosamente`,
+            text: `${response?.message} fue registrado éxitosamente`,
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });

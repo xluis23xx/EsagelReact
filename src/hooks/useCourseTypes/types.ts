@@ -3,7 +3,7 @@ export type CourseType = {
   code?: string;
   name?: string;
   status?: number;
-  description?: string; // "comprobante" o "persona"
+  description?: string;
   createdAt?: string;
   updatedAt?: string;
 };

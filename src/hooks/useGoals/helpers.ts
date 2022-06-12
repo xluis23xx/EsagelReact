@@ -9,11 +9,10 @@ export const getGoals = (
   token: string,
   { startDate, endDate }: { startDate: string; endDate: string },
   { limit = 5, pageSize = 1 }: PaginateParams
-): Promise<PaginateResponse> => {
-    return fetch(`${GENERAL_API}/goals/consult/?limit=${limit}&pageSize=${pageSize}`, {
+): Promise<PaginateResponse> => 
+     fetch(`${GENERAL_API}/goals/consult/?limit=${limit}&pageSize=${pageSize}`, {
       method: "POST",
       cache: "no-cache",
-      // method: "GET",
       body: JSON.stringify({
         startDate: startDate,
         endDate:endDate,
@@ -23,7 +22,7 @@ export const getGoals = (
         "x-access-token": `${token}`,
       },
     }).then((res) => res.json()).catch((res) => res.json());
-  }
+  
   
 
 export const getGoalById = (token: string, id: string): Promise<GetGoal> =>

@@ -114,6 +114,7 @@ const EditTopicComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={(description ?? topicInfo?.description) || ""}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={

@@ -272,7 +272,7 @@ const NewEmployeeComponent = () => {
                     id="documentType"
                     name="documentType"
                     required
-                    value={documentType}
+                    value={documentType || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     disabled={status === Status.Updating}
@@ -286,7 +286,7 @@ const NewEmployeeComponent = () => {
                           if (pos?.operation === "persona") {
                             return (
                               <option key={pos.name} value={`${pos.name}`}>
-                                {pos.name.toUpperCase()}
+                                {pos?.name?.toUpperCase()}
                               </option>
                             );
                           }
@@ -438,7 +438,7 @@ const NewEmployeeComponent = () => {
                     name="position"
                     required
                     disabled={status === Status.Updating}
-                    value={position}
+                    value={position || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${

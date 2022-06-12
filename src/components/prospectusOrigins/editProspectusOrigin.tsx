@@ -132,6 +132,7 @@ const EditProspectOriginComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={(description ?? prospectInfo?.description) || ""}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={

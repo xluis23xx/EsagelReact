@@ -22,7 +22,7 @@ export const useProspectOrigins = () => {
     ProspectusOrigin[]
   >([]);
   const [prospectInfo, setProspectInfo] =
-    React.useState<ProspectusOrigin>(null);
+    React.useState<ProspectusOrigin | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setProspectOriginById(id: string) {

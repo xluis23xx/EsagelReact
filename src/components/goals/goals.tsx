@@ -136,6 +136,7 @@ const GoalsComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
+                  required={false}
                 />
               </nav>
               <br />
@@ -160,7 +161,7 @@ const GoalsComponent = () => {
                     <tbody>
                       {goals.map((goal: Goal, index: number) => {
                         const {
-                          _id,
+                          _id = "",
                           estimatedQuantity,
                           quantitySold,
                           endDate,

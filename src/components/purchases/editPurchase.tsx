@@ -127,6 +127,7 @@ const NewPurchaseComponent = () => {
                     placeholder="Motivo"
                     name="reason"
                     value={(reason ?? purchaseInfo?.reason) || ""}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={

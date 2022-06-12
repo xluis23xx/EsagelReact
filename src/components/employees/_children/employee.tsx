@@ -2,7 +2,7 @@ import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import { CImage } from "@coreui/react";
 import React from "react";
-import { EditItemButton } from "src/components/global-components/globalButtons";
+import { EditItemButton } from "../../global-components/globalButtons";
 
 import { Employee } from "../../../hooks/useEmployees";
 import { setFormatDate } from "../../../utils/formats";
@@ -23,7 +23,6 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
   corporateEmail,
   phoneNumber,
   birthdate,
-  // image,
   handleRemove,
 }) => {
   return (
@@ -35,9 +34,6 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
       <td>{corporateEmail || ""}</td>
       <td>{phoneNumber || ""}</td>
       <td>{setFormatDate({ date: birthdate }) || ""}</td>
-      {/* <td>
-        {image ? <CImage src={image} alt={fullName} fluid width={60} /> : ""}
-      </td> */}
       <td>
         <div className="selection-btn">
           <div className="btn-group">

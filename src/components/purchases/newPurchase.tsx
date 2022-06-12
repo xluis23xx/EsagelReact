@@ -159,6 +159,7 @@ const NewPurchaseComponent = () => {
                     placeholder="Motivo"
                     name="reason"
                     value={reason}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}

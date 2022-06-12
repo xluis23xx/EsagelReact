@@ -95,7 +95,7 @@ const DocumentTypesComponent = () => {
                       {documents.map(
                         (document: DocumentType, index: number) => {
                           const {
-                            _id,
+                            _id = "",
                             name,
                             operation,
                             createdAt,

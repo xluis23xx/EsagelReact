@@ -129,7 +129,6 @@ const ProvidersComponent = () => {
                           contactName,
                           documentNumber,
                           phoneNumber,
-                          // status,
                         } = provider;
                         return (
                           <ProviderItem
@@ -140,7 +139,6 @@ const ProvidersComponent = () => {
                             contactName={contactName}
                             documentNumber={documentNumber}
                             phoneNumber={phoneNumber}
-                            // status={status}
                             orderNumber={index + 1}
                             handleRemove={removeProvider}
                           />

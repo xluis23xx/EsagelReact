@@ -19,7 +19,7 @@ export enum Status {
 
 export const useCourseTypes = () => {
   const [courseTypes, setCourseTypes] = React.useState<CourseType[]>([]);
-  const [courseTypeInfo, setCourseTypeInfo] = React.useState<CourseType>(null);
+  const [courseTypeInfo, setCourseTypeInfo] = React.useState<CourseType | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setCourseTypeById(id: string) {

@@ -55,7 +55,7 @@ const EditUserComponent = () => {
 
   React.useEffect(() => {
     if (userInfo) {
-      const roles = userInfo?.roles.map((rol) => rol.name);
+      const roles = userInfo?.roles?.map((rol) => rol?.name || "") || "";
       setSelectedRoles([...roles]);
       if (userInfo?.image) {
         setShowImage(userInfo.image);
@@ -167,7 +167,7 @@ const EditUserComponent = () => {
                     disabled={
                       status === Status.Loading || status === Status.Updating
                     }
-                    value={(statusForm ?? userInfo?.status.toString()) || ""}
+                    value={(statusForm ?? userInfo?.status?.toString()) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -194,9 +194,9 @@ const EditUserComponent = () => {
                       status === Status.Loading || status === Status.Updating
                     }
                     onChange={(e) => {
-                      let values = [];
+                      let values: any = [];
                       Array.from(e.target.selectedOptions).map((val) =>
-                        values.push(val.value)
+                        values.push(val?.value)
                       );
                       if (values.length === 0) {
                         setShowRolesError(true);

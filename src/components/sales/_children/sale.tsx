@@ -7,8 +7,8 @@ import { EditItemButton } from "../../global-components/globalButtons";
 import { CBadge } from "@coreui/react";
 
 type SaleItemProps = Sale & {
-  index?: number;
-  code?: string;
+  index: number;
+  code: string;
   handleCancel: (id: string) => void;
   handlePrint: (id: string) => void;
 };
@@ -20,7 +20,6 @@ export const SaleItem: React.FC<SaleItemProps> = ({
   client,
   seller,
   createdAt,
-  subtotal,
   total,
   status,
   handleCancel,
@@ -60,7 +59,6 @@ export const SaleItem: React.FC<SaleItemProps> = ({
           : ""}
       </td>
       <td>{sellerOfSale}</td>
-      {/*<td>{subtotal ? subtotal.toFixed(2) : ""}</td>*/}
       <td>{total ? total.toFixed(2) : ""}</td>
       <td>
         <CBadge color={status === 0 ? "danger" : status === 1 ? "success" : ""}>

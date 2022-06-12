@@ -18,7 +18,7 @@ import {
 import CIcon from "@coreui/icons-react";
 
 const DisableAccountComponent = ({ profile }: { profile: User }) => {
-  const { setUser } = React.useContext(AuthContext);
+  const { setUser } = React.useContext<any>(AuthContext);
   const { status, disableProfile } = useProfile();
   const { logoutUser } = useAuth();
   const [modalDisableAccount, setModalDisableAccount] = React.useState(false);
@@ -41,7 +41,7 @@ const DisableAccountComponent = ({ profile }: { profile: User }) => {
 
   const onSubmitForm = () => {
     if (wordUser) {
-      disableProfile(profile?._id).then((response) => {
+      disableProfile(profile?._id || "").then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           logoutUser();
           setUser(null);

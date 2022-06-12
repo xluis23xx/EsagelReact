@@ -20,7 +20,6 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
   createdAt,
   updatedAt,
   handleRemove,
-  //   status
 }) => {
   return (
     <tr>
@@ -29,7 +28,6 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
       <td>{operation || ""}</td>
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
-
       <td>
         <div className="selection-btn">
           <div className="btn-group">

@@ -22,7 +22,7 @@ export const useProspectStatuses = () => {
     ProspectusStatus[]
   >([]);
   const [prospectInfo, setProspectInfo] =
-    React.useState<ProspectusStatus>(null);
+    React.useState<ProspectusStatus | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setProspectStatusById(id: string) {

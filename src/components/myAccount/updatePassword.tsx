@@ -14,7 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 const UpdatePassComponent = ({ profile }: { profile: User }) => {
   const { status, updatedpassword } = useProfile();
   const { logoutUser } = useAuth();
-  const { setUser } = React.useContext(AuthContext);
+  const { setUser } = React.useContext<any>(AuthContext);
   const history = useHistory();
   const stateSchema = {
     newPassword: { value: null, error: "" },
@@ -42,10 +42,10 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
     oldPassword: string;
   }) => {
     const changePassword = {
-      oldPassword: oldPassword || null,
-      newPassword: newPassword || null,
+      oldPassword: oldPassword || "",
+      newPassword: newPassword || "",
     };
-    updatedpassword(profile?._id, changePassword).then((response) => {
+    updatedpassword(profile?._id || "", changePassword).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         logoutUser();
         setUser(null);

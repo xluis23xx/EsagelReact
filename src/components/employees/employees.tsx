@@ -162,7 +162,6 @@ const EmployeesComponent = () => {
                           documentType,
                           personalEmail,
                           phoneNumber,
-                          // image,
                           status,
                         } = employee;
                         return (
@@ -180,7 +179,6 @@ const EmployeesComponent = () => {
                             phoneNumber={phoneNumber}
                             status={status}
                             orderNumber={index + 1}
-                            // image={image}
                             handleRemove={removeEmployee}
                           />
                         );

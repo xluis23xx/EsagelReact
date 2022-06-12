@@ -17,7 +17,7 @@ export enum Status {
 }
 
 export const useProfile = () => {
-  const [profileInfo, setProfileInfo] = React.useState<User>(null);
+  const [profileInfo, setProfileInfo] = React.useState<User | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setProfileById(id: string) {
@@ -77,7 +77,6 @@ export const useProfile = () => {
     return putProfile(token, id, profile)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          // setProfileById({...profileInfo, name: response?.updatedProfile})
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",

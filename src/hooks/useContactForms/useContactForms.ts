@@ -20,7 +20,7 @@ export enum Status {
 export const useContactForms = () => {
   const [contactForms, setContactForms] = React.useState<ContactForm[]>([]);
   const [contactFormInfo, setContactFormInfo] =
-    React.useState<ContactForm>(null);
+    React.useState<ContactForm | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
   function setContactFormById(id: string) {

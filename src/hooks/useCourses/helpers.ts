@@ -59,5 +59,3 @@ export const putCourse = (token: string, id: string, course: any) =>
       "x-access-token": `${token}`,
     },
   }).then((res) => res.json());
-
-// FALTA CREAR METODO QUE REGISTRE TEMAS DENTRO DE UN CURSO

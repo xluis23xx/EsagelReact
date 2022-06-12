@@ -8,13 +8,14 @@ import { useParams, useHistory } from "react-router-dom";
 import { setFormatDate } from "../../utils/formats";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { OrderDetail } from "../../hooks/useOrders";
 
 const DetailOrderComponent = () => {
   const { setSaleById, saleInfo, status } = useSales();
   const [clientOfSale, setClientOfSale] = React.useState("");
   const [sellerOfSale, setSellerOfSale] = React.useState("");
   const [statusOfSale, setStatusOfSale] = React.useState("");
-  const [itemsOfOrder, setItemsOfOrder] = React.useState([]);
+  const [itemsOfOrder, setItemsOfOrder] = React.useState<OrderDetail[]>([]);
 
   const history = useHistory();
   const { id } = useParams<any>();
@@ -132,7 +133,7 @@ const DetailOrderComponent = () => {
                     name="documentType"
                     value={
                       saleInfo?.order?.documentType
-                        ? saleInfo?.order?.documentType?.name
+                        ? saleInfo?.order?.documentType?.name || ""
                         : ""
                     }
                     disabled={status === Status.Loading}
@@ -231,10 +232,10 @@ const DetailOrderComponent = () => {
                                   <td>
                                     {course?.name ? course?.name : "" || ""}
                                   </td>
-                                  <td>{price.toFixed(2) || ""}</td>
+                                  <td>{price?.toFixed(2) || ""}</td>
                                   <td>{quantity || ""}</td>
-                                  <td>{discount.toFixed(2) || ""}</td>
-                                  <td>{amount.toFixed(2) || ""}</td>
+                                  <td>{discount?.toFixed(2) || ""}</td>
+                                  <td>{amount?.toFixed(2) || ""}</td>
                                 </tr>
                               );
                             }

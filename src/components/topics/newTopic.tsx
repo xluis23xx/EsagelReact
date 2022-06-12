@@ -102,6 +102,7 @@ const NewTopicComponent = () => {
                     placeholder="Descripción"
                     name="description"
                     value={description}
+                    maxLength={100}
                     rows={2}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
