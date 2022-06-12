@@ -7,17 +7,16 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getOrders = (
   token: string,
-  // { startDate, endDate }: { startDate: string; endDate: string },
-  { limit = 100, pageSize = 1 }: PaginateParams
+  { startDate, endDate }: { startDate: string; endDate: string },
+  { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> =>
-  fetch(`${GENERAL_API}/orders/?limit=${limit}&pageSize=${pageSize}`, {
-    // method: "POST",
+  fetch(`${GENERAL_API}/orders/consult/?limit=${limit}&pageSize=${pageSize}`, {
+    method: "POST",
     cache: "no-cache",
-    // body: JSON.stringify({
-    //   startDate,
-    //   endDate,
-    // }),
-    method: "GET",
+    body: JSON.stringify({
+      startDate,
+      endDate,
+    }),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,

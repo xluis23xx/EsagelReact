@@ -16,9 +16,13 @@ export enum Status {
 
 export const useSales = () => {
   const [sales, setSales] = React.useState<Sale[]>([]);
-  const [salesAll, setSalesAll] = React.useState<Sale[]>([]);
-  const [saleInfo, setSaleInfo] = React.useState<Sale>(null);
+  const [saleInfo, setSaleInfo] = React.useState<Sale | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateDate] = React.useState<PaginateResponse| null>(null)
+  const [intervalFilter, setIntervalFilter] = React.useState({
+    startDate: "",
+    endDate:""
+  })
 
   function setSaleById(id: string) {
     setStatus(Status.Loading);
@@ -31,44 +35,19 @@ export const useSales = () => {
     });
   }
 
-  function getAllSales(
-    // { startDate, endDate }
-    ) {
+  function getAllSales( { startDate, endDate }: {startDate: string, endDate:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
     const token = getCookie("esagel_token") || "";
-    getSales(token,
-      // , { startDate, endDate }
-      {}
-      )
+    getSales(token, {startDate, endDate}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: salesObtained = [] } = response || {};
         setSales(salesObtained);
-        setSalesAll(salesObtained)
+        setPaginateDate(response)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
-  }
-
-  function searchSalesByInterval(startDate:string= "", endDate:string ="") {
-    if (salesAll.length === 0) {
-      getAllSales();
-    }else if(startDate==="" && endDate===""){
-      setSales(salesAll)
-    }
-    else {
-      const salesFilter = salesAll.filter((sale: Sale) => {
-        const {
-          createdAt
-        } = sale || {};
-        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
-        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        let emitedDate =  setFormatDate({order:1,date: createdAt})
-        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
-      });
-      setSales(salesFilter);
-    }
   }
 
   async function updateSale(id: string, sale: any) {
@@ -232,6 +211,10 @@ export const useSales = () => {
       });
   }
 
+  function changePage (index: number) {
+    getAllSales(intervalFilter, {limit: 3, pageSize:index})
+  }
+
   return {
     sales,
     confirmSale,
@@ -241,7 +224,9 @@ export const useSales = () => {
     setSaleById,
     saleInfo,
     getAllSales,
-    searchSalesByInterval,
+    paginateData,
+    setIntervalFilter,
+    changePage,
     status,
   };
 };

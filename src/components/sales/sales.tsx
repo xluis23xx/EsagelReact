@@ -13,19 +13,46 @@ import {
 } from "@coreui/react";
 import { Sale, useSales, Status } from "../../hooks/useSales";
 import { ExportButtons } from "../global-components/exportButtons";
-import { IntervalButton } from "../global-components/globalButtons";
+import {
+  IntervalButton,
+  PaginateButtons,
+} from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
 import { savePathname } from "../../utils/location";
+import { setFormatDate } from "../../utils/formats";
 
-const OrdersComponent = () => {
-  const { sales, cancelSale, getAllSales, searchSalesByInterval, status } =
-    useSales();
+const SalesComponent = () => {
+  const {
+    sales,
+    cancelSale,
+    getAllSales,
+    setIntervalFilter,
+    changePage,
+    paginateData,
+    status,
+  } = useSales();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [saleId, setSaleId] = React.useState("");
 
   React.useEffect(() => {
     savePathname();
-    getAllSales();
+
+    const currentDate = new Date();
+    const startDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T00:00:00.0+00:00`;
+    const endDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T23:59:59.999+00:00`;
+    setIntervalFilter({
+      startDate: startDate,
+      endDate: endDate,
+    });
+    getAllSales({ startDate, endDate }, { limit: 3, pageSize: 1 });
   }, []);
 
   const abortSale = (id: string) => {
@@ -52,12 +79,13 @@ const OrdersComponent = () => {
     let startDate = "";
     let endDate = "";
     if (data?.startDate) {
-      startDate = data?.startDate;
+      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
     if (data?.endDate) {
-      endDate = data?.endDate;
+      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    searchSalesByInterval(startDate, endDate);
+    setIntervalFilter({ startDate: startDate, endDate: endDate });
+    getAllSales({ startDate, endDate }, { limit: 3, pageSize: 1 });
   };
 
   const tableExportId = "sales-table";
@@ -172,6 +200,14 @@ const OrdersComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {sales.length > 0 ? (
+                <div className="w-100 text-center">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visibleAbortModal}
                 onClose={() => {
@@ -213,4 +249,4 @@ const OrdersComponent = () => {
   );
 };
 
-export default OrdersComponent;
+export default SalesComponent;

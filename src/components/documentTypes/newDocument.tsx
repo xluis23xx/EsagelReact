@@ -99,7 +99,7 @@ const NewDocumentTypeComponent = () => {
                     name="operation"
                     required
                     disabled={status === Status.Updating}
-                    value={operation}
+                    value={operation || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -108,7 +108,7 @@ const NewDocumentTypeComponent = () => {
                   >
                     <option value="">Seleccione</option>
                     <option value="persona">Persona</option>
-                    <option value="comprobante">Vendedor</option>
+                    <option value="comprobante">Comprobante</option>
                   </select>
                 </div>
                 <div className="col-12" />

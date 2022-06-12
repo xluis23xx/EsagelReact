@@ -8,13 +8,12 @@ const { GENERAL_API } = ENVIROMENTS;
 export const getGoals = (
   token: string,
   { startDate, endDate }: { startDate: string; endDate: string },
-  { limit = 100, pageSize = 1 }: PaginateParams
+  { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> => {
-  console.log(startDate, endDate)
-    return fetch(`${GENERAL_API}/goals/?limit=${limit}&pageSize=${pageSize}`, {
-      // method: "POST",
+    return fetch(`${GENERAL_API}/goals/consult/?limit=${limit}&pageSize=${pageSize}`, {
+      method: "POST",
       cache: "no-cache",
-      method: "GET",
+      // method: "GET",
       body: JSON.stringify({
         startDate: startDate,
         endDate:endDate,

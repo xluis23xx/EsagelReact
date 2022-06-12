@@ -19,6 +19,7 @@ import {
   SearchButton,
 } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
+import { formatRolName } from "../../utils/formats";
 
 const UsersComponent = () => {
   const { users, disableUser, getAllUsers, searchUsersByFilter, status } =
@@ -92,9 +93,11 @@ const UsersComponent = () => {
                     if (roles.length > 0) {
                       roles.map((rol, index) => {
                         if (index) {
-                          rolesName = `${rolesName} - ${rol.name}`;
+                          rolesName = `${rolesName} - ${formatRolName(
+                            rol.name || ""
+                          )}`;
                         } else {
-                          rolesName = rol.name;
+                          rolesName = formatRolName(rol.name || "");
                         }
                       });
                     }

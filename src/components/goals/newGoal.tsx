@@ -21,24 +21,22 @@ import {
 import { cilHamburgerMenu, cilSearch } from "@coreui/icons";
 
 import { InputForm } from "../global-components/inputForm";
+import { User, useUsers } from "../../hooks/useUsers";
 
 const NewGoalComponent = () => {
   const { registerGoal, status } = useGoals();
-
-  const { getAllEmployees, searchEmployeesByName, employees } = useEmployees();
+  const { getAllUsers, searchUsersByFilter, users } = useUsers();
 
   const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
-  const [selectedEmployee, setSelectedEmployee] =
-    React.useState<Employee>(null);
+  const [selectedSeller, setSelectedSeller] = React.useState<User | null>(null);
 
-  const [showEmployeeError, setShowEmployeeError] =
-    React.useState<boolean>(false);
+  const [showSellerError, setShowSellerError] = React.useState<boolean>(false);
 
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllEmployees();
+    getAllUsers();
   }, []);
 
   const stateSchema = {
@@ -60,10 +58,9 @@ const NewGoalComponent = () => {
       estimatedQuantity: data?.estimatedQuantity
         ? Number(data?.estimatedQuantity)
         : 0,
-      employee: selectedEmployee?._id || null,
+      seller: selectedSeller?._id || null,
       status: 1,
     };
-    console.log(goal);
     registerGoal(goal).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/metas");
@@ -89,8 +86,8 @@ const NewGoalComponent = () => {
     handleOnSubmit,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  const handleSearchEmployees = (data) => {
-    searchEmployeesByName(data.search);
+  const handleSearchSellers = (data) => {
+    searchUsersByFilter(data.search);
   };
 
   return (
@@ -123,31 +120,33 @@ const NewGoalComponent = () => {
                     <input
                       required
                       className={`w-100 ${
-                        showEmployeeError ? "border border-danger" : ""
+                        showSellerError ? "border border-danger" : ""
                       }`}
                       placeholder="Seleccione..."
                       name="employee"
                       value={
                         `${
-                          selectedEmployee?.name ? selectedEmployee?.name : ""
+                          selectedSeller?.employee?.name
+                            ? selectedSeller?.employee?.name
+                            : ""
                         }${
-                          selectedEmployee?.lastname
-                            ? ` ${selectedEmployee?.lastname}`
+                          selectedSeller?.employee?.lastname
+                            ? ` ${selectedSeller?.employee?.lastname}`
                             : ""
                         }` || ""
                       }
                       onChange={(e) => {
                         if (e.target.value) {
-                          setShowEmployeeError(true);
+                          setShowSellerError(true);
                         } else {
-                          setShowEmployeeError(false);
+                          setShowSellerError(false);
                         }
                       }}
                       onBlur={(e) => {
                         if (e.target.value) {
-                          setShowEmployeeError(true);
+                          setShowSellerError(true);
                         } else {
-                          setShowEmployeeError(false);
+                          setShowSellerError(false);
                         }
                       }}
                       disabled={true}
@@ -160,7 +159,7 @@ const NewGoalComponent = () => {
                       <CIcon icon={cilSearch}></CIcon>
                     </button>
                   </div>
-                  {showEmployeeError ? (
+                  {showSellerError ? (
                     <p
                       className="w-100 pb-0 mb-0 text-danger"
                       style={{ fontSize: 15 }}
@@ -186,20 +185,6 @@ const NewGoalComponent = () => {
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
                     error={estimatedQuantityError}
-                  />
-                </div>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
-                  <label className="form-label" htmlFor="quantitySold">
-                    Cantidad Vendida:
-                  </label>
-                  <InputForm
-                    type="number"
-                    placeholder="Cantidad Vendida"
-                    name="quantitySold"
-                    value={(4000).toFixed(2)}
-                    onChange={handleOnChange}
-                    disabled={true}
-                    showError={false}
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
@@ -236,7 +221,7 @@ const NewGoalComponent = () => {
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || !selectedEmployee || status === Status.Updating
+                      disable || !selectedSeller || status === Status.Updating
                     }
                   >
                     {status === Status.Updating ? (
@@ -277,7 +262,7 @@ const NewGoalComponent = () => {
                 <SearchButton
                   validators={validators}
                   textButton={"Buscar"}
-                  handleSearch={handleSearchEmployees}
+                  handleSearch={handleSearchSellers}
                   className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
                 />
                 <div className="w-100 overflow-auto" style={{ height: 300 }}>
@@ -290,15 +275,13 @@ const NewGoalComponent = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {employees?.length > 0
-                        ? employees.map((emp: Employee, index) => {
+                      {users?.length > 0
+                        ? users.map((user: User, index) => {
                             const {
                               _id,
-                              name = "",
-                              lastname = "",
-                              secondLastname = "",
-                              position = null,
-                            } = emp;
+                              employee = null,
+                              username,
+                            } = user || {};
                             if (index > 4) {
                               return null;
                             } else {
@@ -309,25 +292,19 @@ const NewGoalComponent = () => {
                                       type="checkbox"
                                       className="form-check-input form-check-success p-2"
                                       onClick={() => {
-                                        setSelectedEmployee({
-                                          _id,
-                                          name,
-                                          lastname,
-                                          secondLastname,
-                                          position,
-                                        });
-                                        setShowEmployeeError(false);
+                                        setSelectedSeller(user);
+                                        setShowSellerError(false);
                                         setVisibleEmployeeModal(false);
                                       }}
-                                      checked={selectedEmployee?._id === _id}
+                                      checked={selectedSeller?._id === _id}
                                     />
                                   </td>
                                   <td>
-                                    {name} {lastname} {secondLastname}
+                                    {employee?.name || ""}{" "}
+                                    {employee?.lastname || ""}{" "}
+                                    {employee?.secondLastname || ""}
                                   </td>
-                                  <td>
-                                    {position?.name ? position?.name : ""}
-                                  </td>
+                                  <td>{username}</td>
                                 </tr>
                               );
                             }
@@ -342,8 +319,8 @@ const NewGoalComponent = () => {
                   color="secondary"
                   className="text-white"
                   onClick={() => {
-                    setSelectedEmployee(null);
-                    setShowEmployeeError(true);
+                    setSelectedSeller(null);
+                    setShowSellerError(true);
                     setVisibleEmployeeModal(false);
                   }}
                 >
@@ -352,8 +329,8 @@ const NewGoalComponent = () => {
                 <CButton
                   color="dark"
                   onClick={() => {
-                    if (!selectedEmployee) {
-                      setShowEmployeeError(true);
+                    if (!selectedSeller) {
+                      setShowSellerError(true);
                     }
                     setVisibleEmployeeModal(false);
                   }}

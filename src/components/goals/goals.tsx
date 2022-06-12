@@ -15,14 +15,22 @@ import { Goal, useGoals, Status } from "../../hooks/useGoals";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
   IntervalButton,
+  PaginateButtons,
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
 import { setFormatDate } from "../../utils/formats";
 
 const GoalsComponent = () => {
-  const { goals, deleteGoal, getAllGoals, searchGoalsByInterval, status } =
-    useGoals();
+  const {
+    goals,
+    deleteGoal,
+    getAllGoals,
+    paginateData,
+    status,
+    setIntervalFilter,
+    changePage,
+  } = useGoals();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [goalId, setGoalId] = React.useState("");
 
@@ -39,8 +47,11 @@ const GoalsComponent = () => {
       date: currentDate,
       separator: "-",
     })}T23:59:59.999+00:00`;
-    console.log(startDate, endDate);
-    getAllGoals({ startDate, endDate });
+    setIntervalFilter({
+      startDate: startDate,
+      endDate: endDate,
+    });
+    getAllGoals({ startDate, endDate }, { limit: 3, pageSize: 1 });
   }, []);
 
   const abortGoal = (id: string) => {
@@ -62,22 +73,25 @@ const GoalsComponent = () => {
     let startDate = "";
     let endDate = "";
     if (data?.startDate) {
-      startDate = `${setFormatDate({
-        order: 1,
-        date: data?.startDate,
-        separator: "-",
-      })}T00:00:00.0+00:00`;
+      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
     if (data?.endDate) {
-      endDate = `${setFormatDate({
-        order: 1,
-        date: data?.endDate,
-        separator: "-",
-      })}T23:59:59.999+00:00`;
+      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    console.log(startDate, endDate);
-    getAllGoals({ startDate, endDate });
+    setIntervalFilter({ startDate: startDate, endDate: endDate });
+    getAllGoals({ startDate, endDate }, { limit: 3, pageSize: 1 });
   };
+
+  const tableExportId = "goals-table";
+
+  const headers = [
+    { label: "Empleado", key: "employeeName" },
+    { label: "Cantidad Estimada", key: "estimatedQuantity" },
+    { label: "Cantidad Vendida", key: "quantitySold" },
+    { label: "Fecha Inicio", key: "startDate" },
+    { label: "Fecha Fin", key: "endDate" },
+    { label: "Cumplió?", key: "isSucceed" },
+  ];
 
   return (
     <>
@@ -93,7 +107,32 @@ const GoalsComponent = () => {
             </div>
             <div className="card-body">
               <nav className="navbar navbar-expand-lg navbar-light bg-light px-3 my-2 row">
-                <ExportButtons />
+                <ExportButtons
+                  dataReport={goals.map((goal) => {
+                    const {
+                      seller = null,
+                      estimatedQuantity = 1,
+                      quantitySold = 0,
+                    } = goal || {};
+                    let employeeName = "Desconocido";
+                    const { employee = null } = seller || {};
+                    if (employee) {
+                      employee?.name ? (employeeName = employee?.name) : "";
+                      employee?.lastname
+                        ? (employeeName = `${employeeName} ${employee?.lastname}`)
+                        : "";
+                    }
+                    return {
+                      ...goal,
+                      employeeName: employeeName,
+                      isSucceed:
+                        estimatedQuantity <= quantitySold ? "SÍ" : "NO",
+                    };
+                  })}
+                  headers={headers}
+                  documentName={"goals"}
+                  tableId={tableExportId}
+                />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
@@ -106,16 +145,15 @@ const GoalsComponent = () => {
                 ) : null}
                 {(status === Status.Ready || status === Status.Updating) &&
                 goals.length > 0 ? (
-                  <table className="table">
+                  <table className="table" id={tableExportId}>
                     <thead>
                       <tr>
                         <th>N°</th>
-                        <th>Empleado</th>
-                        <th>Cantidad Estimada</th>
-                        <th>Cantidad Vendida</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th>Cumplió?</th>
+                        {headers
+                          ? headers.map((header) => (
+                              <th key={header.label}>{header.label}</th>
+                            ))
+                          : null}
                         <th>Opciones</th>
                       </tr>
                     </thead>
@@ -127,18 +165,16 @@ const GoalsComponent = () => {
                           quantitySold,
                           endDate,
                           startDate,
-                          employee = null,
-                          status,
+                          seller = null,
                         } = goal;
                         return (
                           <GoalItem
                             key={index}
                             code={_id}
-                            employee={employee}
+                            seller={seller}
                             estimatedQuantity={estimatedQuantity}
                             quantitySold={quantitySold}
                             index={index + 1}
-                            status={status}
                             startDate={startDate}
                             endDate={endDate}
                             handleCancel={abortGoal}
@@ -149,6 +185,14 @@ const GoalsComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {goals.length > 0 ? (
+                <div className="w-100 text-center">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
 
               <CModal
                 visible={visibleAbortModal}

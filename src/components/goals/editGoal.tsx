@@ -39,9 +39,9 @@ const EditGoalComponent = () => {
     const goal = {
       estimatedQuantity:
         (data?.estimatedQuantity ?? goalInfo?.estimatedQuantity) || 0,
+      seller: goalInfo?.seller?._id,
       status: 1,
     };
-    console.log(goal);
     updateGoal(id, goal).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         history.push("/metas");
@@ -89,10 +89,12 @@ const EditGoalComponent = () => {
                     name="employee"
                     value={
                       `${
-                        goalInfo?.employee?.name ? goalInfo?.employee?.name : ""
+                        goalInfo?.seller?.employee?.name
+                          ? goalInfo?.seller?.employee?.name
+                          : ""
                       }${
-                        goalInfo?.employee?.lastname
-                          ? ` ${goalInfo?.employee?.lastname}`
+                        goalInfo?.seller?.employee?.lastname
+                          ? ` ${goalInfo?.seller?.employee?.lastname}`
                           : ""
                       }` || ""
                     }
@@ -124,20 +126,7 @@ const EditGoalComponent = () => {
                     error={estimatedQuantityError}
                   />
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
-                  <label className="form-label" htmlFor="quantitySold">
-                    Cantidad Vendida:
-                  </label>
-                  <InputForm
-                    type="number"
-                    placeholder="Cantidad Vendida"
-                    name="quantitySold"
-                    value={(4000).toFixed(2)}
-                    onChange={handleOnChange}
-                    disabled={true}
-                    showError={false}
-                  />
-                </div>
+
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="startDate">
                     Fecha de Inicio (*):

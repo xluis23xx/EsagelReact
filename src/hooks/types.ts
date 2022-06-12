@@ -3,12 +3,12 @@ export type PaginateResponse = {
   hasNextPage: boolean;
   hasPrevPage: boolean;
   limit: number;
-  nextPage: null | number;
-  page: null | number;
+  nextPage: number;
+  page: number;
   pagingCounter: null | number;
   prevPage: null | number;
-  totalDocs: null | number;
-  totalPages: null | number;
+  totalDocs:  number;
+  totalPages:  number;
 };
 
 export type PaginateParams = {

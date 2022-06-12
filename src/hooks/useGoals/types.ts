@@ -1,8 +1,8 @@
-import { Employee } from "../useEmployees";
+import { User } from "../useUsers";
 
 export type Goal = {
   _id?: string;
-  employee?: Employee | null;
+  seller?: User | null;
   startDate?: string;
   endDate?: string;
   estimatedQuantity?: number;

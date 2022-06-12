@@ -15,10 +15,12 @@ import { Order, useOrders, Status } from "../../hooks/useOrders";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
   IntervalButton,
+  PaginateButtons,
   RedirectionButton,
 } from "../global-components/globalButtons";
 import { formatExceedDate } from "../../utils/errors";
 import { savePathname } from "../../utils/location";
+import { setFormatDate } from "../../utils/formats";
 
 const OrdersComponent = () => {
   const {
@@ -26,7 +28,9 @@ const OrdersComponent = () => {
     cancelOrder,
     confirmOrder,
     getAllOrders,
-    searchOrdersByInterval,
+    setIntervalFilter,
+    changePage,
+    paginateData,
     status,
   } = useOrders();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
@@ -35,7 +39,23 @@ const OrdersComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllOrders();
+
+    const currentDate = new Date();
+    const startDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T00:00:00.0+00:00`;
+    const endDate = `${setFormatDate({
+      order: 1,
+      date: currentDate,
+      separator: "-",
+    })}T23:59:59.999+00:00`;
+    setIntervalFilter({
+      startDate: startDate,
+      endDate: endDate,
+    });
+    getAllOrders({ startDate, endDate }, { limit: 3, pageSize: 1 });
   }, []);
 
   const abortOrder = (id: string) => {
@@ -72,12 +92,13 @@ const OrdersComponent = () => {
     let startDate = "";
     let endDate = "";
     if (data?.startDate) {
-      startDate = data?.startDate;
+      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
     if (data?.endDate) {
-      endDate = data?.endDate;
+      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    searchOrdersByInterval(startDate, endDate);
+    setIntervalFilter({ startDate: startDate, endDate: endDate });
+    getAllOrders({ startDate, endDate }, { limit: 3, pageSize: 1 });
   };
 
   const tableExportId = "orders-table";
@@ -179,6 +200,14 @@ const OrdersComponent = () => {
                   </table>
                 ) : null}
               </div>
+              {orders.length > 0 ? (
+                <div className="w-100 text-center">
+                  <PaginateButtons
+                    handleChange={changePage}
+                    paginate={paginateData}
+                  ></PaginateButtons>
+                </div>
+              ) : null}
               <CModal
                 visible={visibleConfirmModal}
                 onClose={() => {

@@ -190,7 +190,7 @@ const NavRoutes = (): any[] => {
           ],
         }
       : undefined,
-    isAdmin || isModerator
+    isModerator
       ? {
           component: CNavGroup,
           name: "Seguimiento",

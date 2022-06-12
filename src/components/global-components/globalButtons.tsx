@@ -4,6 +4,7 @@ import useForm from "../../hooks/useForm";
 import { InputForm } from "./inputForm";
 import CIcon from "@coreui/icons-react";
 import { cilPencil, cilSearch } from "@coreui/icons";
+import { PaginateResponse } from "../../hooks/types";
 
 export const RedirectionButton = ({
   redirection = "",
@@ -182,5 +183,80 @@ export const SubmitButton = ({
     >
       {children}
     </button>
+  );
+};
+
+type PaginateButtonsProps = {
+  paginate: PaginateResponse | null;
+  handleChange: (index: number) => void;
+};
+
+export const PaginateButtons = ({
+  paginate,
+  handleChange,
+}: PaginateButtonsProps) => {
+  const {
+    hasPrevPage = false,
+    prevPage = 0,
+    page = 0,
+    hasNextPage = false,
+    nextPage = 0,
+    totalPages = 1,
+  } = paginate || {};
+
+  const styles = {
+    backgroundColor: "#98c3ed",
+    border: "0",
+  };
+
+  const classes = { button: "btn btn-info mx-2 text-white" };
+
+  return (
+    <>
+      {hasPrevPage && page > 2 ? (
+        <button
+          className={classes.button}
+          style={{ ...styles }}
+          onClick={() => handleChange(1)}
+        >
+          {"<<"}
+        </button>
+      ) : null}
+      {hasPrevPage ? (
+        <button
+          className={classes.button}
+          style={{ ...styles }}
+          onClick={() => handleChange(prevPage || 0)}
+        >
+          {"<"}
+        </button>
+      ) : null}
+
+      {page ? (
+        <button className={classes.button} style={{ ...styles }}>
+          {page}
+        </button>
+      ) : null}
+
+      {hasNextPage ? (
+        <button
+          className={classes.button}
+          style={{ ...styles }}
+          onClick={() => handleChange(nextPage)}
+        >
+          {">"}
+        </button>
+      ) : null}
+
+      {hasNextPage && totalPages !== page && totalPages !== page + 1 ? (
+        <button
+          style={{ ...styles }}
+          className={classes.button}
+          onClick={() => handleChange(totalPages)}
+        >
+          {">>"}
+        </button>
+      ) : null}
+    </>
   );
 };

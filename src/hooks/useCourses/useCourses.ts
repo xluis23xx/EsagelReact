@@ -190,5 +190,3 @@ export const useCourses = () => {
     status,
   };
 };
-
-// FALTA CREAR METODOS PARA AGREGAR TEMAS A LOS CURSOS

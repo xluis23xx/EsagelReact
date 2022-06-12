@@ -185,7 +185,7 @@ enum Roles {
 export const RoutesArray = (): any[] => {
   const { user } = React.useContext(AuthContext);
 
-  const routes = [];
+  const routes: any = [];
 
   const roles = user?.roles ? user?.roles.map((rol: Role) => rol?.name) : [];
 
@@ -441,24 +441,6 @@ export const RoutesArray = (): any[] => {
       element: EditProviderComponent,
       exact: true,
     },
-    {
-      path: "/metas",
-      name: "Metas",
-      element: GoalsComponent,
-      exact: true,
-    },
-    {
-      path: "/metas/nuevo",
-      name: "Nuevo",
-      element: NewGoalComponent,
-      exact: true,
-    },
-    {
-      path: "/metas/editar/:id",
-      name: "Editar",
-      element: EditGoalComponent,
-      exact: true,
-    },
   ];
   const routesModerator = [
     {
@@ -477,6 +459,24 @@ export const RoutesArray = (): any[] => {
       path: "/usuarios/editar/:id",
       name: "Editar",
       element: EditUserComponent,
+      exact: true,
+    },
+    {
+      path: "/metas",
+      name: "Metas",
+      element: GoalsComponent,
+      exact: true,
+    },
+    {
+      path: "/metas/nuevo",
+      name: "Nuevo",
+      element: NewGoalComponent,
+      exact: true,
+    },
+    {
+      path: "/metas/editar/:id",
+      name: "Editar",
+      element: EditGoalComponent,
       exact: true,
     },
     {

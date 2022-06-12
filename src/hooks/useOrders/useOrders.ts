@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
 import { Order } from "./index";
 import { PaginateResponse } from "../types";
-import { setFormatDate } from "../../utils/formats";
 
 export enum Status {
   Loading,
@@ -16,9 +15,13 @@ export enum Status {
 
 export const useOrders = () => {
   const [orders, setOrders] = React.useState<Order[]>([]);
-  const [ordersAll, setOrdersAll] = React.useState<Order[]>([]);
-  const [orderInfo, setOrderInfo] = React.useState<Order>(null);
+  const [orderInfo, setOrderInfo] = React.useState<Order | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateDate] = React.useState<PaginateResponse| null>(null)
+  const [intervalFilter, setIntervalFilter] = React.useState({
+    startDate: "",
+    endDate:""
+  })
 
   function setOrderById(id: string) {
     setStatus(Status.Loading);
@@ -31,48 +34,20 @@ export const useOrders = () => {
     });
   }
 
-  function getAllOrders() {
-    //  startDate, endDate }
+  function getAllOrders( { startDate, endDate }: {startDate: string, endDate:string},
+    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
     const token = getCookie("esagel_token") || "";
-    getOrders(
-      token,
-      // , { startDate, endDate }
-      {}
-    )
+    getOrders(token, {startDate, endDate}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: ordersObtained = [] } = response || {};
         setOrders(ordersObtained);
-        setOrdersAll(ordersObtained)
+        setPaginateDate(response)
         setStatus(Status.Ready);
       })
       .catch(() => {
         setStatus(Status.Error);
       });
   }
-
-  
-  function searchOrdersByInterval(startDate:string= "", endDate:string ="") {
-    if (ordersAll.length === 0) {
-      getAllOrders();
-    }else if(startDate==="" && endDate===""){
-      setOrders(ordersAll)
-    }
-
-    else {
-      const ordersFilter = ordersAll.filter((order: Order) => {
-        const {
-          createdAt
-        } = order || {};
-        let dateStrA = startDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3")
-        let dateStrB = endDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        let emitedDate =  setFormatDate({order:1,date: createdAt})
-        emitedDate =  emitedDate.replace( /(\d{4})\/(\d{2})\/(\d{2})/, "$2/$1/$3");
-        return new Date(emitedDate) >= new Date(dateStrA) && new Date(emitedDate) <= new Date(dateStrB)
-      });
-      setOrders(ordersFilter);
-    }
-  }
-
 
   async function updateOrder(id: string, order: any) {
     setStatus(Status.Updating);
@@ -123,7 +98,6 @@ export const useOrders = () => {
               order?._id === id ? { ...order, status: 2 } : order
             )
           );
-          // const orderNumber = response?.updatedOrder?.orderNumber || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -235,6 +209,11 @@ export const useOrders = () => {
       });
   }
 
+  
+  function changePage (index: number) {
+    getAllOrders(intervalFilter, {limit: 3, pageSize:index})
+  }
+
   return {
     orders,
     confirmOrder,
@@ -244,7 +223,9 @@ export const useOrders = () => {
     setOrderById,
     orderInfo,
     getAllOrders,
-    searchOrdersByInterval,
+    paginateData,
+    setIntervalFilter,
+    changePage,
     status,
   };
 };

@@ -14,13 +14,14 @@ type GoalItemProps = Goal & {
 export const GoalItem: React.FC<GoalItemProps> = ({
   index,
   code,
-  employee,
+  seller = null,
   startDate,
   endDate,
   estimatedQuantity,
   quantitySold,
   handleCancel,
 }) => {
+  const { employee = null } = seller || {};
   return (
     <tr>
       <td>{index}</td>

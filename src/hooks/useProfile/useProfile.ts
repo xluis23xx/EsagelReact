@@ -25,7 +25,6 @@ export const useProfile = () => {
 
     const token = getCookie("esagel_token") || "";
     getProfile(token, id).then((response) => {
-      console.log(response)
       if (response?._id) {
         setProfileInfo(response);
         setStatus(Status.Ready);
