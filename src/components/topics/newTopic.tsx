@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames } from "../../utils/errors";
+import {
+  formatDescription,
+  formatExtendNames,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import { Topic, Status, useTopics } from "../../hooks/useTopics";
@@ -22,7 +25,7 @@ const NewTopicComponent = () => {
   const stateValidatorSchema = {
     name: {
       required: true,
-      validator: formatNames(),
+      validator: formatExtendNames(),
       min2caracts: true,
       invalidtext: true,
     },

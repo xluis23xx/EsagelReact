@@ -9,6 +9,7 @@ const mediumRegularExp = new RegExp(
   "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})"
 );
 const namesRegex = new RegExp(/^([a-zñáéíóúü'\s-])+[a-zñáéíóúü]+$/, "i");
+const namesExtendRegex = new RegExp(/^([a-z0-9ñáéíóúü'\s-])+[a-z0-9ñáéíóúü]+$/, "i");
 const descripRegex = new RegExp(/^(?!\s)[\wñáéíóúü@,.-\s]+$/, "i");
 
 // prettier-ignore
@@ -51,6 +52,7 @@ export {
   maskDocuments,
   mediumRegularExp,
   namesRegex,
+  namesExtendRegex,
   numberRegex,
   passRecomend,
   patterCvv,

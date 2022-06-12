@@ -4,6 +4,7 @@ import {
   cellphoneRegex,
   descripRegex,
   emailRegex,
+  namesExtendRegex,
   namesRegex,
   numberRegex,
   rucRegex,
@@ -35,6 +36,11 @@ export const formatPass = () => ({
 export const formatNames = () => ({
   func: (value) => value === "" || namesRegex.test(value),
   error: "Formato inválido, solo letras",
+});
+
+export const formatExtendNames = () => ({
+  func: (value) => value === "" || namesExtendRegex.test(value),
+  error: "Formato inválido.",
 });
 
 export const formatRuc = () => ({
