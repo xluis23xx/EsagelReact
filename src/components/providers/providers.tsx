@@ -69,11 +69,11 @@ const ProvidersComponent = () => {
   const tableExportId = "providers-table";
 
   const headers = [
-    { label: "Fecha de solicitud", key: "createdAt" },
     { label: "Nombre de la Empresa", key: "businessName" },
     { label: "RUC", key: "documentNumber" },
     { label: "Nombre del Contacto", key: "contactName" },
     { label: "Teléfono", key: "phoneNumber" },
+    { label: "Fecha de Registro", key: "createdAt" },
   ];
 
   return (

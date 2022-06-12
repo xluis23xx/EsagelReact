@@ -15,9 +15,9 @@ export const useFileUpload = ({
   // state para las imagenes
   const [uploading, setUploading] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
-  const [urlDocument, setUrlDocument] = React.useState(null);
-  const [showDocument, setShowDocument] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [urlDocument, setUrlDocument] = React.useState<string | null>("");
+  const [showDocument, setShowDocument] = React.useState<string | null>("");
+  const [errorMessage, setErrorMessage] = React.useState<string | null>("");
 
   // Todo sobre las imagenes
   const handleUploadStart = () => {
@@ -53,7 +53,7 @@ export const useFileUpload = ({
     setShowDocument(url);
   };
 
-  const handleProgress = (progress: number | null) => {
+  const handleProgress = (progress: number) => {
     setProgress(progress);
   };
 

@@ -53,7 +53,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
           : ""}
       </td>
       <td>{setFormatDate({ order: 0, date: createdAt })}</td>
-      <td>{total || ""}</td>
+      <td>{total?.toFixed(2) || ""}</td>
       <td>
         <CBadge
           color={

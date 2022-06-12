@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
 import { useFileUpload } from "../../hooks/useFileUpload";
+import { InputForm } from "../global-components/inputForm";
 
 const EditUserComponent = () => {
   const { updateUser, status, setUserById, userInfo } = useUsers();
@@ -87,6 +88,7 @@ const EditUserComponent = () => {
     errors: { status: statusFormError },
     handleOnChange,
     handleOnSubmit,
+    disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
   return (
@@ -108,9 +110,15 @@ const EditUserComponent = () => {
                         imageUrl: showImage,
                         imageHeight: "auto",
                         padding: "20",
-                        imageAlt: "imagen del usuario",
-                        confirmButtonColor: "#ff0000",
-                      })
+                        imageAlt: "Imagen del usuario",
+                        confirmButtonText: "Cerrar",
+                        confirmButtonColor: "#4f5d73",
+                        showDenyButton: true,
+                        denyButtonText: "Limpiar",
+                        denyButtonColor: "#9da5b1",
+                      }).then((result) =>
+                        result.isDenied ? setShowImage("") : null
+                      )
                     }
                   >
                     Ver Foto
@@ -233,20 +241,15 @@ const EditUserComponent = () => {
                   <label className="form-label" htmlFor="username">
                     Usuario (*):
                   </label>
-                  <div className="d-flex">
-                    <input
-                      id="username"
-                      type="text"
-                      required
-                      className="w-100"
-                      placeholder="Usuario"
-                      name="username"
-                      value={userInfo?.username || ""}
-                      onChange={handleOnChange}
-                      onBlur={handleOnChange}
-                      disabled={true}
-                    />
-                  </div>
+                  <InputForm
+                    type="text"
+                    required
+                    placeholder="Usuario"
+                    name="username"
+                    value={userInfo?.username || ""}
+                    onChange={handleOnChange}
+                    disabled={true}
+                  />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="image">
@@ -286,9 +289,11 @@ const EditUserComponent = () => {
                     disabled={
                       statusForm === ""
                         ? true
-                        : false || !userInfo || selectedRoles.length === 0
-                        ? true
                         : false ||
+                          !userInfo ||
+                          selectedRoles.length === 0 ||
+                          disable ||
+                          status === Status.Loading ||
                           status === Status.Updating ||
                           imageUploading ||
                           imageErrorMessage

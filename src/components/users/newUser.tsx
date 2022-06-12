@@ -32,6 +32,7 @@ const NewUserComponent = () => {
   const {
     uploading: imageUploading,
     progress: imageProgress,
+    setShowDocument: setShowImage,
     showDocument: showImage,
     urlDocument: urlImage,
     errorMessage: imageErrorMessage,
@@ -141,9 +142,15 @@ const NewUserComponent = () => {
                         imageUrl: showImage,
                         imageHeight: "auto",
                         padding: "20",
-                        imageAlt: "imagen del usuario",
-                        confirmButtonColor: "#ff0000",
-                      })
+                        imageAlt: "Imagen del usuario",
+                        confirmButtonText: "Cerrar",
+                        confirmButtonColor: "#4f5d73",
+                        showDenyButton: true,
+                        denyButtonText: "Limpiar",
+                        denyButtonColor: "#9da5b1",
+                      }).then((result) =>
+                        result.isDenied ? setShowImage("") : null
+                      )
                     }
                   >
                     Ver Foto
@@ -357,9 +364,7 @@ const NewUserComponent = () => {
                         : false ||
                           (enableCustomUsername && !username ? true : false) ||
                           !selectedEmployee ||
-                          selectedRoles.length === 0
-                        ? true
-                        : false ||
+                          selectedRoles.length === 0 ||
                           status === Status.Updating ||
                           imageUploading ||
                           imageErrorMessage

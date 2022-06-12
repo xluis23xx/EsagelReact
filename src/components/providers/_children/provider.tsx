@@ -25,11 +25,11 @@ export const ProviderItem: React.FC<ProviderItemProps> = ({
   return (
     <tr>
       <td>{orderNumber}</td>
-      <td>{setFormatDate({ date: createdAt })}</td>
       <td>{businessName || ""}</td>
       <td>{documentNumber || ""}</td>
       <td>{contactName || ""}</td>
       <td>{phoneNumber || ""}</td>
+      <td>{setFormatDate({ date: createdAt })}</td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">

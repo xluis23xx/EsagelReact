@@ -203,7 +203,8 @@ const NewCourseTypeComponent = () => {
                           imageHeight: "auto",
                           padding: "20",
                           imageAlt: "Logo de la empresa",
-                          confirmButtonColor: "#ff0000",
+                          confirmButtonText: "Cerrar",
+                          confirmButtonColor: "#4f5d73",
                         })
                       }
                     >

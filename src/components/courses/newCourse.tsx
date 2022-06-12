@@ -36,6 +36,7 @@ const NewCourseComponent = () => {
   const {
     uploading: imageUploading,
     progress: imageProgress,
+    setShowDocument: setShowImage,
     showDocument: showImage,
     urlDocument: urlImage,
     errorMessage: imageErrorMessage,
@@ -175,9 +176,15 @@ const NewCourseComponent = () => {
                         imageUrl: showImage,
                         imageHeight: "auto",
                         padding: "20",
-                        imageAlt: "imagen del curso",
-                        confirmButtonColor: "#ff0000",
-                      })
+                        imageAlt: name || "",
+                        confirmButtonText: "Cerrar",
+                        confirmButtonColor: "#4f5d73",
+                        showDenyButton: true,
+                        denyButtonText: "Limpiar",
+                        denyButtonColor: "#9da5b1",
+                      }).then((result) =>
+                        result.isDenied ? setShowImage("") : null
+                      )
                     }
                   >
                     Ver Foto
