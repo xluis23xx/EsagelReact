@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames, formatRuc } from "../../utils/errors";
+import { formatExtendNames, formatRuc } from "../../utils/errors";
 
 import { Order, OrderDetail, Status, useOrders } from "../../hooks/useOrders";
 import CIcon from "@coreui/icons-react";
@@ -126,7 +126,7 @@ const NewOrderComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

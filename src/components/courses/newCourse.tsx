@@ -2,7 +2,11 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames } from "../../utils/errors";
+import {
+  formatDescription,
+  formatExtendNames,
+  formatNames,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 import { TextAreaForm } from "../global-components/textareaForm";
 
@@ -125,7 +129,7 @@ const NewCourseComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

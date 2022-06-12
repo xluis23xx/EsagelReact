@@ -2,7 +2,11 @@
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames } from "../../utils/errors";
+import {
+  formatDescription,
+  formatExtendNames,
+  formatNames,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import FileUploader from "react-firebase-file-uploader";
@@ -161,7 +165,7 @@ const EditCourseComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

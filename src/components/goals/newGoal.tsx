@@ -2,13 +2,12 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames, minNumber } from "../../utils/errors";
+import { formatExtendNames, minNumber } from "../../utils/errors";
 
 import { Goal, Status, useGoals } from "../../hooks/useGoals";
 import CIcon from "@coreui/icons-react";
 
 import { SearchButton, SubmitButton } from "../global-components/globalButtons";
-import { Employee, useEmployees } from "../../hooks/useEmployees";
 
 import {
   CButton,
@@ -73,7 +72,7 @@ const NewGoalComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

@@ -2,7 +2,12 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames, minNumber } from "../../utils/errors";
+import {
+  formatDescription,
+  formatExtendNames,
+  formatNames,
+  minNumber,
+} from "../../utils/errors";
 
 import { Purchase, Status, usePurchases } from "../../hooks/usePurchases";
 import CIcon from "@coreui/icons-react";
@@ -87,7 +92,7 @@ const NewPurchaseComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

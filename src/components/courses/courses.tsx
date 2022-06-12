@@ -13,7 +13,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { formatDescription } from "../../utils/errors";
+import { formatExtendNames } from "../../utils/errors";
 import {
   PaginateButtons,
   RedirectionButton,
@@ -44,7 +44,7 @@ const CoursesComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatDescription(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

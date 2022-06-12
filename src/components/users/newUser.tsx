@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatEmail, formatNames } from "../../utils/errors";
+import { formatEmail, formatExtendNames } from "../../utils/errors";
 
 import { User, Status, useUsers } from "../../hooks/useUsers";
 import CIcon from "@coreui/icons-react";
@@ -103,7 +103,7 @@ const NewUserComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 

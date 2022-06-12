@@ -12,7 +12,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { formatNames } from "../../utils/errors";
+import { formatExtendNames } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
   PaginateButtons,
@@ -44,7 +44,7 @@ const ClientsComponent = () => {
 
   const validators = {
     required: false,
-    validator: formatNames(),
+    validator: formatExtendNames(),
     invalidtext: true,
   };
 
