@@ -1,5 +1,5 @@
 import ENVIROMENTS from "../../enviroments/env";
-import { PaginateParams, PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 import { GetCourse } from "./types";
 
@@ -7,7 +7,7 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getCourses = (
   token: string,
-  {filter = "", status = null}: {filter:string, status: number | null},
+  {filter = "", status = null}: BodyParams,
   { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> =>
   fetch(`${GENERAL_API}/courses/consult/?limit=${limit}&pageSize=${pageSize}`, {

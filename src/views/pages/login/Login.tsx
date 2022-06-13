@@ -13,8 +13,8 @@ import { useSettings } from "../../../hooks/useSettings";
 import esagelImage from "src/assets/images/esagel-blanco.png";
 
 const Login = () => {
-  const { setUser } = React.useContext(AuthContext);
-  const { setConfig } = React.useContext(SettingsContext);
+  const { setUser } = React.useContext<any>(AuthContext);
+  const { setConfig } = React.useContext<any>(SettingsContext);
   const [showFormatInvalid, setShowFormatInvalid] = React.useState("");
   const { verifyAuthentication, message, status } = useAuth();
   const { getSettingsConfig } = useSettings();
@@ -49,9 +49,12 @@ const Login = () => {
     if (resp?.status === 200 || resp?.status === 201) {
       if (resp?.token) {
         setCookie("esagel_token", resp?.token, 1);
-        const config = await getSettingsConfig();
-        setConfig(config);
       }
+      if (resp?.refreshToken) {
+        setCookie("esagel_refreshtoken", resp?.refreshToken, 1);
+      }
+      const config = await getSettingsConfig();
+      setConfig(config);
       if (resp?.user) {
         localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
         setUser(resp.user);
@@ -133,7 +136,7 @@ const Login = () => {
                         disabled={status === Status.Loading}
                         name="username"
                         required
-                        value={username}
+                        value={username || ""}
                         onChange={(e) => {
                           handleOnChange(e);
                         }}
@@ -151,7 +154,7 @@ const Login = () => {
                         disabled={status === Status.Loading}
                         required
                         name="password"
-                        value={password}
+                        value={password || ""}
                         onChange={(e) => {
                           handleOnChange(e);
                           checkFormat(e);

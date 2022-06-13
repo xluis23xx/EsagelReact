@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 type FormatDate = {
   date: string | Date | undefined| null;
   order?: number; // 0 dia-mes-año | 1 año-mes-dia
@@ -96,4 +98,78 @@ export const extendedDate = () => {
       : `0${newDate.getSeconds()}`
   }`;
   return dateFormat;
+};
+
+export const obtainFirstAndLastDayOfMonth = (
+  {month="", year = new Date().getFullYear()}:{ month:string, year: number}
+  ) => {
+  switch (month.toLowerCase()) {
+    case "enero":
+      return {
+        firstDay: `${year}-01-01`,
+        endDay: `${year}-01-31`,
+      };
+    case "febrero":
+      return {
+        firstDay: `${year}-02-01`,
+        endDay: `${year}-02-${year % 4 === 0 ? "29" : "28"}`,
+      };
+    case "marzo":
+      return {
+        firstDay: `${year}-03-01`,
+        endDay: `${year}-03-31`,
+      };
+    case "abril":
+      return {
+        firstDay: `${year}-04-01`,
+        endDay: `${year}-04-30`,
+      };
+    case "mayo":
+      return {
+        firstDay: `${year}-05-01`,
+        endDay: `${year}-05-31`,
+      };
+    case "junio":
+      return {
+        firstDay: `${year}-06-01`,
+        endDay: `${year}-06-30`,
+      };
+    case "julio":
+      return {
+        firstDay: `${year}-07-01`,
+        endDay: `${year}-07-31`,
+      };
+    case "agosto":
+      return {
+        firstDay: `${year}-08-01`,
+        endDay: `${year}-08-31`,
+      };
+    case "agosto":
+      return {
+        firstDay: `${year}-08-01`,
+        endDay: `${year}-08-31`,
+      };
+    case "setiembre":
+      return {
+        firstDay: `${year}-09-01`,
+        endDay: `${year}-09-30`,
+      };
+    case "octubre":
+      return {
+        firstDay: `${year}-10-01`,
+        endDay: `${year}-10-31`,
+      };
+    case "noviembre":
+      return {
+        firstDay: `${year}-11-01`,
+        endDay: `${year}-11-30`,
+      };
+    case "diciembre":
+      return {
+        firstDay: `${year}-12-01`,
+        endDay: `${year}-12-31`,
+      };
+    default:
+      return null;
+  }
 };

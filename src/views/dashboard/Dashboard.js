@@ -11,32 +11,60 @@ import { getStyle, hexToRgba } from "@coreui/utils";
 // import { cilCloudDownload } from "@coreui/icons";
 
 import WidgetsDropdown from "../widgets/WidgetsDropdown";
+import { useDashboard } from "../../hooks/useDashboard";
+import { months } from "../../utils/constants";
+import { obtainFirstAndLastDayOfMonth } from "../../utils/formats";
 
 const Dashboard = () => {
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Setiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
+  const { obtainDashboard, dashboardInfo } = useDashboard();
+  const [firstMonth, setFirstMonth] = React.useState("");
+  const [secondMonth, setSecondMonth] = React.useState("");
+  const [thirdMonth, setThirdMonth] = React.useState("");
 
-  const month = new Date().getMonth();
-  const firstMonth = months[month];
+  React.useEffect(() => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const objectFirstMonth = {
+      year: currentYear,
+      month: months[currentMonth],
+    };
+    const objectSecondMonth = {
+      year: !months[currentMonth - 1] ? currentYear - 1 : currentYear,
+      month: !months[currentMonth - 1]
+        ? months[months.length - 1]
+        : months[currentMonth - 1],
+    };
+    const objectThirdMonth = {
+      year: !months[currentMonth - 2] ? currentYear - 2 : currentYear,
+      month: !months[currentMonth - 2]
+        ? months[months.length - 2]
+        : months[currentMonth - 2],
+    };
+    setFirstMonth(objectFirstMonth.month);
+    setSecondMonth(objectSecondMonth.month);
+    setThirdMonth(objectThirdMonth.month);
+    const firstMonthParams = obtainFirstAndLastDayOfMonth(objectFirstMonth);
+    const secondMonthParams = obtainFirstAndLastDayOfMonth(objectSecondMonth);
+    const thirdMonthParams = obtainFirstAndLastDayOfMonth(objectThirdMonth);
+    console.log(firstMonthParams);
+    console.log(secondMonthParams);
+    console.log(thirdMonthParams);
 
-  const secondMonth = !months[month - 1]
-    ? months[months.length - 1]
-    : months[month - 1];
-  const thirthMonth = !months[month - 2]
-    ? months[months.length - 2]
-    : months[month - 2];
+    obtainDashboard({
+      firstMonth: {
+        startDate: `${firstMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${firstMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+      secondMonth: {
+        startDate: `${secondMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${secondMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+      thirdMonth: {
+        startDate: `${thirdMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${thirdMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+    });
+  }, []);
 
   return (
     <>
@@ -52,7 +80,7 @@ const Dashboard = () => {
                     Monto Ganado por mes
                   </h4>
                   <div className="medium text-medium-emphasis">
-                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                    {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
@@ -65,7 +93,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirthMonth, secondMonth, firstMonth],
+                  labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
                       label: "Ingresos",
@@ -73,7 +101,11 @@ const Dashboard = () => {
                       borderColor: getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
-                      data: [1000, 200, 650],
+                      data: [
+                        dashboardInfo?.sales?.totalThirdMonth,
+                        dashboardInfo?.sales?.totalSecondMonth,
+                        dashboardInfo?.sales?.totalFirstMonth,
+                      ],
                       fill: true,
                     },
                   ],
@@ -126,7 +158,7 @@ const Dashboard = () => {
                     Monto Perdido por mes
                   </h4>
                   <div className="medium text-medium-emphasis">
-                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                    {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
@@ -139,7 +171,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirthMonth, secondMonth, firstMonth],
+                  labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
                       label: "Egresos",
@@ -147,7 +179,11 @@ const Dashboard = () => {
                       borderColor: getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
-                      data: [400, 500, 100],
+                      data: [
+                        dashboardInfo?.purchases?.totalThirdMonth,
+                        dashboardInfo?.purchases?.totalSecondMonth,
+                        dashboardInfo?.purchases?.totalFirstMonth,
+                      ],
                       fill: true,
                     },
                   ],
@@ -200,7 +236,7 @@ const Dashboard = () => {
                     Monto Ganado por mes
                   </h4>
                   <div className="medium text-medium-emphasis">
-                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                    {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
@@ -213,7 +249,7 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirthMonth, secondMonth, firstMonth],
+                  labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
                       label: "Egresos",
@@ -224,7 +260,11 @@ const Dashboard = () => {
                         "rgb(54, 162, 235)",
                         "rgb(255, 205, 86)",
                       ],
-                      data: [400, 500, 100],
+                      data: [
+                        dashboardInfo?.sales?.totalThirdMonth,
+                        dashboardInfo?.sales?.totalSecondMonth,
+                        dashboardInfo?.sales?.totalFirstMonth,
+                      ],
                       fill: true,
                     },
                   ],
@@ -263,7 +303,7 @@ const Dashboard = () => {
                     Monto Perdido por mes
                   </h4>
                   <div className="medium text-medium-emphasis">
-                    {thirthMonth} - {firstMonth} {new Date().getFullYear()}
+                    {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
                 <CCol sm={4} className="d-none d-md-block">
@@ -276,7 +316,7 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirthMonth, secondMonth, firstMonth],
+                  labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
                       label: "Egresos",
@@ -287,7 +327,11 @@ const Dashboard = () => {
                         "rgb(54, 162, 235)",
                         "rgb(255, 205, 86)",
                       ],
-                      data: [400, 800, 10],
+                      data: [
+                        dashboardInfo?.purchases?.totalThirdMonth,
+                        dashboardInfo?.purchases?.totalSecondMonth,
+                        dashboardInfo?.purchases?.totalFirstMonth,
+                      ],
                       fill: true,
                     },
                   ],

@@ -23,3 +23,17 @@ export const authentication = (
       }
     ).then((res) => res.json())
     .catch((res) => res.json())
+
+export const refreshToken = (token: string) =>
+fetch(
+  `${GENERAL_API}/auth/token`,
+  {
+    method: "POST",
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": `${token}`,
+    },
+  }
+).then((res) => res.json())
+.catch((res) => res.json())

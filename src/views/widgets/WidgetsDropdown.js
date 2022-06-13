@@ -10,34 +10,59 @@ import {
 } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartBar, CChartLine } from "@coreui/react-chartjs";
+import { useDashboard } from "../../hooks/useDashboard";
+import { months } from "../../utils/constants";
+import { obtainFirstAndLastDayOfMonth } from "../../utils/formats";
 // import CIcon from "@coreui/icons-react";
 // import { cilOptions } from "@coreui/icons";
 
 const WidgetsDropdown = () => {
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Setiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
+  const { obtainDashboard, dashboardInfo } = useDashboard();
+  const [firstMonth, setFirstMonth] = React.useState("");
+  const [secondMonth, setSecondMonth] = React.useState("");
+  const [thirdMonth, setThirdMonth] = React.useState("");
 
-  const month = new Date().getMonth();
-  const firstMonth = months[month];
+  React.useEffect(() => {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const objectFirstMonth = {
+      year: currentYear,
+      month: months[currentMonth],
+    };
+    const objectSecondMonth = {
+      year: !months[currentMonth - 1] ? currentYear - 1 : currentYear,
+      month: !months[currentMonth - 1]
+        ? months[months.length - 1]
+        : months[currentMonth - 1],
+    };
+    const objectThirdMonth = {
+      year: !months[currentMonth - 2] ? currentYear - 2 : currentYear,
+      month: !months[currentMonth - 2]
+        ? months[months.length - 2]
+        : months[currentMonth - 2],
+    };
+    setFirstMonth(objectFirstMonth.month);
+    setSecondMonth(objectSecondMonth.month);
+    setThirdMonth(objectThirdMonth.month);
+    const firstMonthParams = obtainFirstAndLastDayOfMonth(objectFirstMonth);
+    const secondMonthParams = obtainFirstAndLastDayOfMonth(objectSecondMonth);
+    const thirdMonthParams = obtainFirstAndLastDayOfMonth(objectThirdMonth);
 
-  const secondMonth = !months[month - 1]
-    ? months[months.length - 1]
-    : months[month - 1];
-  const thirthMonth = !months[month - 2]
-    ? months[months.length - 2]
-    : months[month - 2];
+    obtainDashboard({
+      firstMonth: {
+        startDate: `${firstMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${firstMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+      secondMonth: {
+        startDate: `${secondMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${secondMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+      thirdMonth: {
+        startDate: `${thirdMonthParams.firstDay}T00:00:00.0+00:00`,
+        endDate: `${thirdMonthParams.endDay}T23:59:59.999+00:00`,
+      },
+    });
+  }, []);
 
   return (
     <CRow>
@@ -45,7 +70,7 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="primary"
-          value={9823}
+          value={dashboardInfo?.purchases?.quantitiesTotal || 0}
           title="Nro. Compras"
           // action={
           //   <CDropdown alignment="end">
@@ -72,14 +97,18 @@ const WidgetsDropdown = () => {
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirthMonth, secondMonth, firstMonth],
+                labels: [thirdMonth, secondMonth, firstMonth],
                 datasets: [
                   {
                     label: "Acumulado",
                     backgroundColor: "transparent",
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-primary"),
-                    data: [51, 55, 40],
+                    data: [
+                      dashboardInfo?.purchases?.quantityThirdMonth || 0,
+                      dashboardInfo?.purchases?.quantitySecondMonth || 0,
+                      dashboardInfo?.purchases?.quantityFirstMonth || 0,
+                    ],
                   },
                 ],
               }}
@@ -101,8 +130,18 @@ const WidgetsDropdown = () => {
                     },
                   },
                   y: {
-                    min: 30,
-                    max: 89,
+                    min:
+                      Math.min(
+                        dashboardInfo?.purchases?.quantityThirdMonth || 0,
+                        dashboardInfo?.purchases?.quantitySecondMonth || 0,
+                        dashboardInfo?.purchases?.quantityFirstMonth || 0
+                      ) - 2,
+                    max:
+                      Math.max(
+                        dashboardInfo?.purchases?.quantityThirdMonth || 0,
+                        dashboardInfo?.purchases?.quantitySecondMonth || 0,
+                        dashboardInfo?.purchases?.quantityFirstMonth || 0
+                      ) + 2,
                     display: false,
                     grid: {
                       display: false,
@@ -132,21 +171,25 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={9823}
+          value={dashboardInfo?.sales?.quantitiesTotal || 0}
           title="Nro. Ventas"
           chart={
             <CChartLine
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirthMonth, secondMonth, firstMonth],
+                labels: [thirdMonth, secondMonth, firstMonth],
                 datasets: [
                   {
                     label: "Acumulado",
                     backgroundColor: "transparent",
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-info"),
-                    data: [34, 22, 11],
+                    data: [
+                      dashboardInfo?.sales?.quantityThirdMonth || 0,
+                      dashboardInfo?.sales?.quantitySecondMonth || 0,
+                      dashboardInfo?.sales?.quantityFirstMonth || 0,
+                    ],
                   },
                 ],
               }}
@@ -168,8 +211,18 @@ const WidgetsDropdown = () => {
                     },
                   },
                   y: {
-                    min: -9,
-                    max: 39,
+                    min:
+                      Math.min(
+                        dashboardInfo?.sales?.quantityThirdMonth || 0,
+                        dashboardInfo?.sales?.quantitySecondMonth || 0,
+                        dashboardInfo?.sales?.quantityFirstMonth || 0
+                      ) - 2,
+                    max:
+                      Math.max(
+                        dashboardInfo?.sales?.quantityThirdMonth || 0,
+                        dashboardInfo?.sales?.quantitySecondMonth || 0,
+                        dashboardInfo?.sales?.quantityFirstMonth || 0
+                      ) + 2,
                     display: false,
                     grid: {
                       display: false,
@@ -198,20 +251,25 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="warning"
-          value={9823}
+          value={dashboardInfo?.sales?.amountTotal || 0}
           title="Monto de Ventas"
           chart={
             <CChartLine
               className="mt-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirthMonth, secondMonth, firstMonth],
+                labels: [thirdMonth, secondMonth, firstMonth],
                 datasets: [
                   {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: [34, 12, 40],
+                    data: [
+                      dashboardInfo?.sales?.totalThirdMonth || 0,
+                      dashboardInfo?.sales?.totalSecondMonth || 0,
+                      dashboardInfo?.sales?.totalFirstMonth || 0,
+                    ],
+
                     fill: true,
                   },
                 ],
@@ -251,20 +309,24 @@ const WidgetsDropdown = () => {
         <CWidgetStatsA
           className="mb-4"
           color="danger"
-          value={9823}
+          value={dashboardInfo?.purchases?.amountTotal || 0}
           title="Monto de Compras"
           chart={
             <CChartBar
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirthMonth, secondMonth, firstMonth],
+                labels: [thirdMonth, secondMonth, firstMonth],
                 datasets: [
                   {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: [84, 67, 82],
+                    data: [
+                      dashboardInfo?.purchases?.totalThirdMonth || 0,
+                      dashboardInfo?.purchases?.totalSecondMonth || 0,
+                      dashboardInfo?.purchases?.totalFirstMonth || 0,
+                    ],
                     barPercentage: 0.6,
                   },
                 ],

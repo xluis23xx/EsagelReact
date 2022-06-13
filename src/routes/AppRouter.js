@@ -11,12 +11,15 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import { deleteCookie, getCookie } from "../utils/cookies";
 import { SettingsContext } from "../context/SettingsContext";
+import { useAuth } from "../hooks/useAuth";
 export const AppRouter = () => {
+  const { updateToken } = useAuth();
   const [user, setUser] = React.useState(null);
   const [config, setConfig] = React.useState(null);
   const [lastPath, setLastPath] = React.useState("/");
   React.useEffect(() => {
     const ESAGEL_TOKEN = getCookie("esagel_token");
+    const ESAGEL_RFTOKEN = getCookie("esagel_refreshtoken");
     const ESAGEL_PROFILE = JSON.parse(
       localStorage.getItem("esagel_profile") || "{}"
     );
@@ -29,10 +32,16 @@ export const AppRouter = () => {
       Object.keys(ESAGEL_PROFILE).length > 0 &&
       Object.keys(ESAGEL_CONFIG).length > 0
     ) {
+      if (ESAGEL_RFTOKEN) {
+        updateToken();
+      }
       setUser(ESAGEL_PROFILE);
       setConfig(ESAGEL_CONFIG);
       setLastPath(ESAGEL_LAST_PATH || "/");
     } else {
+      if (ESAGEL_RFTOKEN) {
+        deleteCookie("esagel_refreshtoken");
+      }
       if (ESAGEL_TOKEN) {
         deleteCookie("esagel_token");
       }

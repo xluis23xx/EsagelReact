@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from "react";
-import { deleteCookie, getCookie } from "../../utils/cookies";
-import { authentication } from "./helpers";
+import { deleteCookie, getCookie, setCookie } from "../../utils/cookies";
+import { authentication, refreshToken } from "./helpers";
 import { Auth } from "./types";
 
 export enum Status {
@@ -41,6 +41,19 @@ export const useAuth = () => {
       });
   }
 
+  async function updateToken(){ 
+    const token = getCookie("esagel_refreshtoken") || ''
+   return refreshToken(token)
+    .then(res =>{
+      console.log(res)
+      if(res?.status===200){
+        setCookie("esagel_token", res?.accessToken || '', 1)
+        setCookie("esagel_refreshtoken", res?.refreshToken ||'', 1)
+      }
+      return res
+    }).catch(res=> res)
+  }
+
   function logoutUser() {
     const ESAGEL_TOKEN = getCookie("esagel_token");
     const USER_PROFILE = localStorage.getItem("esagel_profile");
@@ -57,6 +70,7 @@ export const useAuth = () => {
   }
   return {
     verifyAuthentication,
+    updateToken,
     logoutUser,
     status,
     message,
