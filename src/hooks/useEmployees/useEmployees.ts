@@ -40,10 +40,6 @@ export const useEmployees = () => {
     });
   }
 
-  function cleanemployeeInfo() {
-    setemployeeInfo(null);
-  }
-
   function getEmployeesByFilter(
     { filter="", status=null }: BodyParams,
     {limit, pageSize}: PaginateParams
@@ -185,7 +181,6 @@ export const useEmployees = () => {
   return {
     employees,
     deleteEmployee,
-    cleanemployeeInfo,
     registerEmployee,
     updateEmployee,
     setEmployeeById,

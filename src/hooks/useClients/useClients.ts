@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { getClientById, getClients, postClient, putClient } from "./helpers";
 import { Client } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
-import { string } from "prop-types";
 
 export enum Status {
   Loading,
@@ -34,10 +33,6 @@ export const useClients = () => {
         setStatus(Status.Ready);
       }
     });
-  }
-
-  function cleanClientInfo() {
-    setClientInfo(null);
   }
 
   function getClientsByFilter(
@@ -180,7 +175,6 @@ export const useClients = () => {
   return {
     clients,
     deleteClient,
-    cleanClientInfo,
     registerClient,
     updateClient,
     setClientById,
