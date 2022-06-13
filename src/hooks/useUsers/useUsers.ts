@@ -23,7 +23,7 @@ export const useUsers = () => {
   const [userInfo, setUserInfo] = React.useState<User | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
     status: null
   })
