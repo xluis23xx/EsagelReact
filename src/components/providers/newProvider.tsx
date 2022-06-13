@@ -1,13 +1,19 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames, formatPhone, formatRuc } from "../../utils/errors";
+import {
+  formatDescription,
+  formatNames,
+  formatPhone,
+  formatRuc,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { Status, useProviders } from "../../hooks/useProviders";
+import { Status, useProviders, Provider } from "../../hooks/useProviders";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { TextAreaForm } from "../global-components/textareaForm";
 
 const NewProviderComponent = () => {
   const { registerProvider, status } = useProviders();
@@ -18,6 +24,7 @@ const NewProviderComponent = () => {
     contactName: { value: "", error: "" },
     documentType: { value: "", error: "" },
     documentNumber: { value: "", error: "" },
+    description: { value: "", error: "" },
     phoneNumber: { value: "", error: "" },
   };
 
@@ -39,15 +46,22 @@ const NewProviderComponent = () => {
       validator: formatRuc(),
       invalidText: true,
     },
+    description: {
+      required: true,
+      validator: formatDescription(),
+      min2caracts: true,
+      invalidtext: true,
+    },
     phoneNumber: { required: true, validator: formatPhone() },
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: Provider) => {
     const provider = {
       businessName: data.businessName || null,
       contactName: data.contactName || null,
       phoneNumber: data.phoneNumber || null,
       documentType: "RUC" || null,
+      description: data.description || null,
       documentNumber: data.documentNumber || null,
       status: 1,
     };
@@ -59,11 +73,18 @@ const NewProviderComponent = () => {
   };
 
   const {
-    values: { businessName, contactName, phoneNumber, documentNumber },
+    values: {
+      businessName,
+      contactName,
+      phoneNumber,
+      description,
+      documentNumber,
+    },
     errors: {
       businessName: businessNameError,
       contactName: contactNameError,
       documentNumber: documentNumberError,
+      description: descriptionError,
       phoneNumber: phoneNumberError,
     },
     handleOnChange,
@@ -95,7 +116,7 @@ const NewProviderComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="businessName">
-                    Nombre de la Empresa (*):
+                    Nombre de la Empresa *
                   </label>
                   <InputForm
                     type="text"
@@ -112,7 +133,7 @@ const NewProviderComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
-                    Nro. RUC (*):
+                    Nro. RUC *
                   </label>
                   <InputForm
                     type="text"
@@ -126,10 +147,26 @@ const NewProviderComponent = () => {
                     error={documentNumberError}
                   />
                 </div>
+                <div className="form-group col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="description">
+                    Descripción *
+                  </label>
+                  <TextAreaForm
+                    required
+                    placeholder="Descripción"
+                    name="description"
+                    value={description}
+                    maxLength={100}
+                    rows={2}
+                    onChange={handleOnChange}
+                    disabled={status === Status.Updating}
+                    error={descriptionError}
+                  />
+                </div>
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactName">
-                    Nombre del Contacto (*):
+                    Nombre del Contacto *
                   </label>
                   <InputForm
                     type="text"
@@ -146,7 +183,7 @@ const NewProviderComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
-                    Télefono (*):
+                    Télefono *
                   </label>
                   <InputForm
                     type="text"

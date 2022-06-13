@@ -7,6 +7,7 @@ export type Provider = {
   phoneNumber?: string;
   documentType?: DocumentType;
   documentNumber?: string;
+  description?: string;
   status?: number | null;
   createdAt?: string;
   updatedAt?: string;

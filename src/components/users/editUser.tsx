@@ -139,34 +139,31 @@ const EditUserComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
-                    Empleado (*):
+                    Empleado *
                   </label>
-                  <div className="d-flex">
-                    <input
-                      required
-                      className={`w-100`}
-                      placeholder="Seleccione..."
-                      name="employee"
-                      value={
-                        userInfo
-                          ? `${
-                              userInfo?.employee?.name
-                                ? userInfo?.employee?.name
-                                : ""
-                            }${
-                              userInfo?.employee?.lastname
-                                ? ` ${userInfo?.employee?.name}`
-                                : ""
-                            }`
-                          : ""
-                      }
-                      disabled={true}
-                    />
-                  </div>
+                  <InputForm
+                    required
+                    placeholder="Seleccione..."
+                    name="employee"
+                    value={
+                      userInfo
+                        ? `${
+                            userInfo?.employee?.name
+                              ? userInfo?.employee?.name
+                              : ""
+                          }${
+                            userInfo?.employee?.lastname
+                              ? ` ${userInfo?.employee?.name}`
+                              : ""
+                          }`
+                        : ""
+                    }
+                    disabled={true}
+                  />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
-                    Estado (*):
+                    Estado *
                   </label>
                   <select
                     id="status"
@@ -190,7 +187,7 @@ const EditUserComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="roles">
-                    Roles (*):
+                    Roles *
                   </label>
                   <select
                     id="roles"
@@ -239,7 +236,7 @@ const EditUserComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="username">
-                    Usuario (*):
+                    Usuario *
                   </label>
                   <InputForm
                     type="text"

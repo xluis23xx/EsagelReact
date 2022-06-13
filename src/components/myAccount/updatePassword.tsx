@@ -72,7 +72,7 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
     >
       <div className="form-group mt-1 col-sm-6 col-xl-4">
         <label className="form-label" htmlFor="newPassword">
-          Nueva Contraseña (*):
+          Nueva Contraseña *
         </label>
         <InputForm
           required
@@ -87,7 +87,7 @@ const UpdatePassComponent = ({ profile }: { profile: User }) => {
       </div>
       <div className="form-group mt-1 col-sm-6 col-xl-4">
         <label className="form-label" htmlFor="oldPassword">
-          Contraseña Actual (*):
+          Contraseña Actual *
         </label>
         <InputForm
           required

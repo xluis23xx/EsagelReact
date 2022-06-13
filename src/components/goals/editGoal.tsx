@@ -81,7 +81,7 @@ const EditGoalComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
-                    Empleado (*):
+                    Empleado *
                   </label>
                   <InputForm
                     required
@@ -103,7 +103,7 @@ const EditGoalComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="estimatedQuantity">
-                    Cantidad Estimada (*):
+                    Cantidad Estimada *
                   </label>
                   <InputForm
                     type="number"
@@ -129,7 +129,7 @@ const EditGoalComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="startDate">
-                    Fecha de Inicio (*):
+                    Fecha de Inicio *
                   </label>
                   <InputForm
                     type="date"
@@ -149,7 +149,7 @@ const EditGoalComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="endDate">
-                    Fecha de Fin (*):
+                    Fecha de Fin *
                   </label>
                   <InputForm
                     type="date"

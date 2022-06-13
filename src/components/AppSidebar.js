@@ -30,7 +30,8 @@ const AppSidebar = () => {
   return (
     <CSidebar
       position="fixed"
-      className={`bg-dark`}
+      // className={`bg-dark`}
+      style={{backgroundColor: "#272727"}}
       unfoldable={unfoldable}
       visible={sidebarShow}
       onVisibleChange={(visible) => {

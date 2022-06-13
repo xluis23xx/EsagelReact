@@ -57,7 +57,7 @@ const NewCourseTypeComponent = () => {
     const courseType = {
       name: (data?.name ?? courseTypeInfo?.name) || null,
       description: (data?.description ?? courseTypeInfo?.description) || null,
-      
+
       status: (data?.status ?? courseTypeInfo?.status) || 1,
     };
     updateCourseType(id, courseType).then((response) => {
@@ -104,7 +104,7 @@ const NewCourseTypeComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="code">
-                    Código (*):
+                    Código *
                   </label>
                   <InputForm
                     type="text"
@@ -119,7 +119,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -137,7 +137,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
-                    Estado (*):
+                    Estado *
                   </label>
                   <select
                     id="status"
@@ -161,7 +161,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-12">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <TextAreaForm
                     required

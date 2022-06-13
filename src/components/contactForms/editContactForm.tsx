@@ -94,7 +94,7 @@ const EditContactFormComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -112,7 +112,7 @@ const EditContactFormComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <TextAreaForm
                     required

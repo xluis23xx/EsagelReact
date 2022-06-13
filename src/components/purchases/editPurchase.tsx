@@ -86,9 +86,9 @@ const NewPurchaseComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-              <div className="form-group mt-1 col-sm-6 col-xl-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="purchaseNumber">
-                    Nro. Compra (*):
+                    Nro. Compra *
                   </label>
                   <InputForm
                     type="text"
@@ -104,7 +104,7 @@ const NewPurchaseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -120,7 +120,7 @@ const NewPurchaseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="reason">
-                    Motivo (*):
+                    Motivo *
                   </label>
                   <TextAreaForm
                     required
@@ -138,7 +138,7 @@ const NewPurchaseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="provider">
-                    Proveedor (*):
+                    Proveedor *
                   </label>
                   <InputForm
                     required
@@ -241,7 +241,7 @@ const NewPurchaseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
-                    Estado (*):
+                    Estado *
                   </label>
                   <select
                     id="status"

@@ -208,7 +208,7 @@ const EditClientComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombres (*):
+                    Nombres *
                   </label>
                   <InputForm
                     type="text"
@@ -227,7 +227,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="lastname">
-                    Apellido Paterno (*):
+                    Apellido Paterno *
                   </label>
                   <InputForm
                     type="text"
@@ -246,7 +246,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="secondLastname">
-                    Apellido Materno (*):
+                    Apellido Materno *
                   </label>
                   <InputForm
                     type="text"
@@ -265,7 +265,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="email">
-                    Correo Personal (*):
+                    Correo Personal *
                   </label>
                   <InputForm
                     type="email"
@@ -284,7 +284,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
-                    Tipo de Documento (*):
+                    Tipo de Documento *
                   </label>
                   <select
                     id="documentType"
@@ -318,7 +318,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
-                    Número de Documento (*):
+                    Número de Documento *
                   </label>
                   <InputForm
                     type="text"
@@ -335,7 +335,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="department">
-                    Departamento (*):
+                    Departamento *
                   </label>
                   <select
                     id="department"
@@ -364,7 +364,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="address">
-                    Dirección (*):
+                    Dirección *
                   </label>
                   <InputForm
                     type="text"
@@ -383,7 +383,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
-                    Teléfono (*):
+                    Teléfono *
                   </label>
                   <InputForm
                     type="tel"
@@ -402,7 +402,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="birthdate">
-                    Fecha de Nacimiento (*):
+                    Fecha de Nacimiento *
                   </label>
                   <InputForm
                     type="date"
@@ -424,7 +424,7 @@ const EditClientComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="leadSource">
-                    Origen de Prospecto (*):
+                    Origen de Prospecto *
                   </label>
                   <select
                     id="leadSource"
@@ -453,7 +453,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="prospectStatus">
-                    Estado de Prospecto (*):
+                    Estado de Prospecto *
                   </label>
                   <select
                     id="prospectStatus"
@@ -484,7 +484,7 @@ const EditClientComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactForm">
-                    Medio de Contacto (*):
+                    Medio de Contacto *
                   </label>
                   <select
                     id="contactForm"

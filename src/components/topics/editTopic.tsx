@@ -89,7 +89,7 @@ const EditTopicComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group col-sm-6">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -107,7 +107,7 @@ const EditTopicComponent = () => {
 
                 <div className="form-group col-sm-6">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <TextAreaForm
                     required

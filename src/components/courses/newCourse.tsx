@@ -155,7 +155,7 @@ const NewCourseComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getTopicsByFilter({ filter: filter, status:1 }, { limit: 5, pageSize: 1 });
+    getTopicsByFilter({ filter: filter, status: 1 }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -206,7 +206,7 @@ const NewCourseComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="code">
-                    Código (*):
+                    Código *
                   </label>
                   <InputForm
                     type="text"
@@ -222,7 +222,7 @@ const NewCourseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -238,7 +238,7 @@ const NewCourseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="modality">
-                    Modalidad (*):
+                    Modalidad *
                   </label>
                   <div className="w-100 d-flex">
                     <div className="form-check">
@@ -318,7 +318,7 @@ const NewCourseComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-8">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <TextAreaForm
                     placeholder="Descripción"
@@ -334,7 +334,7 @@ const NewCourseComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="price">
-                    Precio (*):
+                    Precio *
                   </label>
                   <InputForm
                     type="number"
@@ -352,7 +352,7 @@ const NewCourseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="vacanciesNumber">
-                    Nro. Vacantes (*):
+                    Nro. Vacantes *
                   </label>
                   <InputForm
                     type="number"
@@ -369,7 +369,7 @@ const NewCourseComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="courseType">
-                    Tipo de Curso (*):
+                    Tipo de Curso *
                   </label>
                   <select
                     id="courseType"

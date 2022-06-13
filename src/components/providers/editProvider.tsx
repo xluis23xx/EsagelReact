@@ -2,14 +2,20 @@
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames, formatPhone, formatRuc } from "../../utils/errors";
+import {
+  formatDescription,
+  formatNames,
+  formatPhone,
+  formatRuc,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { Status, useProviders } from "../../hooks/useProviders";
+import { Provider, Status, useProviders } from "../../hooks/useProviders";
 import { setFormatDate } from "../../utils/formats";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { TextAreaForm } from "../global-components/textareaForm";
 
 const EditProviderComponent = () => {
   const { updateProvider, setProviderById, providerInfo, status } =
@@ -31,6 +37,7 @@ const EditProviderComponent = () => {
     contactName: { value: null, error: "" },
     documentType: { value: null, error: "" },
     documentNumber: { value: null, error: "" },
+    description: { value: null, error: "" },
     phoneNumber: { value: null, error: "" },
   };
 
@@ -47,6 +54,12 @@ const EditProviderComponent = () => {
       min2caracts: true,
       invalidtext: true,
     },
+    description: {
+      required: true,
+      validator: formatDescription(),
+      min2caracts: true,
+      invalidtext: true,
+    },
     documentNumber: {
       required: true,
       validator: formatRuc(),
@@ -54,12 +67,13 @@ const EditProviderComponent = () => {
     },
     phoneNumber: { required: true, validator: formatPhone() },
   };
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: Provider) => {
     const provider = {
       businessName: (data?.businessName ?? providerInfo?.businessName) || null,
       contactName: (data?.contactName ?? providerInfo?.contactName) || null,
       documentNumber:
         (data?.documentNumber ?? providerInfo?.documentNumber) || null,
+      description: (data?.description ?? providerInfo?.description) || null,
       phoneNumber: (data?.phoneNumber ?? providerInfo?.phoneNumber) || null,
       status: 1,
     };
@@ -71,11 +85,18 @@ const EditProviderComponent = () => {
   };
 
   const {
-    values: { businessName, contactName, phoneNumber, documentNumber },
+    values: {
+      businessName,
+      contactName,
+      phoneNumber,
+      description,
+      documentNumber,
+    },
     errors: {
       businessName: businessNameError,
       contactName: contactNameError,
       documentNumber: documentNumberError,
+      description: descriptionError,
       phoneNumber: phoneNumberError,
     },
     handleOnChange,
@@ -143,7 +164,7 @@ const EditProviderComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="businessName">
-                    Nombre de la Empresa (*):
+                    Nombre de la Empresa *
                   </label>
                   <InputForm
                     type="text"
@@ -159,7 +180,7 @@ const EditProviderComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
-                    Nro. RUC (*):
+                    Nro. RUC *
                   </label>
                   <InputForm
                     type="text"
@@ -175,9 +196,27 @@ const EditProviderComponent = () => {
                     error={documentNumberError}
                   />
                 </div>
+                <div className="form-group col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="description">
+                    Descripción *
+                  </label>
+                  <TextAreaForm
+                    required
+                    placeholder="Descripción"
+                    name="description"
+                    value={(description ?? providerInfo?.description) || ""}
+                    maxLength={100}
+                    rows={2}
+                    onChange={handleOnChange}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
+                    error={descriptionError}
+                  />
+                </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="contactName">
-                    Nombre del Contacto (*):
+                    Nombre del Contacto *
                   </label>
                   <InputForm
                     type="text"
@@ -195,7 +234,7 @@ const EditProviderComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
-                    Télefono (*):
+                    Télefono *
                   </label>
                   <InputForm
                     type="text"

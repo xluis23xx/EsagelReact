@@ -175,7 +175,7 @@ const NewUserComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="employee">
-                    Empleado (*):
+                    Empleado *
                   </label>
                   <div className="d-flex">
                     <input
@@ -229,7 +229,7 @@ const NewUserComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
-                    Estado (*):
+                    Estado *
                   </label>
                   <select
                     id="status"
@@ -251,7 +251,7 @@ const NewUserComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="roles">
-                    Roles (*):
+                    Roles *
                   </label>
                   <select
                     id="roles"
@@ -297,7 +297,7 @@ const NewUserComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="username">
-                    Usuario (*):
+                    Usuario *
                   </label>
                   <div className="d-flex">
                     <input

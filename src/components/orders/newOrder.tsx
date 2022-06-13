@@ -50,6 +50,8 @@ const NewOrderComponent = () => {
   const [selectedClient, setSelectedClient] = React.useState<Client | null>(
     null
   );
+  const [selectedRuc, setSelectedRuc] = React.useState<Client | null>(null);
+
   const [selectedCourses, setSelectedCourses] = React.useState<OrderDetail[]>(
     []
   );
@@ -189,7 +191,7 @@ const NewOrderComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="client">
-                    Cliente (*):
+                    Cliente *
                   </label>
                   <div className="d-flex">
                     <input
@@ -241,7 +243,7 @@ const NewOrderComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
-                    Tipo de Comprobante (*):
+                    Tipo de Comprobante *
                   </label>
                   <select
                     id="documentType"
@@ -273,7 +275,7 @@ const NewOrderComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
-                    Estado (*):
+                    Estado *
                   </label>
                   <InputForm
                     name="status"
@@ -282,23 +284,62 @@ const NewOrderComponent = () => {
                   />
                 </div>
                 {documentType === "Factura" ? (
-                  <div className="form-group mt-1 col-sm-6 col-xl-4">
-                    <label className="form-label" htmlFor="documentNumber">
-                      Número de Documento (*):
-                    </label>
-                    <InputForm
-                      type="text"
-                      required
-                      maxLength={11}
-                      placeholder="Nro de Documento"
-                      name="documentNumber"
-                      value={documentNumber}
-                      onChange={handleOnChange}
-                      disabled={status === Status.Updating}
-                      error={documentNumberError}
-                      showError={false}
-                    />
-                  </div>
+                  <>
+                    <div className="form-group mt-1 col-sm-6 col-xl-4">
+                      <label className="form-label" htmlFor="documentNumber">
+                        RUC *
+                      </label>
+                      <div className="d-flex">
+                        <input
+                          required
+                          className={`w-100 ${
+                            showClientError ? "border border-danger" : ""
+                          }`}
+                          placeholder="RUC"
+                          name="ruc"
+                          value={
+                            `${
+                              selectedClient?.name ? selectedClient?.name : ""
+                            }${
+                              selectedClient?.lastname
+                                ? ` ${selectedClient?.lastname}`
+                                : ""
+                            }` || ""
+                          }
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setShowClientError(true);
+                            } else {
+                              setShowClientError(false);
+                            }
+                          }}
+                          onBlur={(e) => {
+                            if (e.target.value) {
+                              setShowClientError(true);
+                            } else {
+                              setShowClientError(false);
+                            }
+                          }}
+                          disabled={true}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-success"
+                          onClick={() => setVisibleClientModal(true)}
+                        >
+                          <CIcon icon={cilSearch}></CIcon>
+                        </button>
+                      </div>
+                      {showClientError ? (
+                        <p
+                          className="w-100 pb-0 mb-0 text-danger"
+                          style={{ fontSize: 15 }}
+                        >
+                          Este campo es requerido.
+                        </p>
+                      ) : null}
+                    </div>
+                  </>
                 ) : null}
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">

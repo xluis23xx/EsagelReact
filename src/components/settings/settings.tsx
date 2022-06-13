@@ -227,7 +227,7 @@ const NewCourseTypeComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="companyName">
-                    Nombre de la Compañía (*):
+                    Nombre de la Compañía *
                   </label>
                   <InputForm
                     type="text"
@@ -243,7 +243,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <InputForm
                     required
@@ -258,7 +258,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="businessName">
-                    Razón Social (*):
+                    Razón Social *
                   </label>
                   <InputForm
                     type="text"
@@ -274,7 +274,7 @@ const NewCourseTypeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="ruc">
-                    Nro. RUC (*):
+                    Nro. RUC *
                   </label>
                   <InputForm
                     type="text"

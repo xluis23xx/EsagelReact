@@ -226,7 +226,7 @@ const EditEmployeeComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="name">
-                    Nombres (*):
+                    Nombres *
                   </label>
                   <InputForm
                     type="text"
@@ -245,7 +245,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="lastname">
-                    Apellido Paterno (*):
+                    Apellido Paterno *
                   </label>
                   <InputForm
                     type="text"
@@ -264,7 +264,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="secondLastname">
-                    Apellido Materno (*):
+                    Apellido Materno *
                   </label>
                   <InputForm
                     type="text"
@@ -285,7 +285,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentType">
-                    Tipo de Documento (*):
+                    Tipo de Documento *
                   </label>
                   <select
                     id="documentType"
@@ -319,7 +319,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="documentNumber">
-                    Número de Documento (*):
+                    Número de Documento *
                   </label>
                   <InputForm
                     type="text"
@@ -338,7 +338,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="corporateEmail">
-                    Correo Corporativo (*):
+                    Correo Corporativo *
                   </label>
                   <InputForm
                     type="email"
@@ -356,7 +356,7 @@ const EditEmployeeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="address">
-                    Dirección (*):
+                    Dirección *
                   </label>
                   <InputForm
                     type="text"
@@ -375,7 +375,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="phoneNumber">
-                    Teléfono (*):
+                    Teléfono *
                   </label>
                   <InputForm
                     type="tel"
@@ -394,7 +394,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="personalEmail">
-                    Correo personal (*):
+                    Correo personal *
                   </label>
                   <InputForm
                     type="email"
@@ -412,7 +412,7 @@ const EditEmployeeComponent = () => {
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="birthdate">
-                    Fecha de Nacimiento (*):
+                    Fecha de Nacimiento *
                   </label>
                   <InputForm
                     type="date"
@@ -467,7 +467,7 @@ const EditEmployeeComponent = () => {
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="position">
-                    Cargo (*):
+                    Cargo *
                   </label>
                   <select
                     id="position"

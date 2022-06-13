@@ -1,10 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import {
-  formatDescription,
-  formatExtendNames,
-} from "../../utils/errors";
+import { formatDescription, formatExtendNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import { Topic, Status, useTopics } from "../../hooks/useTopics";
@@ -82,7 +79,7 @@ const NewTopicComponent = () => {
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group col-sm-6">
                   <label className="form-label" htmlFor="name">
-                    Nombre (*):
+                    Nombre *
                   </label>
                   <InputForm
                     type="text"
@@ -98,7 +95,7 @@ const NewTopicComponent = () => {
 
                 <div className="form-group col-sm-6">
                   <label className="form-label" htmlFor="description">
-                    Descripción (*):
+                    Descripción *
                   </label>
                   <TextAreaForm
                     required
