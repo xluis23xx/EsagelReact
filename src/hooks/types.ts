@@ -15,3 +15,10 @@ export type PaginateParams = {
   limit?: number;
   pageSize?: number;
 };
+
+export type BodyParams = {
+  startDate?: string
+  endDate?: string
+  filter?: string
+  status?: number | null
+}

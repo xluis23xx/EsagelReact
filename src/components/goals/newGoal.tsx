@@ -24,7 +24,7 @@ import { User, useUsers } from "../../hooks/useUsers";
 
 const NewGoalComponent = () => {
   const { registerGoal, status } = useGoals();
-  const { getAllUsers, setSearchFilter, users } = useUsers();
+  const { getUsersByFilter, setSearchFilter, users } = useUsers();
 
   const [visibleEmployeeModal, setVisibleEmployeeModal] = React.useState(false);
 
@@ -37,8 +37,9 @@ const NewGoalComponent = () => {
   React.useEffect(() => {
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllUsers({ filter: "" }, { limit: 5, pageSize: 1 });
+    getUsersByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -93,7 +94,7 @@ const NewGoalComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllUsers({ filter: filter }, { limit: 5, pageSize: 1 });
+    getUsersByFilter({ filter: filter, status: 1 }, { limit: 5, pageSize: 1 });
   };
 
   return (

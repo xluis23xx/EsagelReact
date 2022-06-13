@@ -25,7 +25,7 @@ const EmployeesComponent = () => {
   const {
     employees,
     deleteEmployee,
-    getAllEmployees,
+    getEmployeesByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -38,8 +38,9 @@ const EmployeesComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllEmployees({ filter: "" }, { limit: 20, pageSize: 1 });
+    getEmployeesByFilter({ filter: "", status: 1 }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -63,7 +64,10 @@ const EmployeesComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllEmployees({ filter: filter }, { limit: 20, pageSize: 1 });
+    getEmployeesByFilter(
+      { filter: filter, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "employees-table";

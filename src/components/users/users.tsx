@@ -26,7 +26,7 @@ const UsersComponent = () => {
   const {
     users,
     disableUser,
-    getAllUsers,
+    getUsersByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -39,8 +39,9 @@ const UsersComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: null,
     });
-    getAllUsers({ filter: "" }, { limit: 20, pageSize: 1 });
+    getUsersByFilter({ filter: "" }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -64,7 +65,7 @@ const UsersComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllUsers({ filter: filter }, { limit: 20, pageSize: 1 });
+    getUsersByFilter({ filter: filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "users-table";

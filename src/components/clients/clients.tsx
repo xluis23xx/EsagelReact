@@ -25,7 +25,7 @@ const ClientsComponent = () => {
   const {
     clients,
     deleteClient,
-    getAllClients,
+    getClientsByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -38,8 +38,9 @@ const ClientsComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllClients({ filter: "" }, { limit: 20, pageSize: 1 });
+    getClientsByFilter({ filter: "", status: 1 }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -63,7 +64,10 @@ const ClientsComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllClients({ filter: filter }, { limit: 20, pageSize: 1 });
+    getClientsByFilter(
+      { filter: filter, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "clients-table";

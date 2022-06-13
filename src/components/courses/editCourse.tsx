@@ -32,7 +32,7 @@ import { Topic, useTopics } from "../../hooks/useTopics";
 
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
-  const { topics, getAllTopics, setSearchFilter } = useTopics();
+  const { topics, getTopicsByFilter, setSearchFilter } = useTopics();
   const { getAllCourseTypes, courseTypes } = useCourseTypes();
 
   const {
@@ -74,8 +74,9 @@ const EditCourseComponent = () => {
     getAllCourseTypes();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllTopics({ filter: "" }, { limit: 5, pageSize: 1 });
+    getTopicsByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
     setCourseById(id);
   }, []);
 
@@ -189,7 +190,7 @@ const EditCourseComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllTopics({ filter: filter }, { limit: 5, pageSize: 1 });
+    getTopicsByFilter({ filter: filter, status: 1 }, { limit: 5, pageSize: 1 });
   };
 
   return (

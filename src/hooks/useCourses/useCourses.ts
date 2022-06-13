@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getCourseById, getCourses, postCourse, putCourse } from "./helpers";
 import { Course } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -18,8 +18,9 @@ export const useCourses = () => {
   const [courseInfo, setCourseInfo] = React.useState<Course | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
+    status: null
   })
 
 
@@ -36,17 +37,15 @@ export const useCourses = () => {
   }
 
 
-  function getAllCourses(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getCoursesByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getCourses(token,{filter}, {limit, pageSize})
+    getCourses(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: coursesObtained = [] } = response || {};
-        const enableCourses =
-          coursesObtained.filter((course: Course) => course.status === 1) || [];
-        setCourses(enableCourses);
+        setCourses(coursesObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -169,7 +168,7 @@ export const useCourses = () => {
       });
   }
   function changePage (index: number) {
-    getAllCourses(searchFilter, {limit: 20, pageSize:index})
+    getCoursesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -179,7 +178,7 @@ export const useCourses = () => {
     updateCourse,
     setCourseById,
     courseInfo,
-    getAllCourses,
+    getCoursesByFilter,
     paginateData,
     setSearchFilter,
     changePage,

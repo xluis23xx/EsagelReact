@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getSaleById, getSales, postSale, putSale } from "./helpers";
 import { Sale } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 import { setFormatDate } from "../../utils/formats";
 
 export enum Status {
@@ -19,9 +19,10 @@ export const useSales = () => {
   const [saleInfo, setSaleInfo] = React.useState<Sale | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [intervalFilter, setIntervalFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     startDate: "",
-    endDate:""
+    endDate:"",
+    status: null
   })
 
   function setSaleById(id: string) {
@@ -35,10 +36,10 @@ export const useSales = () => {
     });
   }
 
-  function getAllSales( { startDate, endDate }: {startDate: string, endDate:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
+  function getSalesByFilter( { startDate, endDate, status }: BodyParams,
+    {limit, pageSize}: PaginateParams) {
     const token = getCookie("esagel_token") || "";
-    getSales(token, {startDate, endDate}, {limit, pageSize})
+    getSales(token, {startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: salesObtained = [] } = response || {};
         setSales(salesObtained);
@@ -212,7 +213,7 @@ export const useSales = () => {
   }
 
   function changePage (index: number) {
-    getAllSales(intervalFilter, {limit: 20, pageSize:index})
+    getSalesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -223,9 +224,9 @@ export const useSales = () => {
     updateSale,
     setSaleById,
     saleInfo,
-    getAllSales,
+    getSalesByFilter,
     paginateData,
-    setIntervalFilter,
+    setSearchFilter,
     changePage,
     status,
   };

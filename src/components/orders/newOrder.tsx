@@ -33,13 +33,13 @@ const NewOrderComponent = () => {
   const { registerOrder, status } = useOrders();
 
   const {
-    getAllClients,
+    getClientsByFilter,
     setSearchFilter: setSearchClientFilter,
     clients,
   } = useClients();
 
   const {
-    getAllCourses,
+    getCoursesByFilter,
     setSearchFilter: setSearchCourseFilter,
     courses,
   } = useCourses();
@@ -67,12 +67,14 @@ const NewOrderComponent = () => {
     getAllDocumentTypes();
     setSearchClientFilter({
       filter: "",
+      status: 1,
     });
-    getAllClients({ filter: "" }, { limit: 5, pageSize: 1 });
+    getClientsByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
     setSearchCourseFilter({
       filter: "",
+      status: 1,
     });
-    getAllCourses({ filter: "" }, { limit: 5, pageSize: 1 });
+    getCoursesByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
   }, []);
 
   React.useEffect(() => {
@@ -146,7 +148,10 @@ const NewOrderComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllClients({ filter: filter }, { limit: 5, pageSize: 1 });
+    getClientsByFilter(
+      { filter: filter, status: 1 },
+      { limit: 5, pageSize: 1 }
+    );
   };
 
   const handleSearchCourses = (data) => {
@@ -154,7 +159,10 @@ const NewOrderComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllCourses({ filter: filter }, { limit: 5, pageSize: 1 });
+    getCoursesByFilter(
+      { filter: filter, status: 1 },
+      { limit: 5, pageSize: 1 }
+    );
   };
 
   return (

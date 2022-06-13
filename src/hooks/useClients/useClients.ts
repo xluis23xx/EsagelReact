@@ -4,7 +4,8 @@ import Swal from "sweetalert2";
 
 import { getClientById, getClients, postClient, putClient } from "./helpers";
 import { Client } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { string } from "prop-types";
 
 export enum Status {
   Loading,
@@ -18,8 +19,9 @@ export const useClients = () => {
   const [clientInfo, setClientInfo] = React.useState<Client | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
+    status: null
   })
 
   function setClientById(id: string) {
@@ -38,17 +40,15 @@ export const useClients = () => {
     setClientInfo(null);
   }
 
-  function getAllClients(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getClientsByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getClients(token,{filter}, {limit, pageSize})
+    getClients(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: clientsObtained = [] } = response || {};
-        const enableClients =
-          clientsObtained.filter((client: Client) => client.status === 1) || [];
-        setClients(enableClients);
+        setClients(clientsObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -174,7 +174,7 @@ export const useClients = () => {
   }
 
   function changePage (index: number) {
-    getAllClients(searchFilter, {limit: 20, pageSize:index})
+    getClientsByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -185,7 +185,7 @@ export const useClients = () => {
     updateClient,
     setClientById,
     clientInfo,
-    getAllClients,
+    getClientsByFilter,
     paginateData,
     setSearchFilter,
     changePage,

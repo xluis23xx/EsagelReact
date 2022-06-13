@@ -9,8 +9,7 @@ import {
   putPurchase,
 } from "./helpers";
 import { Purchase } from "./index";
-import { PaginateResponse } from "../types";
-import { setFormatDate } from "../../utils/formats";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -25,9 +24,10 @@ export const usePurchases = () => {
 
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [intervalFilter, setIntervalFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     startDate: "",
-    endDate:""
+    endDate:"",
+    status: null
   })
 
   function setPurchaseById(id: string) {
@@ -41,10 +41,10 @@ export const usePurchases = () => {
     });
   }
 
-  function getAllPurchases( { startDate, endDate }: {startDate: string, endDate:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
+  function getPurchasesByFilter( { startDate, endDate, status }: BodyParams,
+    {limit, pageSize}: PaginateParams) {
     const token = getCookie("esagel_token") || "";
-    getPurchases(token, {startDate, endDate}, {limit, pageSize})
+    getPurchases(token, {startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const {docs: purchasesObtained= []}= response || {}
         setPurchases(purchasesObtained);
@@ -177,7 +177,7 @@ export const usePurchases = () => {
   }
 
   function changePage (index: number) {
-    getAllPurchases(intervalFilter, {limit: 20, pageSize:index})
+    getPurchasesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -187,9 +187,9 @@ export const usePurchases = () => {
     updatePurchase,
     setPurchaseById,
     purchaseInfo,
-    getAllPurchases,
+    getPurchasesByFilter,
     paginateData,
-    setIntervalFilter,
+    setSearchFilter,
     changePage,
     status,
   };

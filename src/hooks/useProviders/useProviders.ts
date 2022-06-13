@@ -9,7 +9,7 @@ import {
   putProvider,
 } from "./helpers";
 import { Provider } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -23,8 +23,9 @@ export const useProviders = () => {
   const [providerInfo, setProviderInfo] = React.useState<Provider | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
+    status: null
   })
 
   function setProviderById(id: string) {
@@ -43,19 +44,15 @@ export const useProviders = () => {
     setProviderInfo(null);
   }
 
-  function getAllProviders(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getProvidersByFilter(
+    { filter, status }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getProviders(token,{filter}, {limit, pageSize})
+    getProviders(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: providersObtained = [] } = response || {};
-        const enableProviders =
-          providersObtained.filter(
-            (provider: Provider) => provider.status === 1
-          ) || [];
-        setProviders(enableProviders);
+        setProviders(providersObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -181,7 +178,7 @@ export const useProviders = () => {
   }
 
   function changePage (index: number) {
-    getAllProviders(searchFilter, {limit: 20, pageSize:index})
+    getProvidersByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -192,7 +189,7 @@ export const useProviders = () => {
     setProviderById,
     cleanProviderInfo,
     providerInfo,
-    getAllProviders,
+    getProvidersByFilter,
     paginateData,
     setSearchFilter,
     changePage,

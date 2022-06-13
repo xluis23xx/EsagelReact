@@ -34,7 +34,7 @@ const NewPurchaseComponent = () => {
 
   const { registerPurchase, status } = usePurchases();
 
-  const { getAllProviders, setSearchFilter, providers } = useProviders();
+  const { getProvidersByFilter, setSearchFilter, providers } = useProviders();
 
   const [visibleProviderModal, setVisibleProviderModal] = React.useState(false);
 
@@ -49,8 +49,9 @@ const NewPurchaseComponent = () => {
   React.useEffect(() => {
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllProviders({ filter: "" }, { limit: 5, pageSize: 1 });
+    getProvidersByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -114,7 +115,10 @@ const NewPurchaseComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllProviders({ filter: filter }, { limit: 5, pageSize: 1 });
+    getProvidersByFilter(
+      { filter: filter, status: 1 },
+      { limit: 5, pageSize: 1 }
+    );
   };
 
   return (

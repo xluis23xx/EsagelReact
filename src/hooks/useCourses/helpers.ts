@@ -7,7 +7,7 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getCourses = (
   token: string,
-  {filter=""}: {filter:string},
+  {filter = "", status = null}: {filter:string, status: number | null},
   { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> =>
   fetch(`${GENERAL_API}/courses/consult/?limit=${limit}&pageSize=${pageSize}`, {
@@ -15,6 +15,7 @@ export const getCourses = (
     cache: "no-cache",
     body: JSON.stringify({
       filter,
+      status
     }),
     headers: {
       "Content-Type": "application/json",

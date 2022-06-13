@@ -25,7 +25,7 @@ const CoursesComponent = () => {
   const {
     courses,
     deleteCourse,
-    getAllCourses,
+    getCoursesByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -38,8 +38,9 @@ const CoursesComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllCourses({ filter: "" }, { limit: 20, pageSize: 1 });
+    getCoursesByFilter({ filter: "", status: 1 }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -63,7 +64,10 @@ const CoursesComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllCourses({ filter: filter }, { limit: 20, pageSize: 1 });
+    getCoursesByFilter(
+      { filter: filter, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "courses-table";

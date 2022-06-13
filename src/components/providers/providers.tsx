@@ -25,7 +25,7 @@ const ProvidersComponent = () => {
   const {
     providers,
     deleteProvider,
-    getAllProviders,
+    getProvidersByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -38,8 +38,9 @@ const ProvidersComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllProviders({ filter: "" }, { limit: 20, pageSize: 1 });
+    getProvidersByFilter({ filter: "", status: 1 }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -63,7 +64,10 @@ const ProvidersComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllProviders({ filter: filter }, { limit: 20, pageSize: 1 });
+    getProvidersByFilter(
+      { filter: filter, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "providers-table";

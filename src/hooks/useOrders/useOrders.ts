@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
 import { Order } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -18,9 +18,10 @@ export const useOrders = () => {
   const [orderInfo, setOrderInfo] = React.useState<Order | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [intervalFilter, setIntervalFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     startDate: "",
-    endDate:""
+    endDate:"",
+    status: null
   })
 
   function setOrderById(id: string) {
@@ -34,10 +35,10 @@ export const useOrders = () => {
     });
   }
 
-  function getAllOrders( { startDate, endDate }: {startDate: string, endDate:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}) {
+  function getOrdersByFilter( { startDate, endDate, status }: BodyParams,
+    {limit, pageSize}: PaginateParams) {
     const token = getCookie("esagel_token") || "";
-    getOrders(token, {startDate, endDate}, {limit, pageSize})
+    getOrders(token, {startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: ordersObtained = [] } = response || {};
         setOrders(ordersObtained);
@@ -211,7 +212,7 @@ export const useOrders = () => {
 
   
   function changePage (index: number) {
-    getAllOrders(intervalFilter, {limit: 20, pageSize:index})
+    getOrdersByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -222,9 +223,9 @@ export const useOrders = () => {
     updateOrder,
     setOrderById,
     orderInfo,
-    getAllOrders,
+    getOrdersByFilter,
     paginateData,
-    setIntervalFilter,
+    setSearchFilter,
     changePage,
     status,
   };

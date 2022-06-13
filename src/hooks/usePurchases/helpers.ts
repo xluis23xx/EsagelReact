@@ -1,5 +1,5 @@
 import ENVIROMENTS from "../../enviroments/env";
-import { PaginateParams, PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 import { GetPurchase } from "./types";
 
@@ -7,7 +7,7 @@ const { GENERAL_API } = ENVIROMENTS;
 
 export const getPurchases = (
   token: string,
-  { startDate, endDate }: { startDate: string; endDate: string },
+  { startDate="", endDate="" }: BodyParams,
   { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> =>
   fetch(`${GENERAL_API}/purchases/consult/?limit=${limit}&pageSize=${pageSize}`, {

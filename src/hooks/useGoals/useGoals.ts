@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getGoalById, getGoals, postGoal, putGoal } from "./helpers";
 import { Goal } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -18,9 +18,10 @@ export const useGoals = () => {
   const [goalInfo, setGoalInfo] = React.useState<Goal | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [intervalFilter, setIntervalFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     startDate: "",
-    endDate:""
+    endDate:"",
+    status: null
   })
 
   function setGoalById(id: string) {
@@ -34,12 +35,12 @@ export const useGoals = () => {
     });
   }
 
-  function getAllGoals(
-    { startDate, endDate }: {startDate: string, endDate:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getGoalsByFilter(
+    { startDate, endDate, status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getGoals(token,{startDate, endDate}, {limit, pageSize})
+    getGoals(token,{startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const {docs: goalsObtained} = response || {}
         setPaginateData(response)
@@ -166,7 +167,7 @@ export const useGoals = () => {
   }
 
   function changePage (index: number) {
-     getAllGoals(intervalFilter, {limit: 20, pageSize:index})
+     getGoalsByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -176,9 +177,9 @@ export const useGoals = () => {
     updateGoal,
     setGoalById,
     goalInfo,
-    getAllGoals,
+    getGoalsByFilter,
     paginateData,
-    setIntervalFilter,
+    setSearchFilter,
     changePage,
     status,
   };

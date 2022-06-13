@@ -9,7 +9,7 @@ import {
   putUser,
 } from "./helpers";
 import { User } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -25,6 +25,7 @@ export const useUsers = () => {
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
   const [searchFilter, setSearchFilter] = React.useState({
     filter: "",
+    status: null
   })
 
   function setUserById(id: string) {
@@ -39,15 +40,15 @@ export const useUsers = () => {
     });
   }
 
-  function getAllUsers(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getUsersByFilter(
+    { filter, status }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getUsers(token,{filter}, {limit, pageSize})
+    getUsers(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const { docs = [] } = response || {};
-        setUsers(docs);
+        const { docs: usersObtained = [] } = response || {};
+        setUsers(usersObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -174,7 +175,7 @@ export const useUsers = () => {
   }
 
   function changePage (index: number) {
-    getAllUsers(searchFilter, {limit: 20, pageSize:index})
+    getUsersByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -184,7 +185,7 @@ export const useUsers = () => {
     updateUser,
     setUserById,
     userInfo,
-    getAllUsers,
+    getUsersByFilter,
     paginateData,
     setSearchFilter,
     changePage,

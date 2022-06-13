@@ -26,8 +26,8 @@ const PurchasesComponent = () => {
   const {
     purchases,
     cancelPurchase,
-    getAllPurchases,
-    setIntervalFilter,
+    getPurchasesByFilter,
+    setSearchFilter,
     changePage,
     paginateData,
     status,
@@ -49,11 +49,11 @@ const PurchasesComponent = () => {
       date: currentDate,
       separator: "-",
     })}T23:59:59.999+00:00`;
-    setIntervalFilter({
+    setSearchFilter({
       startDate: startDate,
       endDate: endDate,
     });
-    getAllPurchases({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    getPurchasesByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortPurchase = (id: string) => {
@@ -81,8 +81,8 @@ const PurchasesComponent = () => {
     if (data?.endDate) {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllPurchases({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    setSearchFilter({ startDate: startDate, endDate: endDate });
+    getPurchasesByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "purchases-table";

@@ -27,7 +27,7 @@ import { useFileUpload } from "../../hooks/useFileUpload";
 const NewUserComponent = () => {
   const { registerUser, status } = useUsers();
 
-  const { getAllEmployees, setSearchFilter, employees } = useEmployees();
+  const { getEmployeesByFilter, setSearchFilter, employees } = useEmployees();
 
   const {
     uploading: imageUploading,
@@ -67,8 +67,9 @@ const NewUserComponent = () => {
   React.useEffect(() => {
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllEmployees({ filter: "" }, { limit: 5, pageSize: 1 });
+    getEmployeesByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
   }, []);
 
   const stateSchema = {
@@ -120,7 +121,10 @@ const NewUserComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllEmployees({ filter: filter }, { limit: 5, pageSize: 1 });
+    getEmployeesByFilter(
+      { filter: filter, status: 1 },
+      { limit: 5, pageSize: 1 }
+    );
   };
 
   return (

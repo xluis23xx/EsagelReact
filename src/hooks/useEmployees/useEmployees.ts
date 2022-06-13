@@ -9,7 +9,7 @@ import {
   putEmployee,
 } from "./helpers";
 import { Employee } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -23,8 +23,9 @@ export const useEmployees = () => {
   const [employeeInfo, setemployeeInfo] = React.useState<Employee | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
+    status: null
   })
 
   function setEmployeeById(id: string) {
@@ -43,19 +44,15 @@ export const useEmployees = () => {
     setemployeeInfo(null);
   }
 
-  function getAllEmployees(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getEmployeesByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token,{filter}, {limit, pageSize})
+    getEmployees(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: employeesObtained = [] } = response || {};
-        const enableEmployees =
-          employeesObtained.filter(
-            (employee: Employee) => employee.status === 1
-          ) || [];
-        setEmployees(enableEmployees);
+        setEmployees(employeesObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -182,7 +179,7 @@ export const useEmployees = () => {
   }
 
   function changePage (index: number) {
-    getAllEmployees(searchFilter, {limit: 20, pageSize:index})
+    getEmployeesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -193,7 +190,7 @@ export const useEmployees = () => {
     updateEmployee,
     setEmployeeById,
     employeeInfo,
-    getAllEmployees,
+    getEmployeesByFilter,
     paginateData,
     setSearchFilter,
     changePage,

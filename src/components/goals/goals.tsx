@@ -25,10 +25,10 @@ const GoalsComponent = () => {
   const {
     goals,
     deleteGoal,
-    getAllGoals,
+    getGoalsByFilter,
     paginateData,
     status,
-    setIntervalFilter,
+    setSearchFilter,
     changePage,
   } = useGoals();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
@@ -47,11 +47,15 @@ const GoalsComponent = () => {
       date: currentDate,
       separator: "-",
     })}T23:59:59.999+00:00`;
-    setIntervalFilter({
+    setSearchFilter({
       startDate: startDate,
       endDate: endDate,
+      status: 1,
     });
-    getAllGoals({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    getGoalsByFilter(
+      { startDate, endDate, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   }, []);
 
   const abortGoal = (id: string) => {
@@ -78,8 +82,11 @@ const GoalsComponent = () => {
     if (data?.endDate) {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllGoals({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    setSearchFilter({ startDate: startDate, endDate: endDate });
+    getGoalsByFilter(
+      { startDate, endDate, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "goals-table";

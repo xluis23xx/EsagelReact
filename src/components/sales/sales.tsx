@@ -25,8 +25,8 @@ const SalesComponent = () => {
   const {
     sales,
     cancelSale,
-    getAllSales,
-    setIntervalFilter,
+    getSalesByFilter,
+    setSearchFilter,
     changePage,
     paginateData,
     status,
@@ -48,11 +48,11 @@ const SalesComponent = () => {
       date: currentDate,
       separator: "-",
     })}T23:59:59.999+00:00`;
-    setIntervalFilter({
+    setSearchFilter({
       startDate: startDate,
       endDate: endDate,
     });
-    getAllSales({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    getSalesByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortSale = (id: string) => {
@@ -84,8 +84,8 @@ const SalesComponent = () => {
     if (data?.endDate) {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllSales({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    setSearchFilter({ startDate: startDate, endDate: endDate });
+    getSalesByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "sales-table";

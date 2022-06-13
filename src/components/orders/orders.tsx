@@ -27,8 +27,8 @@ const OrdersComponent = () => {
     orders,
     cancelOrder,
     confirmOrder,
-    getAllOrders,
-    setIntervalFilter,
+    getOrdersByFilter,
+    setSearchFilter,
     changePage,
     paginateData,
     status,
@@ -51,11 +51,11 @@ const OrdersComponent = () => {
       date: currentDate,
       separator: "-",
     })}T23:59:59.999+00:00`;
-    setIntervalFilter({
+    setSearchFilter({
       startDate: startDate,
       endDate: endDate,
     });
-    getAllOrders({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    getOrdersByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   }, []);
 
   const abortOrder = (id: string) => {
@@ -97,8 +97,8 @@ const OrdersComponent = () => {
     if (data?.endDate) {
       endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setIntervalFilter({ startDate: startDate, endDate: endDate });
-    getAllOrders({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    setSearchFilter({ startDate: startDate, endDate: endDate });
+    getOrdersByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "orders-table";

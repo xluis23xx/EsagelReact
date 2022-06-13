@@ -25,7 +25,7 @@ const TopicsComponent = () => {
   const {
     topics,
     deleteTopic,
-    getAllTopics,
+    getTopicsByFilter,
     setSearchFilter,
     changePage,
     paginateData,
@@ -38,8 +38,9 @@ const TopicsComponent = () => {
     savePathname();
     setSearchFilter({
       filter: "",
+      status: 1,
     });
-    getAllTopics({ filter: "" }, { limit: 20, pageSize: 1 });
+    getTopicsByFilter({ filter: "", status: 1 }, { limit: 20, pageSize: 1 });
   }, []);
 
   const validators = {
@@ -63,7 +64,10 @@ const TopicsComponent = () => {
     if (data?.search) {
       filter = data?.search;
     }
-    getAllTopics({ filter: filter }, { limit: 20, pageSize: 1 });
+    getTopicsByFilter(
+      { filter: filter, status: 1 },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "topics-table";

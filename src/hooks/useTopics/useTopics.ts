@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import { getTopicById, getTopics, postTopic, putTopic } from "./helpers";
 import { Topic } from "./index";
-import { PaginateResponse } from "../types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
 export enum Status {
   Loading,
@@ -18,8 +18,9 @@ export const useTopics = () => {
   const [topicInfo, setTopicInfo] = React.useState<Topic | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
   const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
-  const [searchFilter, setSearchFilter] = React.useState({
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
     filter: "",
+    status: null
   })
 
   function setTopicById(id: string) {
@@ -34,17 +35,15 @@ export const useTopics = () => {
     });
   }
 
-  function getAllTopics(
-    { filter }: {filter:string},
-    {limit=3, pageSize=1}: {limit:number, pageSize:number}
+  function getTopicsByFilter(
+    { filter, status }: BodyParams,
+    {limit, pageSize}: PaginateParams
     ) {
     const token = getCookie("esagel_token") || "";
-    getTopics(token,{filter}, {limit, pageSize})
+    getTopics(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
         const { docs: topicsObtained = [] } = response || {};
-        const enableTopics =
-          topicsObtained.filter((topic: Topic) => topic.status === 1) || [];
-        setTopics(enableTopics);
+        setTopics(topicsObtained);
         setPaginateData(response);
         setStatus(Status.Ready);
       })
@@ -168,7 +167,7 @@ export const useTopics = () => {
   }
 
   function changePage (index: number) {
-    getAllTopics(searchFilter, {limit: 20, pageSize:index})
+    getTopicsByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
@@ -178,7 +177,7 @@ export const useTopics = () => {
     updateTopic,
     setTopicById,
     topicInfo,
-    getAllTopics,
+    getTopicsByFilter,
     paginateData,
     setSearchFilter,
     changePage,
