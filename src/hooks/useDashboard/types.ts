@@ -1,3 +1,5 @@
+import { number } from "prop-types";
+
 export type DateBody = {
   startDate: "",
   endDate:""
@@ -8,6 +10,8 @@ export type DashboardParams = {
   secondMonth: DateBody,
   thirdMonth: DateBody,
 };
+
+// export type DashboardParams = DateBody[]
 
 export type SaleDashboardResult = {
   totalFirstMonth: number | null,
@@ -21,6 +25,13 @@ export type SaleDashboardResult = {
   amountTotal: number  | null,
   amountsSold: number | null,
 }
+// const retorno = {
+//   data: [{totalMonthSold, quantityMonthSold, totalMonthPurchased, quantityMonthPurchased},{},{},{}],
+//   totalSoldSale:number,
+//   totalquantitySales: number,
+//   totalPurchased: number,
+//   quantityTotalPurchased: number
+// }
 
 export type PurchaseDashboardResult = {
   totalFirstMonth: number | null,

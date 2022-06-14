@@ -1,12 +1,16 @@
 import React from "react";
 
 import {
+  CBadge,
+  CButton,
   // CButton,
   CCol,
   CRow,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 import { CChartLine, CChartDoughnut } from "@coreui/react-chartjs";
 import { getStyle, hexToRgba } from "@coreui/utils";
+import { cilCloudDownload } from "@coreui/icons/js/free";
 // import CIcon from "@coreui/icons-react";
 // import { cilCloudDownload } from "@coreui/icons";
 
@@ -67,15 +71,32 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <>
+    <div className="p-relative">
+      {/* <button
+        style={{
+          position: "absolute",
+          left: 10,
+          right: 30,
+          top: 5,
+          width: "40px",
+        }}
+      >
+        DESCARGAR */}
+      {/* </button> */}
+      <CButton color="dark" className="my-3 ms-auto d-block">
+        Reporte Ventas vs Compras&nbsp;
+        {/* <CBadge color="dark"> */}
+        <CIcon icon={cilCloudDownload}></CIcon>
+        {/* </CBadge> */}
+      </CButton>
       <WidgetsDropdown />
       <div className="row">
-        <div className="col-6 mt-2">
+        <div className="col-12 col-sm-6 my-2">
           <div className="card">
             <div className="card-header">Ventas - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
               <CRow>
-                <CCol sm={8}>
+                <CCol sm={12}>
                   <h4 id="traffic" className="card-title mb-0">
                     Monto Ganado por mes
                   </h4>
@@ -83,11 +104,11 @@ const Dashboard = () => {
                     {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
-                <CCol sm={4} className="d-none d-md-block">
-                  {/* <CButton color="primary" className="float-end">
+                {/* <CCol sm={4} className="d-none d-md-block">
+                   <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton> */}
-                </CCol>
+                  </CButton>
+                </CCol> */}
               </CRow>
 
               <CChartLine
@@ -148,12 +169,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6 mt-2">
+        <div className="col-12 col-sm-6 my-2">
           <div className="card">
             <div className="card-header">Compras - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
               <CRow>
-                <CCol sm={8}>
+                <CCol sm={12}>
                   <h4 id="traffic" className="card-title mb-0">
                     Monto Perdido por mes
                   </h4>
@@ -161,11 +182,11 @@ const Dashboard = () => {
                     {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
-                <CCol sm={4} className="d-none d-md-block">
-                  {/* <CButton color="primary" className="float-end">
+                {/* <CCol sm={4} className="d-none d-md-block">
+                  <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton> */}
-                </CCol>
+                  </CButton> 
+                </CCol> */}
               </CRow>
 
               <CChartLine
@@ -226,12 +247,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6 mt-2">
+        <div className="col-12 col-sm-6 my-2">
           <div className="card">
             <div className="card-header">Ventas - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
               <CRow>
-                <CCol sm={8}>
+                <CCol sm={12}>
                   <h4 id="traffic" className="card-title mb-0">
                     Monto Ganado por mes
                   </h4>
@@ -239,11 +260,11 @@ const Dashboard = () => {
                     {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
-                <CCol sm={4} className="d-none d-md-block">
-                  {/* <CButton color="primary" className="float-end">
+                {/* <CCol sm={4} className="d-none d-md-block">
+                  <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton> */}
-                </CCol>
+                  </CButton>
+                </CCol> */}
               </CRow>
 
               <CChartDoughnut
@@ -293,12 +314,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-6 mt-2">
+        <div className="col-12 col-sm-6 my-2">
           <div className="card">
             <div className="card-header">Compras - últimos 3 meses</div>
             <div className="card card-body bg-white p-4">
               <CRow>
-                <CCol sm={8}>
+                <CCol sm={12}>
                   <h4 id="traffic" className="card-title mb-0">
                     Monto Perdido por mes
                   </h4>
@@ -306,11 +327,11 @@ const Dashboard = () => {
                     {thirdMonth} - {firstMonth} {new Date().getFullYear()}
                   </div>
                 </CCol>
-                <CCol sm={4} className="d-none d-md-block">
-                  {/* <CButton color="primary" className="float-end">
+                {/* <CCol sm={4} className="d-none d-md-block">
+                   <CButton color="primary" className="float-end">
                     <CIcon icon={cilCloudDownload} />
-                  </CButton> */}
-                </CCol>
+                  </CButton>
+                </CCol> */}
               </CRow>
 
               <CChartDoughnut
@@ -361,7 +382,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

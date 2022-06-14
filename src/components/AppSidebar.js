@@ -13,8 +13,8 @@ import { sygnet } from "src/assets/brand/sygnet";
 
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-import esagelImage from "src/assets/images/esagel-blanco.png";
-// import esagelImag2 from "src/assets/images/esagel.png";
+// import esagelImage from "src/assets/images/esagel-blanco.png";
+import esagelImage from "src/assets/images/esagel.png";
 
 import navigation from "../_nav";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,7 @@ const AppSidebar = () => {
     <CSidebar
       position="fixed"
       // className={`bg-dark`}
-      style={{backgroundColor: "#272727"}}
+      style={{ backgroundColor: "#272727" }}
       unfoldable={unfoldable}
       visible={sidebarShow}
       onVisibleChange={(visible) => {

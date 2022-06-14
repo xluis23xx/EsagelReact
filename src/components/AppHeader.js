@@ -16,7 +16,7 @@ import { cilMenu } from "@coreui/icons";
 import { AppBreadcrumb } from "./index";
 import { AppHeaderDropdown } from "./header/index";
 // import esagelImage from "src/assets/images/esagel-blanco.png";
-import esagelImage2 from "src/assets/images/esagel.png";
+import esagelImage from "src/assets/images/esagel.png";
 import { useDispatch, useSelector } from "react-redux";
 
 import { types } from "../types/types";
@@ -59,7 +59,11 @@ const AppHeader = () => {
   }
 
   return (
-    <CHeader position="sticky" className="mb-4 bg-black">
+    <CHeader
+      position="sticky"
+      className="mb-4"
+      style={{ backgroundColor: "rgba(42,42,42,255)" }}
+    >
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"
@@ -72,10 +76,10 @@ const AppHeader = () => {
         <CHeaderBrand className="mx-auto d-md-none text-light" to="/">
           {config?.url ? (
             <a href={config?.url} target={"_blank"} rel="noreferrer">
-              <CImage src={esagelImage2} height={48} alt="Logo" />
+              <CImage src={esagelImage} height={48} alt="Logo" />
             </a>
           ) : (
-            <CImage src={esagelImage2} height={48} alt="Logo" />
+            <CImage src={esagelImage} height={48} alt="Logo" />
           )}
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto text-light">
