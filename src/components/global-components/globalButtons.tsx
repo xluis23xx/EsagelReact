@@ -117,6 +117,7 @@ type IntervalButtonProps = {
   required: boolean;
   className?: string;
   textButton?: string;
+  maxLength?: string;
 };
 export const IntervalButton = ({
   validators,
@@ -124,6 +125,7 @@ export const IntervalButton = ({
   required = false,
   className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex",
   textButton = "Buscar",
+  maxLength = undefined,
 }: IntervalButtonProps) => {
   const stateSchema = {
     startDate: { value: "", error: "" },
@@ -159,6 +161,7 @@ export const IntervalButton = ({
           required={required}
           className="form-control"
           aria-label="Intervalo Inicial"
+          max={maxLength}
           value={startDate || ""}
           error={startDateError || false}
           showError={false}
@@ -176,6 +179,7 @@ export const IntervalButton = ({
           className="form-control"
           aria-label="Intervalo Final"
           value={endDate || ""}
+          max={maxLength}
           error={endDateError || false}
           showError={false}
           onChange={handleOnChange}

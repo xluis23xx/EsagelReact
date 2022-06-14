@@ -136,6 +136,11 @@ const PurchasesComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
+                  maxLength={setFormatDate({
+                    order: 1,
+                    date: new Date(),
+                    separator: "-",
+                  })}
                   required={true}
                 />
               </nav>

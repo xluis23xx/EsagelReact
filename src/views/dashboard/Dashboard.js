@@ -268,7 +268,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="col-12 col-sm-6 my-2">
+        <div className="col-12 col-sm-6 my-2 mb-4">
           <div className="card">
             <div className="card-header">{generateHeader("Ventas")}</div>
             <div className="card card-body bg-white p-4">
@@ -286,7 +286,20 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirdMonth, secondMonth, firstMonth],
+                  labels: [
+                    "jun. 2022",
+                    "may. 2022",
+                    "abr. 2022",
+                    "mar. 2022",
+                    "feb. 2022",
+                    "ene. 2022",
+                    "dic. 2021",
+                    "nov. 2021",
+                    "oct. 2021",
+                    "set. 2021",
+                    "ago. 2021",
+                    "jul. 2021",
+                  ],
                   datasets: [
                     {
                       borderColor: "#ffffff",
@@ -295,8 +308,25 @@ const Dashboard = () => {
                         "rgb(255, 99, 132)",
                         "rgb(54, 162, 235)",
                         "rgb(255, 205, 86)",
+                        "rgb(54, 162, 36)",
+                        "rgb(50, 215, 86)",
+                        "rgb(20, 162, 0)",
+                        "rgb(170, 35, 50)",
+                        "rgb(0, 120, 70)",
+                        "rgb(100, 195, 16)",
+                        "rgb(83, 162, 0)",
+                        "rgb(29, 55, 55)",
                       ],
                       data: [
+                        dashboardInfo?.sales?.totalThirdMonth,
+                        dashboardInfo?.sales?.totalSecondMonth,
+                        dashboardInfo?.sales?.totalFirstMonth,
+                        dashboardInfo?.sales?.totalThirdMonth,
+                        dashboardInfo?.sales?.totalSecondMonth,
+                        dashboardInfo?.sales?.totalFirstMonth,
+                        dashboardInfo?.sales?.totalThirdMonth,
+                        dashboardInfo?.sales?.totalSecondMonth,
+                        dashboardInfo?.sales?.totalFirstMonth,
                         dashboardInfo?.sales?.totalThirdMonth,
                         dashboardInfo?.sales?.totalSecondMonth,
                         dashboardInfo?.sales?.totalFirstMonth,

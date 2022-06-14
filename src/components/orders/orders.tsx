@@ -147,6 +147,11 @@ const OrdersComponent = () => {
                 />
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
+                  maxLength={setFormatDate({
+                    order: 1,
+                    date: new Date(),
+                    separator: "-",
+                  })}
                   validators={validators}
                   required={true}
                 />

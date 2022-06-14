@@ -172,18 +172,18 @@ const NewCourseTypeComponent = () => {
         <div className="card">
           <div className="card-header">
             <div className="row">
-              <div className="col-12 col-sm-6 col-md-8 my-auto">
+              <div className="col-12 col-sm-6 col-md-6 my-auto">
                 <CIcon icon={cilHamburgerMenu} />
                 &nbsp;CONFIGURACIÓN DE SISTEMA
               </div>
               {showManual ? (
                 <>
                   {showImage ? null : <div className="col-md-2" />}
-                  <div className="col-12 col-sm-6 col-md-2 my-1 text-end">
+                  <div className="ms-auto col-12 col-sm-6 col-md-3 col-xl-2 my-1 text-end">
                     <a
                       href={showManual}
                       target="_blank"
-                      className="btn btn-dark w-100"
+                      className="btn btn-dark col-10 w-100"
                       rel="noreferrer"
                     >
                       Ver Manual
@@ -194,9 +194,9 @@ const NewCourseTypeComponent = () => {
               {showImage ? (
                 <>
                   {showManual ? null : <div className="col-md-2" />}
-                  <div className="col-12 col-sm-6 col-md-2 my-1 text-end">
+                  <div className="col-12 col-sm-6 col-md-3 col-xl-2 my-1 text-end">
                     <button
-                      className="btn btn-dark w-100"
+                      className="btn btn-dark col-10 w-100"
                       onClick={() =>
                         Swal.fire({
                           imageUrl: showImage,

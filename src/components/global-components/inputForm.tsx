@@ -14,8 +14,8 @@ type InputProps = {
   className?: string;
   showError?: boolean;
   maxLength?: number;
-  min?: number;
-  max?: number;
+  min?: number | string;
+  max?: number | string;
   step?: string;
 };
 

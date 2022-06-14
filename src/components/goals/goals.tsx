@@ -143,7 +143,7 @@ const GoalsComponent = () => {
                 <IntervalButton
                   handleSearch={handleSearchByInterval}
                   validators={validators}
-                  required={false}
+                  required={true}
                 />
               </nav>
               <br />
