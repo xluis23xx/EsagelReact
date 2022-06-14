@@ -23,6 +23,7 @@ export const EditItemButton = ({
   className = "btn btn-warning",
   code = "",
   path = "",
+  title = "",
   icon = cilPencil,
   subsection = "editar",
 }) => {
@@ -30,6 +31,7 @@ export const EditItemButton = ({
     <Link
       type="button"
       className={className}
+      title={title}
       style={{ height: 40, width: 40 }}
       to={`/${path}/${subsection}/${code}`}
     >
@@ -71,6 +73,7 @@ export const SearchButton = ({
           className="form-control"
           placeholder="Buscar"
           aria-label="Buscar"
+          autoComplete={""}
           value={search || ""}
           error={searchError || false}
           showError={false}

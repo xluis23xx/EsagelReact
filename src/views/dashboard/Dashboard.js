@@ -216,7 +216,6 @@ const Dashboard = () => {
                   labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
-                      label: "Egresos",
                       backgroundColor: hexToRgba(getStyle("--cui-info"), 10),
                       borderColor: getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
@@ -281,11 +280,6 @@ const Dashboard = () => {
                     {generateSubheader()}
                   </div>
                 </CCol>
-                {/* <CCol sm={4} className="d-none d-md-block">
-                  <CButton color="primary" className="float-end">
-                    <CIcon icon={cilCloudDownload} />
-                  </CButton>
-                </CCol> */}
               </CRow>
 
               <CChartDoughnut
@@ -294,7 +288,6 @@ const Dashboard = () => {
                   labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
-                      label: "Egresos",
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       backgroundColor: [
@@ -348,11 +341,6 @@ const Dashboard = () => {
                     {generateSubheader()}
                   </div>
                 </CCol>
-                {/* <CCol sm={4} className="d-none d-md-block">
-                   <CButton color="primary" className="float-end">
-                    <CIcon icon={cilCloudDownload} />
-                  </CButton>
-                </CCol> */}
               </CRow>
 
               <CChartDoughnut

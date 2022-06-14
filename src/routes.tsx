@@ -195,7 +195,7 @@ export const RoutesArray = (): any[] => {
 
   const routesUser = [
     { path: "/", exact: true, name: "Escritorio", element: Dashboard },
-    { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
+    // { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
     {
       path: "/pedidos",
       name: "Pedidos",

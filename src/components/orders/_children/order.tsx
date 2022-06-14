@@ -77,6 +77,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               className="btn btn-success"
               subsection={"detalle"}
               path={"pedidos"}
+              title="Detalle"
               icon={cilEyedropper}
             />
             {status === 1 ? (
@@ -86,6 +87,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
                   type="button"
                   className="btn btn-dark"
                   style={{ height: 40, width: 40 }}
+                  title="Generar venta"
                   onClick={() => handleConfirm(code)}
                 >
                   <CIcon icon={cilCart} color="#fffff" />
@@ -98,6 +100,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
                 <button
                   type="button"
                   className="btn btn-danger"
+                  title="Anular Pedido"
                   style={{ height: 40, width: 40 }}
                   onClick={() => handleCancel(code)}
                 >
@@ -106,14 +109,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               </>
             ) : null}
             &nbsp;
-            <button
-              type="button"
-              className="btn btn-info"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handlePrint(code)}
-            >
-              <CIcon icon={cilPaperclip} color="#fffff" />
-            </button>
+            {status === 2 ? (
+              <button
+                type="button"
+                className="btn btn-info"
+                title="Descargar comprobante"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handlePrint(code)}
+              >
+                <CIcon icon={cilPaperclip} color="#fffff" />
+              </button>
+            ) : null}
           </div>
         </div>
       </td>

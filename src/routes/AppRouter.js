@@ -34,21 +34,14 @@ export const AppRouter = () => {
       if (ESAGEL_RFTOKEN) {
         updateToken();
       }
+      const ESAGEL_LAST_PATH = localStorage.getItem("esagel_lastpath");
+      setLastPath(ESAGEL_LAST_PATH || "/");
       setUser(ESAGEL_PROFILE);
       setConfig(ESAGEL_CONFIG);
     } else {
       logoutUser();
     }
   }, []);
-
-  React.useEffect(() => {
-    if (user) {
-      const ESAGEL_LAST_PATH = localStorage.getItem("esagel_lastpath");
-      setLastPath(ESAGEL_LAST_PATH || "/");
-    } else {
-      setLastPath("/");
-    }
-  }, [user]);
 
   return (
     <Provider store={store}>

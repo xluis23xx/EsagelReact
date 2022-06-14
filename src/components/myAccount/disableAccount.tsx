@@ -80,7 +80,8 @@ const DisableAccountComponent = ({ profile }: { profile: User }) => {
                 <div className="row">
                   <div className="form-group col-sm-4 col-xl-3 mt-3">
                     <button
-                      className="btn btn-dark text-danger w-100 fw-bold"
+                      className="btn text-white w-100 fw-bold"
+                      style={{ backgroundColor: "#272727" }}
                       onClick={showModal}
                     >
                       Deshabilitar mi Cuenta
