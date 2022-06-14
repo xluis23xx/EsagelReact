@@ -16,7 +16,7 @@ export const AppRouter = () => {
   const { updateToken, logoutUser } = useAuth();
   const [user, setUser] = React.useState(null);
   const [config, setConfig] = React.useState(null);
-  const [lastPath, setLastPath] = React.useState("/");
+  const [lastPath, setLastPath] = React.useState("/home");
   React.useEffect(() => {
     const ESAGEL_TOKEN = getCookie("esagel_token");
     const ESAGEL_RFTOKEN = getCookie("esagel_refreshtoken");

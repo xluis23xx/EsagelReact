@@ -73,7 +73,7 @@ const AppHeader = () => {
         >
           <CIcon icon={cilMenu} size="lg" style={{ color: "#fff" }} />
         </CHeaderToggler>
-        <CHeaderBrand className="mx-auto d-md-none text-light" to="/">
+        <CHeaderBrand className="mx-auto d-md-none text-light" to="/home">
           {config?.url ? (
             <a href={config?.url} target={"_blank"} rel="noreferrer">
               <CImage src={esagelImage} height={48} alt="Logo" />

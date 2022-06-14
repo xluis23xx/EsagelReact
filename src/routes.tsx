@@ -194,8 +194,7 @@ export const RoutesArray = (): any[] => {
   const isModerator = roles?.includes(Roles.MODERATOR);
 
   const routesUser = [
-    { path: "/", exact: true, name: "Escritorio", element: Dashboard },
-    // { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
+    { path: "/home", exact: true, name: "Escritorio", element: Dashboard },
     {
       path: "/pedidos",
       name: "Pedidos",

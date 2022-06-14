@@ -17,52 +17,9 @@ import { obtainFirstAndLastDayOfMonth } from "../../utils/formats";
 // import { cilOptions } from "@coreui/icons";
 
 const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
-  // const { obtainDashboard, dashboardInfo } = useDashboard();
   const [firstMonth, setFirstMonth] = React.useState("erere");
   const [secondMonth, setSecondMonth] = React.useState("erere");
   const [thirdMonth, setThirdMonth] = React.useState("ererere");
-
-  // React.useEffect(() => {
-  //   const currentMonth = new Date().getMonth();
-  //   const currentYear = new Date().getFullYear();
-  //   const objectFirstMonth = {
-  //     year: currentYear,
-  //     month: months[currentMonth],
-  //   };
-  //   const objectSecondMonth = {
-  //     year: !months[currentMonth - 1] ? currentYear - 1 : currentYear,
-  //     month: !months[currentMonth - 1]
-  //       ? months[months.length - 1]
-  //       : months[currentMonth - 1],
-  //   };
-  //   const objectThirdMonth = {
-  //     year: !months[currentMonth - 2] ? currentYear - 1 : currentYear,
-  //     month: !months[currentMonth - 2]
-  //       ? months[months.length - 2]
-  //       : months[currentMonth - 2],
-  //   };
-  //   setFirstMonth(objectFirstMonth.month);
-  //   setSecondMonth(objectSecondMonth.month);
-  //   setThirdMonth(objectThirdMonth.month);
-  //   const firstMonthParams = obtainFirstAndLastDayOfMonth(objectFirstMonth);
-  //   const secondMonthParams = obtainFirstAndLastDayOfMonth(objectSecondMonth);
-  //   const thirdMonthParams = obtainFirstAndLastDayOfMonth(objectThirdMonth);
-
-  //   obtainDashboard({
-  //     firstMonth: {
-  //       startDate: `${firstMonthParams.firstDay}T00:00:00.0+00:00`,
-  //       endDate: `${firstMonthParams.endDay}T23:59:59.999+00:00`,
-  //     },
-  //     secondMonth: {
-  //       startDate: `${secondMonthParams.firstDay}T00:00:00.0+00:00`,
-  //       endDate: `${secondMonthParams.endDay}T23:59:59.999+00:00`,
-  //     },
-  //     thirdMonth: {
-  //       startDate: `${thirdMonthParams.firstDay}T00:00:00.0+00:00`,
-  //       endDate: `${thirdMonthParams.endDay}T23:59:59.999+00:00`,
-  //     },
-  //   });
-  // }, []);
 
   return (
     <CRow>
@@ -232,7 +189,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           className="mb-4"
           color="warning"
           value={dashboardInfo?.sales?.amountTotal || 0}
-          title="Monto de Ventas"
+          title="Monto de Ventas en S/."
           chart={
             <CChartLine
               className="mt-3"
@@ -290,7 +247,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           className="mb-4"
           color="danger"
           value={dashboardInfo?.purchases?.amountTotal || 0}
-          title="Monto de Compras"
+          title="Monto de Compras en S/."
           chart={
             <CChartBar
               className="mt-3 mx-3"

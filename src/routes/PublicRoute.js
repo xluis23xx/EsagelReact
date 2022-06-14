@@ -5,7 +5,7 @@ import { Route, Redirect } from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
 
 export const PublicRoute = ({
-  lastPath = "/",
+  lastPath = "/home",
   isAuthenticated,
   component: Component,
   ...rest

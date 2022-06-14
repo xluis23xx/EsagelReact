@@ -53,7 +53,7 @@ const NavRoutes = (): any[] => {
       ? {
           component: CNavItem,
           name: "Escritorio",
-          to: "/",
+          to: "/home",
           icon: <CIcon icon={cilScreenDesktop} customClassName="nav-icon" />,
         }
       : undefined,
