@@ -5,6 +5,7 @@ import { InputForm } from "./inputForm";
 import CIcon from "@coreui/icons-react";
 import { cilPencil, cilSearch } from "@coreui/icons";
 import { PaginateResponse } from "../../hooks/types";
+import { CTooltip } from "@coreui/react";
 
 export const RedirectionButton = ({
   redirection = "",
@@ -28,15 +29,29 @@ export const EditItemButton = ({
   subsection = "editar",
 }) => {
   return (
-    <Link
-      type="button"
-      className={className}
-      title={title}
-      style={{ height: 40, width: 40 }}
-      to={`/${path}/${subsection}/${code}`}
-    >
-      <CIcon icon={icon} />
-    </Link>
+    <>
+      {title ? (
+        <CTooltip content={title}>
+          <Link
+            type="button"
+            className={className}
+            style={{ height: 40, width: 40 }}
+            to={`/${path}/${subsection}/${code}`}
+          >
+            <CIcon icon={icon} />
+          </Link>
+        </CTooltip>
+      ) : (
+        <Link
+          type="button"
+          className={className}
+          style={{ height: 40, width: 40 }}
+          to={`/${path}/${subsection}/${code}`}
+        >
+          <CIcon icon={icon} />
+        </Link>
+      )}
+    </>
   );
 };
 
@@ -44,7 +59,7 @@ export const SearchButton = ({
   validators,
   handleSearch,
   textButton = "Buscar",
-  className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex",
+  className = "align-items-end my-1 col-12 col-md-6 flex-md-row d-sm-flex form-group",
 }) => {
   const stateSchema = {
     search: { value: "", error: "" },
@@ -66,7 +81,7 @@ export const SearchButton = ({
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
-      <div className="col-12 col-sm-6 my-1 ms-sm-auto">
+      <div className="col-12 col-sm-9 col-xl-7 my-1 ms-sm-auto">
         <InputForm
           type="search"
           name="search"
@@ -80,13 +95,18 @@ export const SearchButton = ({
           onChange={handleOnChange}
         />
       </div>
-      <button
-        className="btn btn-dark text-white col-12 col-sm-3 my-1 ms-sm-3"
-        type="submit"
-        disabled={disable}
-      >
-        {textButton}
-      </button>
+      <div className="col-12 col-sm-2 ms-sm-1 my-1">
+        <button
+          className="btn btn-dark text-white w-100"
+          type="submit"
+          disabled={disable}
+        >
+          <CIcon className="d-none d-sm-inline-block" icon={cilSearch} />
+          <p className="d-inline-block text-white d-sm-none m-0">
+            {textButton}
+          </p>
+        </button>
+      </div>
     </form>
   );
 };

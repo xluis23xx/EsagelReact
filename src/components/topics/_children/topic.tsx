@@ -4,6 +4,7 @@ import React from "react";
 import { setFormatCharacters } from "../../../utils/formats";
 import { Topic } from "../../../hooks/useTopics";
 import { EditItemButton } from "../../global-components/globalButtons";
+import { CTooltip } from "@coreui/react";
 
 type TopicItemProps = Topic & {
   orderNumber: number;
@@ -30,16 +31,18 @@ export const TopicItem: React.FC<TopicItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"temas"} />
+            <EditItemButton code={code} title="Editar" path={"temas"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

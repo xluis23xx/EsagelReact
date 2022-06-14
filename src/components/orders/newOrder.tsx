@@ -595,7 +595,6 @@ const NewOrderComponent = () => {
               <CModalBody>
                 <SearchButton
                   validators={validators}
-                  textButton={"Buscar"}
                   handleSearch={handleSearchClients}
                   className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
                 />
@@ -699,7 +698,6 @@ const NewOrderComponent = () => {
               <CModalBody>
                 <SearchButton
                   validators={validators}
-                  textButton={"Buscar"}
                   handleSearch={handleSearchCourses}
                   className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
                 />

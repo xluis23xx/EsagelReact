@@ -4,7 +4,7 @@ import React from "react";
 import { setFormatDate } from "../../../utils/formats";
 import { Order } from "../../../hooks/useOrders";
 import { EditItemButton } from "../../global-components/globalButtons";
-import { CBadge } from "@coreui/react";
+import { CBadge, CTooltip } from "@coreui/react";
 
 type OrderItemProps = Order & {
   index: number;
@@ -77,48 +77,53 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               className="btn btn-success"
               subsection={"detalle"}
               path={"pedidos"}
-              title="Detalle"
+              title="Detalle del Pedido"
               icon={cilEyedropper}
             />
             {status === 1 ? (
               <>
                 &nbsp;
-                <button
-                  type="button"
-                  className="btn btn-dark"
-                  style={{ height: 40, width: 40 }}
-                  title="Generar venta"
-                  onClick={() => handleConfirm(code)}
-                >
-                  <CIcon icon={cilCart} color="#fffff" />
-                </button>
+                <CTooltip content="Generar Venta">
+                  <button
+                    type="button"
+                    className="btn btn-dark"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handleConfirm(code)}
+                  >
+                    <CIcon icon={cilCart} color="#fffff" />
+                  </button>
+                </CTooltip>
               </>
             ) : null}
             {status === 1 ? (
               <>
                 &nbsp;
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  title="Anular Pedido"
-                  style={{ height: 40, width: 40 }}
-                  onClick={() => handleCancel(code)}
-                >
-                  <CIcon icon={cilTrash} color="#fffff" />
-                </button>
+                <CTooltip content="Anular Pedido">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handleCancel(code)}
+                  >
+                    <CIcon icon={cilTrash} color="#fffff" />
+                  </button>
+                </CTooltip>
               </>
             ) : null}
-            &nbsp;
             {status === 2 ? (
-              <button
-                type="button"
-                className="btn btn-info"
-                title="Descargar comprobante"
-                style={{ height: 40, width: 40 }}
-                onClick={() => handlePrint(code)}
-              >
-                <CIcon icon={cilPaperclip} color="#fffff" />
-              </button>
+              <>
+                &nbsp;
+                <CTooltip content="Descargar Comprobante">
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handlePrint(code)}
+                  >
+                    <CIcon icon={cilPaperclip} color="#fffff" />
+                  </button>
+                </CTooltip>
+              </>
             ) : null}
           </div>
         </div>

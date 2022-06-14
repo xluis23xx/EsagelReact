@@ -4,6 +4,7 @@ import React from "react";
 import { setFormatCharacters } from "../../../utils/formats";
 import { ProspectusOrigin } from "../../../hooks/useProspectusOrigin";
 import { EditItemButton } from "../../global-components/globalButtons";
+import { CTooltip } from "@coreui/react";
 
 type ProspectOriginItemProps = ProspectusOrigin & {
   orderNumber: number;
@@ -30,16 +31,22 @@ export const PropesctusOriginItem: React.FC<ProspectOriginItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"origenes-prospecto"} />
+            <EditItemButton
+              code={code}
+              title="Editar"
+              path={"origenes-prospecto"}
+            />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

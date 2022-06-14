@@ -601,7 +601,6 @@ const EditCourseComponent = () => {
             <CModalBody>
               <SearchButton
                 validators={validators}
-                textButton={"Buscar"}
                 handleSearch={handleSearchTopics}
                 className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
               />

@@ -4,7 +4,7 @@ import React from "react";
 import { setFormatDate } from "../../../utils/formats";
 import { Sale } from "../../../hooks/useSales";
 import { EditItemButton } from "../../global-components/globalButtons";
-import { CBadge } from "@coreui/react";
+import { CBadge, CTooltip } from "@coreui/react";
 
 type SaleItemProps = Sale & {
   index: number;
@@ -72,29 +72,34 @@ export const SaleItem: React.FC<SaleItemProps> = ({
               code={code}
               className="btn btn-success"
               subsection={"detalle"}
+              title="Detalle de Venta"
               path={"ventas"}
               icon={cilEyedropper}
             />
             &nbsp;
-            <button
-              type="button"
-              className="btn btn-info"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handlePrint(code)}
-            >
-              <CIcon icon={cilPaperclip} color="#fffff" />
-            </button>
-            {status === 1 || status === 2 ? (
+            <CTooltip content={"Imprimir Venta"}>
+              <button
+                type="button"
+                className="btn btn-info"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handlePrint(code)}
+              >
+                <CIcon icon={cilPaperclip} color="#fffff" />
+              </button>
+            </CTooltip>
+            {status === 1 ? (
               <>
                 &nbsp;
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  style={{ height: 40, width: 40 }}
-                  onClick={() => handleCancel(code)}
-                >
-                  <CIcon icon={cilTrash} color="#fffff" />
-                </button>
+                <CTooltip content={"Anular Venta"}>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handleCancel(code)}
+                  >
+                    <CIcon icon={cilTrash} color="#fffff" />
+                  </button>
+                </CTooltip>
               </>
             ) : null}
           </div>

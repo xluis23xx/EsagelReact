@@ -413,7 +413,6 @@ const NewUserComponent = () => {
               <CModalBody>
                 <SearchButton
                   validators={validators}
-                  textButton={"Buscar"}
                   handleSearch={handleSearch}
                   className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
                 />

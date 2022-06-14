@@ -1,6 +1,6 @@
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CImage } from "@coreui/react";
+import { CImage, CTooltip } from "@coreui/react";
 import React from "react";
 import { EditItemButton } from "../../global-components/globalButtons";
 
@@ -37,16 +37,18 @@ export const EmployeeItem: React.FC<EmployeeItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"empleados"} />
+            <EditItemButton code={code} title="Editar" path={"empleados"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

@@ -5,6 +5,7 @@ import { EditItemButton } from "../../global-components/globalButtons";
 import { setFormatDate } from "../../../utils/formats";
 
 import { Provider } from "../../../hooks/useProviders";
+import { CTooltip } from "@coreui/react";
 
 type ProviderItemProps = Provider & {
   orderNumber: number;
@@ -33,16 +34,18 @@ export const ProviderItem: React.FC<ProviderItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"proveedores"} />
+            <EditItemButton code={code} title="Editar" path={"proveedores"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

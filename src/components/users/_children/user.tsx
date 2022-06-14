@@ -1,6 +1,6 @@
 import { cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
-import { CBadge } from "@coreui/react";
+import { CBadge, CTooltip } from "@coreui/react";
 import React from "react";
 import { User } from "../../../hooks/useUsers";
 import { formatRolName } from "../../../utils/formats";
@@ -55,17 +55,21 @@ export const UserItem: React.FC<UserItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"usuarios"} />
-            &nbsp;
+            <EditItemButton code={code} title="Editar" path={"usuarios"} />
             {status === 1 ? (
-              <button
-                type="button"
-                className="btn   btn-danger"
-                style={{ height: 40, width: 40 }}
-                onClick={() => handleRemove(code)}
-              >
-                <CIcon icon={cilTrash} color="#fffff" />
-              </button>
+              <>
+                &nbsp;
+                <CTooltip content={"Deshabilitar"}>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handleRemove(code)}
+                  >
+                    <CIcon icon={cilTrash} color="#fffff" />
+                  </button>
+                </CTooltip>
+              </>
             ) : null}
           </div>
         </div>

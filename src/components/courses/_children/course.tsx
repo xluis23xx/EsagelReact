@@ -4,6 +4,7 @@ import React from "react";
 import { EditItemButton } from "../../global-components/globalButtons";
 
 import { Course } from "../../../hooks/useCourses";
+import { CTooltip } from "@coreui/react";
 
 type CourseItemProps = Course & {
   orderNumber: number;
@@ -48,16 +49,18 @@ export const CourseItem: React.FC<CourseItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={_id} path={"cursos"} />
+            <EditItemButton code={_id} title={"Editar"} path={"cursos"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(_id)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(_id)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

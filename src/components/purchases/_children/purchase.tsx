@@ -4,7 +4,7 @@ import React from "react";
 import { setFormatDate } from "../../../utils/formats";
 import { Purchase } from "../../../hooks/usePurchases";
 import { EditItemButton } from "../../global-components/globalButtons";
-import { CBadge } from "@coreui/react";
+import { CBadge, CTooltip } from "@coreui/react";
 
 type PurchaseItemProps = Purchase & {
   index: number;
@@ -64,20 +64,23 @@ export const PurchaseItem: React.FC<PurchaseItemProps> = ({
           <div className="btn-group">
             <EditItemButton
               code={code}
+              title="Editar"
               subsection={"editar"}
               path={"compras"}
             />
             {status === 1 ? (
               <>
                 &nbsp;
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  style={{ height: 40, width: 40 }}
-                  onClick={() => handleCancel(code)}
-                >
-                  <CIcon icon={cilTrash} color="#fffff" />
-                </button>
+                <CTooltip content={"Anular Compra"}>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => handleCancel(code)}
+                  >
+                    <CIcon icon={cilTrash} color="#fffff" />
+                  </button>
+                </CTooltip>
               </>
             ) : null}
           </div>

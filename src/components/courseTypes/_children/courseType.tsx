@@ -5,6 +5,7 @@ import { setFormatCharacters, setFormatDate } from "../../../utils/formats";
 
 import { CourseType } from "../../../hooks/useCourseTypes";
 import { EditItemButton } from "../../global-components/globalButtons";
+import { CTooltip } from "@coreui/react";
 
 type CourseTypeItemProps = CourseType & {
   id: string;
@@ -30,21 +31,23 @@ export const CourseTypeItem: React.FC<CourseTypeItemProps> = ({
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
       <td>
-        {setFormatCharacters({ character: description, slice: 50 }) || ""}
+        {setFormatCharacters({ character: description || "", slice: 50 }) || ""}
       </td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={id} path={"tipos-curso"} />
+            <EditItemButton code={id} title="Editar" path={"tipos-curso"} />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(id)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(id)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

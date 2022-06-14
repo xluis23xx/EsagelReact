@@ -5,6 +5,7 @@ import { setFormatCharacters } from "../../../utils/formats";
 
 import { ContactForm } from "../../../hooks/useContactForms";
 import { EditItemButton } from "../../global-components/globalButtons";
+import { CTooltip } from "@coreui/react";
 
 type ContactFormItemProps = ContactForm & {
   orderNumber: number;
@@ -31,16 +32,22 @@ export const ContactFormItem: React.FC<ContactFormItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"medios-contacto"} />
+            <EditItemButton
+              code={code}
+              title="Editar"
+              path={"medios-contacto"}
+            />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

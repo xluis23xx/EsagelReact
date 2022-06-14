@@ -5,6 +5,7 @@ import { setFormatDate } from "../../../utils/formats";
 
 import { DocumentType } from "../../../hooks/useDocuments";
 import { EditItemButton } from "../../global-components/globalButtons";
+import { CTooltip } from "@coreui/react";
 
 type DocumentTypeItemProps = DocumentType & {
   orderNumber: number;
@@ -31,16 +32,22 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
       <td>
         <div className="selection-btn">
           <div className="btn-group">
-            <EditItemButton code={code} path={"tipos-documento"} />
+            <EditItemButton
+              code={code}
+              title="Editar"
+              path={"tipos-documento"}
+            />
             &nbsp;
-            <button
-              type="button"
-              className="btn   btn-danger"
-              style={{ height: 40, width: 40 }}
-              onClick={() => handleRemove(code)}
-            >
-              <CIcon icon={cilTrash} color="#fffff" />
-            </button>
+            <CTooltip content={"Eliminar"}>
+              <button
+                type="button"
+                className="btn   btn-danger"
+                style={{ height: 40, width: 40 }}
+                onClick={() => handleRemove(code)}
+              >
+                <CIcon icon={cilTrash} color="#fffff" />
+              </button>
+            </CTooltip>
           </div>
         </div>
       </td>

@@ -119,11 +119,11 @@ export const ExportButtons = ({
   };
 
   return (
-    <div className="mx-auto mx-ms-0 me-ms-auto col-12 col-md-6 text-center text-md-start text-light d-inline-block">
+    <div className="col-12 mx-auto mx-ms-0 me-ms-auto col-md-6 text-center text-md-start text-light">
       {headers && dataReport ? (
         <button
           type="button"
-          className="btn btn-dark mx-2 my-1"
+          className="btn btn-dark mx-2 ms-md-2 my-1"
           style={{ minWidth: "70px" }}
           onClick={() => copyToClipBoard(dataReport, headers)}
         >
@@ -133,7 +133,7 @@ export const ExportButtons = ({
       {tableId && documentName ? (
         <ReactHTMLTableToExcel
           id="btn-export-excel"
-          className="btn btn-dark mx-2 my-1"
+          className="btn btn-dark mx-2 ms-md-2 my-1"
           table={tableId}
           style={{ minWidth: "70px" }}
           filename={`${documentName} ${extendedDate()}`}
@@ -145,7 +145,7 @@ export const ExportButtons = ({
         <CSVLink
           headers={headers}
           data={dataReport}
-          className="btn btn-dark mx-2 my-1"
+          className="btn btn-dark mx-2 me-md-2 my-1"
           style={{ minWidth: "70px" }}
           filename={`${documentName} ${extendedDate()}.csv`}
         >
@@ -155,7 +155,7 @@ export const ExportButtons = ({
       {headers && dataReport && documentName ? (
         <button
           type="button"
-          className="btn btn-dark mx-2 my-1"
+          className="btn btn-dark mx-2 me-md-2 my-1"
           style={{ minWidth: "70px" }}
           onClick={() => exportPDF(headers, dataReport, documentName)}
         >
