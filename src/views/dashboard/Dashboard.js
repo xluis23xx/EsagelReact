@@ -216,8 +216,9 @@ const Dashboard = () => {
                   labels: [thirdMonth, secondMonth, firstMonth],
                   datasets: [
                     {
+                      label: "Egresos",
                       backgroundColor: hexToRgba(getStyle("--cui-info"), 10),
-                      borderColor: getStyle("--cui-info"),
+                      borderColor: "#e55353", // getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
                       data: [
