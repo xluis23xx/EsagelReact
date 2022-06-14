@@ -14,6 +14,7 @@ import WidgetsDropdown from "../widgets/WidgetsDropdown";
 import { useDashboard } from "../../hooks/useDashboard";
 import { months } from "../../utils/constants";
 import { obtainFirstAndLastDayOfMonth } from "../../utils/formats";
+import { savePathname } from "../../utils/location";
 
 const Dashboard = () => {
   const { obtainDashboard, dashboardInfo } = useDashboard();
@@ -22,6 +23,8 @@ const Dashboard = () => {
   const [thirdMonth, setThirdMonth] = React.useState("");
 
   React.useEffect(() => {
+    savePathname();
+
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
     const objectFirstMonth = {
@@ -46,9 +49,6 @@ const Dashboard = () => {
     const firstMonthParams = obtainFirstAndLastDayOfMonth(objectFirstMonth);
     const secondMonthParams = obtainFirstAndLastDayOfMonth(objectSecondMonth);
     const thirdMonthParams = obtainFirstAndLastDayOfMonth(objectThirdMonth);
-    console.log(firstMonthParams);
-    console.log(secondMonthParams);
-    console.log(thirdMonthParams);
 
     obtainDashboard({
       firstMonth: {
