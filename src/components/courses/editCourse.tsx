@@ -596,7 +596,7 @@ const EditCourseComponent = () => {
             }}
           >
             <CModalHeader closeButton={true}>
-              <CModalTitle>Seleccione el(os) tema(s)</CModalTitle>
+              <CModalTitle>Seleccione el/los tema(s)</CModalTitle>
             </CModalHeader>
             <CModalBody>
               <SearchButton

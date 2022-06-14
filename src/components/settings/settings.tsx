@@ -412,10 +412,7 @@ const NewCourseTypeComponent = () => {
                   </SubmitButton>
                 </div>
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
-                  <Link
-                    to="/home"
-                    className="btn btn-secondary w-100 text-white"
-                  >
+                  <Link to="/" className="btn btn-secondary w-100 text-white">
                     Volver
                   </Link>
                 </div>

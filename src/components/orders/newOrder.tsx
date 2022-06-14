@@ -694,7 +694,7 @@ const NewOrderComponent = () => {
               }}
             >
               <CModalHeader closeButton={true}>
-                <CModalTitle>Seleccione el(os) curso(s)</CModalTitle>
+                <CModalTitle>Seleccione el/los curso(s)</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <SearchButton
