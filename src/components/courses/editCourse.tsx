@@ -610,7 +610,7 @@ const EditCourseComponent = () => {
                   <thead>
                     <tr>
                       <th style={{ width: 20 }}></th>
-                      <th>índice</th>
+                      <th>Índice</th>
                       <th>Nombre</th>
                     </tr>
                   </thead>

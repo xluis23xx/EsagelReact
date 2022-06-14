@@ -1,8 +1,6 @@
-import { number } from "prop-types";
-
 export type DateBody = {
-  startDate: "",
-  endDate:""
+  startDate: string,
+  endDate:string
 }
 
 export type DashboardParams = {

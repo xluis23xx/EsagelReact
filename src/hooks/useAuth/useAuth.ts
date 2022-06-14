@@ -45,7 +45,6 @@ export const useAuth = () => {
     const token = getCookie("esagel_refreshtoken") || ''
    return refreshToken(token)
     .then(res =>{
-      console.log(res)
       if(res?.status===200){
         setCookie("esagel_token", res?.accessToken || '', 1)
         setCookie("esagel_refreshtoken", res?.refreshToken ||'', 1)
@@ -60,6 +59,7 @@ export const useAuth = () => {
     const USER_PROFILE = localStorage.getItem("esagel_profile");
     const USER_CONFIG = localStorage.getItem("esagel_config");
     const ESAGEL_LAST_PATH = localStorage.getItem("esagel_lastpath");
+    const ESAGEL_DB_QUERY = localStorage.getItem("esagel_db_query");
 
     if (ESAGEL_TOKEN) {
       deleteCookie("esagel_token");
@@ -74,8 +74,12 @@ export const useAuth = () => {
       localStorage.removeItem("esagel_config");
     }
     if(ESAGEL_LAST_PATH){
-      localStorage.removeItem("esagel_lastpath")
+      localStorage.removeItem("esagel_lastpath");
     }
+    if(ESAGEL_DB_QUERY){
+      localStorage.removeItem("esagel_db_query");
+    }
+
   }
   return {
     verifyAuthentication,

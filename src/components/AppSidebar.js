@@ -13,8 +13,8 @@ import { sygnet } from "src/assets/brand/sygnet";
 
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
-// import esagelImage from "src/assets/images/esagel-blanco.png";
-import esagelImage from "src/assets/images/esagel.png";
+import esagelImage from "src/assets/images/esagel-blanco.png";
+// import esagelImage from "src/assets/images/esagel.png";
 
 import navigation from "../_nav";
 import { useDispatch, useSelector } from "react-redux";

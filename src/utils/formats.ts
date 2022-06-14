@@ -1,4 +1,6 @@
 import { string } from "prop-types";
+import { DateBody } from "../hooks/useDashboard/types";
+import { months } from "./constants";
 
 type FormatDate = {
   date: string | Date | undefined| null;
@@ -172,4 +174,28 @@ export const obtainFirstAndLastDayOfMonth = (
     default:
       return null;
   }
+};
+
+export const generateArrayDates = (quantity: number) => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  let auxIndex = 1;
+  const array:DateBody[] = [];
+  for (let i = 0; i < quantity; i++) {
+    const objectMonth = {
+      year: !months[currentMonth - i] ? currentYear - 1 : currentYear,
+      month: !months[currentMonth - i]
+        ? months[months.length - auxIndex]
+        : months[currentMonth - i],
+    };
+    let monthParams = obtainFirstAndLastDayOfMonth(objectMonth);
+    if (!months[currentMonth - i]) {
+      auxIndex++;
+    }
+    array.push({
+      startDate: `${monthParams?.firstDay}T00:00:00.0+00:00`,
+      endDate: `${monthParams?.endDay}T23:59:59.999+00:00`,
+    });
+  }
+  return array;
 };
