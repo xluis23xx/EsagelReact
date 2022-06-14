@@ -29,6 +29,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import { Topic, useTopics } from "../../hooks/useTopics";
+import { cilSearch } from "@coreui/icons";
 
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
@@ -499,7 +500,7 @@ const EditCourseComponent = () => {
                     onClick={() => setVisibleTopicsModal(true)}
                     className="ms-auto btn btn-success text-white w-100 mt-auto"
                   >
-                    Buscar Temas
+                    Buscar Temas&nbsp;<CIcon icon={cilSearch}></CIcon>
                   </button>
                 </div>
                 <div

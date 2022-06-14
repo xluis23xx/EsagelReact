@@ -60,3 +60,16 @@ export const putUser = (token: string, id: string, user: any) =>
       "x-access-token": `${token}`,
     },
   }).then((res) => res.json());
+
+  export const resetPassword = (token:string, id:string) =>
+  fetch(`${GENERAL_API}/users/newPassword`, {
+    method: "POST",
+    cache: "no-cache",
+    body: JSON.stringify({
+      _id: id,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": `${token}`,
+    },
+  }).then((res) => res.json());

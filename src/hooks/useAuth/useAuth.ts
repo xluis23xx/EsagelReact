@@ -56,16 +56,25 @@ export const useAuth = () => {
 
   function logoutUser() {
     const ESAGEL_TOKEN = getCookie("esagel_token");
+    const ESAGEL_RFTOKEN = getCookie("esagel_refreshtoken");
     const USER_PROFILE = localStorage.getItem("esagel_profile");
     const USER_CONFIG = localStorage.getItem("esagel_config");
+    const ESAGEL_LAST_PATH = localStorage.getItem("esagel_lastpath");
+
     if (ESAGEL_TOKEN) {
       deleteCookie("esagel_token");
+    }
+    if (ESAGEL_RFTOKEN) {
+      deleteCookie("esagel_refreshtoken");
     }
     if (USER_PROFILE) {
       localStorage.removeItem("esagel_profile");
     }
     if (USER_CONFIG) {
       localStorage.removeItem("esagel_config");
+    }
+    if(ESAGEL_LAST_PATH){
+      localStorage.removeItem("esagel_lastpath")
     }
   }
   return {

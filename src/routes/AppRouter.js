@@ -13,7 +13,7 @@ import { deleteCookie, getCookie } from "../utils/cookies";
 import { SettingsContext } from "../context/SettingsContext";
 import { useAuth } from "../hooks/useAuth";
 export const AppRouter = () => {
-  const { updateToken } = useAuth();
+  const { updateToken, logoutUser } = useAuth();
   const [user, setUser] = React.useState(null);
   const [config, setConfig] = React.useState(null);
   const [lastPath, setLastPath] = React.useState("/");
@@ -26,7 +26,6 @@ export const AppRouter = () => {
     const ESAGEL_CONFIG = JSON.parse(
       localStorage.getItem("esagel_config") || "{}"
     );
-    const ESAGEL_LAST_PATH = localStorage.getItem("last_path");
     if (
       ESAGEL_TOKEN &&
       Object.keys(ESAGEL_PROFILE).length > 0 &&
@@ -37,25 +36,19 @@ export const AppRouter = () => {
       }
       setUser(ESAGEL_PROFILE);
       setConfig(ESAGEL_CONFIG);
-      setLastPath(ESAGEL_LAST_PATH || "/");
     } else {
-      if (ESAGEL_RFTOKEN) {
-        deleteCookie("esagel_refreshtoken");
-      }
-      if (ESAGEL_TOKEN) {
-        deleteCookie("esagel_token");
-      }
-      if (ESAGEL_PROFILE) {
-        localStorage.removeItem("esagel_profile");
-      }
-      if (ESAGEL_CONFIG) {
-        localStorage.removeItem("esagel_config");
-      }
-      if (ESAGEL_LAST_PATH) {
-        localStorage.removeItem("last_path");
-      }
+      logoutUser();
     }
   }, []);
+
+  React.useEffect(() => {
+    if (user) {
+      const ESAGEL_LAST_PATH = localStorage.getItem("esagel_lastpath");
+      setLastPath(ESAGEL_LAST_PATH || "/");
+    } else {
+      setLastPath("/");
+    }
+  }, [user]);
 
   return (
     <Provider store={store}>

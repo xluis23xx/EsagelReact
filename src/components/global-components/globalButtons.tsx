@@ -8,7 +8,7 @@ import { PaginateResponse } from "../../hooks/types";
 
 export const RedirectionButton = ({
   redirection = "",
-  classContainer = "col-12 col-sm-3 col-md-2 col-lg-2",
+  classContainer = "col-12 col-sm-3 col-md-3 col-lg-2",
   classButton = "btn   btn-success w-100 h-auto text-white",
   textButton = "Nuevo",
 }) => (

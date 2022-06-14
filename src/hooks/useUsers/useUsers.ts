@@ -7,6 +7,7 @@ import {
   getUsers,
   postUser,
   putUser,
+  resetPassword,
 } from "./helpers";
 import { User } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
@@ -174,6 +175,42 @@ export const useUsers = () => {
       });
   }
 
+  async function changePassword(id: string) {
+    setStatus(Status.Updating);
+    const token = getCookie("esagel_token") || "";
+    resetPassword(token, id)
+      .then((response) => {
+        if (response?.status === 201 || response?.status === 200) {
+          Swal.fire({
+            title: "¡Todo salió bien!",
+            icon: "success",
+            text: `Se generó la nueva contraseña: ${response?.message}`,
+            confirmButtonColor: "#ff0000",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "¡Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
+        setStatus(Status.Ready);
+      })
+      .catch(() => {
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: "Ocurrió un error inesperado",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+        setStatus(Status.Ready);
+      });
+  }
+
+
   function changePage (index: number) {
     getUsersByFilter(searchFilter, {limit: 20, pageSize:index})
   }
@@ -186,6 +223,7 @@ export const useUsers = () => {
     setUserById,
     userInfo,
     getUsersByFilter,
+    changePassword,
     paginateData,
     setSearchFilter,
     changePage,

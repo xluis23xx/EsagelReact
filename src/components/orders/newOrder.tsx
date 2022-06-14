@@ -374,7 +374,7 @@ const NewOrderComponent = () => {
                     onClick={() => setVisibleCoursesModal(true)}
                     className="ms-auto btn btn-success text-white w-100 mt-auto"
                   >
-                    Buscar Cursos
+                    Buscar Cursos&nbsp;<CIcon icon={cilSearch}></CIcon>
                   </button>
                 </div>
 

@@ -11,12 +11,21 @@ import FileUploader from "react-firebase-file-uploader";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
 import CIcon from "@coreui/icons-react";
-import { cilHamburgerMenu } from "@coreui/icons";
+import { cilHamburgerMenu, cilLockLocked } from "@coreui/icons";
 import { useFileUpload } from "../../hooks/useFileUpload";
 import { InputForm } from "../global-components/inputForm";
+import {
+  CButton,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+} from "@coreui/react";
 
 const EditUserComponent = () => {
-  const { updateUser, status, setUserById, userInfo } = useUsers();
+  const { updateUser, status, setUserById, userInfo, changePassword } =
+    useUsers();
   const {
     uploading: imageUploading,
     progress: imageProgress,
@@ -37,6 +46,10 @@ const EditUserComponent = () => {
 
   const [selectedRoles, setSelectedRoles] = React.useState<string[]>([]);
   const [showRolesError, setShowRolesError] = React.useState<boolean>(false);
+
+  const [modalGeneratePass, setModalGeneratePass] = React.useState(false);
+  const [wordSecretForm, setWordSecretForm] = React.useState("");
+  const [wordUser, setWordUser] = React.useState("");
 
   // Context con las operaciones de firebase
   const { firebase } = React.useContext(FirebaseContext);
@@ -90,6 +103,13 @@ const EditUserComponent = () => {
     handleOnSubmit,
     disable,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
+
+  const onSubmitFormNewPass = () => {
+    if (wordUser) {
+      userInfo?._id || "";
+    }
+    changePassword(userInfo?._id || "").then(() => setModalGeneratePass(false));
+  };
 
   return (
     <div className="row my-3">
@@ -280,6 +300,22 @@ const EditUserComponent = () => {
                     </p>
                   )}
                 </div>
+                <div className="form-group mt-3 col-sm-6 col-xl-1 d-flex" />
+                <div className="form-group mt-3 col-sm-6 col-xl-3 d-flex">
+                  <button
+                    type="button"
+                    onClick={() => setModalGeneratePass(true)}
+                    disabled={
+                      status === Status.Loading ||
+                      status === Status.Updating ||
+                      !userInfo?.username
+                    }
+                    className="ms-auto btn btn-dark text-white fw-bolder w-100 mt-auto"
+                  >
+                    Generar Nueva Contraseña&nbsp;
+                    <CIcon icon={cilLockLocked}></CIcon>
+                  </button>
+                </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
@@ -326,6 +362,53 @@ const EditUserComponent = () => {
           </div>
         </div>
       </div>
+      <CModal
+        visible={modalGeneratePass}
+        onClose={() => {
+          setModalGeneratePass(false);
+        }}
+      >
+        <CModalHeader closeButton={true}>
+          <CModalTitle>Estás seguro de hacer esto?</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <p className="p-3">
+            Al generarle una nueva contraseña al usuario se le deberá avisar con
+            anticipación para su conocimiento, para continuar con la generación
+            de la nueva contraseña escriba lo siguiente:{" "}
+            <span className="fw-semibold">{userInfo?.username}</span>
+          </p>
+          <form>
+            <InputForm
+              value={wordUser}
+              type="text"
+              maxLength={100}
+              onChange={(e) => setWordUser(e.target.value)}
+            />
+          </form>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            className="text-white"
+            onClick={() => {
+              setModalGeneratePass(false);
+            }}
+          >
+            Cancelar
+          </CButton>
+          <CButton
+            color="danger"
+            className="text-white"
+            disabled={
+              status === Status.Updating || wordUser !== userInfo?.username
+            }
+            onClick={onSubmitFormNewPass}
+          >
+            Generar
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </div>
   );
 };
