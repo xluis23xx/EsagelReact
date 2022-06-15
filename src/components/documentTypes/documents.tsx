@@ -46,6 +46,8 @@ const DocumentTypesComponent = () => {
   const headers = [
     { label: "Nombre", key: "name" },
     { label: "Operación", key: "operation" },
+    { label: "Código", key: "code" },
+    { label: "Longitud", key: "length" },
     { label: "Fecha de creación", key: "createdAt" },
     { label: "Última fecha de actualización", key: "updatedAt" },
   ];
@@ -100,13 +102,17 @@ const DocumentTypesComponent = () => {
                             operation,
                             createdAt,
                             updatedAt,
+                            code,
+                            length,
                             status,
                           } = document;
                           return (
                             <DocumentTypeItem
                               key={index}
-                              code={_id}
+                              _id={_id}
                               name={name}
+                              code={code}
+                              length={length}
                               operation={operation}
                               createdAt={createdAt}
                               updatedAt={updatedAt}

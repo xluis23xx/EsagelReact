@@ -9,15 +9,16 @@ import { CTooltip } from "@coreui/react";
 
 type DocumentTypeItemProps = DocumentType & {
   orderNumber: number;
-  code: string;
   handleRemove: (id: string) => void;
 };
 
 export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
   orderNumber,
-  code,
+  _id = "",
   name,
   operation,
+  code,
+  length,
   createdAt,
   updatedAt,
   handleRemove,
@@ -27,13 +28,15 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
       <td>{orderNumber}</td>
       <td>{name || ""}</td>
       <td>{operation || ""}</td>
+      <td>{code || ""}</td>
+      <td>{length || ""}</td>
       <td>{setFormatDate({ date: createdAt }) || ""}</td>
       <td>{setFormatDate({ date: updatedAt }) || ""}</td>
       <td>
         <div className="selection-btn">
           <div className="btn-group">
             <EditItemButton
-              code={code}
+              code={_id}
               title="Editar"
               path={"tipos-documento"}
             />
@@ -43,7 +46,7 @@ export const DocumentTypeItem: React.FC<DocumentTypeItemProps> = ({
                 type="button"
                 className="btn   btn-danger"
                 style={{ height: 40, width: 40 }}
-                onClick={() => handleRemove(code)}
+                onClick={() => handleRemove(_id)}
               >
                 <CIcon icon={cilTrash} color="#fffff" />
               </button>

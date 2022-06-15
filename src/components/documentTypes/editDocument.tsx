@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames } from "../../utils/errors";
+import { formatExtendNames, formatNames, minNumber } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
@@ -31,6 +31,8 @@ const EditDocumentTypeComponent = () => {
   const stateSchema = {
     name: { value: null, error: "" },
     operation: { value: null, error: "" },
+    code: { value: null, error: "" },
+    length: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
@@ -41,12 +43,14 @@ const EditDocumentTypeComponent = () => {
       invalidtext: true,
     },
     operation: { required: true },
+    code: { required: true, validator: formatExtendNames(), min2caracts: true },
+    length: { required: true, validator: minNumber(1) },
   };
 
   const onSubmitForm = (data: DocumentType) => {
     const documentType = {
       name: (data?.name ?? documentInfo?.name) || null,
-      operation: (data?.operation ?? documentInfo?.operation) || null,
+      length: (data?.length ?? documentInfo?.length) || null,
       status: 1,
     };
     updateDocumentType(id, documentType).then((response) => {
@@ -57,8 +61,13 @@ const EditDocumentTypeComponent = () => {
   };
 
   const {
-    values: { name, operation },
-    errors: { name: nameError, operation: operationError },
+    values: { name, operation, length, code },
+    errors: {
+      name: nameError,
+      operation: operationError,
+      code: codeError,
+      length: lengthError,
+    },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -111,9 +120,7 @@ const EditDocumentTypeComponent = () => {
                     id="operation"
                     name="operation"
                     required
-                    disabled={
-                      status === Status.Loading || status === Status.Updating
-                    }
+                    disabled={true}
                     value={(operation ?? documentInfo?.operation) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
@@ -126,6 +133,47 @@ const EditDocumentTypeComponent = () => {
                     <option value="comprobante">Comprobante</option>
                   </select>
                 </div>
+                {documentInfo?.operation === "comprobante" ? (
+                  <div className="form-group mt-1 col-sm-6">
+                    <label className="form-label" htmlFor="code">
+                      Código *
+                    </label>
+                    <InputForm
+                      type="text"
+                      required
+                      placeholder="Código"
+                      name="code"
+                      value={(code ?? documentInfo?.code) || ""}
+                      onChange={handleOnChange}
+                      disabled={true}
+                      error={codeError}
+                    />
+                  </div>
+                ) : null}
+                {documentInfo?.operation === "comprobante" ? (
+                  <div className="form-group mt-1 col-sm-6">
+                    <label className="form-label" htmlFor="name">
+                      Longitud *
+                    </label>
+                    <InputForm
+                      type="number"
+                      required
+                      placeholder="Longitud"
+                      name="length"
+                      value={
+                        (length?.toString() ??
+                          documentInfo?.length?.toString()) ||
+                        "0"
+                      }
+                      max={11}
+                      onChange={handleOnChange}
+                      disabled={
+                        status === Status.Loading || status === Status.Updating
+                      }
+                      error={lengthError}
+                    />
+                  </div>
+                ) : null}
                 <div className="form-group mt-1 col-sm-6">
                   <label className="form-label" htmlFor="createdAt">
                     Fecha de creación:

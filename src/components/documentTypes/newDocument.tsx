@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatNames } from "../../utils/errors";
+import { formatExtendNames, formatNames, minNumber } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
@@ -20,6 +20,8 @@ const NewDocumentTypeComponent = () => {
   const stateSchema = {
     name: { value: "", error: "" },
     operation: { value: "", error: "" },
+    code: { value: "", error: "" },
+    length: { value: "", error: "" },
   };
 
   const stateValidatorSchema = {
@@ -30,12 +32,16 @@ const NewDocumentTypeComponent = () => {
       invalidtext: true,
     },
     operation: { required: true },
+    code: { required: true, validator: formatExtendNames(), min2caracts: true },
+    length: { required: true, validator: minNumber(1) },
   };
 
   const onSubmitForm = (data: DocumentType) => {
     const documentType = {
       name: data?.name || null,
       operation: data?.operation || null,
+      code: data?.operation === "comprobante" ? data?.code : data?.name,
+      length: data?.operation === "comprobante" ? data?.length : null,
       status: 1,
     };
     registerDocumentType(documentType).then((response) => {
@@ -46,8 +52,13 @@ const NewDocumentTypeComponent = () => {
   };
 
   const {
-    values: { name, operation },
-    errors: { name: nameError, operation: operationError },
+    values: { name, operation, code, length },
+    errors: {
+      name: nameError,
+      operation: operationError,
+      code: codeError,
+      length: lengthError,
+    },
     handleOnChange,
     handleOnSubmit,
     disable,
@@ -111,6 +122,41 @@ const NewDocumentTypeComponent = () => {
                     <option value="comprobante">Comprobante</option>
                   </select>
                 </div>
+                {operation === "comprobante" ? (
+                  <div className="form-group mt-1 col-sm-6">
+                    <label className="form-label" htmlFor="code">
+                      Código *
+                    </label>
+                    <InputForm
+                      type="text"
+                      required
+                      placeholder="Código"
+                      name="code"
+                      value={code}
+                      onChange={handleOnChange}
+                      disabled={status === Status.Updating}
+                      error={codeError}
+                    />
+                  </div>
+                ) : null}
+                {operation === "comprobante" ? (
+                  <div className="form-group mt-1 col-sm-6">
+                    <label className="form-label" htmlFor="name">
+                      Longitud *
+                    </label>
+                    <InputForm
+                      type="number"
+                      required
+                      placeholder="Longitud"
+                      name="length"
+                      value={length}
+                      max={11}
+                      onChange={handleOnChange}
+                      disabled={status === Status.Updating}
+                      error={lengthError}
+                    />
+                  </div>
+                ) : null}
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton

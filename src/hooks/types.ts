@@ -1,4 +1,5 @@
 export type PaginateResponse = {
+  status: number;
   docs: any[];
   hasNextPage: boolean;
   hasPrevPage: boolean;
