@@ -28,6 +28,7 @@ import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { setFormatDate } from "../../utils/formats";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
@@ -386,6 +387,11 @@ const NewClientComponent = () => {
                     required
                     value={birthdate}
                     onChange={handleOnChange}
+                    max={setFormatDate({
+                      order: 1,
+                      date: new Date(),
+                      separator: "-",
+                    })}
                     disabled={status === Status.Updating}
                     error={birthdateError}
                   />

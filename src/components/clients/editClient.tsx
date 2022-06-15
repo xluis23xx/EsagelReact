@@ -417,6 +417,11 @@ const EditClientComponent = () => {
                         })) ||
                       ""
                     }
+                    max={setFormatDate({
+                      order: 1,
+                      date: new Date(),
+                      separator: "-",
+                    })}
                     onChange={handleOnChange}
                     disabled={true}
                     error={birthdateError}

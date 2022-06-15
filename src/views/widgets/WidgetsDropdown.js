@@ -264,7 +264,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                       dashboardInfo?.purchases?.totalSecondMonth || 0,
                       dashboardInfo?.purchases?.totalFirstMonth || 0,
                     ],
-                    barPercentage: 0.6,
+                    barPercentage: 1.0,
                   },
                 ],
               }}
