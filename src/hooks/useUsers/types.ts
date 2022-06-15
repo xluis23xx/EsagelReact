@@ -3,6 +3,7 @@ import { Employee } from "../useEmployees";
 export type Role = {
   _id?: string;
   name?: string;
+  priority?: number;
 };
 
 export type User = {

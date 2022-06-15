@@ -212,7 +212,7 @@ const NewUserComponent = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success text-white"
                       onClick={() => setVisibleEmployeeModal(true)}
                     >
                       <CIcon icon={cilSearch}></CIcon>
@@ -318,7 +318,7 @@ const NewUserComponent = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-warning"
+                      className="btn btn-warning text-white"
                       onClick={() =>
                         setEnableCustomUsername(!enableCustomUsername)
                       }

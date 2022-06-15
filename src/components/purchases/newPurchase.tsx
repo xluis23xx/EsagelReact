@@ -212,7 +212,7 @@ const NewPurchaseComponent = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success text-white"
                       onClick={() => setVisibleProviderModal(true)}
                     >
                       <CIcon icon={cilSearch}></CIcon>

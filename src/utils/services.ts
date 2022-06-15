@@ -8,17 +8,15 @@ export const getUbigeo = (item: string) => {
 };
 
 
-export const getConsultaRuc = (ruc: string) => {
-  const response= new Promise((resolve, reject)=> {
-    fetch(`https://api.apis.net.pe/v1/ruc?numero=${ruc}&v=${new Date().getTime}`, {
+export const getConsultaRuc = (ruc: string) => 
+   fetch(`https://api.apis.net.pe/v1/ruc/?numero=${ruc}`, {
       method: "GET",
+      cache:"no-cache",
       headers: {
+        'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
         "Authorization": `Bearer apis-token-2275.9h1FqM5wJrmVdKLMTnpLVRdsEAB1aNeq`,
       },
     })
-    .then((res)=> resolve(res.json()))
-    .catch((err) => reject(err))
-  })
-  return response;
-}
+    .then((res)=> res.json())
+    .catch((err) =>err)

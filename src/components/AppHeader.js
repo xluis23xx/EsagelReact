@@ -33,7 +33,7 @@ const AppHeader = () => {
   const { config } = React.useContext(SettingsContext);
 
   let nameProfile = "";
-  let roles = "";
+  let dominantRole = "";
   if (Object.keys(user).length > 0) {
     if (user?.employee?.name) {
       if (user?.employee?.lastname) {
@@ -50,10 +50,12 @@ const AppHeader = () => {
 
   if (user?.roles) {
     if (user?.roles.length > 0) {
-      user?.roles.map((rol, index) =>
-        index === 0
-          ? (roles = roles.concat(formatRolName(rol.name)))
-          : (roles = roles.concat(` - ${formatRolName(rol.name)}`))
+      let result = 999;
+      result = Math.min(
+        ...(user?.roles?.map((rol) => Number(rol?.priority || 999)) || 0)
+      );
+      dominantRole = formatRolName(
+        user?.roles?.find((rol) => rol?.priority == result)?.name || ""
       );
     }
   }
@@ -86,7 +88,9 @@ const AppHeader = () => {
           <CNavItem className="d-block fw-bold">
             Usuario: {nameProfile}
           </CNavItem>
-          <CNavItem className="d-block ms-5 fw-bold">Rol(es): {roles}</CNavItem>
+          <CNavItem className="d-block ms-5 fw-bold">
+            Rol Principal: {dominantRole}
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
           {/* <ToggleButtonThemeComponent /> */}

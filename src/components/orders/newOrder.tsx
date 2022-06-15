@@ -11,6 +11,7 @@ import { SearchButton, SubmitButton } from "../global-components/globalButtons";
 import { Client, useClients } from "../../hooks/useClients";
 
 import {
+  CBadge,
   CButton,
   CModal,
   CModalBody,
@@ -50,7 +51,6 @@ const NewOrderComponent = () => {
   const [selectedClient, setSelectedClient] = React.useState<Client | null>(
     null
   );
-  const [selectedRuc, setSelectedRuc] = React.useState<Client | null>(null);
 
   const [selectedCourses, setSelectedCourses] = React.useState<OrderDetail[]>(
     []
@@ -111,9 +111,16 @@ const NewOrderComponent = () => {
     const order = {
       seller: user?._id || null,
       client: selectedClient?._id || null,
-      documentType: data?.documentType || null,
+      documentType:
+        selectedClient?.documentType?.name === "RUC"
+          ? "Factura"
+          : data?.documentType || null,
       documentNumber:
-        data?.documentType === "Factura" ? data?.documentNumber : null,
+        selectedClient?.documentType?.name === "RUC"
+          ? selectedClient?.documentNumber
+          : data?.documentType === "Factura"
+          ? data?.documentNumber
+          : null,
       subtotal: subtotal || 0,
       percentIva: config?.tax ? config?.tax : null,
       amountInIva: config?.tax ? config?.tax * subtotal : null,
@@ -226,8 +233,9 @@ const NewOrderComponent = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success text-white"
                       onClick={() => setVisibleClientModal(true)}
+                      disabled={selectedCourses?.length > 0}
                     >
                       <CIcon icon={cilSearch}></CIcon>
                     </button>
@@ -249,8 +257,15 @@ const NewOrderComponent = () => {
                     id="documentType"
                     name="documentType"
                     required
-                    disabled={status === Status.Updating}
-                    value={documentType || ""}
+                    disabled={
+                      status === Status.Updating ||
+                      selectedClient?.documentType?.name === "RUC"
+                    }
+                    value={
+                      selectedClient?.documentType?.name === "RUC"
+                        ? "Factura"
+                        : documentType || ""
+                    }
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -283,63 +298,32 @@ const NewOrderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                {documentType === "Factura" ? (
-                  <>
-                    <div className="form-group mt-1 col-sm-6 col-xl-4">
-                      <label className="form-label" htmlFor="documentNumber">
-                        RUC *
-                      </label>
-                      <div className="d-flex">
-                        <input
-                          required
-                          className={`w-100 ${
-                            showClientError ? "border border-danger" : ""
-                          }`}
-                          placeholder="RUC"
-                          name="ruc"
-                          value={
-                            `${
-                              selectedClient?.name ? selectedClient?.name : ""
-                            }${
-                              selectedClient?.lastname
-                                ? ` ${selectedClient?.lastname}`
-                                : ""
-                            }` || ""
-                          }
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              setShowClientError(true);
-                            } else {
-                              setShowClientError(false);
-                            }
-                          }}
-                          onBlur={(e) => {
-                            if (e.target.value) {
-                              setShowClientError(true);
-                            } else {
-                              setShowClientError(false);
-                            }
-                          }}
-                          disabled={true}
-                        />
-                        <button
-                          type="button"
-                          className="btn btn-success"
-                          onClick={() => setVisibleClientModal(true)}
-                        >
-                          <CIcon icon={cilSearch}></CIcon>
-                        </button>
-                      </div>
-                      {showClientError ? (
-                        <p
-                          className="w-100 pb-0 mb-0 text-danger"
-                          style={{ fontSize: 15 }}
-                        >
-                          Este campo es requerido.
-                        </p>
-                      ) : null}
-                    </div>
-                  </>
+                {selectedClient?.documentType?.name === "RUC" ||
+                documentType === "Factura" ? (
+                  <div className="form-group mt-1 col-sm-6 col-xl-4">
+                    <label className="form-label" htmlFor="documentNumber">
+                      RUC *
+                    </label>
+                    <InputForm
+                      type="text"
+                      required
+                      maxLength={11}
+                      placeholder="Nro. Ruc"
+                      name="documentNumber"
+                      value={
+                        selectedClient?.documentType?.name === "RUC"
+                          ? selectedClient?.documentNumber || ""
+                          : documentNumber || ""
+                      }
+                      onChange={handleOnChange}
+                      disabled={
+                        selectedClient?.documentType?.name === "RUC" ||
+                        status === Status.Updating
+                      }
+                      error={documentNumberError}
+                      showError={false}
+                    />
+                  </div>
                 ) : null}
 
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
@@ -363,7 +347,8 @@ const NewOrderComponent = () => {
                     disabled={true}
                   />
                 </div>
-                {documentType === "Factura" ? (
+                {selectedClient?.documentType?.name === "RUC" ||
+                documentType === "Factura" ? (
                   <div className="col-12 mt-3 d-sm-none d-xl-block col-xl-1" />
                 ) : (
                   <div className="col-12  mt-3 col-sm-6 col-xl-5" />
@@ -372,6 +357,7 @@ const NewOrderComponent = () => {
                   <button
                     type="button"
                     onClick={() => setVisibleCoursesModal(true)}
+                    disabled={!selectedClient}
                     className="ms-auto btn btn-success text-white w-100 mt-auto"
                   >
                     Buscar Cursos&nbsp;<CIcon icon={cilSearch}></CIcon>
@@ -388,6 +374,7 @@ const NewOrderComponent = () => {
                         <th style={{ minWidth: 60 }}>N°</th>
                         <th style={{ minWidth: 60 }}>Curso</th>
                         <th style={{ minWidth: 60 }}>Precio Venta</th>
+                        <th style={{ minWidth: 60 }}>Vacantes</th>
                         <th style={{ minWidth: 60 }}>Cantidad</th>
                         <th style={{ minWidth: 60 }}>Descuento</th>
                         <th style={{ minWidth: 60 }}>Importe</th>
@@ -402,6 +389,7 @@ const NewOrderComponent = () => {
                                 name,
                                 price = 0,
                                 _id,
+                                course = null,
                                 quantity = 1,
                                 discount = 0,
                                 amount = 0,
@@ -411,7 +399,58 @@ const NewOrderComponent = () => {
                                   <td>{index + 1}</td>
                                   <td>{name || ""}</td>
                                   <td>{price?.toFixed(2) || ""}</td>
-                                  <td>{1}</td>
+                                  <td>{course?.vacanciesNumber || ""}</td>
+                                  <td>
+                                    <input
+                                      type={"number"}
+                                      name="quantity"
+                                      className="form-control"
+                                      value={quantity}
+                                      disabled={
+                                        selectedClient?.documentType?.name !==
+                                        "RUC"
+                                      }
+                                      onChange={(e) => {
+                                        if (e.target.value === "") {
+                                          setSelectedCourses([
+                                            ...selectedCourses.map((item) =>
+                                              item._id === _id
+                                                ? {
+                                                    ...item,
+                                                    discount: 0,
+                                                    amount:
+                                                      (item?.price || 0) *
+                                                      Number(
+                                                        e.target.value || 1
+                                                      ),
+                                                  }
+                                                : item
+                                            ),
+                                          ]);
+                                        } else if (
+                                          Number(e.target.value) <
+                                          (course?.vacanciesNumber || 0)
+                                        ) {
+                                          setSelectedCourses([
+                                            ...selectedCourses.map((item) =>
+                                              item._id === _id
+                                                ? {
+                                                    ...item,
+                                                    quantity: Number(
+                                                      e.target.value
+                                                    ),
+                                                    amount:
+                                                      (item?.price || 0) *
+                                                        Number(e.target.value) -
+                                                      discount,
+                                                  }
+                                                : item
+                                            ),
+                                          ]);
+                                        }
+                                      }}
+                                    />
+                                  </td>
                                   <td>
                                     <input
                                       type={"number"}
@@ -486,73 +525,58 @@ const NewOrderComponent = () => {
                             }
                           )
                         : null}
-                      <tr className="mt-3">
-                        <td colSpan={2}>
-                          <div className="d-block d-md-flex">
-                            <input
-                              className="form-control bg-warning text-center fw-bold"
-                              value="Subtotal"
-                              disabled={true}
-                            />
-                            <input
-                              type={"number"}
-                              className="form-control text-center"
-                              value={subtotal.toFixed(2)}
-                              disabled={true}
-                            />
-                          </div>
-                        </td>
-                        <td colSpan={2}>
-                          <div className="d-block d-md-flex">
-                            <input
-                              className="form-control bg-warning text-center fw-bold d-flex"
-                              value={`IGV ${
-                                config?.tax ? `${config?.tax * 100}%` : ""
-                              }`}
-                              disabled={true}
-                            />
-                            <input
-                              type={"number"}
-                              className="form-control text-center d-flex"
-                              value={
-                                config?.tax
-                                  ? (subtotal * config?.tax).toFixed(2)
-                                  : (0.0).toFixed(2)
-                              }
-                              disabled={true}
-                            />
-                          </div>
-                        </td>
-                        <td colSpan={2}>
-                          <div className="d-block d-md-flex">
-                            <input
-                              className="form-control bg-warning text-center fw-bold"
-                              value="Total"
-                              disabled={true}
-                            />
-                            <input
-                              type={"number"}
-                              className="form-control text-center fw-bold"
-                              value={
-                                config?.tax
-                                  ? (subtotal + subtotal * config?.tax).toFixed(
-                                      2
-                                    )
-                                  : (0.0).toFixed(2)
-                              }
-                              disabled={true}
-                            />
-                          </div>
-                        </td>
-                      </tr>
                     </tbody>
                   </table>
+                </div>
+                <div className="mt-3 form-group">
+                  <div className="d-block col-12 col-sm-5 d-sm-flex col-md-4 col-xl-3 ms-auto mb-1">
+                    <CBadge className="form-control me-1" color="warning">
+                      Subtotal
+                    </CBadge>
+                    <CBadge
+                      className="form-control me-1"
+                      color="default"
+                      textColor="black"
+                    >
+                      {subtotal?.toFixed(2)}
+                    </CBadge>
+                  </div>
+                  <div className="d-block col-12 col-sm-5 d-sm-flex col-md-4 col-xl-3 ms-auto mb-1">
+                    <CBadge className="form-control me-1" color="warning">
+                      {`IGV ${config?.tax ? `${config?.tax * 100}%` : ""}`}
+                    </CBadge>
+                    <CBadge
+                      className="form-control me-1"
+                      color="default"
+                      textColor="black"
+                    >
+                      {config?.tax
+                        ? (subtotal * config?.tax)?.toFixed(2)
+                        : (0.0).toFixed(2)}
+                    </CBadge>
+                  </div>
+                  <div className="d-block col-12 col-sm-5 d-sm-flex col-md-4 col-xl-3 ms-auto mb-1">
+                    <CBadge className="form-control me-1" color="warning">
+                      Total
+                    </CBadge>
+                    <CBadge
+                      className="form-control me-1"
+                      color="dark"
+                      textColor="white"
+                    >
+                      {config?.tax
+                        ? (subtotal + subtotal * config?.tax)?.toFixed(2)
+                        : (0.0).toFixed(2)}
+                    </CBadge>
+                  </div>
                 </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable ||
+                      (selectedClient?.documentType?.name === "RUC"
+                        ? false
+                        : !documentType) ||
                       !selectedClient ||
                       status === Status.Updating ||
                       selectedCourses.length === 0
@@ -618,42 +642,35 @@ const NewOrderComponent = () => {
                               documentType: clientDocType,
                               documentNumber: clientDocNumber,
                             } = cli;
-                            if (index > 4) {
-                              return null;
-                            } else {
-                              return (
-                                <tr key={_id}>
-                                  <td>
-                                    <input
-                                      type="checkbox"
-                                      className="form-check-input form-check-success p-2"
-                                      onClick={() => {
-                                        setSelectedClient({
-                                          _id,
-                                          name,
-                                          lastname,
-                                          secondLastname,
-                                        });
-                                        setShowClientError(false);
-                                        setVisibleClientModal(false);
-                                      }}
-                                      checked={selectedClient?._id === _id}
-                                    />
-                                  </td>
-                                  <td>
-                                    {name} {lastname} {secondLastname}
-                                  </td>
-                                  <td>
-                                    {clientDocType?.name
-                                      ? clientDocType?.name
-                                      : ""}
-                                    {clientDocNumber
-                                      ? ` - ${clientDocNumber}`
-                                      : ""}
-                                  </td>
-                                </tr>
-                              );
-                            }
+                            return (
+                              <tr key={_id}>
+                                <td>
+                                  <input
+                                    type="checkbox"
+                                    className="form-check-input form-check-success p-2"
+                                    onClick={() => {
+                                      setSelectedClient({
+                                        ...cli,
+                                      });
+                                      setShowClientError(false);
+                                      setVisibleClientModal(false);
+                                    }}
+                                    checked={selectedClient?._id === _id}
+                                  />
+                                </td>
+                                <td>
+                                  {name} {lastname} {secondLastname}
+                                </td>
+                                <td>
+                                  {clientDocType?.name
+                                    ? clientDocType?.name
+                                    : ""}
+                                  {clientDocNumber
+                                    ? ` - ${clientDocNumber}`
+                                    : ""}
+                                </td>
+                              </tr>
+                            );
                           })
                         : null}
                     </tbody>
@@ -720,73 +737,68 @@ const NewOrderComponent = () => {
                               vacanciesNumber = 0,
                               price = 0,
                             } = cou;
-                            if (index > 4) {
-                              return null;
-                            } else {
-                              return (
-                                <tr key={_id}>
-                                  <td>
-                                    {vacanciesNumber ? (
-                                      <input
-                                        type="checkbox"
-                                        name="course"
-                                        checked={selectedCoursesIds.includes(
-                                          _id || ""
-                                        )}
-                                        className="form-check-input form-check-success p-2"
-                                        onChange={(e) => {
-                                          if (e.target.checked) {
-                                            const cleanCourses =
-                                              selectedCourses.filter(
-                                                (ord: OrderDetail) =>
-                                                  ord?._id !== _id
-                                              );
-                                            const cleanCourseIds =
-                                              selectedCoursesIds.filter(
-                                                (id: string) => id !== _id
-                                              );
-                                            setSelectedCourses([
-                                              ...cleanCourses,
-                                              {
-                                                _id: _id,
-                                                price: price,
-                                                name: name,
-                                                quantity: 1,
-                                                discount: 0,
-                                                amount: Number(price),
-                                              },
-                                            ]);
-                                            setSelectedCoursesIds([
-                                              ...cleanCourseIds,
-                                              _id || "",
-                                            ]);
-                                          } else {
-                                            const cleanCourses =
-                                              selectedCourses.filter(
-                                                (ord: OrderDetail) =>
-                                                  ord?._id !== _id
-                                              );
-                                            const cleanCourseIds =
-                                              selectedCoursesIds.filter(
-                                                (id: string) => id !== _id
-                                              );
-                                            setSelectedCourses([
-                                              ...cleanCourses,
-                                            ]);
-                                            setSelectedCoursesIds([
-                                              ...cleanCourseIds,
-                                            ]);
-                                          }
-                                        }}
-                                      />
-                                    ) : null}
-                                  </td>
-                                  <td>{name || ""}</td>
-                                  <td>{price.toFixed(2) || ""}</td>
-                                  <td>{vacanciesNumber || ""}</td>
-                                </tr>
-                              );
-                            }
+                            return (
+                              <tr key={_id}>
+                                <td>
+                                  {vacanciesNumber ? (
+                                    <input
+                                      type="checkbox"
+                                      name="course"
+                                      checked={selectedCoursesIds.includes(
+                                        _id || ""
+                                      )}
+                                      className="form-check-input form-check-success p-2"
+                                      onChange={(e) => {
+                                        if (e.target.checked) {
+                                          const cleanCourses =
+                                            selectedCourses.filter(
+                                              (ord: OrderDetail) =>
+                                                ord?._id !== _id
+                                            );
+                                          const cleanCourseIds =
+                                            selectedCoursesIds.filter(
+                                              (id: string) => id !== _id
+                                            );
+                                          setSelectedCourses([
+                                            ...cleanCourses,
+                                            {
+                                              _id: _id,
+                                              price: price,
+                                              name: name,
+                                              quantity: 1,
+                                              discount: 0,
+                                              course: cou,
+                                              amount: Number(price),
+                                            },
+                                          ]);
+                                          setSelectedCoursesIds([
+                                            ...cleanCourseIds,
+                                            _id || "",
+                                          ]);
+                                        } else {
+                                          const cleanCourses =
+                                            selectedCourses.filter(
+                                              (ord: OrderDetail) =>
+                                                ord?._id !== _id
+                                            );
+                                          const cleanCourseIds =
+                                            selectedCoursesIds.filter(
+                                              (id: string) => id !== _id
+                                            );
+                                          setSelectedCourses([...cleanCourses]);
+                                          setSelectedCoursesIds([
+                                            ...cleanCourseIds,
+                                          ]);
+                                        }
+                                      }}
+                                    />
+                                  ) : null}
+                                </td>
+                                <td>{name || ""}</td>
+                                <td>{price.toFixed(2) || ""}</td>
+                                <td>{vacanciesNumber || ""}</td>
+                              </tr>
+                            );
                           })
                         : null}
                     </tbody>

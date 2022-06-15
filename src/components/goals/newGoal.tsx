@@ -160,7 +160,7 @@ const NewGoalComponent = () => {
                     />
                     <button
                       type="button"
-                      className="btn btn-success"
+                      className="btn btn-success text-white"
                       onClick={() => setVisibleEmployeeModal(true)}
                     >
                       <CIcon icon={cilSearch}></CIcon>
