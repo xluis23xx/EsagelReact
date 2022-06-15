@@ -2,6 +2,7 @@ import { DocumentType } from "../useDocuments";
 import { ProspectusOrigin } from "../useProspectusOrigin";
 import { ProspectusStatus } from "../usePropectusStatus";
 import { ContactForm } from "../useContactForms";
+import { GeneralResponse } from "../types";
 
 export type Department = {
   _id?: string;
@@ -30,5 +31,8 @@ export type Client = {
   updatedAt?: string;
 };
 
-export type GetClient = Client;
+export type ClientResponse = GeneralResponse & {
+  doc?: Client | null;
+}
+
 export type GetClients = Client[];

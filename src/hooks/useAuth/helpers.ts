@@ -1,5 +1,5 @@
 import ENVIROMENTS from "../../enviroments/env";
-import { Auth } from "./types";
+import { Auth, AuthResponse, JWTResponse } from "./types";
 const { GENERAL_API } = ENVIROMENTS;
 
 export const authentication = (
@@ -7,7 +7,7 @@ export const authentication = (
       username,
       password
     }: Auth
-  ) =>
+  ): Promise<AuthResponse> =>
     fetch(
       `${GENERAL_API}/auth/signin`,
       {
@@ -24,7 +24,7 @@ export const authentication = (
     ).then((res) => res.json())
     .catch((res) => res.json())
 
-export const refreshToken = (token: string) =>
+export const refreshToken = (token: string) :Promise<JWTResponse> =>
 fetch(
   `${GENERAL_API}/auth/token`,
   {

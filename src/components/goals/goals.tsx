@@ -73,18 +73,24 @@ const GoalsComponent = () => {
     invalidtext: true,
   };
 
-  const handleSearchByInterval = (data) => {
-    let startDate = "";
-    let endDate = "";
-    if (data?.startDate) {
-      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
+  const handleSearchByInterval = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string | null;
+    endDate: string | null;
+  }) => {
+    let start = "";
+    let end = "";
+    if (startDate) {
+      startDate = `${startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
-    if (data?.endDate) {
-      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
+    if (endDate) {
+      endDate = `${endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setSearchFilter({ startDate: startDate, endDate: endDate });
+    setSearchFilter({ startDate: start, endDate: end });
     getGoalsByFilter(
-      { startDate, endDate, status: 1 },
+      { startDate: start, endDate: end, status: 1 },
       { limit: 20, pageSize: 1 }
     );
   };

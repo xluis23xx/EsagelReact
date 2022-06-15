@@ -59,10 +59,10 @@ const EmployeesComponent = () => {
     }
   };
 
-  const handleSearch = (data) => {
+  const handleSearch = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
     getEmployeesByFilter(
       { filter: filter, status: 1 },

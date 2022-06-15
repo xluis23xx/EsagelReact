@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getClientById, getClients, postClient, putClient } from "./helpers";
 import { Client } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ClientResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -25,11 +26,10 @@ export const useClients = () => {
 
   function setClientById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getClientById(token, id).then((response) => {
-      if (response?._id) {
-        setClientInfo(response);
+      if (response?.status=== 200) {
+        setClientInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
@@ -52,7 +52,7 @@ export const useClients = () => {
       });
   }
 
-  async function updateClient(id: string, client: any) {
+  async function updateClient(id: string, client: any):Promise<ClientResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putClient(token, id, client)
@@ -77,7 +77,7 @@ export const useClients = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -86,19 +86,19 @@ export const useClients = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteClient(id: string) {
+  async function deleteClient(id: string):Promise<ClientResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putClient(token, id, { status: 0, isDelete: true })
+    return putClient(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setClients(clients.filter((client: Client) => client._id !== id));
-          const clientName = response?.updatedClient?.name || "";
-          const clientLastname = response?.updatedClient?.lastname || "";
+          const clientName = response?.doc?.name || "";
+          const clientLastname = response?.doc?.lastname || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -116,8 +116,9 @@ export const useClients = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -126,10 +127,11 @@ export const useClients = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerClient(client: any) {
+  async function registerClient(client: any):Promise<ClientResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postClient(token, client)
@@ -154,7 +156,7 @@ export const useClients = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -163,7 +165,7 @@ export const useClients = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   
   }

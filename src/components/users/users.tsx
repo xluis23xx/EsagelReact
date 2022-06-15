@@ -60,12 +60,12 @@ const UsersComponent = () => {
     }
   };
 
-  const handleSearch = (data) => {
+  const handleSearch = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
-    getUsersByFilter({ filter: filter }, { limit: 20, pageSize: 1 });
+    getUsersByFilter({ filter }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "users-table";

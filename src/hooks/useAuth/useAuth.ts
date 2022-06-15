@@ -2,7 +2,7 @@
 import * as React from "react";
 import { deleteCookie, getCookie, setCookie } from "../../utils/cookies";
 import { authentication, refreshToken } from "./helpers";
-import { Auth } from "./types";
+import { Auth, AuthResponse, JWTResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -15,14 +15,14 @@ export const useAuth = () => {
   const [status, setStatus] = React.useState(Status.Ready);
   const [message, setMessage] = React.useState("");
 
-  async function verifyAuthentication({ username, password }: Auth) {
+  async function verifyAuthentication({ username, password }: Auth):Promise<AuthResponse> {
     setStatus(Status.Loading);
-    return await authentication({ username, password })
+    return authentication({ username, password })
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           setStatus(Status.Ready);
         } else {
-          setMessage(response.message);
+          setMessage(response?.message || '');
           setStatus(Status.Error);
           setTimeout(() => {
             setMessage("");
@@ -31,20 +31,21 @@ export const useAuth = () => {
         }
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
         setMessage("Ocurrió un error inesperado");
         setTimeout(() => {
           setMessage("");
           setStatus(Status.Ready);
         }, 3000);
+        return error;
       });
   }
 
-  async function updateToken(){ 
+  async function updateToken(): Promise<JWTResponse> { 
     const token = getCookie("esagel_refreshtoken") || ''
    return refreshToken(token)
-    .then(res =>{
+    .then(res => {
       if(res?.status===200){
         setCookie("esagel_token", res?.accessToken || '', 1)
         setCookie("esagel_refreshtoken", res?.refreshToken ||'', 1)

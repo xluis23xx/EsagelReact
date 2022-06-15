@@ -88,17 +88,26 @@ const OrdersComponent = () => {
     invalidtext: true,
   };
 
-  const handleSearchByInterval = (data) => {
-    let startDate = "";
-    let endDate = "";
-    if (data?.startDate) {
-      startDate = `${data?.startDate.replace("/", "-")}T00:00:00.0+00:00`;
+  const handleSearchByInterval = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: string | null;
+    endDate: string | null;
+  }) => {
+    let start = "";
+    let end = "";
+    if (startDate) {
+      startDate = `${startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
-    if (data?.endDate) {
-      endDate = `${data?.endDate.replace("/", "-")}T23:59:59.999+00:00`;
+    if (endDate) {
+      endDate = `${endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
-    setSearchFilter({ startDate: startDate, endDate: endDate });
-    getOrdersByFilter({ startDate, endDate }, { limit: 20, pageSize: 1 });
+    setSearchFilter({ startDate: start, endDate: end });
+    getOrdersByFilter(
+      { startDate: start, endDate: end },
+      { limit: 20, pageSize: 1 }
+    );
   };
 
   const tableExportId = "orders-table";

@@ -1,5 +1,10 @@
-export type PaginateResponse = {
+
+export type GeneralResponse  = {
   status: number;
+  message?: string;
+}
+
+export type PaginateResponse = GeneralResponse & {
   docs: any[];
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -11,6 +16,7 @@ export type PaginateResponse = {
   totalDocs:  number;
   totalPages:  number;
 };
+
 
 export type PaginateParams = {
   limit?: number;

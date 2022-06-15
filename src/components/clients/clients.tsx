@@ -59,15 +59,12 @@ const ClientsComponent = () => {
     }
   };
 
-  const handleSearch = (data) => {
+  const handleSearch = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
-    getClientsByFilter(
-      { filter: filter, status: 1 },
-      { limit: 20, pageSize: 1 }
-    );
+    getClientsByFilter({ filter, status: 1 }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "clients-table";

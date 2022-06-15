@@ -59,15 +59,12 @@ const CoursesComponent = () => {
     }
   };
 
-  const handleSearch = (data) => {
+  const handleSearch = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
-    getCoursesByFilter(
-      { filter: filter, status: 1 },
-      { limit: 20, pageSize: 1 }
-    );
+    getCoursesByFilter({ filter, status: 1 }, { limit: 20, pageSize: 1 });
   };
 
   const tableExportId = "courses-table";
