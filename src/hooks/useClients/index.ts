@@ -1,2 +1,2 @@
-export type { Client, GetClients, GetClient } from "./types";
+export type { Client } from "./types";
 export { Status, useClients } from "./useClients";

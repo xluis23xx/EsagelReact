@@ -34,5 +34,3 @@ export type Client = {
 export type ClientResponse = GeneralResponse & {
   doc?: Client | null;
 }
-
-export type GetClients = Client[];
