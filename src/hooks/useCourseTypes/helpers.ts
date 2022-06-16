@@ -1,22 +1,30 @@
 import ENVIROMENTS from "../../enviroments/env";
-import { GetCourseType, GetCourseTypes } from "./types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { CourseTypeResponse } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getCourseTypes = (token: string): Promise<GetCourseTypes> =>
-  fetch(`${GENERAL_API}/courseTypes`, {
-    method: "GET",
+export const getCourseTypes = (token: string,
+  {filter="", status= null}: BodyParams,
+  { limit = 5, pageSize = 1 }: PaginateParams): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/courseTypes/consult/?limit=${limit}&pageSize=${pageSize}`, {
+    method: "POST",
     cache: "no-cache",
+    body: JSON.stringify({
+      filter,
+      status,
+    }),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
 export const getCourseTypeById = (
   token: string,
   id: string
-): Promise<GetCourseType> =>
+): Promise<CourseTypeResponse> =>
   fetch(`${GENERAL_API}/courseTypes/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -24,9 +32,10 @@ export const getCourseTypeById = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postCourseType = (token: string, document: any) =>
+export const postCourseType = (token: string, document: any): Promise<CourseTypeResponse> =>
   fetch(`${GENERAL_API}/courseTypes`, {
     method: "POST",
     cache: "no-cache",
@@ -37,9 +46,10 @@ export const postCourseType = (token: string, document: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putCourseType = (token: string, id: string, document: any) =>
+export const putCourseType = (token: string, id: string, document: any): Promise<CourseTypeResponse> =>
   fetch(`${GENERAL_API}/courseTypes/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -50,4 +60,5 @@ export const putCourseType = (token: string, id: string, document: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

@@ -11,13 +11,12 @@ export const getDashboard = (
   fetch(`${GENERAL_API}/dashboard`, {
     method: "POST",
     cache: "no-cache",
-    body: JSON.stringify({
-      ...dashboardParams
-    }),
+    body: JSON.stringify(
+      dashboardParams
+    ),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

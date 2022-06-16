@@ -8,7 +8,9 @@ import {
   postProspectStatus,
   putProspectStatus,
 } from "./helpers";
-import { ProspectusStatus } from "./index";
+import { ProspectStatus } from "./index";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ProspectStatusResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -19,41 +21,57 @@ export enum Status {
 
 export const useProspectStatuses = () => {
   const [prospectStatuses, setProspectStatuses] = React.useState<
-    ProspectusStatus[]
+    ProspectStatus[]
   >([]);
-  const [prospectInfo, setProspectInfo] =
-    React.useState<ProspectusStatus | null>(null);
+  const [prospectInfo, setProspectInfo] = React.useState<ProspectStatus | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
+    filter: "",
+    status: null
+  })
 
   function setProspectStatusById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getProspectusStatusById(token, id).then((response) => {
-      if (response?._id) {
+      if (response?.status === 200) {
+        setProspectInfo(response?.doc || null);
         setStatus(Status.Ready);
-        setProspectInfo(response);
       }
     });
   }
 
-  function getAllProspectStatuses() {
+  async function getProspectStatusesByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
+  ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getProspectusStatuses(token)
-      .then((prospectsObtained: ProspectusStatus[]) => {
-        const enableProspects =
-          prospectsObtained.filter(
-            (prospect: ProspectusStatus) => prospect.status === 1
-          ) || [];
-        setProspectStatuses(enableProspects);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+    return getProspectusStatuses(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
+        const { docs: prospectsObtained = [] } = response || {};
+        setProspectStatuses(prospectsObtained);
+        setPaginateData(response);
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateProspectStatus(id: string, prospect: any) {
+  async function updateProspectStatus(id: string, prospect: any): Promise<ProspectStatusResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProspectStatus(token, id, prospect)
@@ -78,7 +96,7 @@ export const useProspectStatuses = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -87,22 +105,22 @@ export const useProspectStatuses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  function deleteProspectStatus(id: string) {
+  async function deleteProspectStatus(id: string): Promise<ProspectStatusResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putProspectStatus(token, id, { status: 0, isDelete: true })
+    return putProspectStatus(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setProspectStatuses(
             prospectStatuses.filter(
-              (prospect: ProspectusStatus) => prospect._id !== id
+              (prospect: ProspectStatus) => prospect._id !== id
             )
           );
-          const prospectName = response?.updateLeadSource?.name || "";
+          const prospectName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -120,8 +138,9 @@ export const useProspectStatuses = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -130,10 +149,11 @@ export const useProspectStatuses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerProspectStatus(prospect: any) {
+  async function registerProspectStatus(prospect: any): Promise<ProspectStatusResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postProspectStatus(token, prospect)
@@ -158,7 +178,7 @@ export const useProspectStatuses = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -167,18 +187,25 @@ export const useProspectStatuses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
+  }
+
+  function changePage (index: number) {
+    getProspectStatusesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     prospectStatuses,
-    getAllProspectStatuses,
+    getProspectStatusesByFilter,
     registerProspectStatus,
     updateProspectStatus,
     deleteProspectStatus,
     setProspectStatusById,
     prospectInfo,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

@@ -21,13 +21,13 @@ import { ExportButtons } from "../global-components/exportButtons";
 import { RedirectionButton } from "../global-components/globalButtons";
 
 const ContactFormsComponent = () => {
-  const { contactForms, deleteContactForm, getAllContactForms, status } =
+  const { contactForms, deleteContactForm, getContactFormsByFilter, status } =
     useContactForms();
   const [visible, setVisible] = React.useState(false);
   const [contactFormId, setContactFormId] = React.useState("");
 
   React.useEffect(() => {
-    getAllContactForms();
+    getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
   }, []);
 
   const removeContactForm = (id: string) => {

@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { CourseType } from "../useCourseTypes";
 import { Topic } from "../useTopics";
 
@@ -17,5 +18,6 @@ export type Course = {
   updatedAt?: string;
 };
 
-export type GetCourse = Course;
-export type GetCourses = Course[];
+export type CourseResponse = GeneralResponse & {
+  doc?: Course | null;
+}

@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type ProspectusOrigin = {
   _id?: string;
   code?: string;
@@ -8,5 +10,6 @@ export type ProspectusOrigin = {
   updatedAt?: string;
 };
 
-export type GetProspectusOrigin = ProspectusOrigin;
-export type GetProspectusOrigins = ProspectusOrigin[];
+export type ProspectusOriginResponse = GeneralResponse & {
+  doc?: ProspectusOrigin | null;
+}

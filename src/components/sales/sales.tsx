@@ -85,10 +85,10 @@ const SalesComponent = () => {
     let start = "";
     let end = "";
     if (startDate) {
-      startDate = `${startDate.replace("/", "-")}T00:00:00.0+00:00`;
+      start = `${startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }
     if (endDate) {
-      endDate = `${endDate.replace("/", "-")}T23:59:59.999+00:00`;
+      end = `${endDate.replace("/", "-")}T23:59:59.999+00:00`;
     }
     setSearchFilter({ startDate: start, endDate: end });
     getSalesByFilter(

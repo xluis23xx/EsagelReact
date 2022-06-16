@@ -6,7 +6,7 @@ import { formatDescription, formatNames } from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
 import {
-  ProspectusStatus,
+  ProspectStatus,
   Status,
   useProspectStatuses,
 } from "../../hooks/usePropectusStatus";
@@ -49,7 +49,7 @@ const EditProspectStatusComponent = () => {
     },
   };
 
-  const onSubmitForm = (data: ProspectusStatus) => {
+  const onSubmitForm = (data: ProspectStatus) => {
     const prospectStatus = {
       name: (data?.name ?? prospectInfo?.name) || null,
       description: (data?.description ?? prospectInfo?.description) || null,

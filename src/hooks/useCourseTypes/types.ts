@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type CourseType = {
   _id?: string;
   code?: string;
@@ -8,5 +10,6 @@ export type CourseType = {
   updatedAt?: string;
 };
 
-export type GetCourseType = CourseType;
-export type GetCourseTypes = CourseType[];
+export type CourseTypeResponse = GeneralResponse & {
+  doc?: CourseType | null;
+}

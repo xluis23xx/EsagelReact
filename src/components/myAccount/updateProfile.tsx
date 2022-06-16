@@ -8,7 +8,7 @@ import FormContainer from "./formContainer";
 import { AuthContext } from "../../context/AuthContext";
 import { useProfile } from "../../hooks/useProfile/useProfile";
 
-const ProfileComponent = ({ profile }: { profile: User }) => {
+const ProfileComponent = ({ profile }: { profile: User | null }) => {
   const { status, updateProfile } = useProfile();
   const { setUser } = React.useContext<any>(AuthContext);
   const stateSchema = {

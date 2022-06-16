@@ -9,6 +9,8 @@ import {
   putCourseType,
 } from "./helpers";
 import { CourseType } from "./index";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { CourseTypeResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -21,35 +23,53 @@ export const useCourseTypes = () => {
   const [courseTypes, setCourseTypes] = React.useState<CourseType[]>([]);
   const [courseTypeInfo, setCourseTypeInfo] = React.useState<CourseType | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
+    filter: "",
+    status: null
+  })
 
   function setCourseTypeById(id: string) {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
     getCourseTypeById(token, id).then((response) => {
-      if (response?._id) {
+      if (response?.status===200) {
+        setCourseTypeInfo(response?.doc || null);
         setStatus(Status.Ready);
-        setCourseTypeInfo(response);
       }
     });
   }
 
-  function getAllCourseTypes() {
+  async function getCourseTypesByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
+  ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getCourseTypes(token)
-      .then((courseTypesObtained: CourseType[]) => {
-        const enableCourseTypes =
-          courseTypesObtained.filter(
-            (courseType: CourseType) => courseType.status === 1
-          ) || [];
-        setCourseTypes(enableCourseTypes);
+    return getCourseTypes(token,{filter, status}, {limit, pageSize})
+      .then((response: PaginateResponse) => {
+        if(response?.status===200){
+          const { docs: courseTypesObtained = [] } = response || {};
+          setCourseTypes(courseTypesObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error;
       });
   }
 
-  async function updateCourseType(id: string, courseType: any) {
+  async function updateCourseType(id: string, courseType: any): Promise<CourseTypeResponse>{
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putCourseType(token, id, courseType)
@@ -74,7 +94,7 @@ export const useCourseTypes = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -83,14 +103,14 @@ export const useCourseTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  function deleteCourseType(id: string) {
+  async function deleteCourseType(id: string): Promise<CourseTypeResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putCourseType(token, id, { status: 0, isDelete: true })
+    return putCourseType(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setCourseTypes(
@@ -98,7 +118,7 @@ export const useCourseTypes = () => {
               (courseType: CourseType) => courseType._id !== id
             )
           );
-          const courseTypeName = response?.name || "";
+          const courseTypeName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -116,8 +136,9 @@ export const useCourseTypes = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -126,10 +147,11 @@ export const useCourseTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerCourseType(courseType: any) {
+  async function registerCourseType(courseType: any): Promise<CourseTypeResponse>  {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postCourseType(token, courseType)
@@ -154,7 +176,7 @@ export const useCourseTypes = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -163,18 +185,25 @@ export const useCourseTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
+  }
+
+  function changePage (index: number) {
+    getCourseTypesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     courseTypes,
-    getAllCourseTypes,
+    getCourseTypesByFilter,
     registerCourseType,
     updateCourseType,
     deleteCourseType,
     setCourseTypeById,
     courseTypeInfo,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

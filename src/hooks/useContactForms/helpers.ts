@@ -1,22 +1,30 @@
 import ENVIROMENTS from "../../enviroments/env";
-import { GetContactForms, GetContactForm } from "./types";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ContactFormResponse } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
-export const getContactForms = (token: string): Promise<GetContactForms> =>
-  fetch(`${GENERAL_API}/contactForms`, {
-    method: "GET",
+export const getContactForms = (token: string,
+  {filter="", status= null}: BodyParams,
+  { limit = 5, pageSize = 1 }: PaginateParams): Promise<PaginateResponse> =>
+  fetch(`${GENERAL_API}/contactForms/consult/?limit=${limit}&pageSize=${pageSize}`, {
+    method: "POST",
     cache: "no-cache",
+    body: JSON.stringify({
+      filter,
+      status,
+    }),
     headers: {
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+    .catch(res=> res.json());
 
 export const getContactFormById = (
   token: string,
   id: string
-): Promise<GetContactForm> =>
+): Promise<ContactFormResponse> =>
   fetch(`${GENERAL_API}/contactForms/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -24,9 +32,10 @@ export const getContactFormById = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch(res=> res.json());
 
-export const postContactForm = (token: string, contactForm: any) =>
+export const postContactForm = (token: string, contactForm: any): Promise<ContactFormResponse> =>
   fetch(`${GENERAL_API}/contactForms`, {
     method: "POST",
     cache: "no-cache",
@@ -37,9 +46,10 @@ export const postContactForm = (token: string, contactForm: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch(res=> res.json());
 
-export const putContactForm = (token: string, id: string, contactForm: any) =>
+export const putContactForm = (token: string, id: string, contactForm: any) : Promise<ContactFormResponse>=>
   fetch(`${GENERAL_API}/contactForms/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -50,4 +60,5 @@ export const putContactForm = (token: string, id: string, contactForm: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch(res=> res.json());

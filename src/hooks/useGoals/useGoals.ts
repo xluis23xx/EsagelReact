@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getGoalById, getGoals, postGoal, putGoal } from "./helpers";
 import { Goal } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { GoalResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -28,31 +29,43 @@ export const useGoals = () => {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
     getGoalById(token, id).then((response) => {
-      if (response?._id) {
-        setGoalInfo(response);
+      if (response?.status===200) {
+        setGoalInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getGoalsByFilter(
+  async function getGoalsByFilter(
     { startDate, endDate, status=null }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse>{
     const token = getCookie("esagel_token") || "";
-    getGoals(token,{startDate, endDate, status}, {limit, pageSize})
+    return getGoals(token,{startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const {docs: goalsObtained} = response || {}
-        setPaginateData(response)
-        setGoals(goalsObtained);
+        if(response?.status===200){
+          const { docs: goalsObtained = [] } = response || {};
+          setGoals(goalsObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch((err) => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error;
       });
   }
 
-  async function updateGoal(id: string, goal: any) {
+  async function updateGoal(id: string, goal: any): Promise<GoalResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putGoal(token, id, goal)
@@ -77,7 +90,7 @@ export const useGoals = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -86,14 +99,14 @@ export const useGoals = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteGoal(id: string) {
+  async function deleteGoal(id: string): Promise<GoalResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putGoal(token, id, { status: 0, isCancel: true })
+    return putGoal(token, id, { status: 0, isCancel: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setGoals(goals.filter((goal: Goal) => goal?._id !== id));
@@ -115,8 +128,9 @@ export const useGoals = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -125,10 +139,11 @@ export const useGoals = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerGoal(goal: any) {
+  async function registerGoal(goal: any): Promise<GoalResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postGoal(token, goal)
@@ -153,7 +168,7 @@ export const useGoals = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -162,7 +177,7 @@ export const useGoals = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

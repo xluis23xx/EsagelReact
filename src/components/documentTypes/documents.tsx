@@ -21,14 +21,14 @@ import { RedirectionButton } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
 
 const DocumentTypesComponent = () => {
-  const { documents, deleteDocumentType, getAllDocumentTypes, status } =
+  const { documents, deleteDocumentType, getDocumentTypesByFilter, status } =
     useDocumentTypes();
   const [visible, setVisible] = React.useState(false);
   const [documentTypeId, setDocumentTypeId] = React.useState("");
 
   React.useEffect(() => {
     savePathname();
-    getAllDocumentTypes();
+    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });;
   }, []);
 
   const removeDocumentType = (id: string) => {

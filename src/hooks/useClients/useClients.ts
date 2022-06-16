@@ -28,27 +28,39 @@ export const useClients = () => {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
     getClientById(token, id).then((response) => {
-      if (response?.status=== 200) {
+      if (response?.status === 200) {
         setClientInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getClientsByFilter(
+  async function getClientsByFilter(
     { filter="", status=null }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getClients(token,{filter, status}, {limit, pageSize})
+    return getClients(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const { docs: clientsObtained = [] } = response || {};
-        setClients(clientsObtained);
-        setPaginateData(response);
+        if(response?.status===200){
+          const { docs: clientsObtained = [] } = response || {};
+          setClients(clientsObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error
       });
   }
 

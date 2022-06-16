@@ -1,18 +1,10 @@
 import React from "react";
 
-import {
-  CBadge,
-  CButton,
-  // CButton,
-  CCol,
-  CRow,
-} from "@coreui/react";
+import { CButton, CCol, CRow } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { CChartLine, CChartDoughnut } from "@coreui/react-chartjs";
 import { getStyle, hexToRgba } from "@coreui/utils";
 import { cilCloudDownload } from "@coreui/icons/js/free";
-// import CIcon from "@coreui/icons-react";
-// import { cilCloudDownload } from "@coreui/icons";
 
 import WidgetsDropdown from "../widgets/WidgetsDropdown";
 import { useDashboard } from "../../hooks/useDashboard";
@@ -22,33 +14,25 @@ import { months } from "../../utils/constants";
 
 const Dashboard = () => {
   const { obtainDashboard, dashboardInfo } = useDashboard();
-  const [firstMonth, setFirstMonth] = React.useState("dfdfd");
-  const [secondMonth, setSecondMonth] = React.useState("fdfdfd");
-  const [thirdMonth, setThirdMonth] = React.useState("2303");
   const [selectedQuery, setSelectedQuery] = React.useState(3);
   const [dateParams, setdateParams] = React.useState([]);
 
   React.useEffect(() => {
     savePathname();
 
-    const generatorDefault = generateArrayDates(3);
-    setdateParams(generatorDefault);
-    obtainDashboard({
-      firstMonth: generatorDefault[0],
-      secondMonth: generatorDefault[1],
-      thirdMonth: generatorDefault[2],
-    });
-  }, []);
-
-  React.useEffect(() => {
     const ESAGEL_DB_QUERY = localStorage.getItem("esagel_db_query");
-    let dates = [];
+    let dateArray = [];
     if (ESAGEL_DB_QUERY) {
       setSelectedQuery(ESAGEL_DB_QUERY);
-      dates = generateArrayDates(Number(ESAGEL_DB_QUERY));
+      dateArray = generateArrayDates(Number(ESAGEL_DB_QUERY));
     } else {
-      dates = generateArrayDates(3);
+      dateArray = generateArrayDates(3);
     }
+    setdateParams(dateArray);
+    console.log(dateArray);
+    obtainDashboard(dateArray)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }, []);
 
   const generateHeader = (title) => {
@@ -63,7 +47,7 @@ const Dashboard = () => {
       months[
         Number(
           dateParams[dateParams.length - 1]?.startDate?.substring(5, 7) - 1
-        ) || 1
+        ) || 0
       ]
     }
     ${dateParams[dateParams.length - 1]?.startDate?.substring(0, 4)} - ${
@@ -71,13 +55,42 @@ const Dashboard = () => {
     } ${new Date().getFullYear()}`;
   };
 
+  const generateLabels = (datesArray) => {
+    let labelArray = [];
+    datesArray?.map((dates) => {
+      labelArray.push(
+        `${
+          months[Number(dates?.startDate?.substring(5, 7) - 1) || 0]?.substring(
+            0,
+            3
+          ) || ""
+        }. ${dates?.startDate?.substring(0, 4) || ""}`
+      );
+    });
+    return labelArray;
+  };
+
+  const paletteColors = [
+    "rgb(255, 99, 132)",
+    "rgb(54, 162, 235)",
+    "rgb(255, 205, 86)",
+    "rgb(54, 162, 36)",
+    "rgb(50, 215, 86)",
+    "rgb(20, 162, 0)",
+    "rgb(170, 35, 50)",
+    "rgb(0, 120, 70)",
+    "rgb(100, 195, 16)",
+    "rgb(83, 162, 0)",
+    "rgb(29, 55, 55)",
+  ];
+
   const changeFilterQuery = (e) => {
     if (e.target.value === selectedQuery) {
       return;
     } else {
       setSelectedQuery(e.target.value);
       localStorage.setItem("esagel_db_query", e.target.value);
-      console.log(generateArrayDates(e.target.value));
+      obtainDashboard(generateArrayDates(e.target.value));
     }
   };
 
@@ -140,7 +153,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirdMonth, secondMonth, firstMonth],
+                  labels: [...generateLabels(dateParams)],
                   datasets: [
                     {
                       label: "Ingresos",
@@ -149,9 +162,9 @@ const Dashboard = () => {
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
                       data: [
-                        dashboardInfo?.sales?.totalThirdMonth,
-                        dashboardInfo?.sales?.totalSecondMonth,
-                        dashboardInfo?.sales?.totalFirstMonth,
+                        ...dashboardInfo?.data?.map(
+                          (result) => result?.totalMonthSold || 0
+                        ),
                       ],
                       fill: true,
                     },
@@ -213,7 +226,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirdMonth, secondMonth, firstMonth],
+                  labels: [...generateLabels(dateParams)],
                   datasets: [
                     {
                       label: "Egresos",
@@ -222,9 +235,9 @@ const Dashboard = () => {
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
                       data: [
-                        dashboardInfo?.purchases?.totalThirdMonth,
-                        dashboardInfo?.purchases?.totalSecondMonth,
-                        dashboardInfo?.purchases?.totalFirstMonth,
+                        ...dashboardInfo?.data?.map(
+                          (result) => result?.totalMonthPurchased || 0
+                        ),
                       ],
                       fill: true,
                     },
@@ -286,50 +299,16 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [
-                    "jun. 2022",
-                    "may. 2022",
-                    "abr. 2022",
-                    "mar. 2022",
-                    "feb. 2022",
-                    "ene. 2022",
-                    "dic. 2021",
-                    "nov. 2021",
-                    "oct. 2021",
-                    "set. 2021",
-                    "ago. 2021",
-                    "jul. 2021",
-                  ],
+                  labels: [...generateLabels(dateParams)],
                   datasets: [
                     {
                       borderColor: "#ffffff",
                       borderWidth: 2,
-                      backgroundColor: [
-                        "rgb(255, 99, 132)",
-                        "rgb(54, 162, 235)",
-                        "rgb(255, 205, 86)",
-                        "rgb(54, 162, 36)",
-                        "rgb(50, 215, 86)",
-                        "rgb(20, 162, 0)",
-                        "rgb(170, 35, 50)",
-                        "rgb(0, 120, 70)",
-                        "rgb(100, 195, 16)",
-                        "rgb(83, 162, 0)",
-                        "rgb(29, 55, 55)",
-                      ],
+                      backgroundColor: [...paletteColors],
                       data: [
-                        dashboardInfo?.sales?.totalThirdMonth,
-                        dashboardInfo?.sales?.totalSecondMonth,
-                        dashboardInfo?.sales?.totalFirstMonth,
-                        dashboardInfo?.sales?.totalThirdMonth,
-                        dashboardInfo?.sales?.totalSecondMonth,
-                        dashboardInfo?.sales?.totalFirstMonth,
-                        dashboardInfo?.sales?.totalThirdMonth,
-                        dashboardInfo?.sales?.totalSecondMonth,
-                        dashboardInfo?.sales?.totalFirstMonth,
-                        dashboardInfo?.sales?.totalThirdMonth,
-                        dashboardInfo?.sales?.totalSecondMonth,
-                        dashboardInfo?.sales?.totalFirstMonth,
+                        ...dashboardInfo?.data?.map(
+                          (result) => result?.totalMonthSold || 0
+                        ),
                       ],
                       fill: true,
                     },
@@ -377,21 +356,17 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [thirdMonth, secondMonth, firstMonth],
+                  labels: [...generateLabels(dateParams)],
                   datasets: [
                     {
                       label: "Egresos",
                       borderColor: "#ffffff",
                       borderWidth: 2,
-                      backgroundColor: [
-                        "rgb(255, 99, 132)",
-                        "rgb(54, 162, 235)",
-                        "rgb(255, 205, 86)",
-                      ],
+                      backgroundColor: [...paletteColors],
                       data: [
-                        dashboardInfo?.purchases?.totalThirdMonth,
-                        dashboardInfo?.purchases?.totalSecondMonth,
-                        dashboardInfo?.purchases?.totalFirstMonth,
+                        ...dashboardInfo?.data?.map(
+                          (result) => result?.totalMonthPurchased || 0
+                        ),
                       ],
                       fill: true,
                     },

@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type Setting = {
   _id?: string;
   companyName?: string | null;
@@ -12,4 +14,6 @@ export type Setting = {
   updatedAt?: string;
 };
 
-export type GetSetting = Setting;
+export type SettingResponse = GeneralResponse & {
+  doc?: Setting | null;
+};

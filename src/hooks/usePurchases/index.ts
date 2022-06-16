@@ -1,2 +1,2 @@
-export type { Purchase, GetPurchases, GetPurchase } from "./types";
+export type { Purchase } from "./types";
 export { Status, usePurchases } from "./usePurchases";

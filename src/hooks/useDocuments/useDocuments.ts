@@ -9,6 +9,8 @@ import {
   putDocumentType,
 } from "./helpers";
 import { DocumentType } from "./index";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { DocumentTypeResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -21,36 +23,53 @@ export const useDocumentTypes = () => {
   const [documents, setDocuments] = React.useState<DocumentType[]>([]);
   const [documentInfo, setDocumentInfo] = React.useState<DocumentType | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
+    filter: "",
+    status: null
+  })
 
   function setDocumentTypeById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getDocumentTypeById(token, id).then((response) => {
-      if (response?._id) {
+      if (response?.status===200) {
+        setDocumentInfo(response?.doc || null);
         setStatus(Status.Ready);
-        setDocumentInfo(response);
       }
     });
   }
-
-  function getAllDocumentTypes() {
+  
+  async function getDocumentTypesByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
+  ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getDocumentTypes(token)
-      .then((documentsObtained: DocumentType[]) => {
-        const enableDocuments =
-          documentsObtained.filter(
-            (document: DocumentType) => document.status === 1
-          ) || [];
-        setDocuments(enableDocuments);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+    return getDocumentTypes(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
+        const { docs: documentsObtained = [] } = response || {};
+        setDocuments(documentsObtained);
+        setPaginateData(response);
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateDocumentType(id: string, document: any) {
+  async function updateDocumentType(id: string, document: any): Promise<DocumentTypeResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putDocumentType(token, id, document)
@@ -75,7 +94,7 @@ export const useDocumentTypes = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -84,20 +103,20 @@ export const useDocumentTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  function deleteDocumentType(id: string) {
+  async function deleteDocumentType(id: string): Promise<DocumentTypeResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putDocumentType(token, id, { status: 0, isDelete: true })
+    return putDocumentType(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setDocuments(
             documents.filter((document: DocumentType) => document._id !== id)
           );
-          const documentName = response?.name || "";
+          const documentName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -115,8 +134,9 @@ export const useDocumentTypes = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -125,10 +145,11 @@ export const useDocumentTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerDocumentType(document: any) {
+  async function registerDocumentType(document: any): Promise<DocumentTypeResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postDocumentType(token, document)
@@ -153,7 +174,7 @@ export const useDocumentTypes = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -162,18 +183,25 @@ export const useDocumentTypes = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
+  }
+
+  function changePage (index: number) {
+    getDocumentTypesByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     documents,
-    getAllDocumentTypes,
+    getDocumentTypesByFilter,
     registerDocumentType,
     updateDocumentType,
     deleteDocumentType,
     setDocumentTypeById,
     documentInfo,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
-};
+}

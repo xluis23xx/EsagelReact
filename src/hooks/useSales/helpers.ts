@@ -1,7 +1,7 @@
 import ENVIROMENTS from "../../enviroments/env";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
 
-import { GetSale } from "./types";
+import { SaleResponse } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
@@ -22,11 +22,10 @@ export const getSales = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const getSaleById = (token: string, id: string): Promise<GetSale> =>
+export const getSaleById = (token: string, id: string): Promise<SaleResponse> =>
   fetch(`${GENERAL_API}/sales/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -34,9 +33,10 @@ export const getSaleById = (token: string, id: string): Promise<GetSale> =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postSale = (token: string, sale: any) =>
+export const postSale = (token: string, sale: any): Promise<SaleResponse> =>
   fetch(`${GENERAL_API}/sales`, {
     method: "POST",
     cache: "no-cache",
@@ -47,9 +47,10 @@ export const postSale = (token: string, sale: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putSale = (token: string, id: string, sale: any) =>
+export const putSale = (token: string, id: string, sale: any): Promise<SaleResponse> =>
   fetch(`${GENERAL_API}/sales/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -60,4 +61,5 @@ export const putSale = (token: string, id: string, sale: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

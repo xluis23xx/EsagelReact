@@ -1,2 +1,2 @@
-export  type {Employee, GetEmployees, GetEmployee}  from './types'
+export  type {Employee}  from './types'
 export { Status, useEmployees } from './useEmployees'

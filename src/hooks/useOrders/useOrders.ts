@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getOrderById, getOrders, postOrder, putOrder } from "./helpers";
 import { Order } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { OrderResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -28,29 +29,41 @@ export const useOrders = () => {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
     getOrderById(token, id).then((response) => {
-      if (response?._id) {
-        setOrderInfo(response);
+      if (response?.status===200) {
+        setOrderInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getOrdersByFilter( { startDate, endDate, status }: BodyParams,
+  async function getOrdersByFilter( { startDate, endDate, status }: BodyParams,
     {limit, pageSize}: PaginateParams) {
     const token = getCookie("esagel_token") || "";
-    getOrders(token, {startDate, endDate, status}, {limit, pageSize})
+    return getOrders(token, {startDate, endDate, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const { docs: ordersObtained = [] } = response || {};
-        setOrders(ordersObtained);
-        setPaginateData(response)
+        if(response?.status===200){
+          const { docs: ordersObtained = [] } = response || {};
+          setOrders(ordersObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error;
       });
   }
 
-  async function updateOrder(id: string, order: any) {
+  async function updateOrder(id: string, order: any): Promise<OrderResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putOrder(token, id, order)
@@ -75,7 +88,7 @@ export const useOrders = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -84,14 +97,14 @@ export const useOrders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function confirmOrder(id: string) {
+  async function confirmOrder(id: string): Promise<OrderResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putOrder(token, id, { status: 2, isConfirm: true })
+    return putOrder(token, id, { status: 2, isConfirm: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setOrders(
@@ -116,8 +129,9 @@ export const useOrders = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -126,13 +140,14 @@ export const useOrders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function cancelOrder(id: string) {
+  async function cancelOrder(id: string): Promise<OrderResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putOrder(token, id, { status: 0, isCancel: true })
+    return putOrder(token, id, { status: 0, isCancel: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setOrders(
@@ -140,7 +155,7 @@ export const useOrders = () => {
               order?._id === id ? { ...order, status: 0 } : order
             )
           );
-          const orderNumber = response?.updatedOrder?.orderNumber || "";
+          const orderNumber = response?.doc?.orderNumber || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -158,8 +173,9 @@ export const useOrders = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -168,16 +184,16 @@ export const useOrders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerOrder(order: any) {
+  async function registerOrder(order: any): Promise<OrderResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postOrder(token, order)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          const orderNumber = response?.savedOrder?.orderNumber || "";
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
@@ -197,7 +213,7 @@ export const useOrders = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -206,7 +222,7 @@ export const useOrders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

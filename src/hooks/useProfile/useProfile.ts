@@ -8,6 +8,7 @@ import {
   putPassword,
 } from "./helpers";
 import { User } from "../useUsers";
+import { ProfileResponse, ResetPassordResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -22,20 +23,19 @@ export const useProfile = () => {
 
   function setProfileById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getProfile(token, id).then((response) => {
-      if (response?._id) {
-        setProfileInfo(response);
+      if (response?.status===200) {
+        setProfileInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function updatedpassword(
+  async function updatedpassword(
     id: string,
     { newPassword, oldPassword }: { newPassword: string; oldPassword: string }
-  ) {
+  ):Promise<ResetPassordResponse> {
     const token = getCookie("esagel_token") || "";
     return putPassword(id, token, { newPassword, oldPassword })
       .then((response) => {
@@ -59,7 +59,7 @@ export const useProfile = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -67,11 +67,11 @@ export const useProfile = () => {
           timer: 2000,
           confirmButtonColor: "#ff0000",
         });
-        return undefined;
+        return error;
       });
   }
 
-  async function updateProfile(id: string, profile: any) {
+  async function updateProfile(id: string, profile: any): Promise<ProfileResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProfile(token, id, profile)
@@ -80,7 +80,7 @@ export const useProfile = () => {
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",
-            text: "Perfil actualizado éxitosamente",
+            text: response?.message || 'Perfil actualizado exitosamente',
             timer: 2000,
             confirmButtonColor: "#ff0000",
           });
@@ -96,7 +96,7 @@ export const useProfile = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -104,11 +104,11 @@ export const useProfile = () => {
           timer: 2000,
           confirmButtonColor: "#ff0000",
         });
-        return undefined;
+        return error;
       });
   }
 
-  async function disableProfile(id: string) {
+  async function disableProfile(id: string):Promise<ProfileResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProfile(token, id, { status: 0, isDelete: true })
@@ -131,9 +131,9 @@ export const useProfile = () => {
           });
         }
         setStatus(Status.Ready);
-        return response
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -142,7 +142,7 @@ export const useProfile = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined
+        return error;
       });
   }
 

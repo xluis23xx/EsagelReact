@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { User } from "../useUsers";
 
 export type Goal = {
@@ -12,5 +13,6 @@ export type Goal = {
   updatedAt?: string | null;
 };
 
-export type GetGoal = Goal;
-export type GetGoals = Goal[];
+export type GoalResponse = GeneralResponse & {
+  doc?: Goal | null;
+}

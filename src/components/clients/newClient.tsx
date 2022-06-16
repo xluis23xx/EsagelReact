@@ -17,7 +17,7 @@ import { Client, Status, useClients } from "../../hooks/useClients";
 import { useContactForms, ContactForm } from "../../hooks/useContactForms";
 import {
   useProspectStatuses,
-  ProspectusStatus,
+  ProspectStatus,
 } from "../../hooks/usePropectusStatus";
 import {
   useProspectOrigins,
@@ -32,19 +32,20 @@ import { setFormatDate } from "../../utils/formats";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
-  const { getAllDocumentTypes, documents } = useDocumentTypes();
-  const { getAllContactForms, contactForms } = useContactForms();
-  const { getAllProspectStatuses, prospectStatuses } = useProspectStatuses();
-  const { getAllProspectOrigins, prospectOrigins } = useProspectOrigins();
+  const { getDocumentTypesByFilter, documents } = useDocumentTypes();
+  const { getContactFormsByFilter, contactForms } = useContactForms();
+  const { getProspectStatusesByFilter, prospectStatuses } =
+    useProspectStatuses();
+  const { getProspectOriginsByFilter, prospectOrigins } = useProspectOrigins();
   const [deparments, setDeparments] = React.useState([]);
 
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllDocumentTypes();
-    getAllContactForms();
-    getAllProspectOrigins();
-    getAllProspectStatuses();
+    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
+    getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
+    getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });
+    getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
     getUbigeo("260000").then((departmentsArray: any) =>
       setDeparments(departmentsArray)
     );
@@ -440,7 +441,7 @@ const NewClientComponent = () => {
                   >
                     <option value="">Seleccione</option>
                     {prospectStatuses.length > 0
-                      ? prospectStatuses.map((sta: ProspectusStatus) => (
+                      ? prospectStatuses.map((sta: ProspectStatus) => (
                           <option key={sta.name} value={`${sta.name}`}>
                             {sta.name}
                           </option>

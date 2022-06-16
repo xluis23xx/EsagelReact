@@ -11,7 +11,7 @@ import { InputForm } from "../global-components/inputForm";
 import FormContainer from "./formContainer";
 import { AuthContext } from "../../context/AuthContext";
 
-const UpdatePassComponent = ({ profile }: { profile: User }) => {
+const UpdatePassComponent = ({ profile }: { profile: User | null }) => {
   const { status, updatedpassword } = useProfile();
   const { logoutUser } = useAuth();
   const { setUser } = React.useContext<any>(AuthContext);

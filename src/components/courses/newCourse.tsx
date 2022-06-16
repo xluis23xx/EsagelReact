@@ -33,7 +33,7 @@ import { cilSearch } from "@coreui/icons";
 const NewCourseComponent = () => {
   const { registerCourse, status } = useCourses();
   const { topics, getTopicsByFilter, setSearchFilter } = useTopics();
-  const { getAllCourseTypes, courseTypes } = useCourseTypes();
+  const { getCourseTypesByFilter, courseTypes } = useCourseTypes();
   const {
     uploading: imageUploading,
     progress: imageProgress,
@@ -65,7 +65,7 @@ const NewCourseComponent = () => {
   const { firebase } = React.useContext(FirebaseContext);
 
   React.useEffect(() => {
-    getAllCourseTypes();
+    getCourseTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
 
     setSearchFilter({
       filter: "",
@@ -534,7 +534,6 @@ const NewCourseComponent = () => {
             <CModalBody>
               <SearchButton
                 validators={validators}
-          
                 handleSearch={handleSearchTopics}
                 className="align-items-end my-1 col-12 flex-md-row d-sm-flex"
               />

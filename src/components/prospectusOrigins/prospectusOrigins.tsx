@@ -24,7 +24,7 @@ const ProspectOriginsComponent = () => {
   const {
     prospectOrigins,
     deleteProspectOrigin,
-    getAllProspectOrigins,
+    getProspectOriginsByFilter,
     status,
   } = useProspectOrigins();
   const [visible, setVisible] = React.useState(false);
@@ -32,7 +32,7 @@ const ProspectOriginsComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllProspectOrigins();
+    getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });;
   }, []);
 
   const removeProspectOrigin = (id: string) => {

@@ -1,8 +1,6 @@
 import ENVIROMENTS from "../../enviroments/env";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
-
-import { GetProvider } from "./types";
-
+import { ProviderResponse } from "./types";
 const { GENERAL_API } = ENVIROMENTS;
 
 export const getProviders = (
@@ -21,14 +19,13 @@ export const getProviders = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
 export const getProviderById = (
   token: string,
   id: string
-): Promise<GetProvider> =>
+): Promise<ProviderResponse> =>
   fetch(`${GENERAL_API}/providers/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -36,9 +33,10 @@ export const getProviderById = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postProvider = (token: string, provider: any) =>
+export const postProvider = (token: string, provider: any): Promise<ProviderResponse> =>
   fetch(`${GENERAL_API}/providers`, {
     method: "POST",
     cache: "no-cache",
@@ -49,9 +47,10 @@ export const postProvider = (token: string, provider: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putProvider = (token: string, id: string, provider: any) =>
+export const putProvider = (token: string, id: string, provider: any): Promise<ProviderResponse> =>
   fetch(`${GENERAL_API}/providers/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -62,4 +61,5 @@ export const putProvider = (token: string, id: string, provider: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

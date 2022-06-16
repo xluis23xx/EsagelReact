@@ -1,5 +1,6 @@
 import { Position } from "../usePositions";
 import { DocumentType } from "../useDocuments";
+import { GeneralResponse } from "../types";
 
 export type Employee = {
   _id?: string;
@@ -18,5 +19,6 @@ export type Employee = {
   status?: number | null;
 };
 
-export type GetEmployee = Employee;
-export type GetEmployees = Employee[];
+export type EmployeeResponse = GeneralResponse & {
+  doc?: Employee | null;
+}

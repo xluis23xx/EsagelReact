@@ -34,7 +34,7 @@ import { cilSearch } from "@coreui/icons";
 const EditCourseComponent = () => {
   const { updateCourse, setCourseById, courseInfo, status } = useCourses();
   const { topics, getTopicsByFilter, setSearchFilter } = useTopics();
-  const { getAllCourseTypes, courseTypes } = useCourseTypes();
+  const { getCourseTypesByFilter, courseTypes } = useCourseTypes();
 
   const {
     uploading: imageUploading,
@@ -72,7 +72,7 @@ const EditCourseComponent = () => {
     if (!id) {
       history.push("/cursos");
     }
-    getAllCourseTypes();
+    getCourseTypesByFilter({ filter: "", status: 1 }, { limit: 100 });;
     setSearchFilter({
       filter: "",
       status: 1,

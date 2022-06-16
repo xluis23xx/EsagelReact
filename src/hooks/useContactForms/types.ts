@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type ContactForm = {
   _id?: string;
   name?: string;
@@ -7,5 +9,6 @@ export type ContactForm = {
   status?: number | null;
 };
 
-export type GetContactForm = ContactForm;
-export type GetContactForms = ContactForm[];
+export type ContactFormResponse =  GeneralResponse & {
+  doc?: ContactForm | null;
+}

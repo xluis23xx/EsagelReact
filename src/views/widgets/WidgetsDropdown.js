@@ -1,25 +1,23 @@
 import React from "react";
-import {
-  CRow,
-  CCol,
-  // CDropdown,
-  // CDropdownMenu,
-  // CDropdownItem,
-  // CDropdownToggle,
-  CWidgetStatsA,
-} from "@coreui/react";
+import { CRow, CCol, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartBar, CChartLine } from "@coreui/react-chartjs";
-import { useDashboard } from "../../hooks/useDashboard";
-import { months } from "../../utils/constants";
-import { obtainFirstAndLastDayOfMonth } from "../../utils/formats";
-// import CIcon from "@coreui/icons-react";
-// import { cilOptions } from "@coreui/icons";
 
 const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
-  const [firstMonth, setFirstMonth] = React.useState("erere");
-  const [secondMonth, setSecondMonth] = React.useState("erere");
-  const [thirdMonth, setThirdMonth] = React.useState("ererere");
+  const generateLabels = (datesArray) => {
+    let labelArray = [];
+    datesArray?.map((dates) => {
+      labelArray.push(
+        `${
+          months[Number(dates?.startDate?.substring(5, 7) - 1) || 0]?.substring(
+            0,
+            3
+          ) || ""
+        }. ${dates?.startDate?.substring(0, 4) || ""}`
+      );
+    });
+    return labelArray;
+  };
 
   return (
     <CRow>
@@ -27,14 +25,14 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
         <CWidgetStatsA
           className="mb-4"
           color="primary"
-          value={dashboardInfo?.purchases?.quantitiesTotal || 0}
+          value={dashboardInfo?.quantityTotalPurchased || 0}
           title="Nro. Compras"
           chart={
             <CChartLine
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirdMonth, secondMonth, firstMonth],
+                labels: [...generateLabels(dateParams)],
                 datasets: [
                   {
                     label: "Acumulado",
@@ -42,9 +40,9 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-primary"),
                     data: [
-                      dashboardInfo?.purchases?.quantityThirdMonth || 0,
-                      dashboardInfo?.purchases?.quantitySecondMonth || 0,
-                      dashboardInfo?.purchases?.quantityFirstMonth || 0,
+                      ...dashboardInfo?.data?.map(
+                        (result) => result?.quantityMonthPurchased || 0
+                      ),
                     ],
                   },
                 ],
@@ -69,15 +67,15 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                   y: {
                     min:
                       Math.min(
-                        dashboardInfo?.purchases?.quantityThirdMonth || 0,
-                        dashboardInfo?.purchases?.quantitySecondMonth || 0,
-                        dashboardInfo?.purchases?.quantityFirstMonth || 0
+                        ...(dashboardInfo?.data?.map(
+                          (result) => result?.quantityMonthPurchased || 0
+                        ) || 0)
                       ) - 2,
                     max:
                       Math.max(
-                        dashboardInfo?.purchases?.quantityThirdMonth || 0,
-                        dashboardInfo?.purchases?.quantitySecondMonth || 0,
-                        dashboardInfo?.purchases?.quantityFirstMonth || 0
+                        ...(dashboardInfo?.data?.map(
+                          (result) => result?.quantityMonthPurchased || 0
+                        ) || 0)
                       ) + 2,
                     display: false,
                     grid: {
@@ -108,14 +106,14 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={dashboardInfo?.sales?.quantitiesTotal || 0}
+          value={dashboardInfo?.totalQuantitySales || 0}
           title="Nro. Ventas"
           chart={
             <CChartLine
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirdMonth, secondMonth, firstMonth],
+                labels: [...generateLabels(dateParams)],
                 datasets: [
                   {
                     label: "Acumulado",
@@ -123,9 +121,9 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-info"),
                     data: [
-                      dashboardInfo?.sales?.quantityThirdMonth || 0,
-                      dashboardInfo?.sales?.quantitySecondMonth || 0,
-                      dashboardInfo?.sales?.quantityFirstMonth || 0,
+                      ...dashboardInfo?.data?.map(
+                        (result) => result?.quantityMonthSold || 0
+                      ),
                     ],
                   },
                 ],
@@ -150,15 +148,15 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                   y: {
                     min:
                       Math.min(
-                        dashboardInfo?.sales?.quantityThirdMonth || 0,
-                        dashboardInfo?.sales?.quantitySecondMonth || 0,
-                        dashboardInfo?.sales?.quantityFirstMonth || 0
+                        ...(dashboardInfo?.data?.map(
+                          (result) => result?.quantityMonthSold || 0
+                        ) || 0)
                       ) - 2,
                     max:
                       Math.max(
-                        dashboardInfo?.sales?.quantityThirdMonth || 0,
-                        dashboardInfo?.sales?.quantitySecondMonth || 0,
-                        dashboardInfo?.sales?.quantityFirstMonth || 0
+                        ...(dashboardInfo?.data?.map(
+                          (result) => result?.quantityMonthSold || 0
+                        ) || 0)
                       ) + 2,
                     display: false,
                     grid: {
@@ -188,23 +186,23 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
         <CWidgetStatsA
           className="mb-4"
           color="warning"
-          value={dashboardInfo?.sales?.amountTotal || 0}
+          value={dashboardInfo?.totalSoldSale || 0}
           title="Monto de Ventas en S/."
           chart={
             <CChartLine
               className="mt-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirdMonth, secondMonth, firstMonth],
+                labels: [...generateLabels(dateParams)],
                 datasets: [
                   {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
                     data: [
-                      dashboardInfo?.sales?.totalThirdMonth || 0,
-                      dashboardInfo?.sales?.totalSecondMonth || 0,
-                      dashboardInfo?.sales?.totalFirstMonth || 0,
+                      ...dashboardInfo?.data?.map(
+                        (result) => result?.totalMonthSold || 0
+                      ),
                     ],
 
                     fill: true,
@@ -246,23 +244,23 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
         <CWidgetStatsA
           className="mb-4"
           color="danger"
-          value={dashboardInfo?.purchases?.amountTotal || 0}
+          value={dashboardInfo?.totalPurchased || 0}
           title="Monto de Compras en S/."
           chart={
             <CChartBar
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
-                labels: [thirdMonth, secondMonth, firstMonth],
+                labels: [...generateLabels(dateParams)],
                 datasets: [
                   {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
                     data: [
-                      dashboardInfo?.purchases?.totalThirdMonth || 0,
-                      dashboardInfo?.purchases?.totalSecondMonth || 0,
-                      dashboardInfo?.purchases?.totalFirstMonth || 0,
+                      ...dashboardInfo?.data?.map(
+                        (result) => result?.totalMonthPurchased || 0
+                      ),
                     ],
                     barPercentage: 1.0,
                   },

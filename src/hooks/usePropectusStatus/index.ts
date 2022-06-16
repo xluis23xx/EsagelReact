@@ -1,3 +1,3 @@
-export type { ProspectusStatus } from "./types";
+export type { ProspectStatus } from "./types";
 
 export { Status, useProspectStatuses } from "./useProspectusStatus";

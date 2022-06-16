@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getCourseById, getCourses, postCourse, putCourse } from "./helpers";
 import { Course } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { CourseResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -29,32 +30,44 @@ export const useCourses = () => {
 
     const token = getCookie("esagel_token") || "";
     getCourseById(token, id).then((response) => {
-      if (response?._id) {
-        setCourseInfo(response);
+      if(response?.status===200){
+        setCourseInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
 
-  function getCoursesByFilter(
+  async function getCoursesByFilter(
     { filter="", status=null }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getCourses(token,{filter, status}, {limit, pageSize})
+    return getCourses(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const { docs: coursesObtained = [] } = response || {};
-        setCourses(coursesObtained);
-        setPaginateData(response);
-        setStatus(Status.Ready);
+        if(response?.status===200){
+          const { docs: coursesObtained = [] } = response || {};
+          setCourses(coursesObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
+        setStatus(Status.Ready)
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error;
       });
   }
 
-  async function updateCourse(id: string, course: any) {
+  async function updateCourse(id: string, course: any): Promise<CourseResponse>{
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putCourse(token, id, course)
@@ -79,7 +92,7 @@ export const useCourses = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -88,18 +101,18 @@ export const useCourses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteCourse(id: string) {
+  async function deleteCourse(id: string): Promise<CourseResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putCourse(token, id, { status: 0, isDelete: true })
+    return putCourse(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setCourses(courses.filter((course: Course) => course._id !== id));
-          const courseName = response?.updatedCourse?.name || "";
+          const courseName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -117,8 +130,9 @@ export const useCourses = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -127,10 +141,11 @@ export const useCourses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerCourse(course: any) {
+  async function registerCourse(course: any): Promise<CourseResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postCourse(token, course)
@@ -155,7 +170,7 @@ export const useCourses = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -164,7 +179,7 @@ export const useCourses = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
   function changePage (index: number) {

@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { getCookie } from "../../utils/cookies";
 import { getSetting, putSetting } from "./helpers";
 import { Setting } from "./index";
+import { SettingResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -19,16 +20,16 @@ export const useSettings = () => {
   async function getSettingsConfig() {
     const token = getCookie("esagel_token") || "";
     await getSetting(token).then((response) => {
-      if (response?._id) {
-        setSettingInfo(response);
+      if (response?.status === 200) {
+        setSettingInfo(response?.doc || null);
+        localStorage.setItem("esagel_config", JSON.stringify(response?.doc));
         setStatus(Status.Ready);
-        localStorage.setItem("esagel_config", JSON.stringify(response));
       }
       setStatus(Status.Ready);
     });
   }
 
-  async function updateSetting(id: string, setting: any) {
+  async function updateSetting(id: string, setting: any): Promise<SettingResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putSetting(token, id, setting)
@@ -36,7 +37,7 @@ export const useSettings = () => {
         if (response?.status === 200 || response?.status === 201) {
           localStorage.setItem(
             "esagel_config",
-            JSON.stringify(response.updateSetting)
+            JSON.stringify(response?.doc)
           );
           Swal.fire({
             icon: "success",
@@ -57,7 +58,7 @@ export const useSettings = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -66,7 +67,7 @@ export const useSettings = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

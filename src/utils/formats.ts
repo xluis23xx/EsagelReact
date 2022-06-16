@@ -192,7 +192,7 @@ export const generateArrayDates = (quantity: number) => {
     if (!months[currentMonth - i]) {
       auxIndex++;
     }
-    array.push({
+    array.unshift({
       startDate: `${monthParams?.firstDay}T00:00:00.0+00:00`,
       endDate: `${monthParams?.endDay}T23:59:59.999+00:00`,
     });

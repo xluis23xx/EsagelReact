@@ -11,6 +11,7 @@ import {
 } from "./helpers";
 import { User } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ResetPassordResponse, UserResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -34,31 +35,44 @@ export const useUsers = () => {
 
     const token = getCookie("esagel_token") || "";
     getUserById(token, id).then((response) => {
-      if (response?._id) {
-        setUserInfo(response);
+      if (response?.status === 200) {
+        setUserInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getUsersByFilter(
+  async function getUsersByFilter(
     { filter, status }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getUsers(token,{filter, status}, {limit, pageSize})
-      .then((response: PaginateResponse) => {
+    return getUsers(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
         const { docs: usersObtained = [] } = response || {};
         setUsers(usersObtained);
         setPaginateData(response);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateUser(id: string, user: any) {
+
+  async function updateUser(id: string, user: any): Promise<UserResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putUser(token, id, user)
@@ -83,7 +97,7 @@ export const useUsers = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -91,14 +105,14 @@ export const useUsers = () => {
           timer: 2000,
           confirmButtonColor: "#ff0000",
         });
-        return undefined;
+        return error;
       });
   }
 
-  async function disableUser(id: string) {
+  async function disableUser(id: string): Promise<UserResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putUser(token, id, { status: 0, isDelete: true })
+    return putUser(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setUsers(
@@ -106,7 +120,7 @@ export const useUsers = () => {
               user._id === id ? { ...user, status: 0 } : user
             )
           );
-          const username = response?.updatedUser?.username || "";
+          const username = response?.doc?.username || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -124,8 +138,9 @@ export const useUsers = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -134,10 +149,11 @@ export const useUsers = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerUser(user: any) {
+  async function registerUser(user: any): Promise<UserResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postUser(token, user)
@@ -146,7 +162,7 @@ export const useUsers = () => {
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
-            text: `Contraseña generada éxitosamente: ${response.message}`,
+            text: `Contraseña generada éxitosamente: ${response?.message}`,
             showConfirmButton: true,
             confirmButtonColor: "#ff0000",
           });
@@ -162,7 +178,7 @@ export const useUsers = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -171,14 +187,14 @@ export const useUsers = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function changePassword(id: string) {
+  async function changePassword(id: string): Promise<ResetPassordResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    resetPassword(token, id)
+    return resetPassword(token, id)
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           Swal.fire({
@@ -197,8 +213,9 @@ export const useUsers = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -207,6 +224,7 @@ export const useUsers = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 

@@ -1,8 +1,6 @@
 import ENVIROMENTS from "../../enviroments/env";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
-
-import { GetUser } from "./types";
-
+import { ResetPassordResponse, UserResponse } from "./types";
 const { GENERAL_API } = ENVIROMENTS;
 
 export const getUsers = (
@@ -21,11 +19,10 @@ export const getUsers = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const getUserById = (token: string, id: string): Promise<GetUser> =>
+export const getUserById = (token: string, id: string): Promise<UserResponse> =>
   fetch(`${GENERAL_API}/users/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -33,9 +30,10 @@ export const getUserById = (token: string, id: string): Promise<GetUser> =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postUser = (token: string, user: any) =>
+export const postUser = (token: string, user: any): Promise<UserResponse> =>
   fetch(`${GENERAL_API}/users`, {
     method: "POST",
     cache: "no-cache",
@@ -46,9 +44,10 @@ export const postUser = (token: string, user: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putUser = (token: string, id: string, user: any) =>
+export const putUser = (token: string, id: string, user: any): Promise<UserResponse> =>
   fetch(`${GENERAL_API}/users/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -59,9 +58,10 @@ export const putUser = (token: string, id: string, user: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-  export const resetPassword = (token:string, id:string) =>
+  export const resetPassword = (token:string, id:string): Promise<ResetPassordResponse> =>
   fetch(`${GENERAL_API}/users/newPassword`, {
     method: "POST",
     cache: "no-cache",
@@ -72,4 +72,5 @@ export const putUser = (token: string, id: string, user: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

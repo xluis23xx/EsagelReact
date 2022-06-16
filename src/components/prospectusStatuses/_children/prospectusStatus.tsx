@@ -3,11 +3,11 @@ import CIcon from "@coreui/icons-react";
 import React from "react";
 
 import { setFormatCharacters } from "../../../utils/formats";
-import { ProspectusStatus } from "../../../hooks/usePropectusStatus";
+import { ProspectStatus } from "../../../hooks/usePropectusStatus";
 import { EditItemButton } from "../../global-components/globalButtons";
 import { CTooltip } from "@coreui/react";
 
-type ProspectStatusItemProps = ProspectusStatus & {
+type ProspectStatusItemProps = ProspectStatus & {
   orderNumber: number;
   code: string;
   handleRemove: (id: string) => void;

@@ -109,7 +109,7 @@ const NewCourseTypeComponent = () => {
     },
     businessName: {
       required: true,
-      validator: formatNames(),
+      validator: formatDescription(),
       min2caracts: true,
       invalidtext: true,
     },
@@ -146,7 +146,7 @@ const NewCourseTypeComponent = () => {
     };
     updateSetting(config._id, setting).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        setConfig(response?.updateSetting);
+        setConfig(response?.doc);
       }
     });
   };

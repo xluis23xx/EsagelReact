@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type Topic = {
   _id?: string;
   name?: string;
@@ -7,5 +9,6 @@ export type Topic = {
   updatedAt?: string;
 };
 
-export type GetTopic = Topic;
-export type GetTopics = Topic[];
+export type TopicResponse = GeneralResponse & {
+  doc?: Topic | null;
+}

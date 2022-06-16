@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { Client } from "../useClients";
 import { Course } from "../useCourses";
 import { DocumentType } from "../useDocuments";
@@ -31,6 +32,6 @@ export type OrderDetail = {
   amount?: number;
 };
 
-export type GetOrder = Order;
-export type GetOrders = Order[];
-export type GetOrderDetails = OrderDetail[];
+export type OrderResponse =GeneralResponse & {
+  doc?: Order | null;
+}

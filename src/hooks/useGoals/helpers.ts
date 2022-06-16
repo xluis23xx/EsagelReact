@@ -1,7 +1,7 @@
 import ENVIROMENTS from "../../enviroments/env";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
-
-import { GetGoal } from "./types";
+import { EmployeeResponse } from "../useEmployees/types";
+import { GoalResponse } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
@@ -10,7 +10,7 @@ export const getGoals = (
   { startDate, endDate, status=null }: BodyParams,
   { limit = 5, pageSize = 1 }: PaginateParams
 ): Promise<PaginateResponse> => 
-     fetch(`${GENERAL_API}/goals/consult/?limit=${limit}&pageSize=${pageSize}`, {
+    fetch(`${GENERAL_API}/goals/consult/?limit=${limit}&pageSize=${pageSize}`, {
       method: "POST",
       cache: "no-cache",
       body: JSON.stringify({
@@ -22,11 +22,12 @@ export const getGoals = (
         "Content-Type": "application/json",
         "x-access-token": `${token}`,
       },
-    }).then((res) => res.json()).catch((res) => res.json());
+    }).then((res) => res.json())
+    .catch((res) => res.json());
   
   
 
-export const getGoalById = (token: string, id: string): Promise<GetGoal> =>
+export const getGoalById = (token: string, id: string): Promise<EmployeeResponse> =>
   fetch(`${GENERAL_API}/goals/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -34,9 +35,10 @@ export const getGoalById = (token: string, id: string): Promise<GetGoal> =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postGoal = (token: string, goal: any) =>
+export const postGoal = (token: string, goal: any): Promise<EmployeeResponse> =>
   fetch(`${GENERAL_API}/goals`, {
     method: "POST",
     cache: "no-cache",
@@ -47,9 +49,10 @@ export const postGoal = (token: string, goal: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putGoal = (token: string, id: string, goal: any) =>
+export const putGoal = (token: string, id: string, goal: any): Promise<EmployeeResponse> =>
   fetch(`${GENERAL_API}/goals/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -60,4 +63,5 @@ export const putGoal = (token: string, id: string, goal: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

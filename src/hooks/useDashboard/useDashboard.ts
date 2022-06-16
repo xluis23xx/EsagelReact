@@ -16,23 +16,30 @@ export const useDashboard = () => {
   const [dashboardInfo, setDashboardInfo] = React.useState<DashboardResult | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
 
-  function obtainDashboard (
+  async function obtainDashboard (
     dashboardParams: DashboardParams,
-    ) {
+    ): Promise<DashboardResult>{
     const token = getCookie("esagel_token") || "";
-    getDashboard(token, dashboardParams)
+    return getDashboard(token, dashboardParams)
       .then((response: DashboardResult) => {
         if(response?.status===200){
           setDashboardInfo(response)
+        }else{
+          Swal.fire({
+            title:"Sucedió un error inesperado!",
+            text:response?.message || '',
+            timer: 1500
+          })
         }
         setStatus(Status.Ready);
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           title:"Sucedió algo cargar su dashboard",
-          timer: 1000
+          timer: 1500
         })
         setStatus(Status.Error);
+        return error;
       });
   }
 

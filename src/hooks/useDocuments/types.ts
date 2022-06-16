@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type DocumentType = {
   _id?: string;
   name?: string;
@@ -9,5 +11,6 @@ export type DocumentType = {
   updatedAt?: string;
 };
 
-export type GetDocumentType = DocumentType;
-export type GetDocumentTypes = DocumentType[];
+export type DocumentTypeResponse = GeneralResponse & {
+  doc?: DocumentType | null;
+}

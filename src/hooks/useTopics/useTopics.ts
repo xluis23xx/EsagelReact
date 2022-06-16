@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getTopicById, getTopics, postTopic, putTopic } from "./helpers";
 import { Topic } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { TopicResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -25,34 +26,45 @@ export const useTopics = () => {
 
   function setTopicById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getTopicById(token, id).then((response) => {
-      if (response?._id) {
-        setTopicInfo(response);
+      if (response?.status === 200) {
+        setTopicInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getTopicsByFilter(
+  async function getTopicsByFilter(
     { filter, status }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getTopics(token,{filter, status}, {limit, pageSize})
-      .then((response: PaginateResponse) => {
+    return getTopics(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
         const { docs: topicsObtained = [] } = response || {};
         setTopics(topicsObtained);
         setPaginateData(response);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateTopic(id: string, topic: any) {
+  async function updateTopic(id: string, topic: any): Promise<TopicResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putTopic(token, id, topic)
@@ -77,7 +89,7 @@ export const useTopics = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -86,18 +98,18 @@ export const useTopics = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteTopic(id: string) {
+  async function deleteTopic(id: string): Promise<TopicResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putTopic(token, id, { status: 0, isDelete: true })
+    return putTopic(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setTopics(topics.filter((topic: Topic) => topic._id !== id));
-          const topicName = response?.updateTopic?.name || "";
+          const topicName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -115,8 +127,9 @@ export const useTopics = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -125,10 +138,11 @@ export const useTopics = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerTopic(topic: any) {
+  async function registerTopic(topic: any): Promise<TopicResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postTopic(token, topic)
@@ -153,7 +167,7 @@ export const useTopics = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -162,7 +176,7 @@ export const useTopics = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

@@ -10,6 +10,7 @@ import {
 } from "./helpers";
 import { Employee } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { EmployeeResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -30,34 +31,45 @@ export const useEmployees = () => {
 
   function setEmployeeById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getEmployeeById(token, id).then((response) => {
-      if (response?._id) {
-        setemployeeInfo(response);
+      if (response?.status===200) {
+        setemployeeInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getEmployeesByFilter(
-    { filter="", status=null }: BodyParams,
+  async function getEmployeesByFilter(
+    { filter = "", status = null }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getEmployees(token,{filter, status}, {limit, pageSize})
+    return getEmployees(token,{filter, status}, {limit, pageSize})
       .then((response: PaginateResponse) => {
-        const { docs: employeesObtained = [] } = response || {};
-        setEmployees(employeesObtained);
-        setPaginateData(response);
+        if(response?.status===200){
+          const { docs: employeesObtained = [] } = response || {};
+          setEmployees(employeesObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error;
       });
   }
 
-  async function updateEmployee(id: string, employee: any) {
+  async function updateEmployee(id: string, employee: any): Promise<EmployeeResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putEmployee(token, id, employee)
@@ -82,7 +94,7 @@ export const useEmployees = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -91,21 +103,21 @@ export const useEmployees = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteEmployee(id: string) {
+  async function deleteEmployee(id: string): Promise<EmployeeResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putEmployee(token, id, { status: 0, isDelete: true })
+    return putEmployee(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setEmployees(
             employees.filter((employee: Employee) => employee._id !== id)
           );
-          const employeeName = response?.updatedEmployee?.name || "";
-          const employeeLastname = response?.updatedEmployee?.lastname || "";
+          const employeeName = response?.doc?.name || "";
+          const employeeLastname = response?.doc?.lastname || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -123,8 +135,9 @@ export const useEmployees = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -133,10 +146,11 @@ export const useEmployees = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerEmployee(employee: any) {
+  async function registerEmployee(employee: any): Promise<EmployeeResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postEmployee(token, employee)
@@ -161,7 +175,7 @@ export const useEmployees = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -170,7 +184,7 @@ export const useEmployees = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

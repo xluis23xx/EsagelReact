@@ -17,7 +17,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
-const DisableAccountComponent = ({ profile }: { profile: User }) => {
+const DisableAccountComponent = ({ profile }: { profile: User | null }) => {
   const { setUser } = React.useContext<any>(AuthContext);
   const { status, disableProfile } = useProfile();
   const { logoutUser } = useAuth();

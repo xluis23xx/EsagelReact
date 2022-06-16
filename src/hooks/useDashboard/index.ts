@@ -1,2 +1,2 @@
-export type { DashboardResult, DashboardParams, SaleDashboardResult, PurchaseDashboardResult } from "./types";
+export type { DashboardResult, DashboardParams } from "./types";
 export { Status, useDashboard } from "./useDashboard";

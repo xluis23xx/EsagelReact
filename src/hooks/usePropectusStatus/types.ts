@@ -1,4 +1,6 @@
-export type ProspectusStatus = {
+import { GeneralResponse } from "../types";
+
+export type ProspectStatus = {
   _id?: string;
   name?: string;
   description?: string;
@@ -7,5 +9,6 @@ export type ProspectusStatus = {
   updatedAt?: string;
 };
 
-export type GetProspectusStatus = ProspectusStatus;
-export type GetProspectusStatuses = ProspectusStatus[];
+export type ProspectStatusResponse = GeneralResponse & {
+  doc?: ProspectStatus | null;
+}

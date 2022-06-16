@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { DocumentType } from "../useDocuments";
 
 export type Provider = {
@@ -13,5 +14,6 @@ export type Provider = {
   updatedAt?: string;
 };
 
-export type GetProvider = Provider;
-export type GetProviders = Provider[];
+export type ProviderResponse = GeneralResponse & {
+  doc?: Provider | null;
+}

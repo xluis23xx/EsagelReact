@@ -10,6 +10,7 @@ import {
 } from "./helpers";
 import { Purchase } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { PurchaseResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -34,29 +35,43 @@ export const usePurchases = () => {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
     getPurchaseById(token, id).then((response) => {
-      if (response?._id) {
-        setPurchaseInfo(response);
+      if (response?.status === 200) {
+        setPurchaseInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function getPurchasesByFilter( { startDate, endDate, status }: BodyParams,
-    {limit, pageSize}: PaginateParams) {
+  async function getPurchasesByFilter(
+    { startDate, endDate, status }: BodyParams,
+    {limit, pageSize}: PaginateParams
+  ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getPurchases(token, {startDate, endDate, status}, {limit, pageSize})
-      .then((response: PaginateResponse) => {
-        const {docs: purchasesObtained= []}= response || {}
+    return getPurchases(token, {startDate, endDate, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
+        const { docs: purchasesObtained = [] } = response || {};
         setPurchases(purchasesObtained);
-        setPaginateData(response)
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+        setPaginateData(response);
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updatePurchase(id: string, purchase: any) {
+  async function updatePurchase(id: string, purchase: any): Promise<PurchaseResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putPurchase(token, id, purchase)
@@ -81,7 +96,7 @@ export const usePurchases = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -90,14 +105,14 @@ export const usePurchases = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function cancelPurchase(id: string) {
+  async function cancelPurchase(id: string): Promise<PurchaseResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putPurchase(token, id, { status: 0, isCancel: true })
+    return putPurchase(token, id, { status: 0, isCancel: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setPurchases(
@@ -106,7 +121,7 @@ export const usePurchases = () => {
             )
           );
           const purchaseNumber =
-            response?.updatedPurchase?.purchaseNumber || "";
+            response?.doc?.purchaseNumber || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -124,8 +139,9 @@ export const usePurchases = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -134,16 +150,17 @@ export const usePurchases = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerPurchase(purchase: any) {
+  async function registerPurchase(purchase: any): Promise<PurchaseResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postPurchase(token, purchase)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          const purchaseNumber = response?.savedPurchase?.purchaseNumber || "";
+          const purchaseNumber = response?.doc?.purchaseNumber || "";
           Swal.fire({
             icon: "success",
             title: "¡Registro Exitoso!",
@@ -163,7 +180,7 @@ export const usePurchases = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -172,7 +189,7 @@ export const usePurchases = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 

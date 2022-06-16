@@ -58,7 +58,7 @@ const NewOrderComponent = () => {
   const [selectedCoursesIds, setSelectedCoursesIds] = React.useState<string[]>(
     []
   );
-  const { getAllDocumentTypes, documents } = useDocumentTypes();
+  const { getDocumentTypesByFilter, documents } = useDocumentTypes();
 
   const [showClientError, setShowClientError] = React.useState<boolean>(false);
   const [subtotal, setSubtotal] = React.useState<number>(0);
@@ -66,7 +66,7 @@ const NewOrderComponent = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    getAllDocumentTypes();
+    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
     setSearchClientFilter({
       filter: "",
       status: 1,
@@ -269,7 +269,9 @@ const NewOrderComponent = () => {
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
-                      documentTypeError ? "border border-danger" : ""
+                      !selectedClient && documentTypeError
+                        ? "border border-danger"
+                        : ""
                     }`}
                   >
                     <option value="">Seleccione</option>

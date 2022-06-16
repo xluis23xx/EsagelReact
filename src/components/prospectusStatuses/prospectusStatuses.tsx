@@ -12,7 +12,7 @@ import {
   CModalTitle,
 } from "@coreui/react";
 import {
-  ProspectusStatus,
+  ProspectStatus,
   useProspectStatuses,
   Status,
 } from "../../hooks/usePropectusStatus";
@@ -24,7 +24,7 @@ const ProspectStatusesComponent = () => {
   const {
     prospectStatuses,
     deleteProspectStatus,
-    getAllProspectStatuses,
+    getProspectStatusesByFilter,
     status,
   } = useProspectStatuses();
   const [visible, setVisible] = React.useState(false);
@@ -32,7 +32,7 @@ const ProspectStatusesComponent = () => {
 
   React.useEffect(() => {
     savePathname();
-    getAllProspectStatuses();
+    getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
   }, []);
 
   const removeProspectStatus = (id: string) => {
@@ -96,7 +96,7 @@ const ProspectStatusesComponent = () => {
                     </thead>
                     <tbody>
                       {prospectStatuses.map(
-                        (prospect: ProspectusStatus, index: number) => {
+                        (prospect: ProspectStatus, index: number) => {
                           const {
                             _id = "",
                             name,

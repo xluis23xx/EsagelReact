@@ -28,8 +28,8 @@ import { useFileUpload } from "../../hooks/useFileUpload";
 const EditEmployeeComponent = () => {
   const { updateEmployee, setEmployeeById, employeeInfo, status } =
     useEmployees();
-  const { getAllDocumentTypes, documents } = useDocumentTypes();
-  const { getAllPositions, positions } = usePositions();
+  const { getDocumentTypesByFilter, documents } = useDocumentTypes();
+  const { getPositionsByFilter, positions } = usePositions();
   const {
     uploading: imageUploading,
     progress: imageProgress,
@@ -55,8 +55,8 @@ const EditEmployeeComponent = () => {
     if (!id) {
       history.push("/empleados");
     }
-    getAllDocumentTypes();
-    getAllPositions();
+    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
+    getPositionsByFilter({ filter: "", status: 1 }, { limit: 100 });
     setEmployeeById(id);
   }, []);
 

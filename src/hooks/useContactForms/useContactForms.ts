@@ -9,6 +9,8 @@ import {
   putContactForm,
 } from "./helpers";
 import { ContactForm } from "./index";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ContactFormResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -22,36 +24,53 @@ export const useContactForms = () => {
   const [contactFormInfo, setContactFormInfo] =
     React.useState<ContactForm | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
+    filter: "",
+    status: null
+  })
 
   function setContactFormById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getContactFormById(token, id).then((response) => {
-      if (response?._id) {
+      if (response?.status===200) {
+        setContactFormInfo(response?.doc || null);
         setStatus(Status.Ready);
-        setContactFormInfo(response);
       }
     });
   }
 
-  function getAllContactForms() {
+  async function getContactFormsByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getContactForms(token)
-      .then((contactFormsObtained: ContactForm[]) => {
-        const enableContactForms =
-          contactFormsObtained.filter(
-            (contactForm: ContactForm) => contactForm.status === 1
-          ) || [];
-        setContactForms(enableContactForms);
+    return getContactForms(token,{filter, status}, {limit, pageSize})
+      .then((response:PaginateResponse) => {
+        if(response?.status===200){
+          const { docs: contactFormsObtained = [] } = response || {};
+          setContactForms(contactFormsObtained);
+          setPaginateData(response);
+        }else{
+          Swal.fire({
+            icon: "error",
+            title: "Algo ocurrió!",
+            text: response?.message || "",
+            timer: 2000,
+            confirmButtonColor: "#ff0000",
+          });
+        }
         setStatus(Status.Ready);
+        return response
       })
-      .catch(() => {
+      .catch((error) => {
         setStatus(Status.Error);
+        return error
       });
   }
 
-  async function updateContactForm(id: string, contactForm: any) {
+  async function updateContactForm(id: string, contactForm: any):Promise<ContactFormResponse>  {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putContactForm(token, id, contactForm)
@@ -76,7 +95,7 @@ export const useContactForms = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -85,14 +104,14 @@ export const useContactForms = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  function deleteContactForm(id: string) {
+  async function deleteContactForm(id: string):Promise<ContactFormResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putContactForm(token, id, { status: 0, isDelete: true })
+    return putContactForm(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setContactForms(
@@ -100,7 +119,7 @@ export const useContactForms = () => {
               (contactForm: ContactForm) => contactForm._id !== id
             )
           );
-          const contactFormName = response?.updateContact?.name || "";
+          const contactFormName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -118,8 +137,9 @@ export const useContactForms = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -128,10 +148,11 @@ export const useContactForms = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerContactForm(contactForm: any) {
+  async function registerContactForm(contactForm: any):Promise<ContactFormResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postContactForm(token, contactForm)
@@ -156,7 +177,7 @@ export const useContactForms = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -165,18 +186,25 @@ export const useContactForms = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
+  }
+
+  function changePage (index: number) {
+    getContactFormsByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     contactForms,
-    getAllContactForms,
+    getContactFormsByFilter,
     registerContactForm,
     updateContactForm,
     deleteContactForm,
     setContactFormById,
     contactFormInfo,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

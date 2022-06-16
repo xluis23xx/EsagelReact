@@ -1,3 +1,5 @@
+import { GeneralResponse } from "../types";
+
 export type Position = {
   _id?: string;
   name?: string;
@@ -6,5 +8,6 @@ export type Position = {
   updatedAt?: string;
 };
 
-export type GetPosition = Position;
-export type GetPositions = Position[];
+export type PositionResponse = GeneralResponse & {
+  doc?: Position | null;
+}

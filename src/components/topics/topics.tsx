@@ -12,7 +12,7 @@ import {
   CModalHeader,
   CModalTitle,
 } from "@coreui/react";
-import { formatDescription, formatExtendNames } from "../../utils/errors";
+import { formatExtendNames } from "../../utils/errors";
 import { ExportButtons } from "../global-components/exportButtons";
 import {
   PaginateButtons,

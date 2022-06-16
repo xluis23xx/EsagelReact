@@ -10,6 +10,7 @@ import {
 } from "./helpers";
 import { Provider } from "./index";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ProviderResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -30,38 +31,45 @@ export const useProviders = () => {
 
   function setProviderById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getProviderById(token, id).then((response) => {
-      if (response?._id) {
-        setProviderInfo(response);
+      if (response?.status===200) {
+        setProviderInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
     });
   }
 
-  function cleanProviderInfo() {
-    setProviderInfo(null);
-  }
-
-  function getProvidersByFilter(
+  async function getProvidersByFilter(
     { filter, status }: BodyParams,
     {limit, pageSize}: PaginateParams
-    ) {
+    ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getProviders(token,{filter, status}, {limit, pageSize})
-      .then((response: PaginateResponse) => {
+    return getProviders(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
         const { docs: providersObtained = [] } = response || {};
         setProviders(providersObtained);
         setPaginateData(response);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateProvider(id: string, provider: any) {
+  async function updateProvider(id: string, provider: any): Promise<ProviderResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProvider(token, id, provider)
@@ -86,7 +94,7 @@ export const useProviders = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -95,20 +103,20 @@ export const useProviders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  async function deleteProvider(id: string) {
+  async function deleteProvider(id: string): Promise<ProviderResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putProvider(token, id, { status: 0, isDelete: true })
+    return putProvider(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 201 || response?.status === 200) {
           setProviders(
             providers.filter((provider: Provider) => provider._id !== id)
           );
-          const businessName = response?.updatedProvider?.businessName || "";
+          const businessName = response?.doc?.businessName || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -126,8 +134,9 @@ export const useProviders = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -136,10 +145,11 @@ export const useProviders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerProvider(provider: any) {
+  async function registerProvider(provider: any): Promise<ProviderResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postProvider(token, provider)
@@ -164,7 +174,7 @@ export const useProviders = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -173,7 +183,7 @@ export const useProviders = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
@@ -187,7 +197,6 @@ export const useProviders = () => {
     registerProvider,
     updateProvider,
     setProviderById,
-    cleanProviderInfo,
     providerInfo,
     getProvidersByFilter,
     paginateData,

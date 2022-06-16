@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { Provider } from "../useProviders";
 import { User } from "../useUsers";
 
@@ -16,5 +17,6 @@ export type Purchase = {
   updatedAt?: string | null;
 };
 
-export type GetPurchase = Purchase;
-export type GetPurchases = Purchase[];
+export type PurchaseResponse = GeneralResponse & {
+  doc?: Purchase | null;
+}

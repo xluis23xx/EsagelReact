@@ -17,14 +17,14 @@ import { RedirectionButton } from "../global-components/globalButtons";
 import { savePathname } from "../../utils/location";
 
 const CourseTypesComponent = () => {
-  const { courseTypes, deleteCourseType, getAllCourseTypes, status } =
+  const { courseTypes, deleteCourseType, getCourseTypesByFilter, status } =
     useCourseTypes();
   const [visible, setVisible] = React.useState(false);
   const [courseTypeId, setCourseTypeId] = React.useState("");
 
   React.useEffect(() => {
     savePathname();
-    getAllCourseTypes();
+    getCourseTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
   }, []);
 
   const removeCourseType = (id: string) => {
@@ -92,7 +92,7 @@ const CourseTypesComponent = () => {
                       {courseTypes.map(
                         (courseType: CourseType, index: number) => {
                           const {
-                            _id,
+                            _id = "",
                             code,
                             name,
                             description,

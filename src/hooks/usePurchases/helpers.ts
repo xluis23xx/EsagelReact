@@ -1,8 +1,6 @@
 import ENVIROMENTS from "../../enviroments/env";
 import { BodyParams, PaginateParams, PaginateResponse } from "../types";
-
-import { GetPurchase } from "./types";
-
+import { PurchaseResponse } from "./types";
 const { GENERAL_API } = ENVIROMENTS;
 
 export const getPurchases = (
@@ -21,11 +19,10 @@ export const getPurchases = (
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  })
-    .then((res) => res.json())
-    .catch((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const getPurchaseById = (token: string, id: string): Promise<GetPurchase> =>
+export const getPurchaseById = (token: string, id: string): Promise<PurchaseResponse> =>
   fetch(`${GENERAL_API}/purchases/${id}`, {
     method: "GET",
     cache: "no-cache",
@@ -33,9 +30,10 @@ export const getPurchaseById = (token: string, id: string): Promise<GetPurchase>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const postPurchase = (token: string, purchase: any) =>
+export const postPurchase = (token: string, purchase: any): Promise<PurchaseResponse> =>
   fetch(`${GENERAL_API}/purchases`, {
     method: "POST",
     cache: "no-cache",
@@ -46,9 +44,10 @@ export const postPurchase = (token: string, purchase: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());
 
-export const putPurchase = (token: string, id: string, purchase: any) =>
+export const putPurchase = (token: string, id: string, purchase: any): Promise<PurchaseResponse> =>
   fetch(`${GENERAL_API}/purchases/${id}`, {
     method: "PUT",
     cache: "no-cache",
@@ -59,4 +58,5 @@ export const putPurchase = (token: string, id: string, purchase: any) =>
       "Content-Type": "application/json",
       "x-access-token": `${token}`,
     },
-  }).then((res) => res.json());
+  }).then((res) => res.json())
+  .catch((res) => res.json());

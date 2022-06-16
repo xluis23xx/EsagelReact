@@ -1,2 +1,2 @@
-export  type {Provider, GetProvider, GetProviders}  from './types'
+export type {Provider}  from './types'
 export { Status, useProviders } from './useProviders'

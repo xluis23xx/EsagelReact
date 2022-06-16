@@ -9,6 +9,8 @@ import {
   putProspectOrigin,
 } from "./helpers";
 import { ProspectusOrigin } from "./index";
+import { BodyParams, PaginateParams, PaginateResponse } from "../types";
+import { ProspectusOriginResponse } from "./types";
 
 export enum Status {
   Loading,
@@ -24,36 +26,53 @@ export const useProspectOrigins = () => {
   const [prospectInfo, setProspectInfo] =
     React.useState<ProspectusOrigin | null>(null);
   const [status, setStatus] = React.useState(Status.Loading);
+  const [paginateData, setPaginateData] = React.useState<PaginateResponse| null>(null)
+  const [searchFilter, setSearchFilter] = React.useState<BodyParams>({
+    filter: "",
+    status: null
+  })
 
   function setProspectOriginById(id: string) {
     setStatus(Status.Loading);
-
     const token = getCookie("esagel_token") || "";
     getProspectusOriginById(token, id).then((response) => {
-      if (response?._id) {
+      if (response?.status === 200) {
+        setProspectInfo(response?.doc || null);
         setStatus(Status.Ready);
-        setProspectInfo(response);
       }
     });
   }
 
-  function getAllProspectOrigins() {
+  async function getProspectOriginsByFilter(
+    { filter="", status=null }: BodyParams,
+    {limit, pageSize}: PaginateParams
+  ): Promise<PaginateResponse> {
     const token = getCookie("esagel_token") || "";
-    getProspectusOrigins(token)
-      .then((prospectsObtained: ProspectusOrigin[]) => {
-        const enableProspects =
-          prospectsObtained.filter(
-            (prospect: ProspectusOrigin) => prospect.status === 1
-          ) || [];
-        setProspectOrigins(enableProspects);
-        setStatus(Status.Ready);
-      })
-      .catch(() => {
-        setStatus(Status.Error);
-      });
+    return getProspectusOrigins(token,{filter, status}, {limit, pageSize})
+    .then((response: PaginateResponse) => {
+      if(response?.status===200){
+        const { docs: prospectsObtained = [] } = response || {};
+        setProspectOrigins(prospectsObtained);
+        setPaginateData(response);
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Algo ocurrió!",
+          text: response?.message || "",
+          timer: 2000,
+          confirmButtonColor: "#ff0000",
+        });
+      }
+      setStatus(Status.Ready);
+      return response;
+    })
+    .catch((error) => {
+      setStatus(Status.Error);
+      return error;
+    });
   }
 
-  async function updateProspectOrigin(id: string, prospect: any) {
+  async function updateProspectOrigin(id: string, prospect: any): Promise<ProspectusOriginResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putProspectOrigin(token, id, prospect)
@@ -78,7 +97,7 @@ export const useProspectOrigins = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -87,14 +106,14 @@ export const useProspectOrigins = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
   }
 
-  function deleteProspectOrigin(id: string) {
+  async function deleteProspectOrigin(id: string): Promise<ProspectusOriginResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
-    putProspectOrigin(token, id, { status: 0, isDelete: true })
+    return putProspectOrigin(token, id, { status: 0, isDelete: true })
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
           setProspectOrigins(
@@ -102,7 +121,7 @@ export const useProspectOrigins = () => {
               (prospect: ProspectusOrigin) => prospect._id !== id
             )
           );
-          const prospectName = response?.updateStatusProspect?.name || "";
+          const prospectName = response?.doc?.name || "";
           Swal.fire({
             title: "¡Todo salió bien!",
             icon: "success",
@@ -120,8 +139,9 @@ export const useProspectOrigins = () => {
           });
         }
         setStatus(Status.Ready);
+        return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -130,10 +150,11 @@ export const useProspectOrigins = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
+        return error;
       });
   }
 
-  async function registerProspectOrigin(prospect: any) {
+  async function registerProspectOrigin(prospect: any): Promise<ProspectusOriginResponse> {
     const token = getCookie("esagel_token") || "";
     setStatus(Status.Updating);
     return postProspectOrigin(token, prospect)
@@ -158,7 +179,7 @@ export const useProspectOrigins = () => {
         setStatus(Status.Ready);
         return response;
       })
-      .catch(() => {
+      .catch((error) => {
         Swal.fire({
           icon: "error",
           title: "Algo ocurrió!",
@@ -167,18 +188,25 @@ export const useProspectOrigins = () => {
           confirmButtonColor: "#ff0000",
         });
         setStatus(Status.Ready);
-        return undefined;
+        return error;
       });
+  }
+
+  function changePage (index: number) {
+    getProspectOriginsByFilter(searchFilter, {limit: 20, pageSize:index})
   }
 
   return {
     prospectOrigins,
-    getAllProspectOrigins,
+    getProspectOriginsByFilter,
     registerProspectOrigin,
     updateProspectOrigin,
     deleteProspectOrigin,
     setProspectOriginById,
     prospectInfo,
+    paginateData,
+    setSearchFilter,
+    changePage,
     status,
   };
 };

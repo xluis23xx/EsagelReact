@@ -1,2 +1,2 @@
-export type { Course, GetCourses, GetCourse } from "./types";
+export type { Course } from "./types";
 export { Status, useCourses } from "./useCourses";

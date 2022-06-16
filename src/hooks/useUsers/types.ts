@@ -1,3 +1,4 @@
+import { GeneralResponse } from "../types";
 import { Employee } from "../useEmployees";
 
 export type Role = {
@@ -19,5 +20,8 @@ export type User = {
   image?: string | null;
 };
 
-export type GetUser = User;
-export type GetUsers = User[];
+export type UserResponse = GeneralResponse & {
+  doc?: User | null;
+}
+
+export type ResetPassordResponse = GeneralResponse

@@ -27,8 +27,8 @@ import { setFormatDate } from "../../utils/formats";
 
 const NewEmployeeComponent = () => {
   const { registerEmployee, status } = useEmployees();
-  const { getAllDocumentTypes, documents } = useDocumentTypes();
-  const { getAllPositions, positions } = usePositions();
+  const { getDocumentTypesByFilter, documents } = useDocumentTypes();
+  const { getPositionsByFilter, positions } = usePositions();
   const {
     uploading: imageUploading,
     progress: imageProgress,
@@ -50,8 +50,8 @@ const NewEmployeeComponent = () => {
   const { firebase } = React.useContext(FirebaseContext);
 
   React.useEffect(() => {
-    getAllDocumentTypes();
-    getAllPositions();
+    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
+    getPositionsByFilter({ filter: "", status: 1 }, { limit: 100 });
   }, []);
 
   const stateSchema = {
