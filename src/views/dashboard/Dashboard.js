@@ -90,7 +90,9 @@ const Dashboard = () => {
     } else {
       setSelectedQuery(e.target.value);
       localStorage.setItem("esagel_db_query", e.target.value);
-      obtainDashboard(generateArrayDates(e.target.value));
+      dateArray = generateArrayDates(e.target.value);
+      setdateParams(dateArray);
+      obtainDashboard(dateArray);
     }
   };
 
