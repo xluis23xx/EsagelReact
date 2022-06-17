@@ -81,19 +81,6 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     },
                   },
                   y: {
-                    min:
-                      Math.min(
-                        getDataByArray(
-                          dashboardInfo?.data,
-                          "quantityMonthPurchased"
-                        )
-                      ) - 2,
-                    max:
-                      Math.max(
-                        dashboardInfo?.data?.map(
-                          (result) => result?.quantityMonthPurchased || 0
-                        ) || 0
-                      ) + 2,
                     display: false,
                     grid: {
                       display: false,
@@ -119,7 +106,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           }
         />
       </CCol>
-      {/* <CCol sm={6} lg={3}>
+      <CCol sm={6} lg={3}>
         <CWidgetStatsA
           className="mb-4"
           color="info"
@@ -137,11 +124,10 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     backgroundColor: "transparent",
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-info"),
-                    data: [
-                      dashboardInfo?.data?.map(
-                        (result) => result?.quantityMonthSold || 0
-                      ),
-                    ],
+                    data: getDataByArray(
+                      dashboardInfo?.data,
+                      "quantityMonthSold"
+                    ),
                   },
                 ],
               }}
@@ -163,18 +149,6 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     },
                   },
                   y: {
-                    min:
-                      Math.min(
-                        dashboardInfo?.data?.map(
-                          (result) => result?.quantityMonthSold || 0
-                        ) || 0
-                      ) - 2,
-                    max:
-                      Math.max(
-                        dashboardInfo?.data?.map(
-                          (result) => result?.quantityMonthSold || 0
-                        ) || 0
-                      ) + 2,
                     display: false,
                     grid: {
                       display: false,
@@ -216,12 +190,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: [
-                      dashboardInfo?.data?.map(
-                        (result) => result?.totalMonthSold || 0
-                      ),
-                    ],
-
+                    data: getDataByArray(dashboardInfo?.data, "totalMonthSold"),
                     fill: true,
                   },
                 ],
@@ -274,11 +243,10 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: [
-                      dashboardInfo?.data?.map(
-                        (result) => result?.totalMonthPurchased || 0
-                      ),
-                    ],
+                    data: getDataByArray(
+                      dashboardInfo?.data,
+                      "totalMonthPurchased"
+                    ),
                     barPercentage: 1.0,
                   },
                 ],
@@ -301,6 +269,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     },
                   },
                   y: {
+                    min: 0,
                     grid: {
                       display: false,
                       drawBorder: false,
@@ -315,7 +284,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
             />
           }
         />
-      </CCol> */}
+      </CCol>
     </CRow>
   );
 };

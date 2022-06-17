@@ -28,9 +28,7 @@ const Dashboard = () => {
       dateArray = generateArrayDates(3);
     }
     setdateParams(dateArray);
-    obtainDashboard(dateArray)
-      .then((res) => setdateParams(dateArray))
-      .catch((err) => console.log(err));
+    obtainDashboard(dateArray).then((res) => setdateParams(dateArray));
   }, []);
 
   const generateHeader = (title) => {
@@ -89,11 +87,7 @@ const Dashboard = () => {
       setSelectedQuery(e.target.value);
       localStorage.setItem("esagel_db_query", e.target.value);
       const dateArray = generateArrayDates(e.target.value);
-      // setdateParams(dateArray);
-      console.log(dateArray);
-      obtainDashboard(dateArray)
-        .then((res) => setdateParams(dateArray))
-        .catch((err) => console.log(err));
+      obtainDashboard(dateArray).then((res) => setdateParams(dateArray));
     }
   };
 
@@ -148,7 +142,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* <WidgetsDropdown dashboardInfo={dashboardInfo} dateParams={dateParams} /> */}
+      <WidgetsDropdown dashboardInfo={dashboardInfo} dateParams={dateParams} />
       <div className="row">
         <div className="col-12 col-sm-6 my-2">
           <div className="card">
