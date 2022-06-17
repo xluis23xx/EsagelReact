@@ -19,7 +19,6 @@ const Dashboard = () => {
 
   React.useEffect(() => {
     savePathname();
-
     const ESAGEL_DB_QUERY = localStorage.getItem("esagel_db_query");
     let dateArray = [];
     if (ESAGEL_DB_QUERY) {
@@ -29,9 +28,8 @@ const Dashboard = () => {
       dateArray = generateArrayDates(3);
     }
     setdateParams(dateArray);
-    console.log(dateArray);
     obtainDashboard(dateArray)
-      .then((res) => console.log(res))
+      .then((res) => setdateParams(dateArray))
       .catch((err) => console.log(err));
   }, []);
 
@@ -90,10 +88,25 @@ const Dashboard = () => {
     } else {
       setSelectedQuery(e.target.value);
       localStorage.setItem("esagel_db_query", e.target.value);
-      dateArray = generateArrayDates(e.target.value);
-      setdateParams(dateArray);
-      obtainDashboard(dateArray);
+      const dateArray = generateArrayDates(e.target.value);
+      // setdateParams(dateArray);
+      console.log(dateArray);
+      obtainDashboard(dateArray)
+        .then((res) => setdateParams(dateArray))
+        .catch((err) => console.log(err));
     }
+  };
+
+  const getDataByArray = (dates, attribute) => {
+    let array = [];
+    if (dates) {
+      if (dates?.length > 0) {
+        dates?.map((result) => {
+          array.push(result[attribute]);
+        });
+      }
+    }
+    return array;
   };
 
   return (
@@ -135,7 +148,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <WidgetsDropdown dashboardInfo={dashboardInfo} dateParams={dateParams} />
+      {/* <WidgetsDropdown dashboardInfo={dashboardInfo} dateParams={dateParams} /> */}
       <div className="row">
         <div className="col-12 col-sm-6 my-2">
           <div className="card">
@@ -155,7 +168,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [...generateLabels(dateParams)],
+                  labels: [...(generateLabels(dateParams) || "")],
                   datasets: [
                     {
                       label: "Ingresos",
@@ -163,11 +176,10 @@ const Dashboard = () => {
                       borderColor: getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
-                      data: [
-                        ...dashboardInfo?.data?.map(
-                          (result) => result?.totalMonthSold || 0
-                        ),
-                      ],
+                      data: getDataByArray(
+                        dashboardInfo?.data,
+                        "totalMonthSold"
+                      ),
                       fill: true,
                     },
                   ],
@@ -228,7 +240,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [...generateLabels(dateParams)],
+                  labels: [...(generateLabels(dateParams) || "")],
                   datasets: [
                     {
                       label: "Egresos",
@@ -236,11 +248,10 @@ const Dashboard = () => {
                       borderColor: "#e55353", // getStyle("--cui-info"),
                       pointHoverBackgroundColor: getStyle("--cui-info"),
                       borderWidth: 2,
-                      data: [
-                        ...dashboardInfo?.data?.map(
-                          (result) => result?.totalMonthPurchased || 0
-                        ),
-                      ],
+                      data: getDataByArray(
+                        dashboardInfo?.data,
+                        "totalMonthPurchased"
+                      ),
                       fill: true,
                     },
                   ],
@@ -301,17 +312,17 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [...generateLabels(dateParams)],
+                  labels: [...(generateLabels(dateParams) || "")],
                   datasets: [
                     {
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       backgroundColor: [...paletteColors],
-                      data: [
-                        ...dashboardInfo?.data?.map(
-                          (result) => result?.totalMonthSold || 0
-                        ),
-                      ],
+                      data: getDataByArray(
+                        dashboardInfo?.data,
+                        "totalMonthSold"
+                      ),
+
                       fill: true,
                     },
                   ],
@@ -358,18 +369,18 @@ const Dashboard = () => {
               <CChartDoughnut
                 style={{ height: "290px", marginTop: "15px" }}
                 data={{
-                  labels: [...generateLabels(dateParams)],
+                  labels: [...(generateLabels(dateParams) || "")],
                   datasets: [
                     {
                       label: "Egresos",
                       borderColor: "#ffffff",
                       borderWidth: 2,
                       backgroundColor: [...paletteColors],
-                      data: [
-                        ...dashboardInfo?.data?.map(
-                          (result) => result?.totalMonthPurchased || 0
-                        ),
-                      ],
+                      data: getDataByArray(
+                        dashboardInfo?.data,
+                        "totalMonthPurchased"
+                      ),
+
                       fill: true,
                     },
                   ],

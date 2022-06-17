@@ -82,7 +82,7 @@ const Login = () => {
               <div className="card">
                 <div
                   className="card-header"
-                  style={{ backgroundColor: "#F50000", maxHeight: 90 }}
+                  style={{ backgroundColor: "rgb(31 31 31)", maxHeight: 90 }}
                 >
                   <CImage
                     src={esagelImage}
@@ -103,7 +103,7 @@ const Login = () => {
                     />
                     <span
                       className="text-large-emphasis text-center fw-bolder mx-2 d-flex"
-                      style={{ color: "#F50000" }}
+                      style={{ color: "rgb(218 0 0)" }}
                     >
                       BIENVENIDO
                     </span>
@@ -172,7 +172,7 @@ const Login = () => {
                       <div className="col-12">
                         <button
                           className="btn text-white w-100"
-                          style={{ backgroundColor: "red" }}
+                          style={{ backgroundColor: "rgb(71 71 71)" }}
                           type="submit"
                           disabled={
                             disable ||
