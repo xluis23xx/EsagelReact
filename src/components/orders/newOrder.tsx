@@ -400,7 +400,7 @@ const NewOrderComponent = () => {
                                 <tr key={index}>
                                   <td>{index + 1}</td>
                                   <td>{name || ""}</td>
-                                  <td>{price?.toFixed(2) || ""}</td>
+                                  <td>{price?.toFixed(2) || "gratis"}</td>
                                   <td>{course?.vacanciesNumber || ""}</td>
                                   <td>
                                     <input
@@ -497,7 +497,7 @@ const NewOrderComponent = () => {
                                       }}
                                     />
                                   </td>
-                                  <td>{amount.toFixed(2)}</td>
+                                  <td>{amount?.toFixed(2)}</td>
                                   <td>
                                     <button
                                       type="button"
@@ -797,7 +797,7 @@ const NewOrderComponent = () => {
                                   ) : null}
                                 </td>
                                 <td>{name || ""}</td>
-                                <td>{price.toFixed(2) || ""}</td>
+                                <td>{price.toFixed(2) || "gratis"}</td>
                                 <td>{vacanciesNumber || ""}</td>
                               </tr>
                             );
