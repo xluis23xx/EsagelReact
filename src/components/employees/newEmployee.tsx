@@ -23,7 +23,7 @@ import { useFileUpload } from "../../hooks/useFileUpload";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
-import { setFormatDate } from "../../utils/formats";
+import { checkMaskDocument, setFormatDate } from "../../utils/formats";
 
 const NewEmployeeComponent = () => {
   const { registerEmployee, status } = useEmployees();
@@ -93,7 +93,7 @@ const NewEmployeeComponent = () => {
     },
     documentNumber: {
       required: true,
-      validator: formatDocument(),
+      // validator: formatDocument(),
     },
     corporateEmail: {
       required: true,
@@ -311,13 +311,22 @@ const NewEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
-                    maxLength={15}
+                    minLength={5}
+                    maxLength={20}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={documentNumber}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
-                    error={documentNumberError}
+                    error={
+                      documentNumberError ||
+                      !checkMaskDocument(
+                        documentType || "",
+                        documentNumber || ""
+                      )
+                        ? "Formato inválido."
+                        : false
+                    }
                   />
                 </div>
 
@@ -472,7 +481,13 @@ const NewEmployeeComponent = () => {
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || imageUploading || imageErrorMessage
+                      disable ||
+                      !checkMaskDocument(
+                        documentType || "",
+                        documentNumber || ""
+                      ) ||
+                      imageUploading ||
+                      imageErrorMessage
                         ? true
                         : false || status === Status.Updating
                     }

@@ -154,7 +154,7 @@ const NavRoutes = (): any[] => {
             },
             {
               component: CNavItem,
-              name: "Proveedor",
+              name: "Proveedores",
               to: "/proveedores",
               icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
             },

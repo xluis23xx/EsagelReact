@@ -1,12 +1,12 @@
 import ENVIROMENTS from "../../enviroments/env";
 
-import { DashboardParams, DashboardResult } from "./types";
+import { DashboardResult, DateBody } from "./types";
 
 const { GENERAL_API } = ENVIROMENTS;
 
 export const getDashboard = (
   token: string,
-   dashboardParams : DashboardParams
+   dashboardParams : DateBody[]
 ): Promise<DashboardResult> =>
   fetch(`${GENERAL_API}/dashboard`, {
     method: "POST",

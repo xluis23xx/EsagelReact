@@ -1,6 +1,7 @@
 import { string } from "prop-types";
 import { DateBody } from "../hooks/useDashboard/types";
 import { months } from "./constants";
+import { docPatterns } from "./regex";
 
 type FormatDate = {
   date: string | Date | undefined| null;
@@ -198,4 +199,18 @@ export const generateArrayDates = (quantity: number) => {
     });
   }
   return array;
+};
+
+export const checkMaskDocument = (doctype: string, document: string): boolean => {
+  if (doctype) {
+    if (docPatterns[doctype]) {
+      const result = docPatterns[doctype].test(document);
+      return result;
+    } else {
+      const result = docPatterns.default.test(document);
+      return result;
+    }
+  } else {
+    return true;
+  }
 };

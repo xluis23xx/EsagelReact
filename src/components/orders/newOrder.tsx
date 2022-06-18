@@ -809,7 +809,7 @@ const NewOrderComponent = () => {
               </CModalBody>
               <CModalFooter>
                 <CButton
-                  color="secondary"
+                  color="dark"
                   className="text-white"
                   onClick={() => {
                     setVisibleCoursesModal(false);

@@ -4,7 +4,6 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import {
   formatDescription,
-  formatDocument,
   formatEmail,
   formatNames,
   formatPhone,
@@ -14,7 +13,7 @@ import { InputForm } from "../global-components/inputForm";
 
 import { Client, Status, useClients } from "../../hooks/useClients";
 
-import { setFormatDate } from "../../utils/formats";
+import { checkMaskDocument, setFormatDate } from "../../utils/formats";
 import { useContactForms, ContactForm } from "../../hooks/useContactForms";
 import {
   useProspectStatuses,
@@ -110,7 +109,7 @@ const EditClientComponent = () => {
     },
     documentNumber: {
       required: true,
-      validator: formatDocument(),
+      // validator: formatDocument(),
     },
     birthdate: { required: true, validator: minBirthDay() },
     department: { required: true },
@@ -131,6 +130,10 @@ const EditClientComponent = () => {
       address: (data?.address ?? clientInfo?.address) || null,
       email: (data?.email ?? clientInfo?.email) || null,
       department: (data?.department ?? clientInfo?.department) || null,
+      documentType:
+        (data?.documentType ?? clientInfo?.documentType?.name) || null,
+      documentNumber:
+        (data?.documentNumber ?? clientInfo?.documentNumber) || null,
       leadSource: (data?.leadSource ?? clientInfo?.leadSource?.name) || null,
       prospectStatus:
         (data?.prospectStatus ?? clientInfo?.prospectStatus?.name) || null,
@@ -296,7 +299,9 @@ const EditClientComponent = () => {
                     }
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
-                    disabled={true}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     className={`btn border-secondary btn-default w-100 ${
                       documentTypeError ? "border border-danger" : ""
                     }`}
@@ -324,13 +329,24 @@ const EditClientComponent = () => {
                   <InputForm
                     type="text"
                     required
-                    maxLength={15}
+                    minLength={5}
+                    maxLength={20}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={(documentNumber ?? clientInfo?.documentNumber) || ""}
                     onChange={handleOnChange}
-                    disabled={true}
-                    error={documentNumberError}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
+                    error={
+                      documentNumberError ||
+                      !checkMaskDocument(
+                        (documentType ?? clientInfo?.documentType?.name) || "",
+                        (documentNumber ?? clientInfo?.documentNumber) || ""
+                      )
+                        ? "Formato inválido."
+                        : false
+                    }
                   />
                 </div>
 
@@ -557,6 +573,10 @@ const EditClientComponent = () => {
                   <SubmitButton
                     disabled={
                       disable ||
+                      !checkMaskDocument(
+                        (documentType ?? clientInfo?.documentType?.name) || "",
+                        (documentNumber ?? clientInfo?.documentNumber) || ""
+                      ) ||
                       status === Status.Loading ||
                       status === Status.Updating
                     }

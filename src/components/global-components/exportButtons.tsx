@@ -19,6 +19,16 @@ interface ExportButtonsProps {
   documentName?: string;
   dataReport?: any;
   headers?: HeaderReport[];
+  classContainer?: string;
+  classButtons?: string;
+  showExportPDF?: boolean;
+  showExportExcel?: boolean;
+  showExportCSV?: boolean;
+  showExportClipBoard?: boolean;
+  textPDFButton?: string;
+  textCSVButton?: string;
+  textExcelButton?: string;
+  textClipBoardButton?: string;
 }
 
 export const ExportButtons = ({
@@ -26,6 +36,16 @@ export const ExportButtons = ({
   documentName,
   dataReport,
   headers,
+  classContainer = "col-12 mx-auto mx-ms-0 me-ms-auto col-md-6 text-center text-md-start text-light",
+  classButtons = "btn btn-dark mx-2 ms-md-2 my-1",
+  showExportExcel = true,
+  showExportCSV = true,
+  showExportClipBoard = true,
+  showExportPDF = true,
+  textCSVButton = "CSV",
+  textClipBoardButton = "COPIA",
+  textExcelButton = "EXCEL",
+  textPDFButton = "PDF",
 }: ExportButtonsProps) => {
   // TOAST EN CASO DE EXITO O ERROR
   const notifySuccess = (text: string = "Copiado en el portapapeles") => {
@@ -119,47 +139,47 @@ export const ExportButtons = ({
   };
 
   return (
-    <div className="col-12 mx-auto mx-ms-0 me-ms-auto col-md-6 text-center text-md-start text-light">
-      {headers && dataReport ? (
+    <div className={classContainer}>
+      {showExportClipBoard && headers && dataReport ? (
         <button
           type="button"
-          className="btn btn-dark mx-2 ms-md-2 my-1"
+          className={classButtons}
           style={{ minWidth: "70px" }}
           onClick={() => copyToClipBoard(dataReport, headers)}
         >
-          COPIA
+          {textClipBoardButton}
         </button>
       ) : null}
-      {tableId && documentName ? (
+      {showExportExcel && tableId && documentName ? (
         <ReactHTMLTableToExcel
           id="btn-export-excel"
-          className="btn btn-dark mx-2 ms-md-2 my-1"
+          className={classButtons}
           table={tableId}
           style={{ minWidth: "70px" }}
           filename={`${documentName} ${extendedDate()}`}
           sheet={`${documentName} ${extendedDate()}`}
-          buttonText="EXCEL"
+          buttonText={textExcelButton}
         ></ReactHTMLTableToExcel>
       ) : null}
-      {headers && dataReport && documentName ? (
+      {showExportCSV && headers && dataReport && documentName ? (
         <CSVLink
           headers={headers}
           data={dataReport}
-          className="btn btn-dark mx-2 me-md-2 my-1"
+          className={classButtons}
           style={{ minWidth: "70px" }}
           filename={`${documentName} ${extendedDate()}.csv`}
         >
-          CSV
+          {textCSVButton}
         </CSVLink>
       ) : null}
-      {headers && dataReport && documentName ? (
+      {showExportPDF && headers && dataReport && documentName ? (
         <button
           type="button"
-          className="btn btn-dark mx-2 me-md-2 my-1"
+          className={classButtons}
           style={{ minWidth: "70px" }}
           onClick={() => exportPDF(headers, dataReport, documentName)}
         >
-          PDF
+          {textPDFButton}
         </button>
       ) : null}
       <ToastContainer />

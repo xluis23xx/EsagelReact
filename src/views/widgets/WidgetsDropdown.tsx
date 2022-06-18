@@ -3,28 +3,36 @@ import { CRow, CCol, CWidgetStatsA } from "@coreui/react";
 import { getStyle } from "@coreui/utils";
 import { CChartBar, CChartLine } from "@coreui/react-chartjs";
 import { months } from "../../utils/constants";
+import { DashboardParams, DashboardResult } from "../../hooks/useDashboard";
 
-const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
-  const generateLabels = (datesArray) => {
-    let labelArray = [];
-    datesArray?.map((dates) => {
+type WidgetsDropdownProps = {
+  dashboardInfo: DashboardResult | null;
+  dateParams: DashboardParams;
+};
+
+const WidgetsDropdown = ({
+  dashboardInfo = null,
+  dateParams = [],
+}: WidgetsDropdownProps) => {
+  const generateLabels = (datesArray: DashboardParams) => {
+    let labelArray: string[] = [];
+    datesArray.map((dates) => {
       labelArray.push(
         `${
-          months[Number(dates?.startDate?.substring(5, 7) - 1) || 0]?.substring(
-            0,
-            3
-          ) || ""
+          months[
+            Number(Number(dates?.startDate?.substring(5, 7)) - 1) || 0
+          ]?.substring(0, 3) || ""
         }. ${dates?.startDate?.substring(0, 4) || ""}`
       );
     });
     return labelArray;
   };
 
-  const getDataByArray = (dates, attribute) => {
-    let array = [];
-    if (dates) {
-      if (dates?.length > 0) {
-        dates?.map((result) => {
+  const getDataByArray = (dates: DashboardResult | null, attribute: string) => {
+    let array: number[] = [];
+    if (dates?.data) {
+      if (dates.data?.length > 0) {
+        dates.data?.map((result) => {
           array.push(Number(result[attribute]));
         });
       } else {
@@ -46,6 +54,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           title="Nro. Compras"
           chart={
             <CChartLine
+              type="line"
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
@@ -57,7 +66,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-primary"),
                     data: getDataByArray(
-                      dashboardInfo?.data,
+                      dashboardInfo,
                       "quantityMonthPurchased"
                     ),
                   },
@@ -114,6 +123,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           title="Nro. Ventas"
           chart={
             <CChartLine
+              type="line"
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
@@ -124,10 +134,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     backgroundColor: "transparent",
                     borderColor: "rgba(255,255,255,.55)",
                     pointBackgroundColor: getStyle("--cui-info"),
-                    data: getDataByArray(
-                      dashboardInfo?.data,
-                      "quantityMonthSold"
-                    ),
+                    data: getDataByArray(dashboardInfo, "quantityMonthSold"),
                   },
                 ],
               }}
@@ -181,6 +188,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           title="Monto de Ventas en S/."
           chart={
             <CChartLine
+              type="line"
               className="mt-3"
               style={{ height: "70px" }}
               data={{
@@ -190,7 +198,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: getDataByArray(dashboardInfo?.data, "totalMonthSold"),
+                    data: getDataByArray(dashboardInfo, "totalMonthSold"),
                     fill: true,
                   },
                 ],
@@ -234,6 +242,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
           title="Monto de Compras en S/."
           chart={
             <CChartBar
+              type="line"
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
@@ -243,10 +252,7 @@ const WidgetsDropdown = ({ dashboardInfo = null, dateParams = [] }) => {
                     label: "Monto",
                     backgroundColor: "rgba(255,255,255,.2)",
                     borderColor: "rgba(255,255,255,.55)",
-                    data: getDataByArray(
-                      dashboardInfo?.data,
-                      "totalMonthPurchased"
-                    ),
+                    data: getDataByArray(dashboardInfo, "totalMonthPurchased"),
                     barPercentage: 1.0,
                   },
                 ],

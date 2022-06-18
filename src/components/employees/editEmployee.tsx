@@ -4,7 +4,6 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import {
   formatDescription,
-  formatDocument,
   formatEmail,
   formatNames,
   formatPhone,
@@ -17,7 +16,7 @@ import FileUploader from "react-firebase-file-uploader";
 import { Employee, Status, useEmployees } from "../../hooks/useEmployees";
 import { FirebaseContext } from "../../firebase";
 import Swal from "sweetalert2";
-import { setFormatDate } from "../../utils/formats";
+import { checkMaskDocument, setFormatDate } from "../../utils/formats";
 import { usePositions, Position } from "../../hooks/usePositions";
 import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
@@ -105,7 +104,7 @@ const EditEmployeeComponent = () => {
     },
     documentNumber: {
       required: true,
-      validator: formatDocument(),
+      // validator: formatDocument(),
     },
     corporateEmail: {
       required: true,
@@ -132,6 +131,10 @@ const EditEmployeeComponent = () => {
       secondLastname:
         (data?.secondLastname ?? employeeInfo?.secondLastname) || null,
       phoneNumber: (data?.phoneNumber ?? employeeInfo?.phoneNumber) || null,
+      documentType:
+        (data?.documentType ?? employeeInfo?.documentType?.name) || null,
+      documentNumber:
+        (data?.documentNumber ?? employeeInfo?.documentNumber) || null,
       address: (data?.address ?? employeeInfo?.address) || null,
       personalEmail:
         (data?.personalEmail ?? employeeInfo?.personalEmail) || null,
@@ -296,7 +299,9 @@ const EditEmployeeComponent = () => {
                     }
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
-                    disabled={true}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
                     className={`btn border-secondary btn-default w-100 ${
                       documentTypeError ? "border border-danger" : ""
                     }`}
@@ -324,15 +329,27 @@ const EditEmployeeComponent = () => {
                   <InputForm
                     type="text"
                     required
-                    maxLength={15}
+                    minLength={5}
+                    maxLength={20}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={
                       (documentNumber ?? employeeInfo?.documentNumber) || ""
                     }
                     onChange={handleOnChange}
-                    disabled={true}
-                    error={documentNumberError}
+                    disabled={
+                      status === Status.Loading || status === Status.Updating
+                    }
+                    error={
+                      documentNumberError ||
+                      !checkMaskDocument(
+                        (documentType ?? employeeInfo?.documentType?.name) ||
+                          "",
+                        (documentNumber ?? employeeInfo?.documentNumber) || ""
+                      )
+                        ? "Formato inválido."
+                        : false
+                    }
                   />
                 </div>
 
@@ -502,7 +519,14 @@ const EditEmployeeComponent = () => {
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
                     disabled={
-                      disable || imageUploading || imageErrorMessage
+                      disable ||
+                      !checkMaskDocument(
+                        (documentType ?? employeeInfo?.documentType?.name) ||
+                          "",
+                        (documentNumber ?? employeeInfo?.documentNumber) || ""
+                      ) ||
+                      imageUploading ||
+                      imageErrorMessage
                         ? true
                         : false ||
                           status === Status.Loading ||

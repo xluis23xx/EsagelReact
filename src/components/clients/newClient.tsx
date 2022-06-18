@@ -4,7 +4,6 @@ import { Link, useHistory } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 import {
   formatDescription,
-  formatDocument,
   formatEmail,
   formatNames,
   formatPhone,
@@ -28,7 +27,7 @@ import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
-import { setFormatDate } from "../../utils/formats";
+import { checkMaskDocument, setFormatDate } from "../../utils/formats";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
@@ -104,7 +103,7 @@ const NewClientComponent = () => {
     },
     documentNumber: {
       required: true,
-      validator: formatDocument(),
+      // validator: formatDocument(),
     },
     birthdate: { required: true, validator: minBirthDay() },
     department: { required: true },
@@ -308,13 +307,22 @@ const NewClientComponent = () => {
                   <InputForm
                     type="text"
                     required
-                    maxLength={15}
+                    minLength={5}
+                    maxLength={20}
                     placeholder="Nro de Documento"
                     name="documentNumber"
                     value={documentNumber}
                     onChange={handleOnChange}
                     disabled={status === Status.Updating}
-                    error={documentNumberError}
+                    error={
+                      documentNumberError ||
+                      !checkMaskDocument(
+                        documentType || "",
+                        documentNumber || ""
+                      )
+                        ? "Formato inválido."
+                        : false
+                    }
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
@@ -508,7 +516,14 @@ const NewClientComponent = () => {
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <SubmitButton
-                    disabled={disable || status === Status.Updating}
+                    disabled={
+                      disable ||
+                      !checkMaskDocument(
+                        documentType || "",
+                        documentNumber || ""
+                      ) ||
+                      status === Status.Updating
+                    }
                   >
                     {status === Status.Updating ? (
                       <>

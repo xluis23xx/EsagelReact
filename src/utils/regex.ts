@@ -30,9 +30,13 @@ const maskDocuments = {
 };
 
 const docPatterns = {
-  DNI: /(\d){8}/,
-  CDI: /^([a-zA-Z0-9-]{5,15})/,
-  CEX: /^([a-zA-Z0-9-]{5,15})/,
+  DNI: /^(\d){8}$/,
+  "Carnet Extranjeria": /^(\d){9}$/, 
+  RUC: /^(10|20)[0-9]{9}$/,
+  CDI: /^([a-zA-Z0-9-]{5,15})$/,
+  CEX: /^([a-zA-Z0-9-]{5,15})$/,
+  Pasaporte: /^(?!^0+$)[a-zA-Z0-9]{11,20}$/,
+  default: /^([a-zA-Z0-9-]{5,15})$/,
 };
 
 // prettier-ignore

@@ -19,6 +19,7 @@ export const useDashboard = () => {
   async function obtainDashboard (
     dashboardParams: DashboardParams,
     ): Promise<DashboardResult>{
+    setStatus(Status.Loading)
     const token = getCookie("esagel_token") || "";
     return getDashboard(token, dashboardParams)
       .then((response: DashboardResult) => {
