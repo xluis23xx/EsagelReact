@@ -20,7 +20,9 @@ export const PublicRoute = ({
             <Redirect to={lastPath} />
           </>
         ) : (
-          <Component {...props} />
+          <>
+            <Component {...props} />
+          </>
         )
       }
     />

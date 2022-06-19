@@ -300,7 +300,7 @@ const EditUserComponent = () => {
                     </p>
                   )}
                 </div>
-                <div className="form-group mt-3 col-sm-6 col-xl-1 d-flex" />
+                <div className="form-group mt-3 d-none col-xl-1 d-xl-flex" />
                 <div className="form-group mt-3 col-sm-6 col-xl-3 d-flex">
                   <button
                     type="button"

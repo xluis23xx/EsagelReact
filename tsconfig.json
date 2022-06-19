@@ -10,6 +10,6 @@
     "lib": ["es2019", "dom"],
     "baseUrl": "."
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/views/pages/login/Login.js"],
+  "include": ["**/*.ts", "**/*.tsx", "src/views/pages/login/Login.tsx"],
   "exclude": ["src"]
 }
