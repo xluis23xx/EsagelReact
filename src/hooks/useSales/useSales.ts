@@ -25,14 +25,17 @@ export const useSales = () => {
     status: null
   })
 
-  function setSaleById(id: string) {
+  async function setSaleById(id: string) {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
-    getSaleById(token, id).then((response) => {
+    return getSaleById(token, id).then((response) => {
       if (response?.status === 200) {
         setSaleInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
+      return response;
+    }).then(error=> {
+      return error;
     });
   }
 

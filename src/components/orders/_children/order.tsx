@@ -2,7 +2,7 @@ import { cilCart, cilEyedropper, cilPaperclip, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { setFormatDate } from "../../../utils/formats";
-import { Order } from "../../../hooks/useOrders";
+import { Order, OrderDetail } from "../../../hooks/useOrders";
 import { EditItemButton } from "../../global-components/globalButtons";
 import { CBadge, CTooltip } from "@coreui/react";
 
@@ -41,6 +41,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
       verifyStatus = "Desconocido";
       break;
   }
+
   return (
     <tr>
       <td>{index}</td>
@@ -114,14 +115,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               <>
                 &nbsp;
                 <CTooltip content="Descargar Comprobante">
-                  <button
-                    type="button"
-                    className="btn btn-info"
-                    style={{ height: 40, width: 40 }}
-                    onClick={() => handlePrint(code)}
-                  >
-                    <CIcon icon={cilPaperclip} color="#fffff" />
-                  </button>
+                    <button
+                      type="button"
+                      className="btn btn-info"
+                      style={{ height: 40, width: 40 }}
+                      onClick={() => {
+                        handlePrint(code)
+                        // generatePDF({});
+                      }}
+                    >
+                      <CIcon icon={cilPaperclip} color="#fffff" />
+                    </button>
                 </CTooltip>
               </>
             ) : null}

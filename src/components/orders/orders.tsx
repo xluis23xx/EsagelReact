@@ -21,6 +21,7 @@ import {
 import { formatExceedDate } from "../../utils/errors";
 import { savePathname } from "../../utils/location";
 import { setFormatDate } from "../../utils/formats";
+import { generatePDF } from "../../utils/generateComprobant";
 
 const OrdersComponent = () => {
   const {
@@ -33,6 +34,7 @@ const OrdersComponent = () => {
     paginateData,
     status,
   } = useOrders();
+  const { setOrderById } = useOrders();
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [visibleConfirmModal, setVisibleConfirmModal] = React.useState(false);
   const [orderId, setOrderId] = React.useState("");
@@ -78,8 +80,48 @@ const OrdersComponent = () => {
     }
   };
 
-  const handlePrint = (id: string) => {
-    console.log("imprimiendo...", id);
+  const handlePrint = async (id: string) => {
+    const orderObtained = await setOrderById(id);
+    const { doc = null } = orderObtained || {};
+    if (doc) {
+      const {
+        amountInIva = 0,
+        client = null,
+        documentNumber = "",
+        orderLines = [],
+        subtotal = 0,
+        total = 0,
+        orderNumber = "",
+        documentType = null,
+        updatedAt,
+      } = doc || {};
+      let clientName = "";
+      if (client) {
+        client?.name ? (clientName = client?.name) : null;
+        client?.lastname
+          ? (clientName = `${clientName} ${client?.lastname}`)
+          : null;
+        client?.secondLastname
+          ? (clientName = `${clientName} ${client?.secondLastname}`)
+          : null;
+      }
+      generatePDF({
+        comprobantNumber: orderNumber,
+        clientName: clientName,
+        dateOfIssue:
+          setFormatDate({
+            order: 0,
+            date: updatedAt,
+            separator: "-",
+          }) || "",
+        documentType: documentType,
+        igv: amountInIva?.toFixed(2) || "",
+        ruc: documentNumber || "",
+        subtotal: subtotal?.toFixed(2) || "",
+        total: total?.toFixed(2) || "",
+        ordersLines: orderLines || [],
+      });
+    }
   };
 
   const validators = {

@@ -25,14 +25,17 @@ export const useOrders = () => {
     status: null
   })
 
-  function setOrderById(id: string) {
+  async function setOrderById(id: string):Promise<OrderResponse> {
     setStatus(Status.Loading);
     const token = getCookie("esagel_token") || "";
-    getOrderById(token, id).then((response) => {
+    return getOrderById(token, id).then((response) => {
       if (response?.status===200) {
         setOrderInfo(response?.doc || null);
         setStatus(Status.Ready);
       }
+      return response
+    }).catch(error=>{
+      return error;
     });
   }
 

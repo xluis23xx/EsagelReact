@@ -8,8 +8,8 @@ import "./scss/style.scss";
 //   </div>
 // );
 
-const SaegelApp = () => {
+const EsagelApp = () => {
   return <AppRouter />;
 };
 
-export default SaegelApp;
+export default EsagelApp;

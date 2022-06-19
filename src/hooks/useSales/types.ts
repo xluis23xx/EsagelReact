@@ -7,7 +7,7 @@ import { User } from "../useUsers";
 export type Sale = {
   _id?: string;
   saleNumber?: string;
-  order?: Order;
+  order?: Order | null;
   seller?: User | null;
   client?: Client | null;
   percentIva?: number;

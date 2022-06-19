@@ -20,6 +20,7 @@ import {
 import { formatExceedDate } from "../../utils/errors";
 import { savePathname } from "../../utils/location";
 import { setFormatDate } from "../../utils/formats";
+import { generatePDF } from "../../utils/generateComprobant";
 
 const SalesComponent = () => {
   const {
@@ -31,6 +32,8 @@ const SalesComponent = () => {
     paginateData,
     status,
   } = useSales();
+  const { setSaleById } = useSales();
+
   const [visibleAbortModal, setVisibleAbortModal] = React.useState(false);
   const [saleId, setSaleId] = React.useState("");
 
@@ -65,8 +68,43 @@ const SalesComponent = () => {
     }
   };
 
-  const handlePrint = (id: string) => {
-    console.log("imprimiendo...", id);
+  const handlePrint = async (id: string) => {
+    const saleObtained = await setSaleById(id);
+    const { doc = null } = saleObtained || {};
+    if (doc) {
+      const {
+        amountInIva = 0,
+        client = null,
+        subtotal = 0,
+        total = 0,
+        order = null,
+      } = doc || {};
+      let clientName = "";
+      if (client) {
+        client?.name ? (clientName = client?.name) : null;
+        client?.lastname
+          ? (clientName = `${clientName} ${client?.lastname}`)
+          : null;
+        client?.secondLastname
+          ? (clientName = `${clientName} ${client?.secondLastname}`)
+          : null;
+      }
+      generatePDF({
+        comprobantNumber: order?.orderNumber || "",
+        clientName: clientName,
+        dateOfIssue: setFormatDate({
+          order: 0,
+          date: order?.updatedAt,
+          separator: "-",
+        }) || '',
+        documentType: order?.documentType || "",
+        igv: amountInIva?.toFixed(2) || "",
+        ruc: order?.documentNumber || "",
+        subtotal: subtotal?.toFixed(2) || "",
+        total: total?.toFixed(2) || "",
+        ordersLines: order?.orderLines || [],
+      });
+    }
   };
 
   const validators = {
@@ -193,12 +231,14 @@ const SalesComponent = () => {
                           saleNumber,
                           subtotal,
                           total,
+                          order = null,
                         } = sale;
                         return (
                           <SaleItem
                             key={index}
                             index={index + 1}
                             code={_id}
+                            order={order}
                             client={client}
                             seller={seller}
                             status={status}
