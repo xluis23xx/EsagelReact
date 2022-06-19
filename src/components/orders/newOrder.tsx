@@ -80,6 +80,16 @@ const NewOrderComponent = () => {
   }, []);
 
   React.useEffect(() => {
+    const clientForOrder = JSON.parse(
+      sessionStorage.getItem("client_for_order") || "{}"
+    );
+    if (Object.keys(clientForOrder).length > 0) {
+      setSelectedClient(clientForOrder);
+    }
+    sessionStorage.removeItem("client_for_order");
+  }, []);
+
+  React.useEffect(() => {
     if (selectedCourses.length > 0) {
       let subtotalAmount = 0;
       selectedCourses.map((item: OrderDetail) => {

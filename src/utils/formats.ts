@@ -14,19 +14,29 @@ export const setFormatDate = ({
   separator = "-",
 }: FormatDate) => {
   if (date) {
-    const convertDate = new Date(date);
+    
+    
+    let year:number | string = ""
+    let month: number | string = ""
+    let day: number | string = ""
     if(typeof date==="string"){
-      convertDate.setDate(convertDate.getDate()+1)
+      year = date.substring(0,4)
+      month = date.substring(5,7)
+      day = date.substring(8,10)
     }
-    const year = convertDate ? convertDate.getFullYear() : "";
-    let month = convertDate ? convertDate.getMonth() + 1 : "";
-    if (month < 10) {
-      month = `0${month}`;
+    if(typeof date ==="object"){
+      const convertDate = new Date(date);
+      year = convertDate ? convertDate.getFullYear() : "";
+      month = convertDate ? convertDate.getMonth() + 1 : "";
+      if (Number(month) < 10) {
+        month = `0${month}`;
+      }
+      day = convertDate ? convertDate.getDate() : "";
+      if (Number(day) < 10) {
+        day = `0${day}`;
+      }
     }
-    let day = convertDate ? convertDate.getDate() : "";
-    if (day < 10) {
-      day = `0${day}`;
-    }
+
     if (order === 0) {
       return year && month && day
         ? `${day}${separator}${month}${separator}${year}`
