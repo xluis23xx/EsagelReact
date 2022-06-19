@@ -9,8 +9,8 @@ export type Goal = {
   estimatedQuantity?: number;
   quantitySold?: number;
   status?: number | null;
-  createdAt?: string | null;
-  updatedAt?: string | null;
+  createdAt?: string | Date | null;
+  updatedAt?: string | Date | null;
 };
 
 export type GoalResponse = GeneralResponse & {

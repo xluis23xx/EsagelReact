@@ -1,4 +1,3 @@
-import { string } from "prop-types";
 import { DateBody } from "../hooks/useDashboard/types";
 import { months } from "./constants";
 import { docPatterns } from "./regex";
@@ -15,7 +14,10 @@ export const setFormatDate = ({
   separator = "-",
 }: FormatDate) => {
   if (date) {
-    const convertDate = date ? new Date(date) : "";
+    const convertDate = new Date(date);
+    if(typeof date==="string"){
+      convertDate.setDate(convertDate.getDate()+1)
+    }
     const year = convertDate ? convertDate.getFullYear() : "";
     let month = convertDate ? convertDate.getMonth() + 1 : "";
     if (month < 10) {
