@@ -23,12 +23,6 @@ export const GoalItem: React.FC<GoalItemProps> = ({
   handleCancel,
 }) => {
   const { employee = null } = seller || {};
-  console.log("startDate obtenido", startDate);
-  console.log("endDate obtenido", endDate);
-  console.log("startDate convertido", new Date(startDate || ""));
-  const fecha = new Date(startDate || "");
-  fecha.setDate(fecha.getDate() + 1);
-  console.log("fecha inicial sumada", fecha);
   return (
     <tr>
       <td>{index}</td>

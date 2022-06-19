@@ -28,6 +28,7 @@ import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
 import { checkMaskDocument, setFormatDate } from "../../utils/formats";
+import Swal from "sweetalert2";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
@@ -135,6 +136,30 @@ const NewClientComponent = () => {
     };
     registerClient(client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: "¡Registro Exitoso!",
+          text: "Cliente registrado éxitosamente, ¿desea realizar un pedido?",
+          confirmButtonColor: "#ff0000",
+          confirmButtonText: "Ir ahora",
+          denyButtonColor: "#4f5d73",
+          denyButtonText: "Cerrar",
+          showDenyButton: true,
+        }).then((res) => {
+          if (res.isConfirmed) {
+            if (response?.doc) {
+              console.log(response.doc);
+              sessionStorage.setItem(
+                "client_for_order",
+                JSON.stringify(response.doc)
+              );
+            }
+            history.replace("/pedidos/nuevo");
+          }
+          // else {
+          //   history.replace("/clientes")
+          // }
+        });
         history.replace("/clientes");
       }
     });

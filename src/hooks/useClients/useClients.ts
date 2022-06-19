@@ -149,13 +149,13 @@ export const useClients = () => {
     return postClient(token, client)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          Swal.fire({
-            icon: "success",
-            title: "¡Registro Exitoso!",
-            text: "Cliente registrado éxitosamente",
-            timer: 2000,
-            confirmButtonColor: "#ff0000",
-          });
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "¡Registro Exitoso!",
+          //   text: "Cliente registrado éxitosamente",
+          //   timer: 2000,
+          //   confirmButtonColor: "#ff0000",
+          // });
         } else {
           Swal.fire({
             icon: "error",
