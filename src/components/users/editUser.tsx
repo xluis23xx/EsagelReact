@@ -62,7 +62,7 @@ const EditUserComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/usuarios");
+      history.replace("/usuarios");
     }
     setUserById(id);
   }, []);
@@ -91,7 +91,7 @@ const EditUserComponent = () => {
     };
     updateUser(id, user).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/usuarios");
+        history.replace("/usuarios");
       }
     });
   };

@@ -130,7 +130,7 @@ const NewOrderComponent = () => {
     };
     registerOrder(order).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/pedidos");
+        history.replace("/pedidos");
       }
     });
   };

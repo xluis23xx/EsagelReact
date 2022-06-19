@@ -42,7 +42,7 @@ const NewTopicComponent = () => {
     };
     registerTopic(topic).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/temas");
+        history.replace("/temas");
       }
     });
   };

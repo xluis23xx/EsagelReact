@@ -19,7 +19,7 @@ const EditTopicComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/temas");
+      history.replace("/temas");
     }
     setTopicById(id);
   }, []);
@@ -52,7 +52,7 @@ const EditTopicComponent = () => {
     };
     updateTopic(id, topic).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/temas");
+        history.replace("/temas");
       }
     });
   };

@@ -67,7 +67,7 @@ const NewProviderComponent = () => {
     };
     registerProvider(provider).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/proveedores");
+        history.replace("/proveedores");
       }
     });
   };

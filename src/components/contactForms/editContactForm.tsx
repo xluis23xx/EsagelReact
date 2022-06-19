@@ -24,7 +24,7 @@ const EditContactFormComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/medios-contacto");
+      history.replace("/medios-contacto");
     }
     setContactFormById(id);
   }, []);
@@ -57,7 +57,7 @@ const EditContactFormComponent = () => {
     };
     updateContactForm(id, contactForm).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/medios-contacto");
+        history.replace("/medios-contacto");
       }
     });
   };

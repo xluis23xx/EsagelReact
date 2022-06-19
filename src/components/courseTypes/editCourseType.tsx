@@ -24,7 +24,7 @@ const NewCourseTypeComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/tipos-curso");
+      history.replace("/tipos-curso");
     }
     setCourseTypeById(id);
   }, []);
@@ -62,7 +62,7 @@ const NewCourseTypeComponent = () => {
     };
     updateCourseType(id, courseType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-curso");
+        history.replace("/tipos-curso");
       }
     });
   };

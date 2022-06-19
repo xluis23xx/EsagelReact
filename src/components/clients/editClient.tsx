@@ -44,7 +44,7 @@ const EditClientComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/clientes");
+      history.replace("/clientes");
     }
     getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
     getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
@@ -143,7 +143,7 @@ const EditClientComponent = () => {
     };
     updateClient(id, client).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/clientes");
+        history.replace("/clientes");
       }
     });
   };

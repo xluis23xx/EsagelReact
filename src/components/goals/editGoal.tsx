@@ -22,7 +22,7 @@ const EditGoalComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("metas");
+      history.replace("metas");
     }
     setGoalById(id);
   }, []);
@@ -44,7 +44,7 @@ const EditGoalComponent = () => {
     };
     updateGoal(id, goal).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/metas");
+        history.replace("/metas");
       }
     });
   };

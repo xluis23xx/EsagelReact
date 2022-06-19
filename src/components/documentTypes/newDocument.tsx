@@ -46,7 +46,7 @@ const NewDocumentTypeComponent = () => {
     };
     registerDocumentType(documentType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-documento");
+        history.replace("/tipos-documento");
       }
     });
   };

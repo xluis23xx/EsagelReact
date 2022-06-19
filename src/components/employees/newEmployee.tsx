@@ -139,7 +139,7 @@ const NewEmployeeComponent = () => {
     };
     registerEmployee(employee).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/empleados");
+        history.replace("/empleados");
       }
     });
   };

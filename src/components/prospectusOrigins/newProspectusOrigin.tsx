@@ -54,7 +54,7 @@ const NewProspectOriginComponent = () => {
     };
     registerProspectOrigin(prospectOrigin).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/origenes-prospecto");
+        history.replace("/origenes-prospecto");
       }
     });
   };

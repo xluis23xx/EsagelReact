@@ -24,7 +24,7 @@ const EditProspectOriginComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/origenes-prospecto");
+      history.replace("/origenes-prospecto");
     }
     setProspectOriginById(id);
   }, []);
@@ -57,7 +57,7 @@ const EditProspectOriginComponent = () => {
     };
     updateProspectOrigin(id, prospectOrigin).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/origenes-prospecto");
+        history.replace("/origenes-prospecto");
       }
     });
   };

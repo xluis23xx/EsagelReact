@@ -21,7 +21,7 @@ const NewPurchaseComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/compras");
+      history.replace("/compras");
     }
     setPurchaseById(id);
   }, []);
@@ -51,7 +51,7 @@ const NewPurchaseComponent = () => {
     };
     updatePurchase(id, purchase).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/compras");
+        history.replace("/compras");
       }
     });
   };

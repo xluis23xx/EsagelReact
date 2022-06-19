@@ -70,9 +70,9 @@ const EditCourseComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/cursos");
+      history.replace("/cursos");
     }
-    getCourseTypesByFilter({ filter: "", status: 1 }, { limit: 100 });;
+    getCourseTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
     setSearchFilter({
       filter: "",
       status: 1,
@@ -160,7 +160,7 @@ const EditCourseComponent = () => {
     };
     updateCourse(id, course).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/cursos");
+        history.replace("/cursos");
       }
     });
   };

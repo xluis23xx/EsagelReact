@@ -27,7 +27,7 @@ const EditProviderComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/proveedores");
+      history.replace("/proveedores");
     }
     setProviderById(id);
   }, []);
@@ -79,7 +79,7 @@ const EditProviderComponent = () => {
     };
     updateProvider(id, provider).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/proveedores");
+        history.replace("/proveedores");
       }
     });
   };

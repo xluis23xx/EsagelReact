@@ -22,7 +22,7 @@ const DetailOrderComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/ventas");
+      history.replace("/ventas");
     }
     setSaleById(id);
   }, []);

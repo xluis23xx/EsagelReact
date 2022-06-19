@@ -21,7 +21,7 @@ const DetailOrderComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/pedidos");
+      history.replace("/pedidos");
     }
     setOrderById(id);
   }, []);

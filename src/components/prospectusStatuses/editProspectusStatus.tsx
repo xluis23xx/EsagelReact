@@ -24,7 +24,7 @@ const EditProspectStatusComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/estados-prospecto");
+      history.replace("/estados-prospecto");
     }
     setProspectStatusById(id);
   }, []);
@@ -57,7 +57,7 @@ const EditProspectStatusComponent = () => {
     };
     updateProspectStatus(id, prospectStatus).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/estados-prospecto");
+        history.replace("/estados-prospecto");
       }
     });
   };

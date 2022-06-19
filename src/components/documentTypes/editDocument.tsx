@@ -23,7 +23,7 @@ const EditDocumentTypeComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/tipos-documento");
+      history.replace("/tipos-documento");
     }
     setDocumentTypeById(id);
   }, []);
@@ -55,7 +55,7 @@ const EditDocumentTypeComponent = () => {
     };
     updateDocumentType(id, documentType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-documento");
+        history.replace("/tipos-documento");
       }
     });
   };

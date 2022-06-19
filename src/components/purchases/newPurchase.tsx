@@ -86,7 +86,7 @@ const NewPurchaseComponent = () => {
     };
     registerPurchase(purchase).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/compras");
+        history.replace("/compras");
       }
     });
   };

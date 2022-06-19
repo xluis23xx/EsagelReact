@@ -53,7 +53,7 @@ const NewCourseTypeComponent = () => {
     };
     registerCourseType(courseType).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/tipos-curso");
+        history.replace("/tipos-curso");
       }
     });
   };

@@ -52,7 +52,7 @@ const EditEmployeeComponent = () => {
 
   React.useEffect(() => {
     if (!id) {
-      history.push("/empleados");
+      history.replace("/empleados");
     }
     getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
     getPositionsByFilter({ filter: "", status: 1 }, { limit: 100 });
@@ -144,7 +144,7 @@ const EditEmployeeComponent = () => {
     };
     updateEmployee(id, employee).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/empleados");
+        history.replace("/empleados");
       }
     });
   };

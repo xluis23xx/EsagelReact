@@ -22,7 +22,7 @@ const MyAccountComponent = () => {
 
   React.useEffect(() => {
     if (!user) {
-      history.push("/auth/login");
+      history.replace("/auth/login");
     } else {
       if (user?._id) {
         setProfileById(user._id);

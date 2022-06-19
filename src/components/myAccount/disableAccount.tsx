@@ -45,7 +45,7 @@ const DisableAccountComponent = ({ profile }: { profile: User | null }) => {
         if (response?.status === 200 || response?.status === 201) {
           logoutUser();
           setUser(null);
-          history.push("/auth/login");
+          history.replace("/auth/login");
         }
       });
     }

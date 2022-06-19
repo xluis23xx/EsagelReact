@@ -46,7 +46,7 @@ const NewProspectStatusComponent = () => {
     };
     registerProspectStatus(prospectStatus).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.push("/estados-prospecto");
+        history.replace("/estados-prospecto");
       }
     });
   };
