@@ -13,8 +13,8 @@ import { useSettings } from "../../../hooks/useSettings";
 import esagelImage from "src/assets/images/esagel-blanco.png";
 
 const Login = () => {
-  const { setUser } = React.useContext<any>(AuthContext);
-  const { setConfig } = React.useContext<any>(SettingsContext);
+  const { setUser } = React.useContext(AuthContext);
+  const { setConfig } = React.useContext(SettingsContext);
   const [showFormatInvalid, setShowFormatInvalid] = React.useState("");
   const { verifyAuthentication, message, status } = useAuth();
   const { getSettingsConfig } = useSettings();
@@ -36,7 +36,7 @@ const Login = () => {
     },
   };
 
-  const checkFormat = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const checkFormat = (e) => {
     if (e.target.value.indexOf(" ") >= 0) {
       setShowFormatInvalid("No se permite espacios");
     } else {
@@ -44,7 +44,7 @@ const Login = () => {
     }
   };
 
-  const onSubmitForm = async (data: Auth) => {
+  const onSubmitForm = async (data) => {
     const resp = await verifyAuthentication(data);
     if (resp?.status === 200 || resp?.status === 201) {
       if (resp?.token) {
