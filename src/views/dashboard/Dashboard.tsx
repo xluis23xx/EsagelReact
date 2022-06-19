@@ -59,7 +59,7 @@ const Dashboard = () => {
     return `${
       months[Number(Number(dateParams[0]?.startDate?.substring(5, 7)) - 1) || 0]
     }
-    ${dateParams[dateParams.length - 1]?.startDate?.substring(0, 4)} - ${
+    ${dateParams[0]?.startDate?.substring(0, 4)} - ${
       months[new Date().getMonth()]
     } ${new Date().getFullYear()}`;
   };
