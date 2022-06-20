@@ -82,7 +82,6 @@ const GoalsComponent = () => {
   }) => {
     let start = "";
     let end = "";
-    console.log(startDate, endDate);
     if (startDate) {
       start = `${startDate.replace("/", "-")}T00:00:00.0+00:00`;
     }

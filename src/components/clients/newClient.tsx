@@ -148,7 +148,6 @@ const NewClientComponent = () => {
         }).then((res) => {
           if (res.isConfirmed) {
             if (response?.doc) {
-              console.log(response.doc);
               sessionStorage.setItem(
                 "client_for_order",
                 JSON.stringify(response.doc)
