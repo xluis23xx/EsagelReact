@@ -22,6 +22,18 @@ const EditUserComponent = React.lazy(
   () => import("./components/users/editUser")
 );
 
+const CentersComponent = React.lazy(
+  () => import("./components/centers/centers")
+);
+
+const NewCenterComponent = React.lazy(
+  () => import("./components/centers/newCenter")
+);
+
+const EditCenterComponent = React.lazy(
+  () => import("./components/centers/editCenter")
+);
+
 const NewEmployeeComponent = React.lazy(
   () => import("./components/employees/newEmployee")
 );
@@ -268,7 +280,24 @@ export const RoutesArray = (): any[] => {
       element: EditTopicComponent,
       exact: true,
     },
-
+    {
+      path: "/clientes",
+      name: "Clientes",
+      element: ClientsComponent,
+      exact: true,
+    },
+    {
+      path: "/clientes/nuevo",
+      name: "Nuevo",
+      element: NewClientComponent,
+      exact: true,
+    },
+    {
+      path: "/clientes/editar/:id",
+      name: "Editar",
+      element: EditClientComponent,
+      exact: true,
+    },
     {
       path: "/ayuda",
       name: "Ayuda",
@@ -313,24 +342,6 @@ export const RoutesArray = (): any[] => {
       path: "/tipos-documento/editar/:id",
       name: "Editar",
       element: EditDocumentTypeComponent,
-      exact: true,
-    },
-    {
-      path: "/clientes",
-      name: "Clientes",
-      element: ClientsComponent,
-      exact: true,
-    },
-    {
-      path: "/clientes/nuevo",
-      name: "Nuevo",
-      element: NewClientComponent,
-      exact: true,
-    },
-    {
-      path: "/clientes/editar/:id",
-      name: "Editar",
-      element: EditClientComponent,
       exact: true,
     },
     {
@@ -459,6 +470,24 @@ export const RoutesArray = (): any[] => {
       path: "/usuarios/editar/:id",
       name: "Editar",
       element: EditUserComponent,
+      exact: true,
+    },
+    {
+      path: "/centros",
+      name: "Centros",
+      element: CentersComponent,
+      exact: true,
+    },
+    {
+      path: "/centros/nuevo",
+      name: "Nuevo",
+      element: NewCenterComponent,
+      exact: true,
+    },
+    {
+      path: "/centros/editar/:id",
+      name: "Editar",
+      element: EditCenterComponent,
       exact: true,
     },
     {

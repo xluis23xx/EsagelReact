@@ -92,11 +92,15 @@ const SalesComponent = () => {
       generatePDF({
         comprobantNumber: order?.orderNumber || "",
         clientName: clientName,
-        dateOfIssue: setFormatDate({
-          order: 0,
-          date: order?.updatedAt,
-          separator: "-",
-        }) || '',
+        establishment:
+          `${order?.center?.branchName?.toUpperCase()}, ${order?.center?.address?.toUpperCase()}` ||
+          "",
+        dateOfIssue:
+          setFormatDate({
+            order: 0,
+            date: order?.updatedAt,
+            separator: "-",
+          }) || "",
         documentType: order?.documentType || "",
         igv: amountInIva?.toFixed(2) || "",
         ruc: order?.documentNumber || "",

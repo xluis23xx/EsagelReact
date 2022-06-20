@@ -22,6 +22,7 @@ import {
   cilLockLocked,
   cilCommentBubble,
   cilLifeRing,
+  cilBank,
 } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 import { AuthContext } from "./context/AuthContext";
@@ -76,6 +77,14 @@ const NavRoutes = (): any[] => {
                   name: "Usuarios",
                   to: "/usuarios",
                   icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+                }
+              : undefined,
+            isModerator
+              ? {
+                  component: CNavItem,
+                  name: "Centros",
+                  to: "/centros",
+                  icon: <CIcon icon={cilBank} customClassName="nav-icon" />,
                 }
               : undefined,
             {
@@ -173,7 +182,7 @@ const NavRoutes = (): any[] => {
               to: "/pedidos",
               icon: <CIcon icon={cilGraph} customClassName="nav-icon" />,
             },
-            isAdmin || isModerator
+            isUser || isAdmin || isModerator
               ? {
                   component: CNavItem,
                   name: "Clientes",

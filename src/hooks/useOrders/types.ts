@@ -1,4 +1,5 @@
 import { GeneralResponse } from "../types";
+import { Center } from "../useCenters";
 import { Client } from "../useClients";
 import { Course } from "../useCourses";
 import { DocumentType } from "../useDocuments";
@@ -11,6 +12,7 @@ export type Order = {
   documentType?: DocumentType;
   documentNumber?: string | null;
   seller?: User;
+  center?: Center;
   percentIva?: number;
   subtotal?: number;
   amountInIva?: number;

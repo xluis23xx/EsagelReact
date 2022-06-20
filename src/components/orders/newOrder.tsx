@@ -26,6 +26,7 @@ import { InputForm } from "../global-components/inputForm";
 import { DocumentType, useDocumentTypes } from "../../hooks/useDocuments";
 import { Course, useCourses } from "../../hooks/useCourses";
 import { SettingsContext } from "../../context/SettingsContext";
+import { Center, useCenters } from "../../hooks/useCenters";
 
 const NewOrderComponent = () => {
   const { user } = React.useContext<any>(AuthContext);
@@ -44,6 +45,8 @@ const NewOrderComponent = () => {
     setSearchFilter: setSearchCourseFilter,
     courses,
   } = useCourses();
+
+  const { getCentersByFilter, centers } = useCenters();
 
   const [visibleClientModal, setVisibleClientModal] = React.useState(false);
   const [visibleCoursesModal, setVisibleCoursesModal] = React.useState(false);
@@ -77,6 +80,7 @@ const NewOrderComponent = () => {
       status: 1,
     });
     getCoursesByFilter({ filter: "", status: 1 }, { limit: 5, pageSize: 1 });
+    getCentersByFilter({ filter: "", status: 1 }, { limit: 100 });
   }, []);
 
   React.useEffect(() => {
@@ -105,10 +109,14 @@ const NewOrderComponent = () => {
   const stateSchema = {
     documentType: { value: "", error: "" },
     documentNumber: { value: "", error: "" },
+    center: { value: "", error: "" },
   };
 
   const stateValidatorSchema = {
     documentType: {
+      required: true,
+    },
+    center: {
       required: true,
     },
     documentNumber: {
@@ -131,6 +139,7 @@ const NewOrderComponent = () => {
           : data?.documentType === "Factura"
           ? data?.documentNumber
           : null,
+      center: data?.center || null,
       subtotal: subtotal || 0,
       percentIva: config?.tax ? config?.tax : null,
       amountInIva: config?.tax ? config?.tax * subtotal : null,
@@ -152,36 +161,30 @@ const NewOrderComponent = () => {
   };
 
   const {
-    values: { documentType, documentNumber },
+    values: { documentType, documentNumber, center },
     errors: {
       documentType: documentTypeError,
       documentNumber: documentNumberError,
+      center: centerError,
     },
-    disable,
     handleOnChange,
     handleOnSubmit,
   } = useForm(stateSchema, stateValidatorSchema, onSubmitForm);
 
-  const handleSearchClients = (data) => {
+  const handleSearchClients = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
-    getClientsByFilter(
-      { filter: filter, status: 1 },
-      { limit: 5, pageSize: 1 }
-    );
+    getClientsByFilter({ filter, status: 1 }, { limit: 5, pageSize: 1 });
   };
 
-  const handleSearchCourses = (data) => {
+  const handleSearchCourses = ({ search }: { search: string | null }) => {
     let filter = "";
-    if (data?.search) {
-      filter = data?.search;
+    if (search) {
+      filter = search;
     }
-    getCoursesByFilter(
-      { filter: filter, status: 1 },
-      { limit: 5, pageSize: 1 }
-    );
+    getCoursesByFilter({ filter, status: 1 }, { limit: 5, pageSize: 1 });
   };
 
   return (
@@ -206,7 +209,7 @@ const NewOrderComponent = () => {
               </div>
 
               <form className="row" onSubmit={handleOnSubmit}>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-3">
                   <label className="form-label" htmlFor="client">
                     Cliente *
                   </label>
@@ -259,7 +262,7 @@ const NewOrderComponent = () => {
                     </p>
                   ) : null}
                 </div>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-3">
                   <label className="form-label" htmlFor="documentType">
                     Tipo de Comprobante *
                   </label>
@@ -300,7 +303,7 @@ const NewOrderComponent = () => {
                   </select>
                 </div>
 
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-3">
                   <label className="form-label" htmlFor="status">
                     Estado *
                   </label>
@@ -310,9 +313,38 @@ const NewOrderComponent = () => {
                     disabled={true}
                   />
                 </div>
+                <div className="form-group mt-1 col-sm-6 col-xl-3">
+                  <label className="form-label" htmlFor="center">
+                    Centro *
+                  </label>
+                  <select
+                    id="center"
+                    name="center"
+                    required
+                    disabled={status === Status.Updating}
+                    value={center || ""}
+                    onChange={handleOnChange}
+                    onBlur={handleOnChange}
+                    className={`btn border-secondary btn-default w-100 ${
+                      centerError ? "border border-danger" : ""
+                    }`}
+                  >
+                    <option value="">Seleccione</option>
+                    {centers.length > 0
+                      ? centers.map((cen: Center) => (
+                          <option
+                            key={cen.branchName}
+                            value={`${cen.branchName}`}
+                          >
+                            {cen?.branchName?.toUpperCase()}
+                          </option>
+                        ))
+                      : null}
+                  </select>
+                </div>
                 {selectedClient?.documentType?.name === "RUC" ||
                 documentType === "Factura" ? (
-                  <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <div className="form-group mt-1 col-sm-6 col-xl-3">
                     <label className="form-label" htmlFor="documentNumber">
                       RUC *
                     </label>
@@ -337,8 +369,7 @@ const NewOrderComponent = () => {
                     />
                   </div>
                 ) : null}
-
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                <div className="form-group mt-1 col-sm-6 col-xl-3">
                   <label className="form-label" htmlFor="seller">
                     Vendedor:
                   </label>
@@ -361,9 +392,9 @@ const NewOrderComponent = () => {
                 </div>
                 {selectedClient?.documentType?.name === "RUC" ||
                 documentType === "Factura" ? (
-                  <div className="col-12 mt-3 d-sm-none d-xl-block col-xl-1" />
+                  <div className="col-12 mt-3 d-sm-none d-xl-block col-xl-3" />
                 ) : (
-                  <div className="col-12  mt-3 col-sm-6 col-xl-5" />
+                  <div className="col-12  mt-3 d-sm-none d-xl-block col-xl-6" />
                 )}
                 <div className="form-group mt-3 col-sm-6 col-xl-3 d-flex">
                   <button
@@ -589,6 +620,7 @@ const NewOrderComponent = () => {
                       (selectedClient?.documentType?.name === "RUC"
                         ? false
                         : !documentType) ||
+                      !center ||
                       !selectedClient ||
                       status === Status.Updating ||
                       selectedCourses.length === 0

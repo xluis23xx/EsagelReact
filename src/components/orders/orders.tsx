@@ -91,6 +91,7 @@ const OrdersComponent = () => {
         orderLines = [],
         subtotal = 0,
         total = 0,
+        center = null,
         orderNumber = "",
         documentType = null,
         updatedAt,
@@ -105,9 +106,13 @@ const OrdersComponent = () => {
           ? (clientName = `${clientName} ${client?.secondLastname}`)
           : null;
       }
+
       generatePDF({
         comprobantNumber: orderNumber,
         clientName: clientName,
+        establishment:
+          `${center?.branchName?.toUpperCase()}, ${center?.address?.toUpperCase()}` ||
+          "",
         dateOfIssue:
           setFormatDate({
             order: 0,

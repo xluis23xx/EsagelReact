@@ -159,6 +159,18 @@ const DetailOrderComponent = () => {
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="center">
+                    Centro de Atención:
+                  </label>
+                  <InputForm
+                    placeholder="-"
+                    name="center"
+                    value={orderInfo?.center?.branchName || ""}
+                    disabled={status === Status.Loading}
+                    readonly={true}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
                   <label className="form-label" htmlFor="status">
                     Estado:
                   </label>

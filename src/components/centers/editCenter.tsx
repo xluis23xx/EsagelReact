@@ -2,47 +2,51 @@
 import React from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import useForm from "../../hooks/useForm";
-import { formatDescription, formatNames } from "../../utils/errors";
+import {
+  formatDescription,
+  formatExtendNames,
+  formatNames,
+} from "../../utils/errors";
 import { InputForm } from "../global-components/inputForm";
 
-import { CourseType, Status, useCourseTypes } from "../../hooks/useCourseTypes";
+import { Center, Status, useCenters } from "../../hooks/useCenters";
 import { TextAreaForm } from "../global-components/textareaForm";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
 
-const EditCourseTypeComponent = () => {
+const EditCenterComponent = () => {
   const {
-    updateCourseType,
-    courseTypeInfo,
-    setCourseTypeById,
+    updateCenter,
+    centerInfo,
+    setCenterById,
     status: statusUse,
-  } = useCourseTypes();
+  } = useCenters();
   const history = useHistory();
 
   const { id } = useParams<any>();
 
   React.useEffect(() => {
     if (!id) {
-      history.replace("/tipos-curso");
+      history.replace("/centros");
     }
-    setCourseTypeById(id);
+    setCenterById(id);
   }, []);
 
   const stateSchema = {
-    name: { value: null, error: "" },
-    description: { value: null, error: "" },
+    branchName: { value: null, error: "" },
+    address: { value: null, error: "" },
     status: { value: null, error: "" },
   };
 
   const stateValidatorSchema = {
-    name: {
+    branchName: {
       required: true,
-      validator: formatNames(),
+      validator: formatExtendNames(),
       min2caracts: true,
       invalidtext: true,
     },
-    description: {
+    address: {
       required: true,
       validator: formatDescription(),
       min2caracts: true,
@@ -53,26 +57,24 @@ const EditCourseTypeComponent = () => {
     },
   };
 
-  const onSubmitForm = (data: CourseType) => {
-    const courseType = {
-      name: (data?.name ?? courseTypeInfo?.name) || null,
-      description: (data?.description ?? courseTypeInfo?.description) || null,
-
-      status: (data?.status ?? courseTypeInfo?.status) || 0,
+  const onSubmitForm = (data: Center) => {
+    const center = {
+      branchName: (data?.branchName ?? centerInfo?.branchName) || null,
+      address: (data?.address ?? centerInfo?.address) || null,
+      status: (data?.status ?? centerInfo?.status) || 0,
     };
-    updateCourseType(id, courseType).then((response) => {
+    updateCenter(id, center).then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        history.replace("/tipos-curso");
+        history.replace("/centros");
       }
     });
   };
 
   const {
-    values: { code, name, description, status },
+    values: { branchName, address, status },
     errors: {
-      code: codeError,
-      name: nameError,
-      description: descriptionError,
+      branchName: branchNameError,
+      address: addressError,
       status: statusError,
     },
     handleOnChange,
@@ -88,7 +90,7 @@ const EditCourseTypeComponent = () => {
             <div className="row">
               <div className="col-12 col-sm-6 col-md-10 my-auto">
                 <CIcon icon={cilHamburgerMenu} />
-                &nbsp;EDITAR TIPO DE CURSO
+                &nbsp;EDITAR CENTRO
               </div>
             </div>
           </div>
@@ -103,36 +105,39 @@ const EditCourseTypeComponent = () => {
 
               <form className="row" onSubmit={handleOnSubmit}>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
-                  <label className="form-label" htmlFor="code">
-                    Código *
-                  </label>
-                  <InputForm
-                    type="text"
-                    required
-                    placeholder="Código"
-                    name="code"
-                    value={(code ?? courseTypeInfo?.code) || ""}
-                    onChange={handleOnChange}
-                    disabled={true}
-                    error={codeError}
-                  />
-                </div>
-                <div className="form-group mt-1 col-sm-6 col-xl-4">
-                  <label className="form-label" htmlFor="name">
-                    Nombre *
+                  <label className="form-label" htmlFor="branchName">
+                    Nombre del Local *
                   </label>
                   <InputForm
                     type="text"
                     required
                     placeholder="Nombre"
-                    name="name"
-                    value={(name ?? courseTypeInfo?.name) || ""}
+                    name="branchName"
+                    value={(branchName ?? centerInfo?.branchName) || ""}
                     onChange={handleOnChange}
                     disabled={
                       statusUse === Status.Loading ||
                       statusUse === Status.Updating
                     }
-                    error={nameError}
+                    error={branchNameError}
+                  />
+                </div>
+                <div className="form-group mt-1 col-sm-6 col-xl-4">
+                  <label className="form-label" htmlFor="address">
+                    Dirección *
+                  </label>
+                  <InputForm
+                    type="text"
+                    required
+                    placeholder="Dirección"
+                    name="address"
+                    value={(address ?? centerInfo?.address) || ""}
+                    onChange={handleOnChange}
+                    disabled={
+                      statusUse === Status.Loading ||
+                      statusUse === Status.Updating
+                    }
+                    error={addressError}
                   />
                 </div>
                 <div className="form-group mt-1 col-sm-6 col-xl-4">
@@ -147,7 +152,7 @@ const EditCourseTypeComponent = () => {
                       statusUse === Status.Loading ||
                       statusUse === Status.Updating
                     }
-                    value={(status ?? courseTypeInfo?.status?.toString()) || ""}
+                    value={(status ?? centerInfo?.status?.toString()) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${
@@ -158,25 +163,6 @@ const EditCourseTypeComponent = () => {
                     <option value="0">Inactivo</option>
                     <option value="1">Activo</option>
                   </select>
-                </div>
-                <div className="form-group mt-1 col-12">
-                  <label className="form-label" htmlFor="description">
-                    Descripción *
-                  </label>
-                  <TextAreaForm
-                    required
-                    placeholder="Descripción"
-                    name="description"
-                    maxLength={100}
-                    rows={3}
-                    value={(description ?? courseTypeInfo?.description) || ""}
-                    onChange={handleOnChange}
-                    disabled={
-                      statusUse === Status.Loading ||
-                      statusUse === Status.Updating
-                    }
-                    error={descriptionError}
-                  />
                 </div>
                 <div className="col-12" />
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
@@ -203,7 +189,7 @@ const EditCourseTypeComponent = () => {
                 </div>
                 <div className="form-group col-sm-6 col-xl-3 mt-3">
                   <Link
-                    to="/tipos-curso"
+                    to="/centros"
                     className="btn btn-secondary text-white w-100"
                   >
                     Cancelar
@@ -219,4 +205,4 @@ const EditCourseTypeComponent = () => {
   );
 };
 
-export default EditCourseTypeComponent;
+export default EditCenterComponent;
