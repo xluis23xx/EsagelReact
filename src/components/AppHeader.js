@@ -86,10 +86,10 @@ const AppHeader = () => {
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto text-light">
           <CNavItem className="d-block fw-bold">
-            Usuario: {nameProfile}
+            Usuario: <span className="fw-normal">{nameProfile}</span>
           </CNavItem>
-          <CNavItem className="d-block ms-5 fw-bold">
-            Rol Principal: {dominantRole}
+          <CNavItem className="d-block fw-bold ms-5">
+            Rol Principal: <span className="fw-normal">{dominantRole}</span>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
