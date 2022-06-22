@@ -78,6 +78,8 @@ const SalesComponent = () => {
         subtotal = 0,
         total = 0,
         order = null,
+        status,
+        createdAt,
       } = doc || {};
       let clientName = "";
       if (client) {
@@ -93,12 +95,13 @@ const SalesComponent = () => {
         comprobantNumber: order?.orderNumber || "",
         clientName: clientName,
         establishment:
-          `${order?.center?.branchName?.toUpperCase()}, ${order?.center?.address?.toUpperCase()}` ||
-          "",
+          `${order?.center?.branchName?.toUpperCase() || ""}, ${
+            order?.center?.address?.toUpperCase() || ""
+          }` || "",
         dateOfIssue:
           setFormatDate({
             order: 0,
-            date: order?.updatedAt,
+            date: createdAt,
             separator: "-",
           }) || "",
         documentType: order?.documentType || "",
@@ -106,6 +109,7 @@ const SalesComponent = () => {
         ruc: order?.documentNumber || "",
         subtotal: subtotal?.toFixed(2) || "",
         total: total?.toFixed(2) || "",
+        isAnnulled: status === 0 ? true : false,
         ordersLines: order?.orderLines || [],
       });
     }

@@ -111,8 +111,9 @@ const OrdersComponent = () => {
         comprobantNumber: orderNumber,
         clientName: clientName,
         establishment:
-          `${center?.branchName?.toUpperCase()}, ${center?.address?.toUpperCase()}` ||
-          "",
+          `${center?.branchName?.toUpperCase() || ""}, ${
+            center?.address?.toUpperCase() || ""
+          }` || "",
         dateOfIssue:
           setFormatDate({
             order: 0,

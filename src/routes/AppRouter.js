@@ -1,7 +1,7 @@
 import React from "react";
 import { PublicRoute } from "./PublicRoute";
 import { PrivateRoute } from "./PrivateRoute";
-import { BrowserRouter as Router, Switch, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { AuthRouter } from "./AuthRouter";
 import DefaultLayout from "../layout/DefaultLayout";
@@ -9,7 +9,7 @@ import { AuthContext } from "../context/AuthContext";
 import firebase, { FirebaseContext } from "../firebase";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
-import { deleteCookie, getCookie } from "../utils/cookies";
+import { getCookie } from "../utils/cookies";
 import { SettingsContext } from "../context/SettingsContext";
 import { useAuth } from "../hooks/useAuth";
 export const AppRouter = () => {

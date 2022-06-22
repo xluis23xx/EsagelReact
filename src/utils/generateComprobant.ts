@@ -17,6 +17,7 @@ import { OrderDetail } from "../hooks/useOrders";
     igv?: string,
     documentType?: DocumentType | null,
     total?:string,
+    isAnnulled?: boolean,
     ordersLines?: OrderDetail[]
   }
 
@@ -35,6 +36,7 @@ import { OrderDetail } from "../hooks/useOrders";
       igv="0.00",
       total="0.00",
       documentType,
+      isAnnulled= false,
       ordersLines=[]
     }: GeneratePDFProps) => {
     const doc = new jsPDF({
@@ -108,6 +110,16 @@ import { OrderDetail } from "../hooks/useOrders";
     // forma de pago
     doc.setFontSize(9);
     doc.text(`Forma de pago: ${paymentMethod}`, 7, initialYSubheader);
+
+    // Fue anulada
+    doc.setFontSize(14);
+    if(isAnnulled){
+      doc.line(6.8,initialYSubheader+0.4, 8.6, initialYSubheader+0.4,"F")
+      doc.line(6.8,initialYSubheader+0.4, 6.8, initialYSubheader+0.8,"F")
+      doc.text('ANULADA', 7.2, initialYSubheader+0.7)
+      doc.line(8.6,initialYSubheader+0.4, 8.6, initialYSubheader+0.8,"F")
+      doc.line(6.8,initialYSubheader+0.8, 8.6, initialYSubheader+0.8,"F")
+    }
 
     // CUERPO DE ELEMENTOS
     doc.setFontSize(10.5);

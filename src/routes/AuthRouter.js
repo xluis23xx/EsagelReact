@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import LoginScreen from "../views/pages/login/Login";
-import RegisterScreen from "../views/pages/register/Register";
+// import RegisterScreen from "../views/pages/register/Register";
 
 // Containers
 // const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
