@@ -1,4 +1,4 @@
-import { cilCart, cilEyedropper, cilPaperclip, cilTrash } from "@coreui/icons";
+import { cilCart, cilPaperclip, cilSearch, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { setFormatDate } from "../../../utils/formats";
@@ -79,7 +79,7 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               subsection={"detalle"}
               path={"pedidos"}
               title="Detalle del Pedido"
-              icon={cilEyedropper}
+              icon={cilSearch}
             />
             {status === 1 ? (
               <>
@@ -115,17 +115,17 @@ export const OrderItem: React.FC<OrderItemProps> = ({
               <>
                 &nbsp;
                 <CTooltip content="Descargar Comprobante">
-                    <button
-                      type="button"
-                      className="btn btn-info"
-                      style={{ height: 40, width: 40 }}
-                      onClick={() => {
-                        handlePrint(code)
-                        // generatePDF({});
-                      }}
-                    >
-                      <CIcon icon={cilPaperclip} color="#fffff" />
-                    </button>
+                  <button
+                    type="button"
+                    className="btn btn-info"
+                    style={{ height: 40, width: 40 }}
+                    onClick={() => {
+                      handlePrint(code);
+                      // generatePDF({});
+                    }}
+                  >
+                    <CIcon icon={cilPaperclip} color="#fffff" />
+                  </button>
                 </CTooltip>
               </>
             ) : null}

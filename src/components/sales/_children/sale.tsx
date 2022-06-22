@@ -1,4 +1,4 @@
-import { cilEyedropper, cilPaperclip, cilTrash } from "@coreui/icons";
+import { cilPaperclip, cilSearch, cilTrash } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 import React from "react";
 import { setFormatDate } from "../../../utils/formats";
@@ -74,7 +74,7 @@ export const SaleItem: React.FC<SaleItemProps> = ({
               subsection={"detalle"}
               title="Detalle de Venta"
               path={"ventas"}
-              icon={cilEyedropper}
+              icon={cilSearch}
             />
             &nbsp;
             <CTooltip content={"Imprimir Venta"}>
