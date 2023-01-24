@@ -10,6 +10,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { SettingsContext } from "../../../context/SettingsContext";
 import { setCookie } from "../../../utils/cookies";
 import { useSettings } from "../../../hooks/useSettings";
+//@ts-ignore
 import esagelImage from "src/assets/images/esagel-blanco.png";
 
 const Login = () => {
