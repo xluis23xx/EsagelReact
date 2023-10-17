@@ -29,6 +29,7 @@ import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
 import { checkMaskDocument, setFormatDate } from "../../utils/formats";
 import Swal from "sweetalert2";
+import { Ubigeo } from "../ubigeo/types";
 
 const NewClientComponent = () => {
   const { registerClient, status } = useClients();
@@ -37,18 +38,20 @@ const NewClientComponent = () => {
   const { getProspectStatusesByFilter, prospectStatuses } =
     useProspectStatuses();
   const { getProspectOriginsByFilter, prospectOrigins } = useProspectOrigins();
-  const [deparments, setDeparments] = React.useState([]);
+  const [deparments, setDeparments] = React.useState<Ubigeo[]>([]);
 
   const history = useHistory();
 
   React.useEffect(() => {
-    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getUbigeo("260000").then((departmentsArray: any) =>
-      setDeparments(departmentsArray)
-    );
+    try {
+      getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getUbigeo().then((response) => setDeparments(response.docs));
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const stateSchema = {
@@ -366,10 +369,18 @@ const NewClientComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    {deparments.length > 0
+                    {/* {deparments.length > 0
                       ? deparments.map((dep: [number, string]) => (
                           <option key={`${dep[0]}`} value={`${dep[0]}`}>
                             {dep[1]}
+                          </option>
+                        ))
+                      : null} */}
+
+                    {deparments.length > 0
+                      ? deparments.map((ubi: Ubigeo) => (
+                          <option key={ubi._id} value={`${ubi.code}`}>
+                            {ubi.name}
                           </option>
                         ))
                       : null}

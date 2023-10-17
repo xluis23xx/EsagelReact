@@ -28,6 +28,7 @@ import { useDocumentTypes, DocumentType } from "../../hooks/useDocuments";
 import { SubmitButton } from "../global-components/globalButtons";
 import CIcon from "@coreui/icons-react";
 import { cilHamburgerMenu } from "@coreui/icons";
+import { Ubigeo } from "../ubigeo/types";
 
 const EditClientComponent = () => {
   const { updateClient, setClientById, clientInfo, status } = useClients();
@@ -36,7 +37,7 @@ const EditClientComponent = () => {
   const { getProspectStatusesByFilter, prospectStatuses } =
     useProspectStatuses();
   const { getProspectOriginsByFilter, prospectOrigins } = useProspectOrigins();
-  const [deparments, setDeparments] = React.useState([]);
+  const [deparments, setDeparments] = React.useState<Ubigeo[]>([]);
 
   const history = useHistory();
 
@@ -46,14 +47,16 @@ const EditClientComponent = () => {
     if (!id) {
       history.replace("/clientes");
     }
-    getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
-    getUbigeo("260000").then((departmentsArray: any) =>
-      setDeparments(departmentsArray)
-    );
-    setClientById(id);
+    try {
+      getDocumentTypesByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getContactFormsByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getProspectOriginsByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getProspectStatusesByFilter({ filter: "", status: 1 }, { limit: 100 });
+      getUbigeo().then((response) => setDeparments(response.docs));
+      setClientById(id);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const stateSchema = {
@@ -369,10 +372,17 @@ const EditClientComponent = () => {
                     }`}
                   >
                     <option value="">Seleccione</option>
-                    {deparments.length > 0
+                    {/* {deparments.length > 0
                       ? deparments.map((dep: [number, string]) => (
                           <option key={`${dep[0]}`} value={`${dep[0]}`}>
                             {dep[1]}
+                          </option>
+                        ))
+                      : null} */}
+                    {deparments.length > 0
+                      ? deparments.map((ubi: Ubigeo) => (
+                          <option key={ubi._id} value={`${ubi.code}`}>
+                            {ubi.name}
                           </option>
                         ))
                       : null}
