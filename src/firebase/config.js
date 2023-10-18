@@ -1,11 +1,10 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyCApWCP4HIyKmNBJL-dOgnMRP5gqToIhH8",
-  authDomain: "esagel-admin.firebaseapp.com",
-  projectId: "esagel-admin",
-  storageBucket: "esagel-admin.appspot.com",
-  messagingSenderId: "794965521798",
-  appId: "1:794965521798:web:6afc4a69b5bc5a426c6807",
-  measurementId: "G-1NP7RFW5XG"
+  apiKey: "AIzaSyDcqw3WLuP-xObn1TwJlePBVs9bsd39VbM",
+  authDomain: "esagel-edu.firebaseapp.com",
+  projectId: "esagel-edu",
+  storageBucket: "esagel-edu.appspot.com",
+  messagingSenderId: "1055879159753",
+  appId: "1:1055879159753:web:f939b43b818c909f849218"
 };
 
 export default firebaseConfig;

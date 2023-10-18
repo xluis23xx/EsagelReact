@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "esagel-admin"
-  }
+    "default": "esagel-admin",
+    "prod": "esagel-edu"
+  },
+  "targets": {},
+  "etags": {}
 }
