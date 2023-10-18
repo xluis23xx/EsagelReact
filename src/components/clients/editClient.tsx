@@ -364,7 +364,7 @@ const EditClientComponent = () => {
                     disabled={
                       status === Status.Loading || status === Status.Updating
                     }
-                    value={(department ?? clientInfo?.department) || ""}
+                    value={(department ?? clientInfo?.department?.code) || ""}
                     onChange={handleOnChange}
                     onBlur={handleOnChange}
                     className={`btn border-secondary btn-default w-100 ${

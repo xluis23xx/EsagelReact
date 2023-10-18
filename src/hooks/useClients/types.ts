@@ -3,6 +3,7 @@ import { ProspectusOrigin } from "../useProspectusOrigin";
 import { ProspectStatus } from "../usePropectusStatus";
 import { ContactForm } from "../useContactForms";
 import { GeneralResponse } from "../types";
+import { Ubigeo } from "../../components/ubigeo/types";
 
 export type Department = {
   _id?: string;
@@ -20,7 +21,7 @@ export type Client = {
   documentNumber?: string;
   birthdate?: string;
   documentType?: DocumentType;
-  department?: string;
+  department?: Ubigeo;
   leadSource?: ProspectusOrigin;
   prospectStatus?: ProspectStatus;
   contactForm?: ContactForm;
@@ -33,4 +34,4 @@ export type Client = {
 
 export type ClientResponse = GeneralResponse & {
   doc?: Client | null;
-}
+};
