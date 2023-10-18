@@ -9,7 +9,7 @@ const AppFooter = () => {
     >
       <div className="ms-auto">
         <p className="mx-auto text-light">
-          &copy; 2022 - Desarrollado por Signwall360
+          &copy; {new Date().getFullYear()} - ESAGEL
         </p>
       </div>
     </CFooter>
