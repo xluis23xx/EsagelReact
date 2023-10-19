@@ -50,7 +50,9 @@ const WidgetsDropdown = ({
         <CWidgetStatsA
           className="mb-4"
           color="primary"
-          value={dashboardInfo?.quantityTotalPurchased || 0}
+          value={parseInt(
+            dashboardInfo?.quantityTotalPurchased?.toFixed(2) || "0"
+          )}
           title="Nro. Compras"
           chart={
             <CChartLine
@@ -119,7 +121,7 @@ const WidgetsDropdown = ({
         <CWidgetStatsA
           className="mb-4"
           color="info"
-          value={dashboardInfo?.totalQuantitySales || 0}
+          value={parseInt(dashboardInfo?.totalQuantitySales?.toFixed(2) || "0")}
           title="Nro. Ventas"
           chart={
             <CChartLine
@@ -184,7 +186,7 @@ const WidgetsDropdown = ({
         <CWidgetStatsA
           className="mb-4"
           color="warning"
-          value={dashboardInfo?.totalSoldSale || 0}
+          value={dashboardInfo?.totalSoldSale?.toFixed(2) || 0}
           title="Monto de Ventas en S/."
           chart={
             <CChartLine
@@ -238,7 +240,7 @@ const WidgetsDropdown = ({
         <CWidgetStatsA
           className="mb-4"
           color="danger"
-          value={dashboardInfo?.totalPurchased || 0}
+          value={dashboardInfo?.totalPurchased?.toFixed(2) || 0}
           title="Monto de Compras en S/."
           chart={
             <CChartBar
