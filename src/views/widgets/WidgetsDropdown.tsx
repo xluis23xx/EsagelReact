@@ -56,7 +56,6 @@ const WidgetsDropdown = ({
           title="Nro. Compras"
           chart={
             <CChartLine
-              type="line"
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
@@ -125,7 +124,6 @@ const WidgetsDropdown = ({
           title="Nro. Ventas"
           chart={
             <CChartLine
-              type="line"
               className="mt-3 mx-3"
               style={{ height: "70px" }}
               data={{
@@ -190,7 +188,6 @@ const WidgetsDropdown = ({
           title="Monto de Ventas en S/."
           chart={
             <CChartLine
-              type="line"
               className="mt-3"
               style={{ height: "70px" }}
               data={{

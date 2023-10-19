@@ -447,6 +447,7 @@ const Dashboard = () => {
       <CModal
         visible={visibleModalReport}
         color="#6f0009"
+        size="xl"
         onClose={() => {
           setVisibleModalReport(false);
         }}
@@ -502,9 +503,15 @@ const Dashboard = () => {
                               : ""}
                           </td>
                           <td>{totalMonthSold?.toFixed(2) || "0.00"}</td>
-                          <td>{quantityMonthSold || "0"}</td>
+                          <td>
+                            {parseInt(quantityMonthSold.toFixed(2) || "0")}
+                          </td>
                           <td>{totalMonthPurchased?.toFixed(2) || "0.00"}</td>
-                          <td>{quantityMonthPurchased?.toFixed(2) || "0"}</td>
+                          <td>
+                            {parseInt(
+                              quantityMonthPurchased?.toFixed(2) || "0"
+                            )}
+                          </td>
                           <td className="text-white bg-dark">
                             {(totalMonthSold - totalMonthPurchased).toFixed(
                               2
@@ -515,21 +522,21 @@ const Dashboard = () => {
                     })
                   : null}
                 {dashboardInfo ? (
-                  <tr className="bg-dark">
+                  <tr className="bg-dark text-dark">
                     <td className="fw-bold bg-dark text-white">Acumulado</td>
-                    <td className="text-white">
+                    <td className="text-white bg-dark">
                       {dashboardInfo?.totalSoldSale?.toFixed(2) || "0.00"}
                     </td>
-                    <td className="text-white">
+                    <td className="text-white bg-dark">
                       {dashboardInfo?.totalQuantitySales || "0"}
                     </td>
-                    <td className="text-white">
+                    <td className="text-white bg-dark">
                       {dashboardInfo?.totalPurchased?.toFixed(2) || "0.00"}
                     </td>
-                    <td className="text-white">
+                    <td className="text-white bg-dark">
                       {dashboardInfo?.quantityTotalPurchased || "0"}
                     </td>
-                    <td className="text-white fw-bold">
+                    <td className="text-white fw-bold bg-dark">
                       {(
                         (dashboardInfo?.totalSoldSale || 0) -
                         (dashboardInfo?.totalPurchased || 0)
