@@ -19,26 +19,27 @@ export const useSettings = () => {
 
   async function getSettingsConfig() {
     const token = getCookie("esagel_token") || "";
-    await getSetting(token).then((response) => {
+    return await getSetting(token).then((response) => {
       if (response?.status === 200) {
         setSettingInfo(response?.doc || null);
         localStorage.setItem("esagel_config", JSON.stringify(response?.doc));
         setStatus(Status.Ready);
       }
       setStatus(Status.Ready);
+      return response;
     });
   }
 
-  async function updateSetting(id: string, setting: any): Promise<SettingResponse> {
+  async function updateSetting(
+    id: string,
+    setting: any
+  ): Promise<SettingResponse> {
     setStatus(Status.Updating);
     const token = getCookie("esagel_token") || "";
     return putSetting(token, id, setting)
       .then((response) => {
         if (response?.status === 200 || response?.status === 201) {
-          localStorage.setItem(
-            "esagel_config",
-            JSON.stringify(response?.doc)
-          );
+          localStorage.setItem("esagel_config", JSON.stringify(response?.doc));
           Swal.fire({
             icon: "success",
             title: "¡Actualización Exitosa!",

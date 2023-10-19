@@ -256,7 +256,7 @@ const DetailOrderComponent = () => {
                               className="form-control text-center"
                               value={
                                 orderInfo?.subtotal
-                                  ? orderInfo?.subtotal.toFixed(2)
+                                  ? orderInfo?.subtotal?.toFixed(2)
                                   : ""
                               }
                               disabled={true}
@@ -279,7 +279,7 @@ const DetailOrderComponent = () => {
                               className="form-control text-center d-flex"
                               value={
                                 orderInfo?.amountInIva
-                                  ? orderInfo?.amountInIva.toFixed(2)
+                                  ? orderInfo?.amountInIva?.toFixed(2)
                                   : ""
                               }
                               disabled={true}

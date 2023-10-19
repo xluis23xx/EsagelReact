@@ -55,7 +55,7 @@ const Login = () => {
         setCookie("esagel_refreshtoken", resp?.refreshToken, 1);
       }
       const config = await getSettingsConfig();
-      setConfig(config);
+      setConfig(config.doc);
       if (resp?.user) {
         localStorage.setItem("esagel_profile", JSON.stringify(resp?.user));
         setUser(resp.user);
